@@ -1,0 +1,523 @@
+[
+  {
+    "id": "Standing_Cable_Wood_Chop",
+    "name_es": "Leñador con Polea de Pie",
+    "instructions_es": [
+      "Conecta un asa estándar a una torre y mueve el cable a la posición de polea más alta.",
+      "Con el costado hacia el cable, agarra el asa con una mano y aléjate de la torre. Debes quedar aproximadamente a la distancia de tu brazo de la polea, con la tensión del peso en el cable. Tu brazo extendido debe estar alineado con el cable.",
+      "Con los pies separados al ancho de los hombros, alcanza hacia arriba con la otra mano y agarra el asa con ambas manos. Tus brazos deben seguir totalmente extendidos.",
+      "En un solo movimiento, tira del asa hacia abajo y a través de tu cuerpo hasta la rodilla delantera mientras rotas el torso.",
+      "Mantén la espalda y los brazos rectos y el core apretado mientras pivotas el pie trasero y flexionas las rodillas para lograr un rango de movimiento completo.",
+      "Mantén tu posición y los brazos rectos. Vuelve a la posición neutra de forma lenta y controlada.",
+      "Repite hasta el fallo.",
+      "Luego, reposiciónate y repite la misma serie de movimientos en el lado opuesto."
+    ]
+  },
+  {
+    "id": "Standing_Calf_Raises",
+    "name_es": "Elevación de Gemelo de Pie",
+    "instructions_es": [
+      "Ajusta la palanca acolchada de la máquina de gemelos a tu estatura.",
+      "Coloca los hombros bajo las almohadillas y posiciona las puntas de los pies mirando hacia adelante (u otra de las dos posiciones descritas al inicio del capítulo). La parte delantera de los pies debe apoyarse sobre el bloque, con los talones colgando fuera de él. Empuja la palanca hacia arriba extendiendo cadera y rodillas hasta que el torso quede erguido. Las rodillas deben mantener una ligera flexión, nunca bloqueadas. Las puntas de los pies deben mirar hacia adelante, afuera o adentro según lo descrito al inicio del capítulo. Esta será tu posición inicial.",
+      "Sube los talones mientras exhalas, extendiendo los tobillos lo más alto posible y flexionando el gemelo. Asegúrate de mantener la rodilla inmóvil en todo momento. No debe haber flexión de rodilla en ningún momento. Mantén la posición contraída un segundo antes de empezar a bajar.",
+      "Vuelve lentamente a la posición inicial mientras inhalas, bajando los talones hasta que los gemelos queden estirados.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Concentration_Curl",
+    "name_es": "Curl de Concentración de Pie",
+    "instructions_es": [
+      "Sujetando una mancuerna con tu brazo de trabajo, inclínate hacia adelante. Deja que el brazo de trabajo cuelgue perpendicular al suelo con el codo apuntando hacia afuera. Esta será tu posición inicial.",
+      "Flexiona el codo para curvar el peso, manteniendo el brazo superior inmóvil. En la parte alta de la repetición, contrae el bíceps y haz una pausa.",
+      "Baja la mancuerna hasta la posición inicial.",
+      "Repite el movimiento el número de repeticiones prescrito."
+    ]
+  },
+  {
+    "id": "Standing_Dumbbell_Calf_Raise",
+    "name_es": "Elevación de Gemelo de Pie con Mancuernas",
+    "instructions_es": [
+      "Ponte de pie con el torso erguido sujetando dos mancuernas a los lados. Coloca la parte delantera del pie sobre una tabla de madera firme y estable (de unos 5-8 cm de altura) mientras los talones cuelgan y tocan el suelo. Esta será tu posición inicial.",
+      "Con las puntas de los pies mirando hacia adelante (para trabajar todas las partes por igual), hacia adentro (para enfatizar la cabeza externa) o hacia afuera (para enfatizar la cabeza interna), levanta los talones del suelo mientras exhalas contrayendo los gemelos. Mantén la contracción máxima un segundo.",
+      "Mientras inhalas, vuelve a la posición inicial bajando lentamente los talones.",
+      "Repite el número de veces recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Dumbbell_Press",
+    "name_es": "Press con Mancuernas de Pie",
+    "instructions_es": [
+      "De pie con los pies al ancho de los hombros, sujeta una mancuerna en cada mano. Sube las mancuernas hasta la altura de la cabeza, con los codos hacia afuera y a unos 90 grados. Esta será tu posición inicial.",
+      "Manteniendo una técnica estricta sin impulso de piernas ni inclinarte hacia atrás, extiende los codos para subir los pesos juntos directamente por encima de la cabeza.",
+      "Haz una pausa y devuelve lentamente el peso a la posición inicial."
+    ]
+  },
+  {
+    "id": "Standing_Dumbbell_Reverse_Curl",
+    "name_es": "Curl Inverso con Mancuernas de Pie",
+    "instructions_es": [
+      "Para empezar, ponte de pie recto con una mancuerna en cada mano usando un agarre prono (palmas hacia abajo). Los brazos deben estar totalmente extendidos con los pies separados al ancho de los hombros. Esta es la posición inicial.",
+      "Manteniendo los brazos superiores inmóviles, curva los pesos contrayendo el bíceps mientras exhalas. Solo los antebrazos deben moverse. Continúa el movimiento hasta que el bíceps esté totalmente contraído y las mancuernas queden a la altura del hombro. Mantén la posición contraída un segundo mientras aprietas el músculo.",
+      "Comienza a llevar lentamente las mancuernas de vuelta a la posición inicial mientras inhalas.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head",
+    "name_es": "Elevación Frontal de Deltoides con Brazos Rectos por Encima de la Cabeza",
+    "instructions_es": [
+      "Sujeta las mancuernas por delante de los muslos, con las palmas mirando hacia los muslos.",
+      "Mantén los brazos rectos con una ligera flexión en los codos pero bloqueados. Esta será tu posición inicial.",
+      "Eleva las mancuernas en un movimiento semicircular hasta la altura del brazo por encima de la cabeza mientras exhalas.",
+      "Vuelve lentamente a la posición inicial siguiendo el mismo recorrido mientras inhalas.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Dumbbell_Triceps_Extension",
+    "name_es": "Extensión de Tríceps con Mancuerna de Pie",
+    "instructions_es": [
+      "Para empezar, ponte de pie sujetando una mancuerna con ambas manos. Los pies deben estar separados al ancho de los hombros. Usa ambas manos lentamente para agarrar la mancuerna y levantarla sobre la cabeza hasta que los dos brazos queden totalmente extendidos.",
+      "La resistencia debe descansar en las palmas de las manos con los pulgares rodeándola. Las palmas deben mirar hacia el techo. Esta será tu posición inicial.",
+      "Manteniendo los brazos superiores cerca de la cabeza con los codos hacia adentro y perpendiculares al suelo, baja la resistencia en un movimiento semicircular detrás de la cabeza hasta que los antebrazos toquen el bíceps. Consejo: los brazos superiores deben permanecer inmóviles y solo deben moverse los antebrazos. Inhala mientras realizas este paso.",
+      "Vuelve a la posición inicial usando el tríceps para subir la mancuerna. Exhala mientras realizas este paso.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Dumbbell_Upright_Row",
+    "name_es": "Remo al Mentón con Mancuernas de Pie",
+    "instructions_es": [
+      "Agarra una mancuerna en cada mano con un agarre prono (palmas hacia adelante) ligeramente más cerrado que el ancho de los hombros. Las mancuernas deben descansar sobre la parte superior de los muslos. Los brazos deben estar extendidos con una ligera flexión en los codos y la espalda recta. Esta será tu posición inicial.",
+      "Usa los hombros laterales para levantar las mancuernas mientras exhalas. Las mancuernas deben mantenerse cerca del cuerpo al subir y los codos deben guiar el movimiento. Sigue subiéndolas hasta que casi toquen la barbilla. Consejo: los codos deben guiar el movimiento. Al subir las mancuernas, tus codos siempre deben quedar más altos que los antebrazos. Además, mantén el torso inmóvil y haz una pausa de un segundo en la parte alta del movimiento.",
+      "Baja las mancuernas lentamente hasta la posición inicial. Inhala mientras realizas esta parte del movimiento.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Elevated_Quad_Stretch",
+    "name_es": "Estiramiento de Cuádriceps Elevado de Pie",
+    "instructions_es": [
+      "Comienza de pie con la espalda a unos 60-90 cm de un banco o escalón.",
+      "Levanta una pierna hacia atrás y apoya el pie sobre el escalón, ya sea sobre el empeine o la parte delantera del pie, lo que te resulte más cómodo.",
+      "Mantén la rodilla de apoyo ligeramente flexionada y evita que sobrepase la punta del pie. Cambia de lado."
+    ]
+  },
+  {
+    "id": "Standing_Front_Barbell_Raise_Over_Head",
+    "name_es": "Elevación Frontal con Barra por Encima de la Cabeza de Pie",
+    "instructions_es": [
+      "Para empezar, ponte de pie recto con una barra en las manos. Debes agarrar la barra con las palmas hacia abajo y un agarre más cerrado que el ancho de los hombros.",
+      "Tus pies deben estar separados al ancho de los hombros. Los codos deben estar ligeramente flexionados. Esta es la posición inicial.",
+      "Sube la barra hasta que quede directamente por encima de la cabeza mientras exhalas. Asegúrate de mantener los codos ligeramente flexionados durante cada repetición.",
+      "Una vez que sientas la contracción, comienza a bajar la barra de vuelta a la posición inicial mientras inhalas.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Gastrocnemius_Calf_Stretch",
+    "name_es": "Estiramiento de Gemelo (Gastrocnemio) de Pie",
+    "instructions_es": [
+      "Coloca el talón derecho sobre un escalón con la rodilla extendida e inclínate hacia adelante para agarrar la punta del pie derecho con la mano derecha. La rodilla izquierda debe estar ligeramente flexionada y la espalda recta.",
+      "Apoya tu peso en la pierna izquierda y coloca la mano izquierda sobre el muslo izquierdo.",
+      "Tira de la punta del pie derecho hacia la rodilla hasta sentir el estiramiento en el gemelo."
+    ]
+  },
+  {
+    "id": "Standing_Hamstring_and_Calf_Stretch",
+    "name_es": "Estiramiento de Isquiotibiales y Gemelo de Pie",
+    "instructions_es": [
+      "Comienza pasando un cinturón, banda o cuerda alrededor de un pie. De pie, coloca ese pie adelante.",
+      "Flexiona la pierna trasera manteniendo la delantera recta. Ahora levanta las puntas del pie delantero del suelo e inclínate hacia adelante.",
+      "Usando el cinturón, tira de la parte superior del pie para aumentar el estiramiento del gemelo. Mantén de 10 a 20 segundos y repite con el otro pie."
+    ]
+  },
+  {
+    "id": "Standing_Hip_Circles",
+    "name_es": "Círculos de Cadera de Pie",
+    "instructions_es": [
+      "Comienza de pie sobre una pierna, sujetándote de un apoyo vertical.",
+      "Levanta la rodilla sin apoyo hasta 90 grados. Esta será tu posición inicial.",
+      "Abre la cadera lo más posible, intentando trazar un círculo grande con la rodilla.",
+      "Realiza este movimiento lentamente durante varias repeticiones y repite con el otro lado."
+    ]
+  },
+  {
+    "id": "Standing_Hip_Flexors",
+    "name_es": "Flexores de Cadera de Pie",
+    "instructions_es": [
+      "Ponte de pie con la columna vertical, el pie izquierdo ligeramente adelante del derecho.",
+      "Flexiona ambas rodillas y levanta el talón trasero del suelo mientras empujas la cadera derecha hacia adelante. No podrás lograr un estiramiento profundo en esta posición, ya que es difícil relajar el flexor de cadera y apoyarse en él al mismo tiempo. Cambia de lado."
+    ]
+  },
+  {
+    "id": "Standing_Inner-Biceps_Curl",
+    "name_es": "Curl de Bíceps Interno de Pie",
+    "instructions_es": [
+      "Ponte de pie con una mancuerna en cada mano sujeta a la altura del brazo extendido. Los codos deben estar cerca del torso. Las piernas deben estar separadas al ancho de los hombros aproximadamente.",
+      "Rota las palmas de las manos para que miren hacia adentro en una posición neutra. Esta será tu posición inicial.",
+      "Manteniendo los brazos superiores inmóviles, curva los pesos hacia afuera contrayendo el bíceps mientras exhalas. Tu muñeca debe girar de forma que cuando los pesos estén totalmente elevados tengas un agarre supino (palmas hacia arriba).",
+      "Solo los antebrazos deben moverse. Continúa el movimiento hasta que el bíceps esté totalmente contraído y las mancuernas queden a la altura del hombro. Consejo: mantén los antebrazos alineados con los deltoides externos.",
+      "Mantén la posición contraída un segundo mientras aprietas el bíceps.",
+      "Comienza a llevar lentamente las mancuernas de vuelta a la posición inicial mientras inhalas. Recuerda rotar las muñecas al bajar el peso para volver a un agarre neutro.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Lateral_Stretch",
+    "name_es": "Estiramiento Lateral de Pie",
+    "instructions_es": [
+      "Adopta una postura ligeramente más ancha que el ancho de la cadera con las rodillas levemente flexionadas.",
+      "Coloca la mano derecha sobre la cadera derecha para apoyar la columna.",
+      "Levanta el brazo izquierdo en línea vertical y coloca la mano izquierda detrás de la cabeza. Mantenla ahí mientras inclinas el torso hacia la derecha.",
+      "Mantén el peso repartido de forma uniforme entre ambas piernas (no te apoyes en la cadera izquierda). Cambia de lado."
+    ]
+  },
+  {
+    "id": "Standing_Leg_Curl",
+    "name_es": "Curl Femoral de Pie",
+    "instructions_es": [
+      "Ajusta la palanca de la máquina a tu estatura y colócate con el torso flexionado por la cintura mirando hacia adelante en unos 30-45 grados (ya que una posición angulada favorece más el reclutamiento de los isquiotibiales), con la almohadilla de la palanca en la parte posterior de la pierna derecha (unos centímetros por debajo del gemelo) y la parte delantera de la pierna derecha sobre la almohadilla de la máquina.",
+      "Manteniendo el torso flexionado hacia adelante, asegúrate de que la pierna esté totalmente estirada y agarra las asas laterales de la máquina. Posiciona las puntas de los pies rectas. Esta será tu posición inicial.",
+      "Mientras exhalas, curva la pierna derecha lo más arriba posible sin levantar la pierna superior de la almohadilla. Al llegar a la contracción total, mantén un segundo.",
+      "Mientras inhalas, lleva las piernas de vuelta a la posición inicial. Repite el número de repeticiones recomendado.",
+      "Realiza el mismo ejercicio ahora con la pierna izquierda."
+    ]
+  },
+  {
+    "id": "Standing_Long_Jump",
+    "name_es": "Salto de Longitud de Pie",
+    "instructions_es": [
+      "Este ejercicio se realiza mejor en arena u otra superficie de aterrizaje blanda. Asegúrate de poder medir la distancia. Ponte en una posición de sentadilla parcial con los pies separados al ancho de los hombros.",
+      "Utilizando un gran impulso de brazos y un contramovimiento de piernas, salta hacia adelante lo más lejos que puedas.",
+      "Intenta aterrizar con los pies por delante de ti, alcanzando lo más lejos posible con las piernas.",
+      "Mide la distancia desde el punto de aterrizaje hasta el punto de partida y registra los resultados."
+    ]
+  },
+  {
+    "id": "Standing_Low-Pulley_Deltoid_Raise",
+    "name_es": "Elevación de Deltoides con Polea Baja de Pie",
+    "instructions_es": [
+      "Comienza de pie al lado derecho de una polea baja. Usa la mano izquierda para cruzar el cuerpo y agarrar un asa individual conectada a la polea baja con un agarre prono (palmas hacia abajo). Deja el brazo descansando por delante de ti. La mano derecha debe sujetar la máquina para mayor soporte y equilibrio.",
+      "Asegúrate de que la espalda esté erguida y los pies separados al ancho de los hombros. Esta es la posición inicial.",
+      "Comienza a usar la mano izquierda para cruzar el cuerpo hacia afuera hasta elevarla a la altura del hombro mientras exhalas.",
+      "Siente la contracción en la parte alta durante un segundo y comienza a bajar lentamente el asa hasta la posición inicial mientras inhalas.",
+      "Repite el número de repeticiones recomendado.",
+      "Cambia de brazo y repite el ejercicio."
+    ]
+  },
+  {
+    "id": "Standing_Low-Pulley_One-Arm_Triceps_Extension",
+    "name_es": "Extensión de Tríceps a Un Brazo con Polea Baja de Pie",
+    "instructions_es": [
+      "Agarra un asa individual con el brazo izquierdo junto a la máquina de polea baja. Date la vuelta alejándote de la máquina manteniendo el asa al lado del cuerpo con el brazo totalmente extendido. Ahora usa ambas manos para elevar el asa individual directamente por encima de la cabeza con la palma hacia adelante. Mantén el brazo superior completamente vertical (perpendicular al suelo) y coloca la mano derecha sobre el codo izquierdo para ayudar a mantenerlo estable. Esta es la posición inicial.",
+      "Manteniendo los brazos superiores cerca de la cabeza (codos hacia adentro) y perpendiculares al suelo, baja la resistencia en un movimiento semicircular detrás de la cabeza hasta que los antebrazos toquen el bíceps. Consejo: los brazos superiores deben permanecer inmóviles y solo deben moverse los antebrazos. Inhala mientras realizas este paso.",
+      "Vuelve a la posición inicial usando el tríceps para subir el asa individual. Exhala mientras realizas este paso.",
+      "Repite el número de repeticiones recomendado.",
+      "Cambia de brazo y repite el ejercicio."
+    ]
+  },
+  {
+    "id": "Standing_Military_Press",
+    "name_es": "Press Militar de Pie",
+    "instructions_es": [
+      "Comienza colocando una barra a la altura del pecho en un rack de sentadillas. Una vez seleccionado el peso, agarra la barra con un agarre prono (palmas hacia adelante). Asegúrate de agarrar la barra más ancho que el ancho de los hombros.",
+      "Flexiona ligeramente las rodillas y coloca la barra sobre la clavícula. Levanta la barra manteniéndola apoyada en el pecho. Da un paso atrás y posiciona los pies al ancho de los hombros.",
+      "Una vez que levantes la barra con el ancho de agarre correcto, sube la barra por encima de la cabeza bloqueando los brazos. Mantenla a la altura del hombro y ligeramente por delante de la cabeza. Esta es tu posición inicial.",
+      "Baja la barra lentamente hasta la clavícula mientras inhalas.",
+      "Sube la barra de vuelta a la posición inicial mientras exhalas.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Olympic_Plate_Hand_Squeeze",
+    "name_es": "Apretón de Mano con Disco Olímpico de Pie",
+    "instructions_es": [
+      "Para empezar, ponte de pie recto sujetando un disco de peso por el borde a la distancia del brazo extendido en cada mano usando un agarre neutro (palmas hacia adentro). Los pies deben estar separados al ancho de los hombros. Esta será tu posición inicial.",
+      "Baja los discos hasta que los dedos estén casi extendidos pero aún puedan sujetar el peso. Inhala mientras bajas los discos.",
+      "Ahora sube los discos de vuelta a la posición inicial mientras exhalas cerrando las manos.",
+      "Repite el número de repeticiones prescrito en tu programa."
+    ]
+  },
+  {
+    "id": "Standing_One-Arm_Cable_Curl",
+    "name_es": "Curl a Un Brazo con Polea de Pie",
+    "instructions_es": [
+      "Comienza agarrando un asa individual junto a la máquina de polea baja. Asegúrate de estar lo suficientemente lejos de la máquina para que tu brazo sostenga el peso.",
+      "Asegúrate de que el brazo superior esté inmóvil, perpendicular al suelo con los codos hacia adentro y las palmas hacia adelante. El brazo que no está trabajando debe sujetar tu cintura. Esto te ayudará a mantener el equilibrio.",
+      "Comienza a curvar lentamente el asa individual hacia arriba manteniendo el brazo superior inmóvil hasta que el antebrazo toque el bíceps mientras exhalas. Consejo: solo el antebrazo debe moverse.",
+      "Mantén la posición de contracción mientras aprietas el bíceps y luego baja el asa individual de vuelta a la posición inicial mientras inhalas.",
+      "Repite el número de repeticiones recomendado.",
+      "Cambia de brazo mientras realizas este ejercicio."
+    ]
+  },
+  {
+    "id": "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench",
+    "name_es": "Curl a Un Brazo con Mancuerna sobre Banco Inclinado de Pie",
+    "instructions_es": [
+      "Ponte de pie detrás de un banco inclinado como si fueras a ayudar a alguien. Sujeta una mancuerna con una mano y apóyala sobre el banco inclinado con un agarre supino (palmas hacia arriba).",
+      "Coloca la mano que no trabaja en la esquina o el lateral del banco inclinado. El pecho debe presionar contra la parte superior del respaldo y los pies deben apoyarse firmemente en el suelo con una postura amplia. Esta es la posición inicial.",
+      "Manteniendo el brazo superior inmóvil, curva la mancuerna hacia arriba contrayendo el bíceps mientras exhalas. Solo los antebrazos deben moverse. Continúa el movimiento hasta que el bíceps esté totalmente contraído y la mancuerna quede a la altura del hombro. Mantén la posición contraída un segundo.",
+      "Comienza a llevar lentamente la mancuerna de vuelta a la posición inicial mientras inhalas.",
+      "Repite el número de repeticiones recomendado.",
+      "Cambia de brazo mientras realizas este ejercicio."
+    ]
+  },
+  {
+    "id": "Standing_One-Arm_Dumbbell_Triceps_Extension",
+    "name_es": "Extensión de Tríceps a Un Brazo con Mancuerna de Pie",
+    "instructions_es": [
+      "Para empezar, ponte de pie sujetando una mancuerna con una mano. Los pies deben estar separados al ancho de los hombros aproximadamente. Ahora extiende totalmente el brazo con la mancuerna por encima de la cabeza. Consejo: el dedo meñique de tu mano debe apuntar hacia el techo y la palma debe mirar hacia adelante. La mancuerna debe quedar por encima de la cabeza.",
+      "Esta será tu posición inicial.",
+      "Manteniendo el brazo superior cerca de la cabeza (codo hacia adentro) y perpendicular al suelo, baja la resistencia en un movimiento semicircular detrás de la cabeza hasta que el antebrazo toque el bíceps. Consejo: el brazo superior debe permanecer inmóvil y solo debe moverse el antebrazo. Inhala mientras realizas este paso.",
+      "Vuelve a la posición inicial usando el tríceps para subir la mancuerna. Exhala mientras realizas este paso.",
+      "Repite el número de repeticiones recomendado.",
+      "Cambia de brazo y repite el ejercicio."
+    ]
+  },
+  {
+    "id": "Standing_Overhead_Barbell_Triceps_Extension",
+    "name_es": "Extensión de Tríceps con Barra por Encima de la Cabeza de Pie",
+    "instructions_es": [
+      "Para empezar, ponte de pie sujetando una barra o barra Z con un agarre prono (palmas hacia adelante) con las manos más cerradas que el ancho de los hombros. Los pies deben estar separados al ancho de los hombros aproximadamente.",
+      "Ahora eleva la barra por encima de la cabeza hasta que los brazos estén totalmente extendidos. Mantén los codos hacia adentro. Esta será tu posición inicial.",
+      "Manteniendo los brazos superiores cerca de la cabeza y los codos hacia adentro, perpendiculares al suelo, baja la resistencia en un movimiento semicircular detrás de la cabeza hasta que los antebrazos toquen el bíceps. Consejo: los brazos superiores deben permanecer inmóviles y solo deben moverse los antebrazos. Inhala mientras realizas este paso.",
+      "Vuelve a la posición inicial usando el tríceps para subir la barra. Exhala mientras realizas este paso.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Palm-In_One-Arm_Dumbbell_Press",
+    "name_es": "Press a Un Brazo con Palma Hacia Adentro de Pie",
+    "instructions_es": [
+      "Comienza con una mancuerna en una mano con el brazo totalmente extendido hacia el lateral usando un agarre neutro. Usa el otro brazo para sujetarte de un banco inclinado y mantener el equilibrio.",
+      "Los pies deben estar separados al ancho de los hombros. Ahora sube lentamente la mancuerna hasta crear un ángulo de 90 grados con el brazo. Nota: el antebrazo debe quedar perpendicular al suelo. Continúa manteniendo un agarre neutro durante todo el ejercicio.",
+      "Sube lentamente la mancuerna hasta que el brazo quede totalmente extendido. Esta es la posición inicial.",
+      "Mientras inhalas, baja el peso hasta que el brazo vuelva a un ángulo de 90 grados.",
+      "Siente la contracción durante un segundo y luego sube el peso de vuelta hacia la posición inicial mientras exhalas. Recuerda sujetarte del banco inclinado y mantener los pies posicionados para conservar el equilibrio durante el ejercicio.",
+      "Repite el número de repeticiones recomendado.",
+      "Cambia de brazo y repite el ejercicio."
+    ]
+  },
+  {
+    "id": "Standing_Palms-In_Dumbbell_Press",
+    "name_es": "Press con Mancuernas Palmas Hacia Adentro de Pie",
+    "instructions_es": [
+      "Comienza con una mancuerna en cada mano con el brazo totalmente extendido hacia el lateral usando un agarre neutro. Los pies deben estar separados al ancho de los hombros. Ahora sube lentamente las mancuernas hasta crear un ángulo de 90 grados con los brazos. Nota: los antebrazos deben quedar perpendiculares al suelo. Esta es la posición inicial.",
+      "Continúa manteniendo un agarre neutro durante todo el ejercicio. Sube lentamente las mancuernas hasta que los brazos queden totalmente extendidos.",
+      "Mientras inhalas, baja los pesos hasta que el brazo vuelva a un ángulo de 90 grados.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Palms-Up_Barbell_Behind_The_Back_Wrist_Curl",
+    "name_es": "Curl de Muñeca con Barra Detrás de la Espalda Palmas Hacia Arriba de Pie",
+    "instructions_es": [
+      "Comienza de pie recto sujetando una barra detrás de los glúteos a la distancia del brazo extendido usando un agarre prono (las palmas mirarán hacia atrás, alejadas de los glúteos) con las manos separadas al ancho de los hombros.",
+      "Debes mirar hacia adelante mientras los pies están separados al ancho de los hombros. Esta es la posición inicial.",
+      "Mientras exhalas, eleva lentamente la barra curvando la muñeca en un movimiento semicircular hacia el techo. Nota: la muñeca debe ser la única parte del cuerpo que se mueve en este ejercicio.",
+      "Mantén la contracción un segundo y baja la barra de vuelta a la posición inicial mientras inhalas.",
+      "Repite el número de repeticiones recomendado.",
+      "Al terminar, baja la barra hacia el rack de sentadillas o el suelo flexionando las rodillas. Consejo: es más fácil recogerla desde un rack o que un compañero te la entregue."
+    ]
+  },
+  {
+    "id": "Standing_Pelvic_Tilt",
+    "name_es": "Basculación Pélvica de Pie",
+    "instructions_es": [
+      "Comienza con los pies separados al ancho de la cadera.",
+      "Flexiona ligeramente las rodillas para mantenerlas relajadas y con resorte.",
+      "Puede que quieras mover la pelvis hacia adelante y hacia atrás unas cuantas veces antes de sostener el cóccix hacia adelante en este estiramiento."
+    ]
+  },
+  {
+    "id": "Standing_Rope_Crunch",
+    "name_es": "Crunch con Cuerda de Pie",
+    "instructions_es": [
+      "Conecta una cuerda a una polea alta y selecciona un peso adecuado.",
+      "Ponte de pie con la espalda hacia la torre de cable. Toma la cuerda con ambas manos por encima de los hombros, sosteniéndola contra la parte superior del pecho. Esta será tu posición inicial.",
+      "Realiza el movimiento flexionando la columna, encogiendo el peso hacia abajo lo más que puedas.",
+      "Mantén la contracción máxima un momento antes de volver a la posición inicial."
+    ]
+  },
+  {
+    "id": "Standing_Soleus_And_Achilles_Stretch",
+    "name_es": "Estiramiento de Sóleo y Aquiles de Pie",
+    "instructions_es": [
+      "Ponte de pie con los pies separados al ancho de la cadera, un pie ligeramente adelante del otro.",
+      "Flexiona ambas rodillas, manteniendo el talón trasero en el suelo. Cambia de lado."
+    ]
+  },
+  {
+    "id": "Standing_Toe_Touches",
+    "name_es": "Toques de Punta de Pie",
+    "instructions_es": [
+      "Ponte de pie con espacio delante y detrás de ti.",
+      "Flexiona por la cintura, manteniendo las piernas rectas, hasta que puedas relajarte y dejar que la parte superior del cuerpo cuelgue por delante de ti. Deja que brazos y manos cuelguen de forma natural. Mantén de 10 a 20 segundos."
+    ]
+  },
+  {
+    "id": "Standing_Towel_Triceps_Extension",
+    "name_es": "Extensión de Tríceps con Toalla de Pie",
+    "instructions_es": [
+      "Para empezar, ponte de pie con ambos brazos totalmente extendidos por encima de la cabeza sujetando un extremo de una toalla con ambas manos. Los codos deben estar hacia adentro y los brazos perpendiculares al suelo con las palmas mirándose entre sí mientras los pies están separados al ancho de los hombros. Esta es la posición inicial.",
+      "Ahora comunícate con tu compañero para que agarre el otro extremo de la toalla y aplique resistencia. Manteniendo los brazos superiores cerca de la cabeza (codos hacia adentro) y perpendiculares al suelo, baja la resistencia en un movimiento semicircular detrás de la cabeza hasta que los antebrazos toquen el bíceps. Consejo: los brazos superiores deben permanecer inmóviles y solo deben moverse los antebrazos. Inhala mientras realizas este paso.",
+      "Vuelve a la posición inicial usando el tríceps para subir la toalla. Exhala mientras realizas este paso.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Two-Arm_Overhead_Throw",
+    "name_es": "Lanzamiento por Encima de la Cabeza a Dos Brazos de Pie",
+    "instructions_es": [
+      "Ponte de pie con los pies separados al ancho de los hombros sujetando un balón medicinal con ambas manos. Para empezar, lleva el balón medicinal profundamente detrás de la cabeza mientras flexionas ligeramente las rodillas e inclinas el cuerpo hacia atrás.",
+      "Lanza el balón hacia adelante con fuerza, flexionando la cadera y usando todo el cuerpo para completar el movimiento.",
+      "El balón medicinal puede lanzarse a un compañero o a una pared, recibiéndolo cuando rebote de vuelta."
+    ]
+  },
+  {
+    "id": "Star_Jump",
+    "name_es": "Salto de Estrella",
+    "instructions_es": [
+      "Comienza en una postura relajada con los pies separados al ancho de los hombros y sujeta los brazos cerca del cuerpo.",
+      "Para iniciar el movimiento, agáchate a medio camino en sentadilla y explota hacia arriba lo más alto posible. Extiende completamente todo el cuerpo, separando piernas y brazos del cuerpo.",
+      "Al aterrizar, recoge las extremidades y absorbe el impacto a través de las piernas."
+    ]
+  },
+  {
+    "id": "Step-up_with_Knee_Raise",
+    "name_es": "Subida al Cajón con Elevación de Rodilla",
+    "instructions_es": [
+      "Ponte de pie frente a un cajón o banco de altura adecuada con los pies juntos. Esta será tu posición inicial.",
+      "Comienza el movimiento subiendo, colocando el pie izquierdo sobre la parte superior del banco. Extiende la cadera y la rodilla de la pierna delantera para ponerte de pie sobre el cajón. Mientras te sostienes sobre el cajón con la pierna izquierda, flexiona la rodilla y la cadera derecha, llevando la rodilla lo más alto posible.",
+      "Invierte el movimiento para bajar del cajón y luego repite la secuencia con la pierna opuesta."
+    ]
+  },
+  {
+    "id": "Step_Mill",
+    "name_es": "Escalera Mecánica (Step Mill)",
+    "instructions_es": [
+      "Para empezar, súbete a la escalera mecánica y selecciona la opción deseada en el menú. Puedes elegir un ajuste manual o seleccionar un programa predefinido. Normalmente puedes ingresar tu edad y peso para estimar la cantidad de calorías quemadas durante el ejercicio. Ten cuidado de no tropezar mientras subes los escalones. Se recomienda mantener el agarre de las asas para no caerte.",
+      "Las escaleras mecánicas ofrecen comodidad, beneficios cardiovasculares y normalmente tienen menos impacto que correr al aire libre, ofreciendo un ritmo similar de calorías quemadas. Suelen ser mucho más exigentes que otros equipos de cardio. Una persona de 68 kg típicamente quema más de 300 calorías en 30 minutos, comparado con unas 175 caminando."
+    ]
+  },
+  {
+    "id": "Stiff-Legged_Barbell_Deadlift",
+    "name_es": "Peso Muerto con Piernas Rígidas y Barra",
+    "instructions_es": [
+      "Agarra una barra con un agarre prono (palmas hacia abajo). Puede que necesites muñequeras si usas una cantidad significativa de peso.",
+      "Ponte de pie con el torso recto y las piernas separadas en una postura al ancho de los hombros o más cerrada. Las rodillas deben estar ligeramente flexionadas. Esta es tu posición inicial.",
+      "Manteniendo las rodillas inmóviles, baja la barra hasta la parte superior de los pies flexionando por la cadera mientras mantienes la espalda recta. Sigue moviéndote hacia adelante como si fueras a recoger algo del suelo hasta sentir un estiramiento en los isquiotibiales. Inhala mientras realizas este movimiento.",
+      "Comienza a enderezar el torso de nuevo extendiendo la cadera hasta volver a la posición inicial. Exhala mientras realizas este movimiento.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Stiff-Legged_Dumbbell_Deadlift",
+    "name_es": "Peso Muerto con Piernas Rígidas y Mancuernas",
+    "instructions_es": [
+      "Agarra un par de mancuernas sujetándolas a los lados a la distancia del brazo extendido.",
+      "Ponte de pie con el torso recto y las piernas separadas en una postura al ancho de los hombros o más cerrada. Las rodillas deben estar ligeramente flexionadas. Esta es tu posición inicial.",
+      "Manteniendo las rodillas inmóviles, baja las mancuernas hasta la parte superior de los pies flexionando por la cintura mientras mantienes la espalda recta. Sigue moviéndote hacia adelante como si fueras a recoger algo del suelo hasta sentir un estiramiento en los isquiotibiales. Exhala mientras realizas este movimiento.",
+      "Comienza a enderezar el torso de nuevo extendiendo la cadera y la cintura hasta volver a la posición inicial. Inhala mientras realizas este movimiento.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Stiff_Leg_Barbell_Good_Morning",
+    "name_es": "Buenos Días con Piernas Rígidas y Barra",
+    "instructions_es": [
+      "Este ejercicio se realiza mejor dentro de un rack de sentadillas por seguridad. Para empezar, coloca primero la barra en un rack que se ajuste mejor a tu estatura. Una vez elegida la altura correcta y cargada la barra, colócate debajo de ella y apoya la parte trasera de los hombros (ligeramente por debajo del cuello) sobre ella.",
+      "Sujeta la barra con ambos brazos a cada lado y levántala del rack empujando primero con las piernas y al mismo tiempo enderezando el torso.",
+      "Aléjate del rack y posiciona las piernas usando una postura media al ancho de los hombros. Mantén la cabeza arriba en todo momento, ya que mirar hacia abajo te hará perder el equilibrio, y también mantén la espalda recta. Esta será tu posición inicial.",
+      "Manteniendo las piernas inmóviles, mueve el torso hacia adelante flexionando por la cadera mientras inhalas. Baja el torso hasta que quede paralelo al suelo.",
+      "Comienza a subir la barra mientras exhalas elevando el torso de vuelta a la posición inicial.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Stomach_Vacuum",
+    "name_es": "Vacío Abdominal",
+    "instructions_es": [
+      "Para empezar, ponte de pie recto con los pies separados al ancho de los hombros. Coloca las manos en la cadera. Esta es la posición inicial.",
+      "Ahora inhala lentamente todo el aire posible y luego comienza a exhalar todo lo posible mientras metes el abdomen lo más posible y mantén esta posición. Intenta visualizar tu ombligo tocando la columna.",
+      "Una contracción isométrica dura unos 20 segundos. Durante los 20 segundos de mantenimiento, intenta respirar con normalidad. Luego inhala y devuelve el abdomen a la posición inicial.",
+      "Una vez que hayas practicado este ejercicio, intenta realizarlo durante más de 20 segundos. Consejo: puedes ir progresando hasta 40-60 segundos.",
+      "Repite el número de series recomendado."
+    ]
+  },
+  {
+    "id": "Straight-Arm_Dumbbell_Pullover",
+    "name_es": "Pullover con Mancuerna y Brazos Rectos",
+    "instructions_es": [
+      "Coloca una mancuerna de pie sobre un banco plano.",
+      "Asegurándote de que la mancuerna quede firme en la parte superior del banco, túmbate perpendicular al banco (con el torso cruzado como formando una cruz) apoyando solo los hombros en la superficie. La cadera debe quedar por debajo del banco y las piernas flexionadas con los pies firmemente en el suelo. La cabeza también quedará fuera del banco.",
+      "Agarra la mancuerna con ambas manos y sujétala recta por encima del pecho con los brazos extendidos. Ambas palmas deben presionar contra la parte inferior de uno de los lados de la mancuerna. Esta será tu posición inicial.\nPrecaución: asegúrate siempre de que la mancuerna usada para este ejercicio esté bien fijada. Usar una mancuerna con discos sueltos puede hacer que se desarme y caiga sobre tu cara.",
+      "Manteniendo los brazos rectos, baja el peso lentamente en un arco detrás de la cabeza mientras inhalas hasta sentir un estiramiento en el pecho.",
+      "En ese punto, lleva la mancuerna de vuelta a la posición inicial usando el mismo arco por el que bajó el peso, exhalando mientras realizas este movimiento.",
+      "Mantén el peso en la posición inicial un segundo y repite el movimiento el número de repeticiones prescrito."
+    ]
+  },
+  {
+    "id": "Straight-Arm_Pulldown",
+    "name_es": "Jalón con Brazos Rectos",
+    "instructions_es": [
+      "Comenzarás agarrando la barra ancha desde la polea alta de una máquina de jalones usando un agarre prono (palmas hacia abajo) más ancho que el ancho de los hombros. Da un paso atrás de unos 60 cm.",
+      "Flexiona el torso hacia adelante por la cintura unos 30 grados con los brazos totalmente extendidos frente a ti y una ligera flexión en los codos. Si los brazos no están totalmente extendidos, necesitas retroceder un poco más hasta que lo estén. Una vez que los brazos estén totalmente extendidos y el torso ligeramente flexionado por la cintura, contrae el dorsal y estarás listo para empezar.",
+      "Manteniendo los brazos rectos, tira de la barra hacia abajo contrayendo el dorsal hasta que las manos queden junto a los muslos. Exhala mientras realizas este paso.",
+      "Manteniendo los brazos rectos, vuelve a la posición inicial mientras inhalas.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Straight_Bar_Bench_Mid_Rows",
+    "name_es": "Remo Medio con Barra Recta Apoyado en Banco",
+    "instructions_es": [
+      "Coloca una barra cargada en el extremo de un banco. De pie sobre el banco detrás de la barra, toma un agarre medio y prono. Ponte de pie con la cadera hacia atrás y el pecho arriba, manteniendo la columna neutra. Esta será tu posición inicial.",
+      "Rema la barra hacia el torso retrayendo los omóplatos y flexionando los codos. Usa un movimiento controlado sin tirones.",
+      "Tras una breve pausa, devuelve lentamente la barra a la posición inicial, asegurándote de bajar por completo."
+    ]
+  },
+  {
+    "id": "Straight_Raises_on_Incline_Bench",
+    "name_es": "Elevaciones Rectas en Banco Inclinado",
+    "instructions_es": [
+      "Coloca una barra en el suelo detrás del cabezal de un banco inclinado.",
+      "Túmbate boca abajo en el banco. Con un agarre prono, recoge la barra del suelo manteniendo los brazos rectos. Deja que la barra cuelgue recta hacia abajo. Esta será tu posición inicial.",
+      "Para empezar, sube la barra por delante de la cabeza manteniendo los brazos extendidos.",
+      "Vuelve a la posición inicial."
+    ]
+  },
+  {
+    "id": "Stride_Jump_Crossover",
+    "name_es": "Salto Cruzado con Zancada",
+    "instructions_es": [
+      "Ponte de pie al lado de un cajón con el pie interior sobre él, cerca del borde.",
+      "Comienza balanceando los brazos hacia arriba mientras empujas con la pierna de apoyo, saltando hacia arriba lo más alto posible. Intenta llevar la rodilla opuesta hacia arriba.",
+      "Aterriza en la posición opuesta a la que empezaste, en el lado contrario del cajón. El pie que estaba inicialmente sobre el cajón quedará ahora en el suelo, con el pie opuesto ahora sobre el cajón.",
+      "Repite el movimiento, cruzando de vuelta al otro lado."
+    ]
+  },
+  {
+    "id": "Sumo_Deadlift",
+    "name_es": "Peso Muerto Sumo",
+    "instructions_es": [
+      "Comienza con una barra cargada en el suelo. Acércate a la barra de forma que intersecte el centro de los pies. Los pies deben estar muy separados, cerca de los collarines. Flexiona por la cadera para agarrar la barra. Los brazos deben quedar directamente bajo los hombros, dentro de las piernas, y puedes usar un agarre prono, mixto o de gancho. Relaja los hombros, lo que en efecto alarga los brazos.",
+      "Toma aire y luego baja la cadera, mirando hacia adelante con la cabeza y el pecho arriba. Empuja contra el suelo, separando los pies, con el peso en la mitad trasera de los pies. Extiende cadera y rodillas.",
+      "Cuando la barra pase por las rodillas, inclínate hacia atrás y empuja la cadera hacia la barra, juntando los omóplatos.",
+      "Devuelve el peso al suelo flexionando por la cadera y controlando el peso en el descenso."
+    ]
+  },
+  {
+    "id": "Sumo_Deadlift_with_Bands",
+    "name_es": "Peso Muerto Sumo con Bandas",
+    "instructions_es": [
+      "Para hacer peso muerto con bandas cortas, simplemente pásalas por encima de la barra antes de empezar y colócate dentro de ellas para prepararte. Asegúrate de que queden bajo la mitad trasera de tu pie, justo donde empujas contra el suelo.",
+      "Comienza con una barra cargada en el suelo. Acércate a la barra de forma que intersecte el centro de los pies. Los pies deben estar muy separados, cerca de los collarines. Flexiona por la cadera para agarrar la barra. Los brazos deben quedar directamente bajo los hombros, dentro de las piernas, y puedes usar un agarre prono, mixto o de gancho.",
+      "Toma aire y luego baja la cadera, mirando hacia adelante con la cabeza y el pecho arriba. Empuja contra el suelo, separando los pies, con el peso en la mitad trasera de los pies. Extiende cadera y rodillas.",
+      "Cuando la barra pase por las rodillas, inclínate hacia atrás y empuja la cadera hacia la barra, juntando los omóplatos.",
+      "Devuelve el peso al suelo flexionando por la cadera y controlando el peso en el descenso."
+    ]
+  }
+]

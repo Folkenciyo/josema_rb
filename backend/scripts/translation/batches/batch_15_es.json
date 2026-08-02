@@ -1,0 +1,541 @@
+[
+  {
+    "id": "Smith_Machine_Calf_Raise",
+    "name_es": "Elevación de Gemelo en Máquina Smith",
+    "instructions_es": [
+      "Coloca un bloque o disco de peso debajo de la barra en la máquina Smith. Ajusta la barra a una posición que mejor se adapte a tu estatura. Una vez elegida la altura correcta y cargada la barra, súbete a los discos con la punta de los pies y coloca la barra sobre la parte trasera de los hombros.",
+      "Sujeta la barra con ambas manos mirando hacia adelante. Rota la barra para desengancharla. Esta será tu posición inicial.",
+      "Sube los talones lo más alto posible empujando con la punta de los pies, flexionando el gemelo arriba de la contracción. Las rodillas deben permanecer extendidas. Mantén la posición contraída un segundo antes de empezar a bajar.",
+      "Vuelve lentamente a la posición inicial mientras inhalas y bajas los talones.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Close-Grip_Bench_Press",
+    "name_es": "Press de Banca con Agarre Cerrado en Máquina Smith",
+    "instructions_es": [
+      "Coloca un banco plano debajo de la máquina Smith. Coloca la barra a una altura que puedas alcanzar tumbado con los brazos casi totalmente extendidos. Una vez seleccionado el peso necesario, túmbate en el banco plano. Usando un agarre cerrado y prono (palmas hacia adelante) aproximadamente al ancho de los hombros, desbloquea la barra del rack y sujétala recta por encima de ti con los brazos bloqueados. Esta será tu posición inicial.",
+      "Mientras inhalas, baja lentamente hasta sentir la barra en el centro del pecho. Consejo: asegúrate de que, a diferencia del press de banca normal, mantienes los codos cerca del torso en todo momento para maximizar la implicación del tríceps.",
+      "Tras una breve pausa, vuelve a llevar la barra a la posición inicial mientras exhalas y empujas la barra usando los músculos del tríceps. Bloquea los brazos en la posición contraída, mantén un segundo y luego empieza a bajar lentamente de nuevo. Consejo: debería llevar al menos el doble de tiempo bajar que subir.",
+      "Repite el movimiento el número de repeticiones prescrito.",
+      "Cuando termines, bloquea la barra de vuelta en el rack."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Decline_Press",
+    "name_es": "Press Declinado en Máquina Smith",
+    "instructions_es": [
+      "Coloca un banco declinado en el rack de forma que la barra quede sobre el pecho. Carga un peso adecuado y colócate en el banco.",
+      "Rota la barra para desengancharla del rack y extiende totalmente los brazos. La espalda debe estar ligeramente arqueada y los omóplatos retraídos. Esta será tu posición inicial.",
+      "Comienza el movimiento flexionando los brazos, bajando la barra hacia el pecho.",
+      "Haz una breve pausa, y luego extiende los brazos para devolver el peso a la posición inicial.",
+      "Tras completar el número de repeticiones deseado, rota la barra para apoyar el peso."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Hang_Power_Clean",
+    "name_es": "Cargada de Potencia Colgante en Máquina Smith",
+    "instructions_es": [
+      "Coloca la barra a la altura de la rodilla y cárgala con un peso adecuado.",
+      "Toma un agarre prono en la barra más ancho que los hombros y desengancha la barra de la máquina. Los brazos deben estar totalmente extendidos con la cabeza y el pecho arriba. Los codos deben apuntar hacia afuera con los hombros hacia atrás y abajo. La cadera debe estar hacia atrás, cargando la tensión en los isquiotibiales. Esta será tu posición inicial.",
+      "Inicia el movimiento extendiendo con fuerza cadera y rodillas, acelerando hacia la barra. Asegúrate de mantener los brazos rectos durante esta parte del movimiento.",
+      "Al llegar a la extensión completa, vuelve a flexionar cadera y rodillas para bajar a la posición de recepción.",
+      "Deja que los brazos se flexionen en este punto, rotando los codos alrededor de la barra para recibirla en los hombros.",
+      "Extiende cadera y rodillas para llegar a la posición de pie con la barra apoyada en los hombros para completar el movimiento."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Hip_Raise",
+    "name_es": "Elevación de Cadera en Máquina Smith",
+    "instructions_es": [
+      "Coloca un banco en el rack y carga la barra con un peso adecuado. Túmbate en el banco, colocando la planta de los pies contra la barra. Desbloquea la barra y extiende las piernas. Puede que necesites usar las manos para ayudarte. Para mayor estabilidad, agarra los laterales de la máquina Smith. Esta será tu posición inicial.",
+      "Inicia el movimiento rotando la pelvis, flexionando la columna para elevar las caderas del banco. Mantén una ligera flexión en las rodillas durante todo el movimiento.",
+      "Tras una breve pausa, devuelve las caderas al banco.",
+      "Repite el número de repeticiones deseado."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Incline_Bench_Press",
+    "name_es": "Press de Banca Inclinado en Máquina Smith",
+    "instructions_es": [
+      "Coloca un banco inclinado debajo de la máquina Smith. Coloca la barra a una altura que puedas alcanzar tumbado con los brazos casi totalmente extendidos. Una vez seleccionado el peso necesario, túmbate en el banco inclinado y asegúrate de que la parte alta del pecho esté alineada con la barra. Usando un agarre prono (palmas hacia adelante) más ancho que los hombros, desbloquea la barra del rack y sujétala recta por encima de ti con los brazos bloqueados. Esta será tu posición inicial.",
+      "Mientras inhalas, baja lentamente hasta sentir la barra en la parte alta del pecho.",
+      "Tras una breve pausa, vuelve a llevar la barra a la posición inicial mientras exhalas y empujas la barra usando los músculos del pecho. Bloquea los brazos en la posición contraída, mantén un segundo y luego empieza a bajar lentamente de nuevo. Consejo: debería llevar al menos el doble de tiempo bajar que subir.",
+      "Repite el movimiento el número de repeticiones prescrito.",
+      "Cuando termines, coloca la barra de vuelta en el rack."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Leg_Press",
+    "name_es": "Prensa de Piernas en Máquina Smith",
+    "instructions_es": [
+      "Coloca una barra de máquina Smith a unos 60 cm del suelo. Asegúrate de que descanse sobre los seguros. Tras cargar la barra con un peso adecuado, túmbate debajo de la barra. Coloca el centro de los pies sobre la barra, recogiendo las rodillas hacia el pecho. Esta será tu posición inicial.",
+      "Comienza el movimiento empujando con los pies para mover la barra hacia arriba, extendiendo cadera y rodillas. No bloquees las rodillas.",
+      "Arriba del movimiento, haz una breve pausa antes de volver a la posición inicial."
+    ]
+  },
+  {
+    "id": "Smith_Machine_One-Arm_Upright_Row",
+    "name_es": "Remo al Cuello a un Brazo en Máquina Smith",
+    "instructions_es": [
+      "Con la barra a la altura del muslo, carga un peso adecuado.",
+      "Toma un agarre ancho en la barra y desengancha el peso, retirando la mano libre de la barra. El brazo debe estar extendido mientras te pones de pie recto con la cabeza y el pecho arriba. Esta será tu posición inicial.",
+      "Comienza el movimiento flexionando el codo, subiendo el brazo superior con el codo apuntando hacia afuera. Continúa hasta que el brazo superior quede paralelo al suelo.",
+      "Tras una breve pausa, devuelve el peso a la posición inicial.",
+      "Repite el número de repeticiones deseado antes de enganchar los ganchos para apoyar el peso."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Overhead_Shoulder_Press",
+    "name_es": "Press de Hombro por Encima de la Cabeza en Máquina Smith",
+    "instructions_es": [
+      "Para empezar, coloca un banco plano (o preferiblemente uno con respaldo) debajo de una máquina Smith. Coloca la barra a una altura de forma que, sentado en el banco plano, los brazos deban estar casi totalmente extendidos para alcanzarla.",
+      "Una vez tengas la altura correcta, siéntate ligeramente detrás de la barra de forma que haya una línea recta imaginaria desde la punta de la nariz hasta la barra. Los pies deben permanecer inmóviles. Agarra la barra con las palmas hacia adelante, desbloquéala y súbela hasta que los brazos estén totalmente extendidos. Esta es la posición inicial.",
+      "Comienza a bajar lentamente la barra hasta que quede a la altura de la barbilla mientras inhalas.",
+      "Luego sube la barra de vuelta a la posición inicial usando los hombros mientras exhalas.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Pistol_Squat",
+    "name_es": "Sentadilla Pistol en Máquina Smith",
+    "instructions_es": [
+      "Para empezar, coloca primero la barra en una posición que mejor se adapte a tu estatura. Colócate debajo de ella y apoya la barra sobre la parte trasera de los hombros.",
+      "Toma la barra con las manos mirando hacia adelante, desbloquéala y levántala del rack extendiendo las piernas.",
+      "Mueve un pie hacia adelante unos 30 cm delante de la barra. Extiende la otra pierna frente a ti, manteniéndola elevada del suelo. Mira hacia adelante en todo momento y mantén la columna neutra o ligeramente arqueada. Esta será tu posición inicial.",
+      "Manteniendo una buena postura, baja el cuerpo flexionando la rodilla y la cadera, bajando lo que tu flexibilidad permita.",
+      "Haz una breve pausa abajo y luego vuelve a la posición inicial empujando con el talón, extendiendo rodilla y cadera."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Reverse_Calf_Raises",
+    "name_es": "Elevación de Gemelo Inversa en Máquina Smith",
+    "instructions_es": [
+      "Ajusta la barra de la máquina Smith a tu altura y coloca una plataforma elevada justo debajo de la barra.",
+      "Ponte de pie en la plataforma con los talones asegurados encima de ella y la punta de los pies fuera de ella. Coloca las puntas de los pies mirando hacia adelante con una postura al ancho de los hombros.",
+      "Ahora coloca los hombros debajo de la barra manteniendo la posición de los pies descrita y empuja la barra hacia arriba extendiendo cadera y rodillas hasta quedar erguido. Las rodillas deben mantenerse con una ligera flexión; nunca bloqueadas. Esta será tu posición inicial. Consejo: la barra en la espalda solo sirve para el equilibrio.",
+      "Sube la punta de los pies mientras exhalas extendiendo los dedos lo más alto posible y flexionando el gemelo. Asegúrate de mantener la rodilla inmóvil en todo momento. No debe haber flexión en ningún momento. Mantén la posición contraída un segundo antes de empezar a bajar.",
+      "Vuelve lentamente a la posición inicial mientras inhalas bajando la punta de los pies y los dedos.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Squat",
+    "name_es": "Sentadilla en Máquina Smith",
+    "instructions_es": [
+      "Para empezar, coloca primero la barra en la altura que mejor se adapte a tu estatura. Una vez elegida la altura correcta y cargada la barra, colócate debajo de la barra y apoya la parte trasera de los hombros (ligeramente por debajo del cuello) sobre ella.",
+      "Sujeta la barra con ambos brazos a cada lado (palmas hacia adelante), desbloquéala y levántala del rack empujando primero con las piernas mientras al mismo tiempo enderezas el torso.",
+      "Coloca las piernas en una postura media al ancho de los hombros con las puntas de los pies ligeramente hacia afuera. Mantén la cabeza arriba en todo momento y conserva la espalda recta. Esta será tu posición inicial. (Nota: para esta explicación usaremos la postura media, que favorece un desarrollo general; sin embargo, puedes elegir cualquiera de las tres posturas mencionadas en la sección de posturas de pie).",
+      "Comienza a bajar lentamente la barra flexionando las rodillas mientras mantienes una postura recta con la cabeza arriba. Continúa bajando hasta que el ángulo entre el muslo y la pantorrilla sea ligeramente inferior a 90 grados (el punto en el que el muslo queda por debajo de la horizontal). Inhala mientras realizas esta parte del movimiento. Consejo: si el ejercicio se realiza correctamente, la parte delantera de las rodillas debe formar una línea recta imaginaria con la punta de los pies, perpendicular al frente. Si las rodillas sobrepasan esa línea imaginaria (si van más allá de la punta del pie), estás sobrecargando la rodilla y el ejercicio se está realizando incorrectamente.",
+      "Comienza a subir la barra mientras exhalas empujando el suelo con el talón mientras enderezas de nuevo las piernas y vuelves a la posición inicial.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Stiff-Legged_Deadlift",
+    "name_es": "Peso Muerto con Piernas Rígidas en Máquina Smith",
+    "instructions_es": [
+      "Para empezar, coloca la barra de la máquina Smith a una altura aproximadamente a la mitad de los muslos. Una vez elegida la altura correcta y cargada la barra, agárrala usando un agarre prono (palmas hacia adelante) al ancho de los hombros. Puede que necesites muñequeras si usas una cantidad significativa de peso.",
+      "Sube la barra extendiendo totalmente los brazos mientras mantienes la espalda recta. Ponte de pie con el torso recto y las piernas separadas al ancho de los hombros o más estrecho. Las rodillas deben estar ligeramente flexionadas. Esta es tu posición inicial.",
+      "Manteniendo las rodillas inmóviles, baja la barra por encima de los pies flexionando por la cintura mientras mantienes la espalda recta. Continúa avanzando como si fueras a recoger algo del suelo hasta sentir un estiramiento en los isquiotibiales. Exhala mientras realizas este movimiento.",
+      "Comienza a subir el torso recto de nuevo en cuanto sientas el estiramiento en los isquiotibiales, extendiendo cadera y cintura hasta volver a la posición inicial. Inhala mientras realizas este movimiento.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Smith_Machine_Upright_Row",
+    "name_es": "Remo al Cuello en Máquina Smith",
+    "instructions_es": [
+      "Para empezar, coloca la barra de la máquina Smith a una altura aproximadamente a la mitad de los muslos. Una vez elegida la altura correcta y cargada la barra, agárrala usando un agarre prono (palmas hacia adelante) al ancho de los hombros. Puede que necesites muñequeras si usas una cantidad significativa de peso.",
+      "Sube la barra y extiende totalmente los brazos con la espalda recta. Debe haber una ligera flexión en los codos. Esta es la posición inicial.",
+      "Usa los hombros laterales para subir la barra mientras exhalas. La barra debe estar cerca del cuerpo mientras la subes. Continúa subiéndola hasta que casi toque la barbilla. Consejo: los codos deben liderar el movimiento. Al subir la barra, los codos siempre deben estar más altos que los antebrazos. Además, mantén el torso inmóvil y haz una pausa de un segundo arriba del movimiento.",
+      "Baja la barra lentamente de vuelta a la posición inicial. Inhala mientras realizas esta parte del movimiento.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Smith_Single-Leg_Split_Squat",
+    "name_es": "Sentadilla Búlgara en Máquina Smith",
+    "instructions_es": [
+      "Para empezar, coloca un banco plano a 60-90 cm detrás de la máquina Smith. Luego, coloca la barra en la altura que mejor se adapte a tu estatura. Una vez elegida la altura correcta y cargada la barra, colócate debajo de la barra y apoya la parte trasera de los hombros (ligeramente por debajo del cuello) sobre ella.",
+      "Sujeta la barra con ambos brazos a cada lado (palmas hacia adelante), desbloquéala y levántala del rack empujando primero con las piernas mientras al mismo tiempo enderezas el torso.",
+      "Coloca las piernas con un pie ligeramente adelante debajo de la barra y extiende la otra pierna hacia atrás, colocando el empeine en el banco. Esta será tu posición inicial",
+      "Comienza a bajar lentamente la barra flexionando la rodilla mientras mantienes una postura recta con la cabeza arriba. Continúa bajando hasta que el ángulo entre el muslo y la pantorrilla sea ligeramente inferior a 90 grados (el punto en el que el muslo queda por debajo de la horizontal). Inhala mientras realizas esta parte del movimiento. Consejo: si el ejercicio se realiza correctamente, la parte delantera de la rodilla debe formar una línea recta imaginaria con la punta del pie, perpendicular al frente. Si la rodilla sobrepasa esa línea imaginaria (si va más allá de la punta del pie), estás sobrecargando la rodilla y el ejercicio se está realizando incorrectamente.",
+      "Comienza a subir la barra mientras exhalas empujando el suelo principalmente con el talón mientras enderezas de nuevo la pierna y vuelves a la posición inicial.",
+      "Repite el número de repeticiones recomendado.",
+      "Cambia de pierna y repite el movimiento."
+    ]
+  },
+  {
+    "id": "Snatch",
+    "name_es": "Arrancada (Snatch)",
+    "instructions_es": [
+      "Coloca los pies al ancho de los hombros con la barra apoyada justo encima de la conexión entre los dedos y el resto del pie.",
+      "Con un agarre de palmas hacia abajo, flexiona las rodillas y, manteniendo la espalda plana, agarra la barra usando un agarre más ancho que los hombros. Baja la cadera y asegúrate de que el cuerpo descienda como si fueras a sentarte en una silla. Esta será tu posición inicial.",
+      "Comienza a empujar el suelo como si fuera una plataforma móvil con los pies y simultáneamente comienza a subir la barra manteniéndola cerca de las piernas.",
+      "Cuando la barra llegue a la mitad del muslo, empuja el suelo con las piernas y eleva el cuerpo hasta la extensión completa en un movimiento explosivo.",
+      "Sube los hombros hacia atrás en un movimiento de encogimiento mientras subes la barra elevando los codos hacia el lado y manteniéndolos por encima de la barra el mayor tiempo posible.",
+      "Ahora, en un movimiento muy rápido pero potente, debes meter el cuerpo debajo de la barra cuando haya alcanzado una altura suficiente para poder controlarla, y bajar bloqueando los brazos y sosteniendo la barra por encima de la cabeza mientras adoptas una posición de sentadilla.",
+      "Finaliza el movimiento levantándote de la posición de sentadilla para terminar el levantamiento. Al final del levantamiento, ambos pies deben estar alineados y los brazos totalmente extendidos sosteniendo la barra por encima de la cabeza."
+    ]
+  },
+  {
+    "id": "Snatch_Balance",
+    "name_es": "Equilibrio de Arrancada (Snatch Balance)",
+    "instructions_es": [
+      "Comienza con los pies en la posición de tirón, la barra apoyada sobre la parte trasera de los hombros, y las manos en un agarre amplio de arrancada.",
+      "Impulsa la barra con una flexión abrupta y un empuje de las rodillas, y métete con fuerza debajo de la barra, pasando los pies a la posición de recepción.",
+      "Recibe la barra bloqueada por encima de la cabeza cerca del fondo de la sentadilla. El torso debe permanecer vertical, bajando la cadera entre las piernas.",
+      "Continúa descendiendo hasta la profundidad completa, y vuelve a la posición de pie. Baja el peso con cuidado."
+    ]
+  },
+  {
+    "id": "Snatch_Deadlift",
+    "name_es": "Peso Muerto de Arrancada",
+    "instructions_es": [
+      "El peso muerto de arrancada fortalece el primer tirón de la arrancada. Comienza con un agarre amplio de arrancada con la barra colocada en la plataforma. Los pies deben estar directamente bajo las caderas, con las puntas hacia afuera. Baja en sentadilla hacia la barra, manteniendo la espalda en extensión absoluta con la cabeza mirando al frente.",
+      "Inicia el movimiento empujando con los talones, subiendo la cadera. El ángulo de la espalda debe mantenerse igual hasta que la barra pase las rodillas.",
+      "En ese punto, empuja la cadera hacia la barra mientras te reclinas hacia atrás. Devuelve la barra a la plataforma invirtiendo el movimiento."
+    ]
+  },
+  {
+    "id": "Snatch_Pull",
+    "name_es": "Tirón de Arrancada (Snatch Pull)",
+    "instructions_es": [
+      "Con una barra en el suelo cerca de las espinillas, toma un agarre amplio de arrancada. Baja las caderas con el peso concentrado en los talones, la espalda recta, la cabeza mirando al frente, el pecho arriba, con los hombros justo delante de la barra. Esta será tu posición inicial.",
+      "Comienza el primer tirón empujando con los talones, extendiendo las rodillas. El ángulo de la espalda debe mantenerse igual, y los brazos deben permanecer rectos. Mueve el peso con control mientras continúas hasta por encima de las rodillas.",
+      "A continuación viene el segundo tirón, la principal fuente de aceleración del tirón. A medida que la barra se acerca a la mitad del muslo, comienza a extender la cadera. Con un movimiento tipo salto, acelera extendiendo cadera, rodillas y tobillos, usando la velocidad para mover la barra hacia arriba.",
+      "No debería ser necesario tirar activamente con los brazos para acelerar el peso; al final del segundo tirón, el cuerpo debe estar totalmente extendido, inclinado ligeramente hacia atrás. La extensión total debe ser violenta y abrupta, y asegúrate de no prolongarla más de lo necesario."
+    ]
+  },
+  {
+    "id": "Snatch_Shrug",
+    "name_es": "Encogimiento de Arrancada (Snatch Shrug)",
+    "instructions_es": [
+      "Comienza con un agarre amplio, con la barra colgando a la altura de la mitad del muslo. Puedes usar un agarre de gancho o prono. La espalda debe estar recta e inclinada ligeramente hacia adelante.",
+      "Encoge los hombros hacia las orejas. Aunque este ejercicio normalmente se puede cargar con más peso que una arrancada, evita sobrecargarlo hasta el punto de que la ejecución se vuelva lenta."
+    ]
+  },
+  {
+    "id": "Snatch_from_Blocks",
+    "name_es": "Arrancada desde Bloques",
+    "instructions_es": [
+      "Comienza con una barra cargada sobre cajas o soportes de la altura deseada. Se debe tomar un agarre amplio en la barra. Los pies deben estar directamente bajo las caderas, con las puntas hacia afuera según sea necesario. Baja la cadera, con el pecho arriba y la cabeza mirando al frente. Los hombros deben estar justo delante de la barra, con los codos apuntando hacia afuera. Esta será la posición inicial.",
+      "Comienza el primer tirón empujando con la parte delantera de los talones, subiendo la barra de las cajas.",
+      "Pasa al segundo tirón extendiendo cadera, rodillas y tobillos, empujando la barra hacia arriba lo más rápido posible. La barra debe estar cerca del cuerpo. En el punto máximo de extensión, encoge los hombros y deja que los codos se flexionen hacia el lado.",
+      "Mientras mueves los pies a la posición de recepción, tira de ti mismo con fuerza por debajo de la barra mientras la elevas por encima de la cabeza. Los pies deben moverse justo fuera de las caderas, girados hacia afuera según sea necesario. Recibe la barra con el cuerpo lo más bajo posible y los brazos totalmente extendidos por encima de la cabeza.",
+      "Manteniendo la barra alineada sobre la parte delantera de los talones, la cabeza y el pecho arriba, empuja con los talones para ponerte de pie. Devuelve el peso con cuidado a las cajas."
+    ]
+  },
+  {
+    "id": "Speed_Band_Overhead_Triceps",
+    "name_es": "Tríceps por Encima de la Cabeza con Banda de Velocidad",
+    "instructions_es": [
+      "Para este ejercicio, ancla una banda al suelo. Usamos un banco inclinado y anclamos la banda a la base, de pie sobre el banco. Alternativamente, esto se puede hacer de pie sobre la banda.",
+      "Para empezar, tira de la banda por detrás de la cabeza, sujetándola con un agarre prono y los codos arriba. Esta será tu posición inicial.",
+      "Para realizar el movimiento, extiende el codo para enderezar los brazos, asegurándote de mantener el brazo superior en su sitio.",
+      "Haz una pausa, y luego vuelve a la posición inicial."
+    ]
+  },
+  {
+    "id": "Speed_Box_Squat",
+    "name_es": "Sentadilla al Cajón de Velocidad",
+    "instructions_es": [
+      "Ancla bandas a la barra, fijadas firmemente cerca del suelo. Puede que necesites acortar las bandas para obtener suficiente tensión.",
+      "Usa una caja de altura adecuada para este ejercicio. Carga la barra con un peso que aún requiera esfuerzo, pero que no sea tan pesado como para comprometer la velocidad. Normalmente será entre el 50-70% de tu repetición máxima.",
+      "Coloca la barra sobre la parte alta de la espalda, con los omóplatos retraídos, la espalda arqueada y todo firme de la cabeza a los pies. Esta será la posición inicial.",
+      "Desengancha la barra y colócate frente a la caja. Siéntate hacia atrás con la cadera hasta quedar sentado en la caja, asegurándote de descender de forma controlada y sin dejarte caer sobre la superficie.",
+      "Haz una breve pausa, y explota fuera de la caja, extendiendo cadera y rodillas."
+    ]
+  },
+  {
+    "id": "Speed_Squats",
+    "name_es": "Sentadillas de Velocidad",
+    "instructions_es": [
+      "Este ejercicio se realiza mejor dentro de un rack de sentadillas por seguridad. Para empezar, coloca primero la barra en un rack que mejor se adapte a tu estatura. Una vez elegida la altura correcta y cargada la barra, colócate debajo de la barra y apoya la parte trasera de los hombros (ligeramente por debajo del cuello) sobre ella.",
+      "Sujeta la barra con ambos brazos a cada lado y levántala del rack empujando primero con las piernas mientras al mismo tiempo enderezas el torso.",
+      "Aléjate del rack y coloca las piernas en una postura media al ancho de los hombros con las puntas de los pies ligeramente hacia afuera. Mantén la cabeza arriba en todo momento, ya que mirar hacia abajo te hará perder el equilibrio, y conserva la espalda recta. Esta será tu posición inicial. (Nota: para esta explicación usaremos la postura media, que favorece un desarrollo general; sin embargo, puedes elegir cualquiera de las tres posturas mencionadas en la sección de posturas de pie).",
+      "Comienza a bajar la barra flexionando las rodillas mientras mantienes una postura recta con la cabeza arriba. Continúa bajando hasta que el ángulo entre el muslo y la pantorrilla sea ligeramente inferior a 90 grados (el punto en el que el muslo queda por debajo de la horizontal). Inhala mientras realizas esta parte del movimiento. Consejo: si el ejercicio se realiza correctamente, la parte delantera de las rodillas debe formar una línea recta imaginaria con la punta de los pies, perpendicular al frente. Si las rodillas sobrepasan esa línea imaginaria (si van más allá de la punta del pie), estás sobrecargando la rodilla y el ejercicio se está realizando incorrectamente.",
+      "Comienza a subir la barra lo más rápido posible sin usar impulso mientras exhalas empujando el suelo principalmente con el talón mientras enderezas de nuevo las piernas y vuelves a la posición inicial. Nota: debes realizar estos ejercicios lo más rápido posible pero sin romper la técnica perfecta y sin usar impulso.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Spell_Caster",
+    "name_es": "Rotación de Torso con Disco",
+    "instructions_es": [
+      "Sujeta una mancuerna en cada mano con un agarre prono. Los pies deben estar separados con la cadera y las rodillas extendidas. Esta será tu posición inicial.",
+      "Comienza el movimiento llevando ambas mancuernas hacia un lado junto a la cadera, rotando el torso.",
+      "Manteniendo los brazos rectos y las mancuernas paralelas al suelo, rota el torso para balancear los pesos hacia el lado contrario.",
+      "Continúa alternando, rotando de un lado a otro hasta completar la serie."
+    ]
+  },
+  {
+    "id": "Spider_Crawl",
+    "name_es": "Gateo de Araña (Spider Crawl)",
+    "instructions_es": [
+      "Comienza en posición prona en el suelo. Apoya tu peso en las manos y las puntas de los pies, con los pies juntos y el cuerpo recto. Los brazos deben estar flexionados a 90 grados. Esta será tu posición inicial.",
+      "Inicia el movimiento elevando un pie del suelo. Rota externamente la pierna y lleva la rodilla hacia el codo, lo más adelante posible.",
+      "Devuelve esta pierna a la posición inicial y repite con el lado contrario."
+    ]
+  },
+  {
+    "id": "Spider_Curl",
+    "name_es": "Curl Araña (Spider Curl)",
+    "instructions_es": [
+      "Comienza colocando la barra en la parte del banco predicador donde normalmente te sentarías. Asegúrate de alinear bien la barra para que quede equilibrada y no se caiga.",
+      "Muévete al lado delantero del banco predicador (la parte donde normalmente descansan los brazos) y colócate inclinado a 45 grados con el torso y el abdomen presionados contra el lado delantero del banco.",
+      "Asegúrate de que los pies (especialmente las puntas) estén bien colocados en el suelo y coloca los brazos superiores encima de la almohadilla situada en la parte interna del banco predicador.",
+      "Usa los brazos para agarrar la barra con un agarre supino (palmas hacia arriba) aproximadamente al ancho de los hombros o ligeramente más cerrado.",
+      "Comienza a subir lentamente la barra y exhala. Mantén la posición contraída un segundo apretando el bíceps.",
+      "Comienza a bajar lentamente la barra de vuelta a la posición inicial mientras inhalas.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Spinal_Stretch",
+    "name_es": "Estiramiento Espinal",
+    "instructions_es": [
+      "Siéntate en una silla de forma que la espalda quede recta y los pies apoyados en el suelo.",
+      "Entrelaza los dedos detrás de la cabeza, codos hacia afuera y la barbilla hacia abajo.",
+      "Gira la parte superior del cuerpo hacia un lado unas 3 veces lo más lejos que puedas. Luego inclínate hacia adelante y gira el torso para llevar el codo hacia el suelo en el interior de la rodilla.",
+      "Vuelve a la posición erguida y repite hacia el otro lado."
+    ]
+  },
+  {
+    "id": "Split_Clean",
+    "name_es": "Cargada en Tijera (Split Clean)",
+    "instructions_es": [
+      "Con una barra en el suelo cerca de las espinillas, toma un agarre prono justo fuera de las piernas. Baja las caderas con el peso concentrado en los talones, la espalda recta, la cabeza mirando al frente, el pecho arriba, con los hombros justo delante de la barra. Esta será tu posición inicial.",
+      "Comienza el primer tirón empujando con los talones, extendiendo las rodillas. El ángulo de la espalda debe mantenerse igual, y los brazos deben permanecer rectos. Mueve el peso con control mientras continúas hasta por encima de las rodillas.",
+      "A continuación viene el segundo tirón, la principal fuente de aceleración de la cargada. A medida que la barra se acerca a la mitad del muslo, comienza a extender la cadera. Con un movimiento tipo salto, acelera extendiendo cadera, rodillas y tobillos, usando la velocidad para mover la barra hacia arriba. No debería ser necesario tirar activamente con los brazos para acelerar el peso; al final del segundo tirón, el cuerpo debe estar totalmente extendido, inclinado ligeramente hacia atrás, con los brazos aún extendidos.",
+      "Al alcanzar la extensión total, pasa al tercer tirón encogiendo agresivamente los hombros y flexionando los brazos con los codos arriba y afuera. En el punto máximo de extensión, tira de ti mismo hacia abajo con fuerza, rotando los codos por debajo de la barra mientras lo haces.",
+      "Recibe la barra con los pies en tijera, moviendo agresivamente un pie hacia adelante y otro hacia atrás. La barra debe quedar apoyada sobre los hombros protraídos, tocando ligeramente la garganta con las manos relajadas. Continúa descendiendo hasta la posición baja, lo que ayudará en la recuperación.",
+      "Recupérate inmediatamente empujando con los talones, manteniendo el torso erguido y los codos arriba. Junta los pies mientras te pones de pie."
+    ]
+  },
+  {
+    "id": "Split_Jerk",
+    "name_es": "Envión en Tijera (Split Jerk)",
+    "instructions_es": [
+      "De pie con el peso apoyado en la parte delantera de los hombros, comienza con el semi-flexión (dip). Con los pies directamente bajo las caderas, flexiona las rodillas sin mover la cadera hacia atrás.",
+      "Baja solo ligeramente, e invierte la dirección con la mayor potencia posible. Empuja con los talones para generar la mayor velocidad y fuerza posibles, y asegúrate de apartar la cabeza mientras la barra sale de los hombros. En el momento en que los pies dejan el suelo, deben colocarse en la posición de recepción lo más rápido posible.",
+      "En el breve instante en que los pies no están empujando activamente contra la plataforma, el esfuerzo del atleta por empujar la barra hacia arriba lo hará descender. Los pies deben moverse a una posición de tijera, uno delante y otro detrás, con las rodillas parcialmente flexionadas. Recibe la barra con los brazos bloqueados por encima de la cabeza.",
+      "Vuelve a la posición de pie, juntando los pies."
+    ]
+  },
+  {
+    "id": "Split_Jump",
+    "name_es": "Salto en Tijera (Split Jump)",
+    "instructions_es": [
+      "Adopta una posición de zancada con un pie adelante y la rodilla flexionada, y la rodilla trasera casi tocando el suelo.",
+      "Asegúrate de que la rodilla delantera esté sobre la línea media del pie.",
+      "Extendiendo ambas piernas, salta lo más alto posible, balanceando los brazos para ganar impulso.",
+      "Mientras saltas, junta los pies, y devuélvelos a sus posiciones iniciales al aterrizar.",
+      "Absorbe el impacto volviendo a la posición inicial."
+    ]
+  },
+  {
+    "id": "Split_Snatch",
+    "name_es": "Arrancada en Tijera (Split Snatch)",
+    "instructions_es": [
+      "Comienza con una barra cargada en el suelo. La barra debe estar cerca o tocando las espinillas, y se debe tomar un agarre amplio en la barra. Los pies deben estar directamente bajo las caderas, con las puntas hacia afuera según sea necesario. Baja la cadera, con el pecho arriba y la cabeza mirando al frente. Los hombros deben estar justo delante de la barra. Esta será la posición inicial.",
+      "Comienza el primer tirón empujando con la parte delantera de los talones, subiendo la barra del suelo. El ángulo de la espalda debe mantenerse igual hasta que la barra pase las rodillas.",
+      "Pasa al segundo tirón extendiendo cadera, rodillas y tobillos, empujando la barra hacia arriba lo más rápido posible. La barra debe estar cerca del cuerpo. En el punto máximo de extensión, encoge los hombros y deja que los codos se flexionen hacia el lado.",
+      "Mientras mueves los pies a la posición de recepción, tira de ti mismo con fuerza por debajo de la barra mientras la elevas por encima de la cabeza. Los pies deben moverse con fuerza a una posición de tijera, uno delante y otro detrás. Recibe la barra con el cuerpo lo más bajo posible y los brazos totalmente extendidos por encima de la cabeza.",
+      "Manteniendo la barra alineada sobre la parte delantera de los talones, la cabeza y el pecho arriba, empuja con los talones para ponerte de pie, juntando los pies.",
+      "Devuelve el peso al suelo con cuidado."
+    ]
+  },
+  {
+    "id": "Split_Squat_with_Dumbbells",
+    "name_es": "Sentadilla Búlgara con Mancuernas",
+    "instructions_es": [
+      "Colócate en una postura escalonada con el pie trasero elevado y el delantero adelante.",
+      "Sujeta una mancuerna en cada mano, dejándolas colgar a los lados. Esta será tu posición inicial.",
+      "Comienza descendiendo, flexionando la rodilla y la cadera para bajar el cuerpo. Mantén una buena postura durante todo el movimiento. Mantén la rodilla delantera alineada con el pie mientras realizas el ejercicio.",
+      "Abajo del movimiento, empuja con el talón para extender la rodilla y la cadera y volver a la posición inicial."
+    ]
+  },
+  {
+    "id": "Split_Squats",
+    "name_es": "Sentadillas en Tijera",
+    "instructions_es": [
+      "Comienza de pie. Salta a una posición de piernas en tijera, con una pierna adelante y otra atrás, flexionando las rodillas y bajando ligeramente las caderas mientras lo haces.",
+      "Mientras desciendes, invierte inmediatamente la dirección, poniéndote de pie de nuevo y saltando, invirtiendo la posición de las piernas. Repite entre 5 y 10 veces por pierna."
+    ]
+  },
+  {
+    "id": "Squat_Jerk",
+    "name_es": "Envión en Sentadilla (Squat Jerk)",
+    "instructions_es": [
+      "De pie con el peso apoyado en la parte delantera de los hombros, comienza con el semi-flexión (dip). Con los pies directamente bajo las caderas, flexiona las rodillas sin mover la cadera hacia atrás. Baja solo ligeramente, e invierte la dirección con la mayor potencia posible. Empuja con los talones para generar la mayor velocidad y fuerza posibles, y asegúrate de apartar la cabeza mientras la barra sale de los hombros.",
+      "En el momento en que los pies dejan el suelo, deben colocarse en la posición de recepción lo más rápido posible. En el breve instante en que los pies no están empujando activamente contra la plataforma, el esfuerzo del atleta por empujar la barra hacia arriba lo hará descender. Los pies deben moverse con fuerza justo fuera de las caderas, girados hacia afuera según sea necesario. Recibe la barra con el cuerpo en una sentadilla completa y los brazos totalmente extendidos por encima de la cabeza.",
+      "Manteniendo la barra alineada sobre la parte delantera de los talones, la cabeza y el pecho arriba, empuja con los talones para ponerte de pie. Devuelve el peso al suelo con cuidado."
+    ]
+  },
+  {
+    "id": "Squat_with_Bands",
+    "name_es": "Sentadilla con Bandas",
+    "instructions_es": [
+      "Coloca las bandas en los manguitos, ancladas a clavijas para bandas, al rack o a mancuernas, de forma que haya la tensión adecuada.",
+      "Comienza colocándote debajo de la barra y apoyándola sobre la parte trasera de los hombros. Junta los omóplatos y rota los codos hacia adelante, intentando doblar la barra sobre los hombros. Saca la barra del rack, creando un arco firme en la zona lumbar, y da un paso atrás para colocarte en posición. Separa bien los pies para dar más énfasis a la espalda, glúteos, aductores e isquiotibiales. Mantén la cabeza mirando al frente.",
+      "Con la espalda, los hombros y el core firmes, empuja las rodillas y el glúteo hacia afuera y comienza el descenso. Siéntate hacia atrás con la cadera lo más posible. Idealmente, las espinillas deben quedar perpendiculares al suelo. Una posición más baja de la barra requiere una mayor inclinación del torso para mantener la barra sobre los talones. Continúa hasta bajar de la horizontal, definida como el pliegue de la cadera alineado con la parte superior de la rodilla.",
+      "Manteniendo el peso sobre los talones y empujando los pies y las rodillas hacia afuera, impúlsate hacia arriba liderando el movimiento con la cabeza. Continúa subiendo, manteniendo la tensión de la cabeza a los pies, hasta volver a la posición inicial."
+    ]
+  },
+  {
+    "id": "Squat_with_Chains",
+    "name_es": "Sentadilla con Cadenas",
+    "instructions_es": [
+      "Para colocar las cadenas, comienza pasando la cadena guía sobre los manguitos de la barra. La cadena pesada debe sujetarse con un mosquetón. Ajusta la longitud de la cadena guía de forma que queden algunos eslabones en el suelo en la parte alta del movimiento.",
+      "Comienza colocándote debajo de la barra y apoyándola sobre la parte trasera de los hombros. Junta los omóplatos y rota los codos hacia adelante, intentando doblar la barra sobre los hombros. Saca la barra del rack, creando un arco firme en la zona lumbar, y da un paso atrás para colocarte en posición. Separa bien los pies para dar más énfasis a la espalda, glúteos, aductores e isquiotibiales. Mantén la cabeza mirando al frente.",
+      "Con la espalda, los hombros y el core firmes, empuja las rodillas y el glúteo hacia afuera y comienza el descenso. Siéntate hacia atrás con la cadera lo más posible. Idealmente, las espinillas deben quedar perpendiculares al suelo. Una posición más baja de la barra requiere una mayor inclinación del torso para mantener la barra sobre los talones. Continúa hasta bajar de la horizontal, definida como el pliegue de la cadera alineado con la parte superior de la rodilla.",
+      "Manteniendo el peso sobre los talones y empujando los pies y las rodillas hacia afuera, impúlsate hacia arriba liderando el movimiento con la cabeza. Continúa subiendo, manteniendo la tensión de la cabeza a los pies, hasta volver a la posición inicial."
+    ]
+  },
+  {
+    "id": "Squat_with_Plate_Movers",
+    "name_es": "Sentadilla con Desplazamiento de Disco",
+    "instructions_es": [
+      "Para empezar, coloca primero la barra en un rack justo por debajo de la altura del hombro. Coloca un disco de peso en el suelo a un par de pasos detrás del rack. Una vez cargada la barra, colócate debajo de ella y apoya la parte trasera de los hombros sobre ella.",
+      "Sujeta la barra con ambas manos y levántala del rack empujando primero con las piernas mientras al mismo tiempo enderezas el torso.",
+      "Aléjate del rack y adopta una postura amplia con las puntas de los pies ligeramente hacia afuera, con un pie sobre el disco de peso. Mantén la cabeza arriba en todo momento. Esta será tu posición inicial.",
+      "Comienza a bajar lentamente la barra flexionando rodillas y cadera. Continúa bajando hasta que el ángulo entre el muslo y la pantorrilla sea ligeramente inferior a 90 grados.",
+      "Sube la barra mientras exhalas empujando el suelo con los talones mientras extiendes cadera y rodillas.",
+      "Arriba del movimiento, da un paso lateral, juntando los pies en el lado contrario del disco.",
+      "Usando el pie interno, empuja el disco de peso, deslizándolo por el suelo hasta donde estabas parado.",
+      "Coloca el pie interno sobre el disco de peso, adoptando una postura amplia para la siguiente repetición."
+    ]
+  },
+  {
+    "id": "Squats_-_With_Bands",
+    "name_es": "Sentadillas con Bandas",
+    "instructions_es": [
+      "Para empezar, asegúrate de que la banda elástica esté dividida uniformemente entre el lado izquierdo y derecho del cuerpo. Para hacer esto, usa las manos para agarrar ambos lados de la banda y coloca ambos pies en el centro de la banda. Los pies deben estar al ancho de los hombros.",
+      "Al sujetar las bandas, deben estar a la misma altura en cada lado. Debes usar un agarre prono (palmas hacia adelante) y tener las asas de las bandas junto a la cara para este ejercicio. Esta es la posición inicial.",
+      "Comienza lentamente a flexionar las rodillas y bajar las piernas de forma que los muslos queden paralelos al suelo mientras exhalas.",
+      "Usa el talón de los pies para empujar el cuerpo hacia arriba a la posición inicial mientras exhalas.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Stairmaster",
+    "name_es": "Stairmaster (Escalador)",
+    "instructions_es": [
+      "Para empezar, súbete al stairmaster y selecciona la opción deseada en el menú. Puedes elegir un modo manual, o puedes elegir un programa. Normalmente puedes introducir tu edad y peso para estimar las calorías quemadas durante el ejercicio.",
+      "Bombea las piernas arriba y abajo con un ritmo establecido, empujando los pedales hacia abajo pero no hasta el fondo. Se recomienda mantener el agarre en los mangos para no caerte. Los mangos pueden usarse para monitorizar tu frecuencia cardíaca y ayudarte a mantener una intensidad adecuada.",
+      "Los stairmasters ofrecen comodidad, beneficios cardiovasculares, y normalmente tienen menos impacto que correr al aire libre. Normalmente son mucho más duros que otros equipos de cardio. Una persona de 68 kg normalmente quemará más de 300 calorías en 30 minutos, comparado con unas 175 calorías caminando."
+    ]
+  },
+  {
+    "id": "Standing_Alternating_Dumbbell_Press",
+    "name_es": "Press Alterno de Pie con Mancuernas",
+    "instructions_es": [
+      "Ponte de pie con una mancuerna en cada mano. Sube las mancuernas hasta los hombros con las palmas mirando hacia adelante y los codos apuntando hacia afuera. Esta será tu posición inicial.",
+      "Extiende un brazo para presionar la mancuerna recta hacia arriba, manteniendo la otra mano en su sitio. No te inclines ni tires bruscamente del peso durante el movimiento.",
+      "Tras una breve pausa, devuelve el peso a la posición inicial.",
+      "Repite con el lado contrario, continuando alternando entre brazos."
+    ]
+  },
+  {
+    "id": "Standing_Barbell_Calf_Raise",
+    "name_es": "Elevación de Gemelo de Pie con Barra",
+    "instructions_es": [
+      "Este ejercicio se realiza mejor dentro de un rack de sentadillas por seguridad. Para empezar, coloca primero la barra en un rack que mejor se adapte a tu estatura. Una vez elegida la altura correcta y cargada la barra, colócate debajo de la barra y colócala sobre la parte trasera de los hombros (ligeramente por debajo del cuello).",
+      "Sujeta la barra con ambos brazos a cada lado y levántala del rack empujando primero con las piernas mientras al mismo tiempo enderezas el torso.",
+      "Aléjate del rack y coloca las piernas en una postura media al ancho de los hombros con las puntas de los pies ligeramente hacia afuera. Mantén la cabeza arriba en todo momento, ya que mirar hacia abajo te hará perder el equilibrio, y conserva la espalda recta. Las rodillas deben mantenerse con una ligera flexión; nunca bloqueadas. Esta será tu posición inicial. Consejo: para mejor rango de movimiento también puedes colocar la punta de los pies sobre un bloque de madera, pero ten cuidado porque esta opción requiere más equilibrio y un bloque firme.",
+      "Sube los talones mientras exhalas extendiendo los tobillos lo más alto posible y flexionando el gemelo. Asegúrate de mantener la rodilla inmóvil en todo momento. No debe haber flexión en ningún momento. Mantén la posición contraída un segundo antes de empezar a bajar.",
+      "Vuelve lentamente a la posición inicial mientras inhalas bajando los talones al flexionar los tobillos hasta que los gemelos queden estirados.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Barbell_Press_Behind_Neck",
+    "name_es": "Press con Barra Detrás del Cuello de Pie",
+    "instructions_es": [
+      "Este ejercicio se realiza mejor dentro de un rack de sentadillas para facilitar recoger la barra. Para empezar, coloca primero la barra en un rack que mejor se adapte a tu estatura. Una vez elegida la altura correcta y cargada la barra, colócate debajo de la barra y apoya la parte trasera de los hombros (ligeramente por debajo del cuello) sobre ella.",
+      "Sujeta la barra con ambos brazos a cada lado y levántala del rack empujando primero con las piernas mientras al mismo tiempo enderezas el torso.",
+      "Aléjate del rack y coloca las piernas en una postura media al ancho de los hombros con las puntas de los pies ligeramente hacia afuera. La espalda debe mantenerse recta mientras realizas este ejercicio. Esta será tu posición inicial.",
+      "Eleva la barra por encima de la cabeza extendiendo totalmente los brazos mientras exhalas.",
+      "Mantén la contracción un segundo y baja la barra de vuelta a la posición inicial inhalando.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Bent-Over_One-Arm_Dumbbell_Triceps_Extension",
+    "name_es": "Extensión de Tríceps Inclinado de Pie a un Brazo con Mancuerna",
+    "instructions_es": [
+      "Con una mancuerna en una mano y la palma hacia el torso, flexiona ligeramente las rodillas e inclina el torso hacia adelante, flexionando por la cintura, manteniendo la espalda recta hasta que quede casi paralela al suelo. Asegúrate de mantener la cabeza arriba.",
+      "El brazo superior debe estar cerca del torso y paralelo al suelo mientras el antebrazo apunta hacia el suelo mientras la mano sujeta el peso. Consejo: debe haber un ángulo de 90 grados entre el antebrazo y el brazo superior. Esta es tu posición inicial.",
+      "Manteniendo los brazos superiores inmóviles, usa el tríceps para subir los pesos mientras exhalas hasta que los antebrazos queden paralelos al suelo y todo el brazo esté extendido. Como en muchos otros ejercicios de brazo, solo se mueve el antebrazo.",
+      "Tras una segunda contracción arriba, baja lentamente la mancuerna de vuelta a la posición inicial mientras inhalas.",
+      "Repite el movimiento el número de repeticiones prescrito.",
+      "Cambia de brazo y repite el ejercicio."
+    ]
+  },
+  {
+    "id": "Standing_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension",
+    "name_es": "Extensión de Tríceps Inclinado de Pie a Dos Brazos con Mancuernas",
+    "instructions_es": [
+      "Con una mancuerna en cada mano y las palmas hacia el torso, flexiona ligeramente las rodillas e inclina el torso hacia adelante, flexionando por la cintura, manteniendo la espalda recta hasta que quede casi paralela al suelo. Asegúrate de mantener la cabeza arriba. Los brazos superiores deben estar cerca del torso y paralelos al suelo mientras los antebrazos apuntan hacia el suelo mientras las manos sujetan los pesos. Consejo: debe haber un ángulo de 90 grados entre los antebrazos y el brazo superior. Esta es tu posición inicial.",
+      "Manteniendo los brazos superiores inmóviles, usa el tríceps para subir los pesos mientras exhalas hasta que los antebrazos queden paralelos al suelo y todos los brazos estén extendidos. Como en muchos otros ejercicios de brazo, solo se mueve el antebrazo.",
+      "Tras una segunda contracción arriba, baja lentamente las mancuernas de vuelta a la posición inicial mientras inhalas.",
+      "Repite el movimiento el número de repeticiones prescrito."
+    ]
+  },
+  {
+    "id": "Standing_Biceps_Cable_Curl",
+    "name_es": "Curl de Bíceps de Pie en Polea",
+    "instructions_es": [
+      "Ponte de pie con el torso erguido sujetando una barra de curl conectada a una polea baja. Agarra la barra al ancho de los hombros y mantén los codos cerca del torso. Las palmas de las manos deben mirar hacia arriba (agarre supino). Esta será tu posición inicial.",
+      "Manteniendo los brazos superiores inmóviles, curva los pesos mientras contraes el bíceps al exhalar. Solo deben moverse los antebrazos. Continúa el movimiento hasta que el bíceps esté totalmente contraído y la barra esté a la altura del hombro. Mantén la posición contraída un segundo apretando el músculo.",
+      "Empieza a bajar lentamente la barra de curl a la posición inicial mientras inhalas.",
+      "Repite el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Biceps_Stretch",
+    "name_es": "Estiramiento de Bíceps de Pie",
+    "instructions_es": [
+      "Entrelaza las manos detrás de la espalda con las palmas juntas, endereza los brazos y luego rótalos de forma que las palmas miren hacia abajo.",
+      "Sube los brazos y mantén la posición hasta sentir un estiramiento en el bíceps."
+    ]
+  },
+  {
+    "id": "Standing_Bradford_Press",
+    "name_es": "Press Bradford de Pie",
+    "instructions_es": [
+      "Coloca una barra cargada a la altura del hombro en un rack. Con un agarre prono al ancho de los hombros, comienza con la barra apoyada en la parte delantera de los hombros. Esta es tu posición inicial.",
+      "Inicia el levantamiento extendiendo los codos para presionar la barra por encima de la cabeza. Evita bloquear el codo mientras mueves el peso por detrás de la cabeza.",
+      "Baja la barra hacia la parte trasera de la cabeza hasta que el codo forme un ángulo recto.",
+      "Sube la barra de vuelta por encima de la cabeza extendiendo los codos.",
+      "Baja la barra a la posición inicial.",
+      "Alterna de esta forma hasta completar el número de repeticiones recomendado."
+    ]
+  },
+  {
+    "id": "Standing_Cable_Chest_Press",
+    "name_es": "Press de Pecho de Pie en Polea",
+    "instructions_es": [
+      "Coloca las dos poleas a la altura del pecho y selecciona un peso adecuado. Ponte de pie a un metro delante de los cables, sujetando uno en cada mano. Puedes escalonar los pies para mayor estabilidad.",
+      "Coloca el brazo superior a un ángulo de 90 grados con los omóplatos juntos. Esta será tu posición inicial.",
+      "Manteniendo el resto del cuerpo inmóvil, extiende los codos para empujar las asas hacia adelante, juntándolas frente a ti.",
+      "Haz una pausa arriba del movimiento, y vuelve a la posición inicial."
+    ]
+  },
+  {
+    "id": "Standing_Cable_Lift",
+    "name_es": "Elevación de Pie en Polea",
+    "instructions_es": [
+      "Conecta un asa estándar a una torre, y coloca el cable en la posición de polea más baja.",
+      "De lado al cable, agarra el asa con una mano y aléjate de la torre. Debes estar aproximadamente a la distancia de un brazo de la polea, con tensión del peso en el cable. El brazo extendido debe estar alineado con el cable.",
+      "Con los pies al ancho de los hombros, baja en sentadilla y agarra el asa con ambas manos. Los brazos deben seguir totalmente extendidos.",
+      "En un solo movimiento, tira del asa hacia arriba y cruzando el cuerpo hasta que los brazos estén totalmente extendidos por encima de la cabeza.",
+      "Mantén la espalda recta y los brazos cerca del cuerpo mientras pivotas el pie trasero y enderezas las piernas para conseguir un rango de movimiento completo.",
+      "Retrae los brazos y luego el cuerpo. Vuelve a la posición neutra de forma lenta y controlada.",
+      "Repite hasta el fallo.",
+      "Luego, reposiciónate y repite la misma serie de movimientos al lado contrario."
+    ]
+  }
+]

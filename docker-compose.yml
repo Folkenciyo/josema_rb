@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: josema
+      POSTGRES_PASSWORD: josema
+      POSTGRES_DB: josema_rb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://josema:josema@db:5432/josema_rb
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      TRAINER_EMAIL: ${TRAINER_EMAIL:-trainer@example.com}
+      TRAINER_PASSWORD: ${TRAINER_PASSWORD:-change-me}
+    volumes:
+      - exercise_images:/app/app/static/exercise-images/custom
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    environment:
+      # Server-side only: Next rewrites /api and /static to the backend so the
+      # browser stays on a single origin and the session cookie needs no CORS.
+      BACKEND_URL: http://backend:8000
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  exercise_images:

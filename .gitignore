@@ -1,0 +1,23 @@
+# Backend (Python / uv)
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.pytest_cache/
+backend/.ruff_cache/
+backend/*.egg-info/
+backend/app/static/exercise-images/
+
+# Frontend (Next.js)
+frontend/node_modules/
+frontend/.next/
+frontend/next-env.d.ts
+
+# Env files
+.env
+.env.local
+*.env
+.env.dokploy
+
+# OS / editors
+.DS_Store
+Thumbs.db

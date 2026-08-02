@@ -1,0 +1,91 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { LogOut, Menu, X } from "lucide-react";
+
+import { useCurrentTrainer, useLogout } from "@/hooks/use-auth";
+import { cn } from "@/lib/cn";
+import { SidebarNav } from "./sidebar-nav";
+
+function Brand() {
+  return (
+    <Link href="/dashboard" className="text-xl font-bold tracking-tight text-white">
+      JOSEMA <span className="text-amber-500">RB</span>
+    </Link>
+  );
+}
+
+function SidebarFooter() {
+  const { data: trainer } = useCurrentTrainer();
+  const logout = useLogout();
+
+  return (
+    <div className="mt-auto border-t border-slate-800 pt-4">
+      <p className="truncate px-3 text-xs text-slate-400">{trainer?.email}</p>
+      <button
+        type="button"
+        onClick={() => logout.mutate()}
+        disabled={logout.isPending}
+        className="mt-2 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white disabled:opacity-50"
+      >
+        <LogOut className="size-4" />
+        Cerrar sesión
+      </button>
+    </div>
+  );
+}
+
+export function DashboardShell({ children }: { children: React.ReactNode }) {
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
+
+  return (
+    <div className="flex min-h-screen">
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col gap-6 bg-slate-900 p-4 transition-transform lg:translate-x-0",
+          isMobileNavOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
+        <div className="flex items-center justify-between px-3">
+          <Brand />
+          <button
+            type="button"
+            aria-label="Cerrar menú"
+            onClick={() => setMobileNavOpen(false)}
+            className="text-slate-400 lg:hidden"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+        <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
+        <SidebarFooter />
+      </aside>
+
+      {isMobileNavOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-slate-900/50 lg:hidden"
+          onClick={() => setMobileNavOpen(false)}
+        />
+      )}
+
+      <div className="flex min-w-0 flex-1 flex-col lg:pl-64">
+        <header className="flex items-center gap-3 border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
+          <button
+            type="button"
+            aria-label="Abrir menú"
+            onClick={() => setMobileNavOpen(true)}
+            className="text-slate-600"
+          >
+            <Menu className="size-6" />
+          </button>
+          <span className="font-bold text-slate-900">
+            JOSEMA <span className="text-amber-500">RB</span>
+          </span>
+        </header>
+
+        <main className="flex-1 px-4 py-6 sm:px-8">{children}</main>
+      </div>
+    </div>
+  );
+}
