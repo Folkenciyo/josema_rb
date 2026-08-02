@@ -7,9 +7,13 @@
 #
 # Only the frontend needs a domain: it proxies /api and /static to the backend over the
 # internal network, so the whole app lives on a single origin.
+#
+# Service names are prefixed because Dokploy attaches every stack to the shared
+# `dokploy-network`: a generic name like `backend` resolves to whichever project
+# registered that alias first.
 
 services:
-  db:
+  josema-db:
     image: postgres:16-alpine
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-josema}
@@ -28,10 +32,10 @@ services:
       retries: 20
     restart: unless-stopped
 
-  backend:
+  josema-backend:
     build: ./backend
     environment:
-      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-josema}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-josema_rb}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-josema}:${POSTGRES_PASSWORD}@josema-db:5432/${POSTGRES_DB:-josema_rb}
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
       TRAINER_EMAIL: ${TRAINER_EMAIL:?TRAINER_EMAIL is required}
       TRAINER_PASSWORD: ${TRAINER_PASSWORD:?TRAINER_PASSWORD is required}
@@ -41,19 +45,19 @@ services:
       # is baked into the image instead.
       - exercise_images:/app/app/static/exercise-images/custom
     depends_on:
-      db:
+      josema-db:
         condition: service_healthy
     restart: unless-stopped
 
-  frontend:
+  josema-frontend:
     build: ./frontend
     environment:
       # Read at request time by src/proxy.ts (never at build time).
-      BACKEND_URL: http://backend:8000
+      BACKEND_URL: http://josema-backend:8000
     expose:
       - "3000"
     depends_on:
-      - backend
+      - josema-backend
     restart: unless-stopped
 
 volumes:
