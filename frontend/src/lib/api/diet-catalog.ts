@@ -1,15 +1,26 @@
 import { api } from "./http";
 import type {
   Food,
+  FoodFilters,
   FoodInput,
+  FoodQuery,
   MealTemplate,
   MealTemplateInput,
   Menu,
   MenuInput,
 } from "@/types/diet";
 
-export function listFoods(): Promise<Food[]> {
-  return api.get<Food[]>("/foods");
+export function listFoods(query: FoodQuery = {}): Promise<Food[]> {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(query)) {
+    if (value) params.set(key, value);
+  }
+  const suffix = params.size > 0 ? `?${params}` : "";
+  return api.get<Food[]>(`/foods${suffix}`);
+}
+
+export function getFoodFilters(): Promise<FoodFilters> {
+  return api.get<FoodFilters>("/foods/filters");
 }
 
 export function createFood(input: FoodInput): Promise<Food> {

@@ -2,14 +2,24 @@
 
 import { Trash2 } from "lucide-react";
 
-import { Input, Select } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { itemMacros, type MealItemDraft } from "@/lib/diet/meal-draft";
 import type { Food } from "@/types/diet";
 import { MacroSummary } from "./macro-summary";
 
+const MANUAL_NUTRIENTS = [
+  ["calories", "kcal"],
+  ["protein_g", "P (g)"],
+  ["carbs_g", "C (g)"],
+  ["sugars_g", "Azúc."],
+  ["fat_g", "G (g)"],
+  ["saturated_fat_g", "Sat."],
+  ["fiber_g", "Fibra"],
+  ["salt_g", "Sal"],
+] as const;
+
 interface MealItemRowProps {
   item: MealItemDraft;
-  foods: Food[];
   foodMap: Map<string, Food>;
   onChange: (changes: Partial<Omit<MealItemDraft, "key">>) => void;
   onRemove: () => void;
@@ -17,66 +27,49 @@ interface MealItemRowProps {
 
 export function MealItemRow({
   item,
-  foods,
   foodMap,
   onChange,
   onRemove,
 }: MealItemRowProps) {
   const macros = itemMacros(item, foodMap);
-  const referenceUnit = item.food_id ? foodMap.get(item.food_id)?.unit_label : null;
+  const food = item.food_id ? foodMap.get(item.food_id) : undefined;
 
   return (
     <li className="rounded-lg border border-slate-200 bg-white p-3">
       <div className="flex flex-wrap items-end gap-2">
         {item.mode === "catalog" ? (
           <>
-            <label className="flex min-w-48 flex-1 flex-col gap-1 text-xs text-slate-500">
-              Alimento
-              <Select
-                value={item.food_id ?? ""}
-                onChange={(event) => {
-                  const food = foodMap.get(event.target.value);
-                  onChange({
-                    food_id: event.target.value,
-                    food_name: food?.name ?? "",
-                    quantity_label: food?.unit_label ?? "",
-                  });
-                }}
-                className="h-9"
-              >
-                <option value="">Elige…</option>
-                {foods.map((food) => (
-                  <option key={food.id} value={food.id}>
-                    {food.name}
-                  </option>
-                ))}
-              </Select>
-            </label>
+            <div className="min-w-48 flex-1">
+              <p className="text-sm font-medium text-slate-800">
+                {item.food_name}
+              </p>
+              {food && (
+                <p className="text-xs text-slate-400">
+                  {food.category}
+                  {food.subcategory ? ` · ${food.subcategory}` : ""} · valores por{" "}
+                  {food.unit_label}
+                </p>
+              )}
+            </div>
 
-            <label className="flex w-24 flex-col gap-1 text-xs text-slate-500">
+            <label className="flex w-28 flex-col gap-1 text-xs text-slate-500">
               Cantidad
-              <Input
-                type="number"
-                min={0}
-                step="0.1"
-                value={item.quantity_multiplier}
-                onChange={(event) =>
-                  onChange({ quantity_multiplier: Number(event.target.value) })
-                }
-                className="h-9"
-              />
-            </label>
-
-            <label className="flex w-32 flex-col gap-1 text-xs text-slate-500">
-              Se sirve como
-              <Input
-                value={item.quantity_label}
-                onChange={(event) =>
-                  onChange({ quantity_label: event.target.value })
-                }
-                placeholder={referenceUnit ?? "150 g"}
-                className="h-9"
-              />
+              <div className="flex items-center gap-1">
+                <Input
+                  type="number"
+                  min={0}
+                  step="1"
+                  value={item.quantity_amount}
+                  onChange={(event) =>
+                    onChange({ quantity_amount: Number(event.target.value) })
+                  }
+                  className="h-9"
+                  aria-label={`Cantidad de ${item.food_name}`}
+                />
+                <span className="text-sm text-slate-500">
+                  {item.quantity_unit}
+                </span>
+              </div>
             </label>
           </>
         ) : (
@@ -92,22 +85,15 @@ export function MealItemRow({
             <label className="flex w-28 flex-col gap-1 text-xs text-slate-500">
               Cantidad
               <Input
-                value={item.quantity_label}
+                value={item.quantity_unit}
                 onChange={(event) =>
-                  onChange({ quantity_label: event.target.value })
+                  onChange({ quantity_unit: event.target.value })
                 }
                 placeholder="1 unidad"
                 className="h-9"
               />
             </label>
-            {(
-              [
-                ["calories", "kcal"],
-                ["protein_g", "P (g)"],
-                ["carbs_g", "C (g)"],
-                ["fat_g", "G (g)"],
-              ] as const
-            ).map(([key, label]) => (
+            {MANUAL_NUTRIENTS.map(([key, label]) => (
               <label
                 key={key}
                 className="flex w-20 flex-col gap-1 text-xs text-slate-500"
@@ -139,7 +125,11 @@ export function MealItemRow({
       </div>
 
       {item.mode === "catalog" && (
-        <MacroSummary totals={macros} className="mt-2 border-t border-slate-100 pt-2" />
+        <MacroSummary
+          totals={macros}
+          detailed
+          className="mt-2 border-t border-slate-100 pt-2"
+        />
       )}
     </li>
   );

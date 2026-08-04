@@ -14,23 +14,21 @@ import {
   dietWeekDraftToPayload,
   setDayMenu,
 } from "@/lib/diet/diet-week-draft";
+import { hasAnyTarget, type DailyTargets } from "@/lib/diet/macro-targets";
 import { DAY_LABELS } from "@/types/common";
 import type { DietWeek } from "@/types/diet-plan";
 import { AssignMenuModal } from "./assign-menu-modal";
 import { MacroSummary } from "./macro-summary";
+import { MacroTargets } from "./macro-targets";
 
 interface DietWeekEditorProps {
   planId: string;
   week: DietWeek;
-  caloriesTarget: number | null;
+  targets: DailyTargets;
 }
 
 /** Mounted with `key={week.id}` by the parent, so switching weeks resets the draft. */
-export function DietWeekEditor({
-  planId,
-  week,
-  caloriesTarget,
-}: DietWeekEditorProps) {
+export function DietWeekEditor({ planId, week, targets }: DietWeekEditorProps) {
   const { data: menus } = useMenus();
   const saveDays = useSaveDietWeekDays(planId);
   const assignMenu = useAssignMenu(planId);
@@ -90,16 +88,14 @@ export function DietWeekEditor({
       <ul className="flex flex-col gap-2">
         {draft.map((day) => {
           const menu = day.menu_id ? menuMap.get(day.menu_id) : undefined;
-          const overTarget =
-            caloriesTarget !== null &&
-            menu !== undefined &&
-            menu.totals.calories > caloriesTarget;
+          const showTargets = menu !== undefined && hasAnyTarget(targets);
 
           return (
             <li
               key={day.day_of_week}
-              className="flex flex-wrap items-center gap-3 rounded-lg border border-slate-200 bg-white p-3"
+              className="rounded-lg border border-slate-200 bg-white p-3"
             >
+              <div className="flex flex-wrap items-center gap-3">
               <span className="w-24 font-semibold text-slate-800">
                 {DAY_LABELS[day.day_of_week]}
               </span>
@@ -127,14 +123,18 @@ export function DietWeekEditor({
               </Select>
 
               {menu && (
-                <div className="ml-auto flex items-center gap-3">
-                  <MacroSummary totals={menu.totals} />
-                  {overTarget && (
-                    <span className="text-xs font-semibold text-amber-600">
-                      sobre objetivo
-                    </span>
-                  )}
+                <div className="ml-auto">
+                  <MacroSummary totals={menu.totals} detailed />
                 </div>
+              )}
+              </div>
+
+              {showTargets && (
+                <MacroTargets
+                  totals={menu.totals}
+                  targets={targets}
+                  className="mt-3 border-t border-slate-100 pt-3"
+                />
               )}
             </li>
           );

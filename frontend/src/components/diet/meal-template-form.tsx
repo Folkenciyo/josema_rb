@@ -1,13 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Plus } from "lucide-react";
+import { useState } from "react";
+import { Plus, Search } from "lucide-react";
 
-import { useFoods } from "@/hooks/use-diet-catalog";
+import { useFoodMap } from "@/hooks/use-diet-catalog";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorMessage } from "@/components/ui/feedback";
-import { Input, Select, Textarea } from "@/components/ui/input";
+import { Input, Textarea } from "@/components/ui/input";
 import {
   buildMealDraft,
   createCatalogItem,
@@ -18,6 +18,7 @@ import {
   type MealItemDraft,
 } from "@/lib/diet/meal-draft";
 import type { MealTemplate, MealTemplateInput } from "@/types/diet";
+import { FoodPickerDrawer } from "./food-picker-drawer";
 import { MacroSummary } from "./macro-summary";
 import { MealItemRow } from "./meal-item-row";
 
@@ -36,12 +37,7 @@ export function MealTemplateForm({
   onSubmit,
   onCancel,
 }: MealTemplateFormProps) {
-  const { data: foods } = useFoods();
-  const foodList = useMemo(() => foods ?? [], [foods]);
-  const foodMap = useMemo(
-    () => new Map(foodList.map((food) => [food.id, food])),
-    [foodList],
-  );
+  const { foodMap } = useFoodMap();
 
   const [name, setName] = useState(mealTemplate?.name ?? "");
   const [notes, setNotes] = useState(mealTemplate?.notes ?? "");
@@ -49,6 +45,7 @@ export function MealTemplateForm({
     mealTemplate ? buildMealDraft(mealTemplate) : [],
   );
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [isPickerOpen, setPickerOpen] = useState(false);
 
   const totals = mealDraftTotals(items, foodMap);
 
@@ -92,24 +89,14 @@ export function MealTemplateForm({
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <p className="text-sm font-medium text-slate-700">Alimentos</p>
           <div className="flex items-center gap-2">
-            <Select
-              value=""
-              aria-label="Añadir alimento del catálogo"
-              className="h-8 w-auto min-w-44 text-xs"
-              onChange={(event) => {
-                const food = foodMap.get(event.target.value);
-                if (food) {
-                  setItems((current) => [...current, createCatalogItem(food)]);
-                }
-              }}
+            <Button
+              type="button"
+              size="sm"
+              onClick={() => setPickerOpen(true)}
             >
-              <option value="">Añadir del catálogo…</option>
-              {foodList.map((food) => (
-                <option key={food.id} value={food.id}>
-                  {food.name}
-                </option>
-              ))}
-            </Select>
+              <Search className="size-4" />
+              Buscar alimentos
+            </Button>
             <Button
               type="button"
               size="sm"
@@ -124,7 +111,7 @@ export function MealTemplateForm({
 
         {items.length === 0 ? (
           <p className="rounded-lg border border-dashed border-slate-300 px-4 py-6 text-center text-sm text-slate-500">
-            Añade alimentos del catálogo o escribe uno suelto con sus macros.
+            Busca alimentos en el catálogo o escribe uno suelto con sus macros.
           </p>
         ) : (
           <ul className="flex flex-col gap-2">
@@ -132,7 +119,6 @@ export function MealTemplateForm({
               <MealItemRow
                 key={item.key}
                 item={item}
-                foods={foodList}
                 foodMap={foodMap}
                 onChange={(changes) =>
                   setItems((current) =>
@@ -152,9 +138,9 @@ export function MealTemplateForm({
         )}
       </div>
 
-      <div className="flex items-center justify-between rounded-lg bg-slate-100 px-4 py-2">
+      <div className="flex items-center justify-between gap-4 rounded-lg bg-slate-100 px-4 py-2">
         <span className="text-sm font-semibold text-slate-700">Total</span>
-        <MacroSummary totals={totals} />
+        <MacroSummary totals={totals} detailed />
       </div>
 
       <Field label="Notas">
@@ -180,6 +166,16 @@ export function MealTemplateForm({
           {mealTemplate ? "Guardar cambios" : "Crear comida"}
         </Button>
       </div>
+
+      {isPickerOpen && (
+        <FoodPickerDrawer
+          title="Añadir alimentos"
+          onClose={() => setPickerOpen(false)}
+          onConfirm={(foods) =>
+            setItems((current) => [...current, ...foods.map(createCatalogItem)])
+          }
+        />
+      )}
     </form>
   );
 }

@@ -2,9 +2,13 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { useMemo } from "react";
+
 import * as catalogApi from "@/lib/api/diet-catalog";
 import type {
+  Food,
   FoodInput,
+  FoodQuery,
   MealTemplateInput,
   MenuInput,
 } from "@/types/diet";
@@ -13,8 +17,40 @@ const FOODS_KEY = ["foods"];
 const MEAL_TEMPLATES_KEY = ["meal-templates"];
 const MENUS_KEY = ["menus"];
 
-export function useFoods() {
-  return useQuery({ queryKey: FOODS_KEY, queryFn: catalogApi.listFoods });
+/** Filtering happens in Postgres, same as the exercise library. */
+export function useFoods(query: FoodQuery = {}) {
+  return useQuery({
+    queryKey: [...FOODS_KEY, query],
+    queryFn: () => catalogApi.listFoods(query),
+  });
+}
+
+export function useFoodFilters() {
+  return useQuery({
+    queryKey: [...FOODS_KEY, "filters"],
+    queryFn: catalogApi.getFoodFilters,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * The whole catalog indexed by id. Meal lines only store `food_id`, so the
+ * editor needs a way to resolve names and reference quantities.
+ */
+export function useFoodMap(): { foods: Food[]; foodMap: Map<string, Food> } {
+  const { data } = useQuery({
+    queryKey: [...FOODS_KEY, {}],
+    queryFn: () => catalogApi.listFoods(),
+    staleTime: 10 * 60 * 1000,
+  });
+
+  const foods = useMemo(() => data ?? [], [data]);
+  const foodMap = useMemo(
+    () => new Map(foods.map((food) => [food.id, food])),
+    [foods],
+  );
+
+  return { foods, foodMap };
 }
 
 export function useCreateFood() {

@@ -5,6 +5,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.models import MealTemplate, MealTemplateItem, Trainer
+from app.models.food import format_unit_label
 from app.repositories import food_repository, meal_template_repository
 from app.schemas.meal_template import (
     MacroTotals,
@@ -14,38 +15,69 @@ from app.schemas.meal_template import (
     MealTemplateUpdate,
 )
 
+# Every nutrition value carried from a Food down to a meal line, in label order.
+NUTRIENT_FIELDS = (
+    "calories",
+    "protein_g",
+    "carbs_g",
+    "sugars_g",
+    "fat_g",
+    "saturated_fat_g",
+    "fiber_g",
+    "salt_g",
+)
 
-def _build_item(
+# Without a Food to scale from, these must be typed by hand.
+REQUIRED_MANUAL_FIELDS = ("calories", "protein_g", "carbs_g", "fat_g")
+
+
+def _scaled_nutrients(food: object, multiplier: Decimal) -> dict[str, Decimal]:
+    return {
+        field: Decimal(str(getattr(food, field))) * multiplier
+        for field in NUTRIENT_FIELDS
+    }
+
+
+def _build_catalog_item(
     db: Session, data: MealTemplateItemCreate, order_index: int
 ) -> MealTemplateItem:
-    if data.food_id is not None:
-        food = food_repository.get_by_id(db, data.food_id)
-        if food is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Food {data.food_id} not found",
-            )
-        multiplier = Decimal(str(data.quantity_multiplier or 1))
-        return MealTemplateItem(
-            food_id=food.id,
-            food_name=data.food_name or food.name,
-            quantity_label=data.quantity_label,
-            quantity_multiplier=multiplier,
-            calories=Decimal(str(food.calories)) * multiplier,
-            protein_g=Decimal(str(food.protein_g)) * multiplier,
-            carbs_g=Decimal(str(food.carbs_g)) * multiplier,
-            fat_g=Decimal(str(food.fat_g)) * multiplier,
-            order_index=order_index,
+    food = food_repository.get_by_id(db, data.food_id)
+    if food is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Food {data.food_id} not found",
         )
 
+    unit_amount = Decimal(str(food.unit_amount))
+    if data.quantity_amount is not None:
+        amount = Decimal(str(data.quantity_amount))
+        multiplier = amount / unit_amount
+    else:
+        multiplier = Decimal(str(data.quantity_multiplier or 1))
+        amount = unit_amount * multiplier
+
+    return MealTemplateItem(
+        food_id=food.id,
+        food_name=data.food_name or food.name,
+        quantity_amount=amount,
+        quantity_unit=food.unit_type,
+        quantity_label=data.quantity_label
+        or format_unit_label(float(amount), food.unit_type),
+        quantity_multiplier=multiplier,
+        order_index=order_index,
+        **_scaled_nutrients(food, multiplier),
+    )
+
+
+def _build_manual_item(
+    data: MealTemplateItemCreate, order_index: int
+) -> MealTemplateItem:
     if not data.food_name:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail="food_name is required when food_id is not provided",
         )
-    if any(
-        v is None for v in (data.calories, data.protein_g, data.carbs_g, data.fat_g)
-    ):
+    if any(getattr(data, field) is None for field in REQUIRED_MANUAL_FIELDS):
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail="calories/protein_g/carbs_g/fat_g are required without food_id",
@@ -54,14 +86,21 @@ def _build_item(
     return MealTemplateItem(
         food_id=None,
         food_name=data.food_name,
+        quantity_amount=data.quantity_amount,
+        quantity_unit=None,
         quantity_label=data.quantity_label,
         quantity_multiplier=None,
-        calories=data.calories,
-        protein_g=data.protein_g,
-        carbs_g=data.carbs_g,
-        fat_g=data.fat_g,
         order_index=order_index,
+        **{field: getattr(data, field) or 0 for field in NUTRIENT_FIELDS},
     )
+
+
+def _build_item(
+    db: Session, data: MealTemplateItemCreate, order_index: int
+) -> MealTemplateItem:
+    if data.food_id is not None:
+        return _build_catalog_item(db, data, order_index)
+    return _build_manual_item(data, order_index)
 
 
 def _build_items(
@@ -71,15 +110,13 @@ def _build_items(
 
 
 def compute_totals(meal_template: MealTemplate) -> MacroTotals:
-    calories = sum((item.calories or 0) for item in meal_template.items)
-    protein_g = sum((item.protein_g or 0) for item in meal_template.items)
-    carbs_g = sum((item.carbs_g or 0) for item in meal_template.items)
-    fat_g = sum((item.fat_g or 0) for item in meal_template.items)
     return MacroTotals(
-        calories=float(calories),
-        protein_g=float(protein_g),
-        carbs_g=float(carbs_g),
-        fat_g=float(fat_g),
+        **{
+            field: float(
+                sum((getattr(item, field) or 0) for item in meal_template.items)
+            )
+            for field in NUTRIENT_FIELDS
+        }
     )
 
 

@@ -35,15 +35,15 @@ def _build_menu_meals(db: Session, meals: list[MenuMealCreate]) -> list[MenuMeal
 
 
 def compute_totals(menu: Menu) -> MacroTotals:
-    calories = protein_g = carbs_g = fat_g = 0.0
-    for menu_meal in menu.meals:
-        totals = meal_template_service.compute_totals(menu_meal.meal_template)
-        calories += totals.calories
-        protein_g += totals.protein_g
-        carbs_g += totals.carbs_g
-        fat_g += totals.fat_g
+    meal_totals = [
+        meal_template_service.compute_totals(menu_meal.meal_template)
+        for menu_meal in menu.meals
+    ]
     return MacroTotals(
-        calories=calories, protein_g=protein_g, carbs_g=carbs_g, fat_g=fat_g
+        **{
+            field: sum(getattr(totals, field) for totals in meal_totals)
+            for field in meal_template_service.NUTRIENT_FIELDS
+        }
     )
 
 

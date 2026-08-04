@@ -39,7 +39,11 @@ class ExportMealItem(BaseModel):
     calories: float | None
     protein_g: float | None
     carbs_g: float | None
+    sugars_g: float | None
     fat_g: float | None
+    saturated_fat_g: float | None
+    fiber_g: float | None
+    salt_g: float | None
 
 
 class ExportMeal(BaseModel):

@@ -101,10 +101,10 @@ def build_diet_plan_document(db: Session, plan_id: uuid.UUID) -> DietPlanDocumen
                         ExportMealItem(
                             food_name=item.food_name,
                             quantity_label=item.quantity_label,
-                            calories=_as_float(item.calories),
-                            protein_g=_as_float(item.protein_g),
-                            carbs_g=_as_float(item.carbs_g),
-                            fat_g=_as_float(item.fat_g),
+                            **{
+                                field: _as_float(getattr(item, field))
+                                for field in meal_template_service.NUTRIENT_FIELDS
+                            },
                         )
                         for item in meal_template.items
                     ]

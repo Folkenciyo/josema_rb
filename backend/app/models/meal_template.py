@@ -46,11 +46,20 @@ class MealTemplateItem(Base, TimestampMixin):
     )
     food_name: Mapped[str] = mapped_column(String(255), nullable=False)
     quantity_label: Mapped[str | None] = mapped_column(String(50))
+    # Real amount served (150) and its unit ("g"), kept so the line can be
+    # re-edited and printed as written. quantity_multiplier stays as the factor
+    # actually applied to the Food macros (150 / 100 = 1.5).
+    quantity_amount: Mapped[float | None] = mapped_column(Numeric(8, 2))
+    quantity_unit: Mapped[str | None] = mapped_column(String(30))
     quantity_multiplier: Mapped[float | None] = mapped_column(Numeric(6, 2))
     calories: Mapped[float | None] = mapped_column(Numeric(6, 1))
     protein_g: Mapped[float | None] = mapped_column(Numeric(6, 1))
     carbs_g: Mapped[float | None] = mapped_column(Numeric(6, 1))
+    sugars_g: Mapped[float | None] = mapped_column(Numeric(6, 1))
     fat_g: Mapped[float | None] = mapped_column(Numeric(6, 1))
+    saturated_fat_g: Mapped[float | None] = mapped_column(Numeric(6, 1))
+    fiber_g: Mapped[float | None] = mapped_column(Numeric(6, 1))
+    salt_g: Mapped[float | None] = mapped_column(Numeric(6, 2))
     order_index: Mapped[int] = mapped_column(Integer, nullable=False)
 
     meal_template: Mapped["MealTemplate"] = relationship(back_populates="items")

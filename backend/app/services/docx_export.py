@@ -6,10 +6,22 @@ from docx.shared import Inches
 from docx.table import Table
 
 from app.schemas.export import DietPlanDocument, TrainingPlanDocument
+from app.services.meal_template_service import NUTRIENT_FIELDS
 
 STATIC_IMAGES_DIR = (
     Path(__file__).resolve().parent.parent / "static" / "exercise-images"
 )
+
+NUTRIENT_HEADERS = [
+    "Kcal",
+    "Proteína",
+    "Hidratos",
+    "Azúcares",
+    "Grasa",
+    "Saturadas",
+    "Fibra",
+    "Sal",
+]
 
 
 def _add_table(doc: Document, headers: list[str]) -> Table:
@@ -108,29 +120,29 @@ def render_diet_plan_docx(document: DietPlanDocument) -> bytes:
                     meal_heading += f" ({meal.time_of_day})"
                 doc.add_heading(meal_heading, level=3)
 
-                table = _add_table(
-                    doc,
-                    ["Alimento", "Cantidad", "Kcal", "Proteína", "Hidratos", "Grasa"],
-                )
+                table = _add_table(doc, ["Alimento", "Cantidad", *NUTRIENT_HEADERS])
                 for item in meal.items:
                     row = table.add_row().cells
                     row[0].text = item.food_name
                     row[1].text = item.quantity_label or ""
-                    row[2].text = (
-                        str(item.calories) if item.calories is not None else ""
-                    )
-                    row[3].text = (
-                        str(item.protein_g) if item.protein_g is not None else ""
-                    )
-                    row[4].text = str(item.carbs_g) if item.carbs_g is not None else ""
-                    row[5].text = str(item.fat_g) if item.fat_g is not None else ""
+                    for offset, field in enumerate(NUTRIENT_FIELDS, start=2):
+                        value = getattr(item, field)
+                        row[offset].text = str(value) if value is not None else ""
+
+                total_row = table.add_row().cells
+                total_row[0].text = "Total de la comida"
+                for offset, field in enumerate(NUTRIENT_FIELDS, start=2):
+                    total_row[offset].text = str(getattr(meal.totals, field))
 
             if day.totals:
                 doc.add_paragraph(
                     f"Total del día: {day.totals.calories} kcal · "
                     f"{day.totals.protein_g} g proteína · "
-                    f"{day.totals.carbs_g} g hidratos · "
-                    f"{day.totals.fat_g} g grasa"
+                    f"{day.totals.carbs_g} g hidratos "
+                    f"({day.totals.sugars_g} g azúcares) · "
+                    f"{day.totals.fat_g} g grasa "
+                    f"({day.totals.saturated_fat_g} g saturadas) · "
+                    f"{day.totals.fiber_g} g fibra · {day.totals.salt_g} g sal"
                 )
 
     buffer = io.BytesIO()

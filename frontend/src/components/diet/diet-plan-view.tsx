@@ -21,6 +21,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { ExportButtons } from "@/components/plans/export-buttons";
 import { WeekTabs } from "@/components/plans/week-tabs";
 import { formatDateRange } from "@/lib/format";
+import { planTargets } from "@/lib/diet/macro-targets";
 import { DietPlanForm } from "./diet-plan-form";
 import { DietWeekEditor } from "./diet-week-editor";
 
@@ -153,7 +154,7 @@ export function DietPlanView({ clientId, planId }: DietPlanViewProps) {
             key={activeWeek.id}
             planId={planId}
             week={activeWeek}
-            caloriesTarget={plan.daily_calories_target}
+            targets={planTargets(plan)}
           />
         ) : (
           <EmptyState

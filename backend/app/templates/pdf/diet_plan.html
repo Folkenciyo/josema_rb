@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>{{ doc.plan_title }}</title>
   <style>
-    @page { size: A4; margin: 2cm; }
+    @page { size: A4; margin: 1.5cm; }
     body { font-family: "Helvetica", "Arial", sans-serif; color: #1a1a1a; font-size: 11pt; }
     h1 { font-size: 20pt; margin-bottom: 0.2cm; }
     .subtitle { color: #555; margin-bottom: 0.3cm; }
@@ -13,13 +13,17 @@
     h3 { font-size: 12pt; margin-top: 0.6cm; color: #333; }
     h4 { font-size: 11pt; margin-top: 0.4cm; margin-bottom: 0.1cm; }
     table { width: 100%; border-collapse: collapse; margin-top: 0.2cm; margin-bottom: 0.3cm; }
-    th, td { border: 1px solid #ccc; padding: 0.2cm 0.3cm; text-align: left; font-size: 10pt; }
+    th, td { border: 1px solid #ccc; padding: 0.12cm 0.15cm; text-align: left; font-size: 8pt; }
     th { background-color: #f0f0f0; }
+    td.num, th.num { text-align: right; }
+    tr.meal-total td { background-color: #fafafa; font-weight: bold; }
     .totals { font-weight: bold; color: #333; margin-bottom: 0.4cm; }
     .no-menu { color: #777; font-style: italic; }
   </style>
 </head>
 <body>
+  {% macro num(value) %}{{ value if value is not none else "" }}{% endmacro %}
+
   <h1>{{ doc.plan_title }}</h1>
   <p class="subtitle">
     Cliente: {{ doc.client_name }}
@@ -49,10 +53,14 @@
               <tr>
                 <th>Alimento</th>
                 <th>Cantidad</th>
-                <th>Kcal</th>
-                <th>Proteína</th>
-                <th>Hidratos</th>
-                <th>Grasa</th>
+                <th class="num">Kcal</th>
+                <th class="num">Prot.</th>
+                <th class="num">Hidr.</th>
+                <th class="num">Azúc.</th>
+                <th class="num">Grasa</th>
+                <th class="num">Sat.</th>
+                <th class="num">Fibra</th>
+                <th class="num">Sal</th>
               </tr>
             </thead>
             <tbody>
@@ -60,19 +68,36 @@
                 <tr>
                   <td>{{ item.food_name }}</td>
                   <td>{{ item.quantity_label or "" }}</td>
-                  <td>{{ item.calories if item.calories is not none else "" }}</td>
-                  <td>{{ item.protein_g if item.protein_g is not none else "" }}</td>
-                  <td>{{ item.carbs_g if item.carbs_g is not none else "" }}</td>
-                  <td>{{ item.fat_g if item.fat_g is not none else "" }}</td>
+                  <td class="num">{{ num(item.calories) }}</td>
+                  <td class="num">{{ num(item.protein_g) }}</td>
+                  <td class="num">{{ num(item.carbs_g) }}</td>
+                  <td class="num">{{ num(item.sugars_g) }}</td>
+                  <td class="num">{{ num(item.fat_g) }}</td>
+                  <td class="num">{{ num(item.saturated_fat_g) }}</td>
+                  <td class="num">{{ num(item.fiber_g) }}</td>
+                  <td class="num">{{ num(item.salt_g) }}</td>
                 </tr>
               {% endfor %}
+              <tr class="meal-total">
+                <td colspan="2">Total de la comida</td>
+                <td class="num">{{ meal.totals.calories }}</td>
+                <td class="num">{{ meal.totals.protein_g }}</td>
+                <td class="num">{{ meal.totals.carbs_g }}</td>
+                <td class="num">{{ meal.totals.sugars_g }}</td>
+                <td class="num">{{ meal.totals.fat_g }}</td>
+                <td class="num">{{ meal.totals.saturated_fat_g }}</td>
+                <td class="num">{{ meal.totals.fiber_g }}</td>
+                <td class="num">{{ meal.totals.salt_g }}</td>
+              </tr>
             </tbody>
           </table>
         {% endfor %}
         {% if day.totals %}
           <p class="totals">
             Total del día: {{ day.totals.calories }} kcal · {{ day.totals.protein_g }} g proteína ·
-            {{ day.totals.carbs_g }} g hidratos · {{ day.totals.fat_g }} g grasa
+            {{ day.totals.carbs_g }} g hidratos ({{ day.totals.sugars_g }} g azúcares) ·
+            {{ day.totals.fat_g }} g grasa ({{ day.totals.saturated_fat_g }} g saturadas) ·
+            {{ day.totals.fiber_g }} g fibra · {{ day.totals.salt_g }} g sal
           </p>
         {% endif %}
       {% else %}

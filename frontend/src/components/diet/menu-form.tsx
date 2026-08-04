@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorMessage } from "@/components/ui/feedback";
 import { Input, Select, Textarea } from "@/components/ui/input";
-import { sumMacros } from "@/lib/diet/meal-draft";
+import { EMPTY_TOTALS, sumMacros } from "@/lib/diet/meal-draft";
 import type { MacroTotals, Menu, MenuInput } from "@/types/diet";
 import { MacroSummary } from "./macro-summary";
 
@@ -63,13 +63,7 @@ export function MenuForm({
 
   const totals: MacroTotals = sumMacros(
     meals.map(
-      (meal) =>
-        templateMap.get(meal.meal_template_id)?.totals ?? {
-          calories: 0,
-          protein_g: 0,
-          carbs_g: 0,
-          fat_g: 0,
-        },
+      (meal) => templateMap.get(meal.meal_template_id)?.totals ?? EMPTY_TOTALS,
     ),
   );
 

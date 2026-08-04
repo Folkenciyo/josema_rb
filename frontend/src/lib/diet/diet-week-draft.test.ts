@@ -5,6 +5,7 @@ import {
   setAllDaysMenu,
   setDayMenu,
 } from "./diet-week-draft";
+import { EMPTY_TOTALS } from "./meal-draft";
 import type { DietWeek } from "@/types/diet-plan";
 
 const week: DietWeek = {
@@ -17,7 +18,13 @@ const week: DietWeek = {
       day_of_week: "tuesday",
       order_index: 0,
       menu: { id: "menu-1", name: "Día alto" },
-      totals: { calories: 2000, protein_g: 150, carbs_g: 200, fat_g: 60 },
+      totals: {
+        ...EMPTY_TOTALS,
+        calories: 2000,
+        protein_g: 150,
+        carbs_g: 200,
+        fat_g: 60,
+      },
     },
     {
       id: "d2",

@@ -14,15 +14,23 @@ import { Card } from "@/components/ui/card";
 import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
+import {
+  EMPTY_CATALOG_QUERY,
+  filterCatalog,
+  isCatalogQueryActive,
+} from "@/lib/diet/catalog-search";
 import type { Menu } from "@/types/diet";
+import { CatalogSearchBar } from "./catalog-search-bar";
 import { MacroSummary } from "./macro-summary";
 import { MenuForm } from "./menu-form";
 
 export function MenusView() {
   const [isCreateOpen, setCreateOpen] = useState(false);
   const [editing, setEditing] = useState<Menu | null>(null);
+  const [query, setQuery] = useState(EMPTY_CATALOG_QUERY);
 
   const { data: menus, isPending, error } = useMenus();
+  const visible = filterCatalog(menus ?? [], query);
   const createMenu = useCreateMenu();
   const updateMenu = useUpdateMenu();
   const deleteMenu = useDeleteMenu();
@@ -48,11 +56,19 @@ export function MenusView() {
 
       <ErrorMessage error={error ?? deleteMenu.error} />
 
+      {(menus?.length ?? 0) > 0 && (
+        <CatalogSearchBar
+          query={query}
+          onChange={setQuery}
+          placeholder="Buscar menú por nombre"
+        />
+      )}
+
       {isPending ? (
         <LoadingState />
-      ) : menus && menus.length > 0 ? (
+      ) : visible.length > 0 ? (
         <div className="grid gap-3 md:grid-cols-2">
-          {menus.map((menu) => (
+          {visible.map((menu) => (
             <Card key={menu.id} className="p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
@@ -63,7 +79,7 @@ export function MenusView() {
                     {menu.meals.length}{" "}
                     {menu.meals.length === 1 ? "comida" : "comidas"}
                   </p>
-                  <MacroSummary totals={menu.totals} className="mt-1" />
+                  <MacroSummary totals={menu.totals} detailed className="mt-1" />
                 </div>
                 <div className="flex shrink-0 gap-1">
                   <Button
@@ -85,24 +101,40 @@ export function MenusView() {
                 </div>
               </div>
 
-              <ul className="mt-3 space-y-1 border-t border-slate-100 pt-3 text-sm text-slate-600">
+              <ul className="mt-3 space-y-2 border-t border-slate-100 pt-3 text-sm text-slate-600">
                 {[...menu.meals]
                   .sort((a, b) => a.order_index - b.order_index)
                   .map((meal) => (
-                    <li key={meal.id} className="flex items-center gap-2">
-                      {meal.time_of_day && (
-                        <span className="flex items-center gap-1 text-xs text-slate-400">
-                          <Clock className="size-3" />
-                          {meal.time_of_day.slice(0, 5)}
-                        </span>
-                      )}
-                      <span className="truncate">{meal.meal_template.name}</span>
+                    <li key={meal.id}>
+                      <div className="flex items-center gap-2">
+                        {meal.time_of_day && (
+                          <span className="flex items-center gap-1 text-xs text-slate-400">
+                            <Clock className="size-3" />
+                            {meal.time_of_day.slice(0, 5)}
+                          </span>
+                        )}
+                        <span className="truncate">{meal.meal_template.name}</span>
+                      </div>
+                      <MacroSummary
+                        totals={meal.meal_template.totals}
+                        className="mt-0.5 pl-1"
+                      />
                     </li>
                   ))}
               </ul>
             </Card>
           ))}
         </div>
+      ) : isCatalogQueryActive(query) ? (
+        <EmptyState
+          title="Ningún menú coincide"
+          description="Prueba con otro nombre o cambia el rango de calorías."
+          action={
+            <Button variant="secondary" onClick={() => setQuery(EMPTY_CATALOG_QUERY)}>
+              Limpiar filtros
+            </Button>
+          }
+        />
       ) : (
         <EmptyState
           title="Todavía no hay menús"

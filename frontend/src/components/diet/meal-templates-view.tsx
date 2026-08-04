@@ -14,15 +14,23 @@ import { Card } from "@/components/ui/card";
 import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
+import {
+  EMPTY_CATALOG_QUERY,
+  filterCatalog,
+  isCatalogQueryActive,
+} from "@/lib/diet/catalog-search";
 import type { MealTemplate } from "@/types/diet";
+import { CatalogSearchBar } from "./catalog-search-bar";
 import { MacroSummary } from "./macro-summary";
 import { MealTemplateForm } from "./meal-template-form";
 
 export function MealTemplatesView() {
   const [isCreateOpen, setCreateOpen] = useState(false);
   const [editing, setEditing] = useState<MealTemplate | null>(null);
+  const [query, setQuery] = useState(EMPTY_CATALOG_QUERY);
 
   const { data: mealTemplates, isPending, error } = useMealTemplates();
+  const visible = filterCatalog(mealTemplates ?? [], query);
   const createMealTemplate = useCreateMealTemplate();
   const updateMealTemplate = useUpdateMealTemplate();
   const deleteMealTemplate = useDeleteMealTemplate();
@@ -48,18 +56,30 @@ export function MealTemplatesView() {
 
       <ErrorMessage error={error ?? deleteMealTemplate.error} />
 
+      {(mealTemplates?.length ?? 0) > 0 && (
+        <CatalogSearchBar
+          query={query}
+          onChange={setQuery}
+          placeholder="Buscar comida por nombre"
+        />
+      )}
+
       {isPending ? (
         <LoadingState />
-      ) : mealTemplates && mealTemplates.length > 0 ? (
+      ) : visible.length > 0 ? (
         <div className="grid gap-3 md:grid-cols-2">
-          {mealTemplates.map((mealTemplate) => (
+          {visible.map((mealTemplate) => (
             <Card key={mealTemplate.id} className="p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="truncate font-semibold text-slate-800">
                     {mealTemplate.name}
                   </p>
-                  <MacroSummary totals={mealTemplate.totals} className="mt-1" />
+                  <MacroSummary
+                    totals={mealTemplate.totals}
+                    detailed
+                    className="mt-1"
+                  />
                 </div>
                 <div className="flex shrink-0 gap-1">
                   <Button
@@ -94,6 +114,16 @@ export function MealTemplatesView() {
             </Card>
           ))}
         </div>
+      ) : isCatalogQueryActive(query) ? (
+        <EmptyState
+          title="Ninguna comida coincide"
+          description="Prueba con otro nombre o cambia el rango de calorías."
+          action={
+            <Button variant="secondary" onClick={() => setQuery(EMPTY_CATALOG_QUERY)}>
+              Limpiar filtros
+            </Button>
+          }
+        />
       ) : (
         <EmptyState
           title="Todavía no hay comidas"

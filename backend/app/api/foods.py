@@ -1,12 +1,12 @@
 import uuid
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.core.security import get_current_trainer
 from app.models import Food, Trainer
-from app.schemas.food import FoodCreate, FoodOut, FoodUpdate
+from app.schemas.food import FoodCreate, FoodFiltersOut, FoodOut, FoodUpdate
 from app.services import food_service
 
 router = APIRouter(
@@ -16,9 +16,32 @@ router = APIRouter(
 
 @router.get("", response_model=list[FoodOut])
 def list_foods(
-    db: Session = Depends(get_db), trainer: Trainer = Depends(get_current_trainer)
+    search: str | None = Query(default=None),
+    category: str | None = Query(default=None),
+    subcategory: str | None = Query(default=None),
+    min_calories: float | None = Query(default=None, ge=0),
+    max_calories: float | None = Query(default=None, ge=0),
+    sort: str | None = Query(default=None),
+    db: Session = Depends(get_db),
+    trainer: Trainer = Depends(get_current_trainer),
 ) -> list[Food]:
-    return food_service.list_foods(db, trainer)
+    return food_service.list_foods(
+        db,
+        trainer,
+        search=search,
+        category=category,
+        subcategory=subcategory,
+        min_calories=min_calories,
+        max_calories=max_calories,
+        sort=sort,
+    )
+
+
+@router.get("/filters", response_model=FoodFiltersOut)
+def get_filters(
+    db: Session = Depends(get_db), trainer: Trainer = Depends(get_current_trainer)
+) -> FoodFiltersOut:
+    return food_service.get_filters(db, trainer)
 
 
 @router.post("", response_model=FoodOut, status_code=status.HTTP_201_CREATED)
