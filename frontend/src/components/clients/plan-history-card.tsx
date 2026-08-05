@@ -7,6 +7,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/feedback";
+import { cn } from "@/lib/cn";
 import { formatDateRange } from "@/lib/format";
 import type { PlanSummary } from "@/types/common";
 
@@ -25,6 +26,12 @@ export function PlanHistoryCard({
   buildHref,
   onCreate,
 }: PlanHistoryCardProps) {
+  // Plans in progress lead the list: they are the ones opened day to day.
+  const sortedPlans = [
+    ...plans.filter((plan) => plan.status === "active"),
+    ...plans.filter((plan) => plan.status !== "active"),
+  ];
+
   const createButton = onCreate ? (
     <Button size="sm" variant="secondary" onClick={onCreate}>
       <Plus className="size-4" />
@@ -43,7 +50,12 @@ export function PlanHistoryCard({
         />
       ) : (
         <ul className="divide-y divide-slate-100">
-          {plans.map((plan) => {
+          {sortedPlans.map((plan) => {
+            const isActive = plan.status === "active";
+            const rowClassName = cn(
+              "flex items-center justify-between gap-4 px-5 py-3",
+              isActive && "border-l-2 border-amber-500 bg-amber-50/60 pl-[18px]",
+            );
             const content = (
               <>
                 <div className="min-w-0">
@@ -66,14 +78,15 @@ export function PlanHistoryCard({
                 {buildHref ? (
                   <Link
                     href={buildHref(plan.id)}
-                    className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-slate-50"
+                    className={cn(
+                      rowClassName,
+                      isActive ? "hover:bg-amber-100/70" : "hover:bg-slate-50",
+                    )}
                   >
                     {content}
                   </Link>
                 ) : (
-                  <div className="flex items-center justify-between gap-4 px-5 py-3">
-                    {content}
-                  </div>
+                  <div className={rowClassName}>{content}</div>
                 )}
               </li>
             );
