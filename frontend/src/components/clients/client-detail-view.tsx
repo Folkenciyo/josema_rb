@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Pencil, UserMinus } from "lucide-react";
+import { ArrowLeft, MessageCircle, Pencil, UserMinus } from "lucide-react";
 
 import { useClient, useDeactivateClient, useUpdateClient } from "@/hooks/use-clients";
 import { useCreateTrainingPlan } from "@/hooks/use-training-plans";
@@ -16,12 +16,13 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { ErrorMessage, LoadingState } from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
+import { toMailtoHref, toTelHref, toWhatsAppHref } from "@/lib/contact";
 import { calculateAge, formatDate } from "@/lib/format";
 import { SEX_LABELS, type ClientDetail, type Sex } from "@/types/client";
 import { ClientForm } from "./client-form";
 import { PlanHistoryCard } from "./plan-history-card";
 
-function DetailRow({ label, value }: { label: string; value: string }) {
+function DetailRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex justify-between gap-4 px-5 py-2.5 text-sm">
       <span className="text-slate-500">{label}</span>
@@ -30,16 +31,56 @@ function DetailRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+/** Contact details are links so the trainer can write or call straight from the phone. */
+function ContactValue({ href, text }: { href: string | null; text: string | null }) {
+  if (!text) {
+    return <>—</>;
+  }
+
+  if (!href) {
+    return <>{text}</>;
+  }
+
+  return (
+    <a href={href} className="text-amber-700 hover:underline">
+      {text}
+    </a>
+  );
+}
+
 function ClientProfileCard({ client }: { client: ClientDetail }) {
   const age = calculateAge(client.birth_date);
   const sexLabel = client.sex ? (SEX_LABELS[client.sex as Sex] ?? client.sex) : "—";
+  const whatsAppHref = toWhatsAppHref(client.phone);
 
   return (
     <Card>
       <CardHeader title="Ficha" />
       <div className="divide-y divide-slate-100">
-        <DetailRow label="Email" value={client.email ?? "—"} />
-        <DetailRow label="Teléfono" value={client.phone ?? "—"} />
+        <DetailRow
+          label="Email"
+          value={<ContactValue href={toMailtoHref(client.email)} text={client.email} />}
+        />
+        <DetailRow
+          label="Teléfono"
+          value={
+            <span className="inline-flex items-center gap-2">
+              <ContactValue href={toTelHref(client.phone)} text={client.phone} />
+              {whatsAppHref && (
+                <a
+                  href={whatsAppHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Escribir por WhatsApp"
+                  className="text-emerald-600 hover:text-emerald-700"
+                >
+                  <MessageCircle className="size-4" />
+                  <span className="sr-only">Escribir por WhatsApp</span>
+                </a>
+              )}
+            </span>
+          }
+        />
         <DetailRow
           label="Nacimiento"
           value={
@@ -53,6 +94,7 @@ function ClientProfileCard({ client }: { client: ClientDetail }) {
           label="Altura"
           value={client.height_cm ? `${client.height_cm} cm` : "—"}
         />
+        <DetailRow label="Cliente desde" value={formatDate(client.created_at)} />
       </div>
       {(client.goals || client.notes) && (
         <div className="space-y-3 border-t border-slate-100 px-5 py-4">
