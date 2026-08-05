@@ -44,6 +44,8 @@ services:
       # Trainer-uploaded exercise photos must survive rebuilds; the imported library
       # is baked into the image instead.
       - exercise_images:/app/app/static/exercise-images/custom
+      # Client progress photos: irreplaceable, they only exist here.
+      - client_photos:/app/app/media/client-photos
     depends_on:
       josema-db:
         condition: service_healthy
@@ -63,3 +65,4 @@ services:
 volumes:
   pgdata:
   exercise_images:
+  client_photos:

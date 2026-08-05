@@ -19,6 +19,7 @@ services:
       TRAINER_PASSWORD: ${TRAINER_PASSWORD:-change-me}
     volumes:
       - exercise_images:/app/app/static/exercise-images/custom
+      - client_photos:/app/app/media/client-photos
     ports:
       - "8001:8000"
     depends_on:
@@ -38,3 +39,4 @@ services:
 volumes:
   pgdata:
   exercise_images:
+  client_photos:

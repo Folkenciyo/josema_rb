@@ -21,6 +21,7 @@ import { calculateAge, formatDate } from "@/lib/format";
 import { SEX_LABELS, type ClientDetail, type Sex } from "@/types/client";
 import { ClientForm } from "./client-form";
 import { MeasurementsCard } from "./measurements-card";
+import { PhotosSummaryCard } from "./photos-summary-card";
 import { PlanHistoryCard } from "./plan-history-card";
 
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
@@ -221,6 +222,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             buildHref={(planId) => `/clients/${clientId}/diet-plans/${planId}`}
             onCreate={() => setDietPlanOpen(true)}
           />
+          <PhotosSummaryCard clientId={clientId} />
         </div>
       </div>
 

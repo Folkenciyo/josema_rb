@@ -12,6 +12,7 @@ from app.api.foods import router as foods_router
 from app.api.meal_templates import router as meal_templates_router
 from app.api.measurements import router as measurements_router
 from app.api.menus import router as menus_router
+from app.api.photos import router as photos_router
 from app.api.training_plans import router as training_plans_router
 from app.core.config import get_settings
 
@@ -38,6 +39,7 @@ app.mount(
 app.include_router(auth_router)
 app.include_router(clients_router)
 app.include_router(measurements_router)
+app.include_router(photos_router)
 app.include_router(exercises_router)
 app.include_router(foods_router)
 app.include_router(meal_templates_router)
