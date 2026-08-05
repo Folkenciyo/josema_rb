@@ -4,6 +4,7 @@ from app.models.diet_plan import DietDay, DietPlan, DietWeek
 from app.models.exercise import Exercise
 from app.models.food import Food
 from app.models.meal_template import MealTemplate, MealTemplateItem
+from app.models.measurement import ClientMeasurement
 from app.models.menu import Menu, MenuMeal
 from app.models.trainer import Trainer
 from app.models.training_plan import (
@@ -18,6 +19,7 @@ from app.models.training_plan import (
 __all__ = [
     "Base",
     "Client",
+    "ClientMeasurement",
     "DayOfWeek",
     "DietDay",
     "DietPlan",

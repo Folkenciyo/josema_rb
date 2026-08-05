@@ -20,6 +20,7 @@ import { toMailtoHref, toTelHref, toWhatsAppHref } from "@/lib/contact";
 import { calculateAge, formatDate } from "@/lib/format";
 import { SEX_LABELS, type ClientDetail, type Sex } from "@/types/client";
 import { ClientForm } from "./client-form";
+import { MeasurementsCard } from "./measurements-card";
 import { PlanHistoryCard } from "./plan-history-card";
 
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
@@ -198,8 +199,12 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
       <ErrorMessage error={deactivateClient.error} />
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <div className="lg:col-span-1">
+        <div className="flex flex-col gap-4 lg:col-span-1">
           <ClientProfileCard client={client} />
+          <MeasurementsCard
+            clientId={clientId}
+            hasHeight={Boolean(client.height_cm)}
+          />
         </div>
         <div className="flex flex-col gap-4 lg:col-span-2">
           <PlanHistoryCard
