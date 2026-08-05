@@ -11,3 +11,6 @@ app/static/exercise-images/
 
 # Translation working files: only the merged artifact (app/data/*.json) is needed.
 scripts/translation/batches/
+
+# Client progress photos live in a Docker volume, never in the image or the repo.
+app/media/
