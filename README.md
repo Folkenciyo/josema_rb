@@ -205,6 +205,44 @@ el contenedor, así que desplegar es empujar a `main` y esperar.
 
 ---
 
+## Copias de seguridad
+
+Las programa **Dokploy**, contra un **MinIO que corre en el mismo servidor** como
+destino S3 (`docs/infra/minio-backups.yml`). De cada cosa se guarda **una copia diaria
+y una semanal**, y cada nueva sustituye a la anterior: nunca se acumulan.
+
+| Qué                                                | Cuándo                   |
+| -------------------------------------------------- | ------------------------ |
+| Base de datos (`pg_dump` del servicio `josema-db`) | 4:00 diario · lunes 4:30 |
+| Fotos de progreso (`client_photos`)                | 5:00 diario · lunes 5:30 |
+| Fotos de ejercicios (`exercise_images`)            | 5:10 diario · lunes 5:40 |
+
+Además, a demanda:
+
+```bash
+./scripts/backup.sh now        # copia inmediata, antes de tocar algo delicado
+./scripts/backup.sh list       # qué hay guardado ahora mismo
+./scripts/backup.sh download   # trae las copias a ./backups/
+```
+
+**Para restaurar la base de datos**, el fichero es formato _custom_ de `pg_dump`
+aunque se llame `.sql.gz`, así que `psql` lo rechaza y hay que usar `pg_restore`:
+
+```bash
+gunzip -c <fichero>.sql.gz > dump.pgc
+pg_restore -U josema -d josema_rb --no-owner dump.pgc
+```
+
+Probado de verdad: restaurando la copia en un PostgreSQL limpio vuelven los 873
+ejercicios, los alimentos, los clientes, los pesajes y las fotos, sin un solo error.
+
+**Limitación que conviene tener presente**: al vivir en el mismo servidor, estas
+copias protegen de un borrado accidental o de una migración mal aplicada, pero **no
+de la pérdida del disco**. Para eso habría que apuntar el destino a un S3 externo,
+que se configura igual cambiando solo el destino en Dokploy.
+
+---
+
 ## Decisiones que conviene conocer antes de tocar nada
 
 Casi todas nacieron de un problema real en producción.

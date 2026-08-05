@@ -21,3 +21,9 @@ frontend/next-env.d.ts
 # OS / editors
 .DS_Store
 Thumbs.db
+
+# Credenciales de MinIO
+.env.minio
+
+# Copias de seguridad descargadas
+backups/

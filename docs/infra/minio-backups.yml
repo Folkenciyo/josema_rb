@@ -1,0 +1,38 @@
+# MinIO: almacén S3 dentro del propio VPS, usado como destino de las copias de
+# seguridad que programa Dokploy.
+#
+# Este fichero es una COPIA DE REFERENCIA. El stack real vive en Dokploy como
+# compose "raw" (proyecto JosemaRB, composeId SQuQO5GS-yyzLyT9Lo1Zg), así que
+# editar esto no cambia nada en el servidor: hay que actualizarlo también allí.
+#
+# Las credenciales van en las variables de entorno del stack en Dokploy, y en
+# local en .env.minio, que no se sube al repositorio.
+#
+# El nombre del servicio lleva prefijo por la misma razón que el resto del
+# proyecto: Dokploy conecta todos los stacks a la red compartida y un nombre
+# genérico chocaría con el de otro proyecto.
+
+services:
+  josema-minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio_data:/data
+    expose:
+      - "9000"
+      - "9001"
+    networks:
+      - default
+      # Sin esta red, Dokploy no puede alcanzar el almacén para subir las copias.
+      - dokploy-network
+    restart: unless-stopped
+
+volumes:
+  minio_data:
+
+networks:
+  dokploy-network:
+    external: true
