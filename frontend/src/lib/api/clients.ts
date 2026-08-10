@@ -24,3 +24,8 @@ export function updateClient(
 export function deactivateClient(clientId: string): Promise<Client> {
   return api.delete<Client>(`/clients/${clientId}`);
 }
+
+/** Undo of the soft delete: the client goes back to the default listing. */
+export function reactivateClient(clientId: string): Promise<Client> {
+  return api.post<Client>(`/clients/${clientId}/reactivate`, {});
+}

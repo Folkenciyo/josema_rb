@@ -34,3 +34,8 @@ def update_client(db: Session, client_id: uuid.UUID, data: ClientUpdate) -> Clie
 def deactivate_client(db: Session, client_id: uuid.UUID) -> Client:
     client = get_client(db, client_id)
     return client_repository.soft_delete(db, client)
+
+
+def reactivate_client(db: Session, client_id: uuid.UUID) -> Client:
+    client = get_client(db, client_id)
+    return client_repository.restore(db, client)

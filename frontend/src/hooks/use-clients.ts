@@ -53,3 +53,14 @@ export function useDeactivateClient() {
     },
   });
 }
+
+export function useReactivateClient() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (clientId: string) => clientsApi.reactivateClient(clientId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["clients"] });
+    },
+  });
+}

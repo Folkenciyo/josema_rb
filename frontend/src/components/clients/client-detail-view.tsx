@@ -3,9 +3,14 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, MessageCircle, Pencil, UserMinus } from "lucide-react";
+import { ArrowLeft, MessageCircle, Pencil, RotateCcw, UserMinus } from "lucide-react";
 
-import { useClient, useDeactivateClient, useUpdateClient } from "@/hooks/use-clients";
+import {
+  useClient,
+  useDeactivateClient,
+  useReactivateClient,
+  useUpdateClient,
+} from "@/hooks/use-clients";
 import { useCreateTrainingPlan } from "@/hooks/use-training-plans";
 import { useCreateDietPlan } from "@/hooks/use-diet-plans";
 import { PlanForm } from "@/components/plans/plan-form";
@@ -135,6 +140,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
   const { data: client, isPending, error } = useClient(clientId);
   const updateClient = useUpdateClient(clientId);
   const deactivateClient = useDeactivateClient();
+  const reactivateClient = useReactivateClient();
   const createTrainingPlan = useCreateTrainingPlan(clientId);
   const createDietPlan = useCreateDietPlan(clientId);
 
@@ -177,7 +183,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
               <Pencil className="size-4" />
               Editar
             </Button>
-            {client.active && (
+            {client.active ? (
               <Button
                 variant="danger"
                 onClick={handleDeactivate}
@@ -185,6 +191,14 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
               >
                 <UserMinus className="size-4" />
                 Desactivar
+              </Button>
+            ) : (
+              <Button
+                onClick={() => reactivateClient.mutate(clientId)}
+                loading={reactivateClient.isPending}
+              >
+                <RotateCcw className="size-4" />
+                Reactivar
               </Button>
             )}
           </div>
@@ -197,7 +211,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
         </div>
       )}
 
-      <ErrorMessage error={deactivateClient.error} />
+      <ErrorMessage error={deactivateClient.error ?? reactivateClient.error} />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="flex flex-col gap-4 lg:col-span-1">
