@@ -5,12 +5,21 @@ import { WeightChart } from "@/components/clients/weight-chart";
 import { Card } from "@/components/ui/card";
 import { formatDate } from "@/lib/format";
 import { formatWeight, summarizeProgress } from "@/lib/measurements/progress";
+import { PortalWeighInForm } from "./portal-weigh-in-form";
 import {
   PortalHeader,
   PortalLoading,
   PortalNotice,
   PortalPage,
 } from "./portal-shell";
+
+/** Local ISO day: `toISOString()` would jump to the previous day west of UTC. */
+function todayIso(): string {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${now.getFullYear()}-${month}-${day}`;
+}
 
 function DeltaLabel({ kilos }: { kilos: number | null }) {
   if (kilos === null || kilos === 0) {
@@ -50,15 +59,20 @@ export function PortalWeightView({ token }: { token: string }) {
   }
 
   const progress = summarizeProgress(measurements);
+  const today = todayIso();
+  const weighedToday =
+    measurements.find((entry) => entry.measured_on === today)?.weight_kg ?? null;
 
   return (
     <PortalPage>
       <PortalHeader title="Mi peso" />
 
+      <PortalWeighInForm token={token} weighedToday={weighedToday} />
+
       {measurements.length === 0 ? (
         <PortalNotice
           title="Todavía sin pesajes"
-          description="Cuando tu entrenador apunte tu primer peso aparecerá aquí, con su gráfica."
+          description="Apunta el primero aquí arriba y empezarás a ver tu evolución."
         />
       ) : (
         <>

@@ -38,6 +38,18 @@ export function usePortalMeasurements(token: string) {
   });
 }
 
+export function useRecordPortalWeighIn(token: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (weightKg: number) =>
+      portalApi.recordPortalWeighIn(token, weightKg),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["portal", token] });
+    },
+  });
+}
+
 export function useIssuePortalToken(clientId: string) {
   const queryClient = useQueryClient();
 

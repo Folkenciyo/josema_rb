@@ -8,7 +8,11 @@ from app.core.db import get_db
 from app.core.rate_limit import SlidingWindowLimiter
 from app.models import Client
 from app.schemas.export import DietPlanDocument, TrainingPlanDocument
-from app.schemas.portal import PortalClientOut, PortalWeighInOut
+from app.schemas.portal import (
+    PortalClientOut,
+    PortalWeighInCreate,
+    PortalWeighInOut,
+)
 from app.services import docx_export, export_service, pdf_export, portal_service
 
 DOCX_MEDIA_TYPE = (
@@ -19,6 +23,9 @@ DOCX_MEDIA_TYPE = (
 # someone hammering the endpoint. Only failed attempts count, so a client
 # reloading their own portal all day is never locked out.
 portal_limiter = SlidingWindowLimiter(max_attempts=20, window_seconds=300)
+# Writes are capped per link, not per IP: correcting today's weight a few times
+# is normal, a script hammering the endpoint is not.
+weigh_in_limiter = SlidingWindowLimiter(max_attempts=20, window_seconds=3600)
 
 router = APIRouter(prefix="/api/portal", tags=["portal"])
 
@@ -50,7 +57,7 @@ def get_portal_client(
     try:
         return portal_service.resolve_token(db, token)
     except HTTPException:
-        portal_limiter.record_failure(caller)
+        portal_limiter.record_attempt(caller)
         raise
 
 
@@ -92,6 +99,24 @@ def list_portal_measurements(
     client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
 ) -> list[PortalWeighInOut]:
     return portal_service.list_weigh_ins(db, client)
+
+
+@router.post("/{token}/measurements", response_model=PortalWeighInOut)
+def record_portal_weigh_in(
+    token: str,
+    payload: PortalWeighInCreate,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
+) -> PortalWeighInOut:
+    """The single write the portal allows, and always on today's date."""
+    if weigh_in_limiter.is_blocked(token):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many entries, try again later",
+        )
+    weigh_in_limiter.record_attempt(token)
+
+    return portal_service.record_weigh_in(db, client, payload.weight_kg)
 
 
 @router.get("/{token}/training-plan/export/pdf")

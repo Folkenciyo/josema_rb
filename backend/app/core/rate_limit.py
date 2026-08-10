@@ -5,6 +5,9 @@ from collections import defaultdict, deque
 class SlidingWindowLimiter:
     """In-memory attempt counter over a moving time window.
 
+    What counts as an attempt is up to the caller: the token guard only records
+    the failures, the write guard records every accepted write.
+
     The API runs as a single container, so keeping this in process is enough;
     if it ever scales horizontally this has to move to Redis, because each
     replica would otherwise count on its own.
@@ -18,7 +21,7 @@ class SlidingWindowLimiter:
     def is_blocked(self, key: str) -> bool:
         return len(self._recent(key)) >= self._max_attempts
 
-    def record_failure(self, key: str) -> None:
+    def record_attempt(self, key: str) -> None:
         self._recent(key).append(time.monotonic())
 
     def reset(self, key: str | None = None) -> None:

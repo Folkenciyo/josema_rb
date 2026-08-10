@@ -1,11 +1,11 @@
 import secrets
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.models import Client, DietPlan, TrainingPlan
+from app.models import Client, ClientMeasurement, DietPlan, TrainingPlan
 from app.repositories import (
     client_repository,
     diet_plan_repository,
@@ -74,6 +74,40 @@ def build_portal_view(db: Session, client: Client) -> PortalClientOut:
             diet_plan_repository.get_active_for_client(db, client.id) is not None
         ),
         weigh_in_count=len(measurements),
+    )
+
+
+def record_weigh_in(db: Session, client: Client, weight_kg: float) -> PortalWeighInOut:
+    """Save today's weight, replacing today's entry if the client corrects it.
+
+    Overwriting instead of refusing is deliberate: from a phone, a typo would
+    otherwise leave the client stuck with a wrong number they cannot edit.
+    """
+    today = date.today()
+    existing = measurement_repository.get_by_day(db, client.id, today)
+
+    if existing is not None:
+        measurement = measurement_repository.update(
+            db, existing, {"weight_kg": weight_kg}
+        )
+    else:
+        measurement = measurement_repository.create(
+            db,
+            client_id=client.id,
+            data={"measured_on": today, "weight_kg": weight_kg},
+        )
+
+    return _to_weigh_in(measurement, client)
+
+
+def _to_weigh_in(measurement: ClientMeasurement, client: Client) -> PortalWeighInOut:
+    return PortalWeighInOut(
+        id=measurement.id,
+        measured_on=measurement.measured_on,
+        weight_kg=float(measurement.weight_kg),
+        bmi=measurement_service.calculate_bmi(
+            float(measurement.weight_kg), client.height_cm
+        ),
     )
 
 

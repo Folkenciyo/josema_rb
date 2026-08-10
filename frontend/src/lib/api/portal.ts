@@ -35,6 +35,16 @@ export function getPortalMeasurements(token: string): Promise<WeighIn[]> {
   return api.get<WeighIn[]>(`/portal/${token}/measurements`);
 }
 
+/** The only write the portal allows, and always dated today by the backend. */
+export function recordPortalWeighIn(
+  token: string,
+  weightKg: number,
+): Promise<WeighIn> {
+  return api.post<WeighIn>(`/portal/${token}/measurements`, {
+    weight_kg: weightKg,
+  });
+}
+
 export type PortalPlanKind = "training-plan" | "diet-plan";
 export type ExportFormat = "pdf" | "docx";
 

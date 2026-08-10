@@ -49,6 +49,10 @@ está pensado para el móvil: su rutina con las fotos de cada ejercicio, sus men
 macros del día y su histórico de peso con gráfica, más la descarga en PDF o Word. Todo
 en solo lectura y siempre al día, porque sale de la misma base que ve el entrenador.
 
+Lo único que el cliente puede escribir es su peso del día, y siempre con la fecha de
+hoy: si lo apunta dos veces, la segunda corrige a la primera en lugar de duplicar el
+día. Las fotos las sigue subiendo solo el entrenador.
+
 El token es de 32 bytes, no caduca, se regenera cuando hace falta —el anterior muere en
 ese mismo instante— y se anula de un clic. Ninguna ruta del portal acepta un
 identificador de cliente: todo se resuelve desde el token, así que un enlace nunca puede
@@ -96,7 +100,7 @@ que el destino se quedaba congelado dentro del contenedor.
 | Imágenes        | Pillow                                                                                   |
 | Infraestructura | Docker Compose · Dokploy · Traefik                                                       |
 
-En números: **71 endpoints**, **17 tablas**, 6 migraciones y ~18.000 líneas entre
+En números: **72 endpoints**, **17 tablas**, 6 migraciones y ~18.000 líneas entre
 `backend/app` y `frontend/src`.
 
 ---
@@ -184,13 +188,13 @@ BACKEND_URL=http://localhost:8000 npm run dev
 
 ```bash
 # Backend
-uv run pytest                 # 84 tests
+uv run pytest                 # 89 tests
 uv run ruff check .
 uv run alembic upgrade head
 uv run alembic revision -m "..."
 
 # Frontend
-npm run test                  # 126 tests
+npm run test                  # 131 tests
 npm run lint
 npm run build
 npx tsc --noEmit

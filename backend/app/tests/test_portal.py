@@ -1,9 +1,10 @@
 from collections.abc import Generator
+from datetime import date
 
 import pytest
 from fastapi.testclient import TestClient
 
-from app.api.portal import portal_limiter
+from app.api.portal import portal_limiter, weigh_in_limiter
 from app.models import Exercise
 
 
@@ -11,8 +12,10 @@ from app.models import Exercise
 def clean_limiter() -> Generator[None, None, None]:
     """The limiter lives in process, so one test must not spend another's quota."""
     portal_limiter.reset()
+    weigh_in_limiter.reset()
     yield
     portal_limiter.reset()
+    weigh_in_limiter.reset()
 
 
 def _client_with_token(
@@ -267,6 +270,87 @@ def test_the_client_can_download_their_own_plan_in_word(
 
     assert response.status_code == 200
     assert response.content[:2] == b"PK"  # a .docx is a zip archive
+
+
+def test_the_client_records_todays_weight_from_the_portal(
+    authenticated_client: TestClient, client: TestClient
+) -> None:
+    client_id, token = _client_with_token(authenticated_client)
+    authenticated_client.patch(f"/api/clients/{client_id}", json={"height_cm": 180})
+
+    client.cookies.clear()
+    response = client.post(
+        f"/api/portal/{token}/measurements", json={"weight_kg": 79.4}
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["weight_kg"] == 79.4
+    assert body["measured_on"] == date.today().isoformat()
+    assert body["bmi"] == 24.5
+
+
+def test_weighing_in_twice_the_same_day_corrects_the_entry(
+    authenticated_client: TestClient,
+) -> None:
+    client_id, token = _client_with_token(authenticated_client)
+
+    authenticated_client.post(
+        f"/api/portal/{token}/measurements", json={"weight_kg": 88}
+    )
+    authenticated_client.post(
+        f"/api/portal/{token}/measurements", json={"weight_kg": 80.5}
+    )
+
+    history = authenticated_client.get(f"/api/portal/{token}/measurements").json()
+    assert [row["weight_kg"] for row in history] == [80.5]
+
+    # And the trainer sees the same single entry, not two.
+    trainer_view = authenticated_client.get(
+        f"/api/clients/{client_id}/measurements"
+    ).json()
+    assert len(trainer_view) == 1
+
+
+def test_an_absurd_weight_is_rejected(authenticated_client: TestClient) -> None:
+    _, token = _client_with_token(authenticated_client)
+
+    too_heavy = authenticated_client.post(
+        f"/api/portal/{token}/measurements", json={"weight_kg": 900}
+    )
+    negative = authenticated_client.post(
+        f"/api/portal/{token}/measurements", json={"weight_kg": -5}
+    )
+
+    assert too_heavy.status_code == 422
+    assert negative.status_code == 422
+
+
+def test_a_dead_link_cannot_write_either(authenticated_client: TestClient) -> None:
+    client_id, token = _client_with_token(authenticated_client)
+    authenticated_client.delete(f"/api/clients/{client_id}/portal-token")
+
+    response = authenticated_client.post(
+        f"/api/portal/{token}/measurements", json={"weight_kg": 75}
+    )
+
+    assert response.status_code == 404
+
+
+def test_the_portal_writes_nothing_else(authenticated_client: TestClient) -> None:
+    """The client may only touch their weight — no other verb is exposed."""
+    _, token = _client_with_token(authenticated_client)
+
+    assert (
+        authenticated_client.post(
+            f"/api/portal/{token}/training-plan", json={"title": "Mi plan"}
+        ).status_code
+        == 405
+    )
+    assert (
+        authenticated_client.delete(f"/api/portal/{token}/measurements").status_code
+        == 405
+    )
 
 
 def test_managing_the_token_requires_the_trainer_session(

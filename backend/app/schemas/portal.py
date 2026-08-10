@@ -1,7 +1,7 @@
 import uuid
 from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class PortalTokenOut(BaseModel):
@@ -12,6 +12,12 @@ class PortalTokenOut(BaseModel):
     portal_token_issued_at: datetime | None
 
     model_config = {"from_attributes": True}
+
+
+class PortalWeighInCreate(BaseModel):
+    """The only thing a client may write. The day is always today, never chosen."""
+
+    weight_kg: float = Field(gt=0, le=500)
 
 
 class PortalWeighInOut(BaseModel):
