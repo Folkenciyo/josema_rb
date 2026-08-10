@@ -4,6 +4,7 @@ from typing import Any
 from sqlalchemy.orm import Session, selectinload
 
 from app.models import TrainingDay, TrainingDayExercise, TrainingPlan, TrainingWeek
+from app.models.training_plan import PlanStatus
 
 _DAY_LOADER = selectinload(TrainingDay.exercises).selectinload(
     TrainingDayExercise.exercise
@@ -19,6 +20,20 @@ def list_by_client(db: Session, client_id: uuid.UUID) -> list[TrainingPlan]:
         .filter(TrainingPlan.client_id == client_id)
         .order_by(TrainingPlan.created_at.desc())
         .all()
+    )
+
+
+def get_active_for_client(db: Session, client_id: uuid.UUID) -> TrainingPlan | None:
+    """The plan the client is training right now — the newest one still active."""
+    return (
+        db.query(TrainingPlan)
+        .options(_DETAIL_LOADER)
+        .filter(
+            TrainingPlan.client_id == client_id,
+            TrainingPlan.status == PlanStatus.ACTIVE,
+        )
+        .order_by(TrainingPlan.created_at.desc())
+        .first()
     )
 
 

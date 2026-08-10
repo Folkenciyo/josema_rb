@@ -2,13 +2,13 @@
 
 import { buildChartGeometry, formatWeight } from "@/lib/measurements/progress";
 import { formatDate } from "@/lib/format";
-import type { Measurement } from "@/types/measurement";
+import type { WeighIn } from "@/types/measurement";
 
 const VIEWBOX_WIDTH = 300;
 const VIEWBOX_HEIGHT = 80;
 
 /** Hand-rolled SVG: a chart library would be a dependency for one sparkline. */
-export function WeightChart({ measurements }: { measurements: Measurement[] }) {
+export function WeightChart({ measurements }: { measurements: WeighIn[] }) {
   const geometry = buildChartGeometry(
     measurements,
     VIEWBOX_WIDTH,

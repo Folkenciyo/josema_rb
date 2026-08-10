@@ -1,8 +1,8 @@
 import uuid
-from datetime import date
+from datetime import date, datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, Date, ForeignKey, Numeric, String, Text
+from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from app.models.diet_plan import DietPlan
     from app.models.measurement import ClientMeasurement
     from app.models.photo import ClientPhoto
+    from app.models.questionnaire import ClientAnswer
     from app.models.training_plan import TrainingPlan
 
 
@@ -33,6 +34,15 @@ class Client(Base, TimestampMixin):
     goals: Mapped[str | None] = mapped_column(Text)
     notes: Mapped[str | None] = mapped_column(Text)
     active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    # Secret behind the client portal link. Stored in the clear on purpose: the
+    # trainer has to be able to resend the very same link months later, which a
+    # hash would make impossible. It never expires and can be revoked at will.
+    portal_token: Mapped[str | None] = mapped_column(
+        String(64), unique=True, index=True
+    )
+    portal_token_issued_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True)
+    )
 
     training_plans: Mapped[list["TrainingPlan"]] = relationship(back_populates="client")
     diet_plans: Mapped[list["DietPlan"]] = relationship(back_populates="client")
@@ -45,4 +55,10 @@ class Client(Base, TimestampMixin):
         back_populates="client",
         cascade="all, delete-orphan",
         passive_deletes=True,
+    )
+    answers: Mapped[list["ClientAnswer"]] = relationship(
+        back_populates="client",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        order_by="ClientAnswer.order_index",
     )

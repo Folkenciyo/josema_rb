@@ -43,6 +43,39 @@ Historial de pesajes con IMC y gráfica de evolución, y fotos de progreso front
 lateral y trasera por fecha, con galería y un comparador que enfrenta dos momentos
 pose con pose, mostrando bajo cada foto el peso de ese día.
 
+**Portal del cliente**
+Cada cliente tiene un enlace privado propio (`/p/<token>`) que abre sin contraseña y
+está pensado para el móvil: su rutina con las fotos de cada ejercicio, sus menús con las
+macros del día y su histórico de peso con gráfica, más la descarga en PDF o Word. Todo
+en solo lectura y siempre al día, porque sale de la misma base que ve el entrenador.
+
+El cliente solo puede escribir dos cosas: su peso del día —siempre con la fecha de hoy,
+y si lo apunta dos veces la segunda corrige a la primera en lugar de duplicar el día— y
+el **cuestionario inicial**. Las fotos las sigue subiendo solo el entrenador.
+
+**Cuestionario inicial**
+Las preguntas las escribe el entrenador en Ajustes, las que quiera y en el orden que
+quiera, eligiendo el tipo de respuesta (corta, larga, número, sí/no o una lista de
+opciones) y cuáles son obligatorias. El cliente lo rellena desde su enlace y puede
+volver y corregirlo. Cada respuesta guarda **la pregunta tal y como se le hizo**: si el
+entrenador reescribe o borra una pregunta después, lo ya contestado se queda intacto y
+solo pierde el vínculo con la pregunta viva.
+
+El enlace se entrega desde la propia ficha, por WhatsApp o por email. El mensaje sale ya
+montado con el nombre del cliente y su enlace, y **el entrenador escribe el suyo** en
+Ajustes con los comodines `{nombre}`, `{nombre_completo}`, `{enlace}` y `{entrenador}`,
+uno para WhatsApp y otro para el correo. Antes de enviar, el texto sigue siendo
+editable en la ficha para el retoque de ese cliente concreto, que no merece cambiar la
+plantilla. Vaciar un campo en Ajustes recupera el texto de fábrica. WhatsApp abre el
+chat con el borrador puesto y además deja el texto en el portapapeles, porque la
+aplicación de escritorio no siempre respeta el borrador.
+
+El token es de 32 bytes, no caduca, se regenera cuando hace falta —el anterior muere en
+ese mismo instante— y se anula de un clic. Ninguna ruta del portal acepta un
+identificador de cliente: todo se resuelve desde el token, así que un enlace nunca puede
+alcanzar los datos de otra persona. Las respuestas tampoco llevan ids internos ni las
+notas privadas del entrenador. Dar de baja a un cliente cierra su enlace sin tocarlo.
+
 **Entrega al cliente**
 Cualquier plan de entrenamiento o dieta se descarga en PDF o Word, con las imágenes
 de los ejercicios y los totales de macros por comida y por día.
@@ -84,7 +117,7 @@ que el destino se quedaba congelado dentro del contenedor.
 | Imágenes        | Pillow                                                                                   |
 | Infraestructura | Docker Compose · Dokploy · Traefik                                                       |
 
-En números: **59 endpoints**, **17 tablas**, 5 migraciones y ~18.000 líneas entre
+En números: **80 endpoints**, **19 tablas**, 8 migraciones y ~18.000 líneas entre
 `backend/app` y `frontend/src`.
 
 ---
@@ -100,6 +133,9 @@ erDiagram
     CLIENT ||--o{ DIET_PLAN : ""
     CLIENT ||--o{ MEASUREMENT : "pesajes"
     CLIENT ||--o{ PHOTO : "fotos"
+    CLIENT ||--o{ ANSWER : "cuestionario"
+    TRAINER ||--o{ QUESTION : "pregunta"
+    QUESTION |o--o{ ANSWER : "contestada (copia el enunciado)"
     TRAINING_PLAN ||--o{ TRAINING_WEEK : ""
     TRAINING_WEEK ||--o{ TRAINING_DAY : ""
     TRAINING_DAY ||--o{ DAY_EXERCISE : ""
@@ -172,13 +208,13 @@ BACKEND_URL=http://localhost:8000 npm run dev
 
 ```bash
 # Backend
-uv run pytest                 # 69 tests
+uv run pytest                 # 105 tests
 uv run ruff check .
 uv run alembic upgrade head
 uv run alembic revision -m "..."
 
 # Frontend
-npm run test                  # 123 tests
+npm run test                  # 144 tests
 npm run lint
 npm run build
 npx tsc --noEmit
@@ -249,6 +285,18 @@ expresa de producto.
 
 **La contraseña usa `bcrypt` directamente, sin `passlib`.**
 `passlib` está sin mantenimiento y es incompatible con bcrypt ≥ 4.1.
+
+**El token del portal se guarda en claro, no hasheado.**
+Un hash obligaría a regenerar el enlace cada vez que el entrenador quisiera volver a
+enviárselo al cliente meses después, que es justo el caso de uso. El token no da acceso
+a la cuenta del entrenador ni permite escribir nada, se anula de un clic y la página
+que abre lleva `noindex`. Si algún día se filtrase la base de datos habría que
+regenerar todos los enlaces, y con eso quedaría cerrado.
+
+**El límite de intentos del portal vive en memoria del proceso.**
+Veinte fallos por IP cada cinco minutos, contando solo los que fallan, así que un
+cliente recargando su enlace no se bloquea nunca. Si la API llegara a correr en varias
+réplicas habría que moverlo a Redis: cada réplica contaría por su cuenta.
 
 ---
 

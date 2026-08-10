@@ -29,6 +29,12 @@ describe("toWhatsAppHref", () => {
     expect(toWhatsAppHref("12345")).toBeNull();
     expect(toWhatsAppHref(null)).toBeNull();
   });
+
+  it("prefills the draft when given a message", () => {
+    expect(toWhatsAppHref("600123456", "Hola Ana: https://x.test/p/abc")).toBe(
+      "https://wa.me/34600123456?text=Hola%20Ana%3A%20https%3A%2F%2Fx.test%2Fp%2Fabc",
+    );
+  });
 });
 
 describe("toMailtoHref", () => {
@@ -39,5 +45,16 @@ describe("toMailtoHref", () => {
   it("returns null without an address", () => {
     expect(toMailtoHref(null)).toBeNull();
     expect(toMailtoHref("")).toBeNull();
+  });
+
+  it("carries subject and body, with real spaces and line breaks", () => {
+    const href = toMailtoHref("ana@example.com", {
+      subject: "Tu seguimiento personal",
+      body: "Hola Ana:\n\nAquí tienes tu enlace.",
+    });
+
+    expect(href).toContain("subject=Tu%20seguimiento%20personal");
+    expect(href).toContain("Hola%20Ana%3A%0A%0AAqu%C3%AD%20tienes");
+    expect(href).not.toContain("+");
   });
 });

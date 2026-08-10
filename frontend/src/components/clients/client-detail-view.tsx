@@ -26,6 +26,8 @@ import { calculateAge, formatDate } from "@/lib/format";
 import { SEX_LABELS, type ClientDetail, type Sex } from "@/types/client";
 import { ClientForm } from "./client-form";
 import { MeasurementsCard } from "./measurements-card";
+import { PortalAccessCard } from "./portal-access-card";
+import { QuestionnaireCard } from "./questionnaire-card";
 import { PhotosSummaryCard } from "./photos-summary-card";
 import { PlanHistoryCard } from "./plan-history-card";
 
@@ -220,6 +222,13 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             clientId={clientId}
             hasHeight={Boolean(client.height_cm)}
           />
+          <PortalAccessCard
+            clientId={clientId}
+            token={client.portal_token}
+            issuedAt={client.portal_token_issued_at}
+            phone={client.phone}
+            email={client.email}
+          />
         </div>
         <div className="flex flex-col gap-4 lg:col-span-2">
           <PlanHistoryCard
@@ -237,6 +246,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             onCreate={() => setDietPlanOpen(true)}
           />
           <PhotosSummaryCard clientId={clientId} />
+          <QuestionnaireCard clientId={clientId} />
         </div>
       </div>
 

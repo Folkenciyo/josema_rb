@@ -1,4 +1,4 @@
-import type { Measurement } from "@/types/measurement";
+import type { WeighIn } from "@/types/measurement";
 
 export type BmiCategory =
   | "underweight"
@@ -30,8 +30,8 @@ export function bmiCategory(bmi: number | null): BmiCategory | null {
   return "obese";
 }
 
-export interface WeightProgress {
-  latest: Measurement | null;
+export interface WeightProgress<T extends WeighIn = WeighIn> {
+  latest: T | null;
   /** Kilos gained (positive) or lost (negative) since the previous weigh-in. */
   sincePrevious: number | null;
   /** Kilos gained or lost since the very first weigh-in on record. */
@@ -42,7 +42,9 @@ export interface WeightProgress {
  * Measurements arrive newest first from the API; nothing here reorders or
  * mutates the input.
  */
-export function summarizeProgress(measurements: Measurement[]): WeightProgress {
+export function summarizeProgress<T extends WeighIn>(
+  measurements: T[],
+): WeightProgress<T> {
   const [latest, previous] = measurements;
   const first = measurements[measurements.length - 1];
 
@@ -60,14 +62,14 @@ export function summarizeProgress(measurements: Measurement[]): WeightProgress {
   };
 }
 
-export interface ChartPoint {
+export interface ChartPoint<T extends WeighIn = WeighIn> {
   x: number;
   y: number;
-  measurement: Measurement;
+  measurement: T;
 }
 
-export interface ChartGeometry {
-  points: ChartPoint[];
+export interface ChartGeometry<T extends WeighIn = WeighIn> {
+  points: ChartPoint<T>[];
   path: string;
   minWeight: number;
   maxWeight: number;
@@ -79,11 +81,11 @@ const CHART_PADDING = 4;
  * Maps weigh-ins onto a viewBox of `width` x `height`, oldest on the left.
  * A flat series is drawn through the middle instead of dividing by zero.
  */
-export function buildChartGeometry(
-  measurements: Measurement[],
+export function buildChartGeometry<T extends WeighIn>(
+  measurements: T[],
   width: number,
   height: number,
-): ChartGeometry | null {
+): ChartGeometry<T> | null {
   if (measurements.length < 2) {
     return null;
   }
