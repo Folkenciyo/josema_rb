@@ -1,0 +1,37 @@
+"use client";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import * as portalApi from "@/lib/api/portal";
+import { queryKeys } from "@/lib/query/keys";
+
+export function usePortalHome(token: string) {
+  return useQuery({
+    queryKey: queryKeys.portalHome(token),
+    queryFn: () => portalApi.getPortalHome(token),
+    // A wrong link is wrong forever; retrying only burns the rate limit.
+    retry: false,
+  });
+}
+
+export function useIssuePortalToken(clientId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => portalApi.issuePortalToken(clientId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.client(clientId) });
+    },
+  });
+}
+
+export function useRevokePortalToken(clientId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => portalApi.revokePortalToken(clientId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.client(clientId) });
+    },
+  });
+}

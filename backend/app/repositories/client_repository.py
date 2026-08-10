@@ -22,6 +22,10 @@ def get_by_id(db: Session, client_id: uuid.UUID) -> Client | None:
     )
 
 
+def get_by_portal_token(db: Session, token: str) -> Client | None:
+    return db.query(Client).filter(Client.portal_token == token).first()
+
+
 def create(db: Session, *, trainer_id: uuid.UUID, data: dict[str, Any]) -> Client:
     client = Client(trainer_id=trainer_id, **data)
     db.add(client)

@@ -1,8 +1,8 @@
 import uuid
-from datetime import date
+from datetime import date, datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, Date, ForeignKey, Numeric, String, Text
+from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -33,6 +33,15 @@ class Client(Base, TimestampMixin):
     goals: Mapped[str | None] = mapped_column(Text)
     notes: Mapped[str | None] = mapped_column(Text)
     active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    # Secret behind the client portal link. Stored in the clear on purpose: the
+    # trainer has to be able to resend the very same link months later, which a
+    # hash would make impossible. It never expires and can be revoked at will.
+    portal_token: Mapped[str | None] = mapped_column(
+        String(64), unique=True, index=True
+    )
+    portal_token_issued_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True)
+    )
 
     training_plans: Mapped[list["TrainingPlan"]] = relationship(back_populates="client")
     diet_plans: Mapped[list["DietPlan"]] = relationship(back_populates="client")

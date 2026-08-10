@@ -20,6 +20,9 @@ export interface Client {
 export interface ClientDetail extends Client {
   training_plans: PlanSummary[];
   diet_plans: PlanSummary[];
+  /** Only present on the detail endpoint: the listing carries no secrets. */
+  portal_token: string | null;
+  portal_token_issued_at: string | null;
 }
 
 export interface ClientInput {

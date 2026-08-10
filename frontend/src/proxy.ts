@@ -3,6 +3,8 @@ import type { NextRequest } from "next/server";
 
 const SESSION_COOKIE = "josema_session";
 const LOGIN_PATH = "/login";
+/** The client portal: opened by a token in the URL, never by a trainer session. */
+const PORTAL_PREFIX = "/p/";
 
 /**
  * Backend origin, read on every request. It must NOT be resolved in `next.config.ts`:
@@ -33,6 +35,11 @@ export function proxy(request: NextRequest) {
 
   const hasSession = request.cookies.has(SESSION_COOKIE);
   const isLoginRoute = pathname === LOGIN_PATH;
+  const isPortalRoute = pathname.startsWith(PORTAL_PREFIX);
+
+  if (isPortalRoute) {
+    return NextResponse.next();
+  }
 
   if (!hasSession && !isLoginRoute) {
     const url = request.nextUrl.clone();

@@ -52,3 +52,6 @@ class PlanSummary(BaseModel):
 class ClientDetailOut(ClientOut):
     training_plans: list[PlanSummary] = []
     diet_plans: list[PlanSummary] = []
+    # Only on the detail view: the listing has no business carrying secrets.
+    portal_token: str | None = None
+    portal_token_issued_at: datetime | None = None

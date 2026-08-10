@@ -5,4 +5,5 @@ export const queryKeys = {
   client: (clientId: string) => ["clients", clientId] as const,
   measurements: (clientId: string) => ["clients", clientId, "measurements"] as const,
   photos: (clientId: string) => ["clients", clientId, "photos"] as const,
+  portalHome: (token: string) => ["portal", token] as const,
 };
