@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from app.models.diet_plan import DietPlan
     from app.models.measurement import ClientMeasurement
     from app.models.photo import ClientPhoto
+    from app.models.questionnaire import ClientAnswer
     from app.models.training_plan import TrainingPlan
 
 
@@ -54,4 +55,10 @@ class Client(Base, TimestampMixin):
         back_populates="client",
         cascade="all, delete-orphan",
         passive_deletes=True,
+    )
+    answers: Mapped[list["ClientAnswer"]] = relationship(
+        back_populates="client",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        order_by="ClientAnswer.order_index",
     )

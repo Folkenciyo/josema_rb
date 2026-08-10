@@ -15,6 +15,7 @@ from app.api.measurements import router as measurements_router
 from app.api.menus import router as menus_router
 from app.api.photos import router as photos_router
 from app.api.portal import router as portal_router
+from app.api.questionnaire import router as questionnaire_router
 from app.api.settings import router as settings_router
 from app.api.training_plans import router as training_plans_router
 from app.core.config import get_settings
@@ -42,6 +43,7 @@ app.mount(
 app.include_router(auth_router)
 app.include_router(alerts_router)
 app.include_router(settings_router)
+app.include_router(questionnaire_router)
 app.include_router(clients_router)
 app.include_router(portal_router)
 app.include_router(measurements_router)

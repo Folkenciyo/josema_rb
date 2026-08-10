@@ -6,14 +6,21 @@ from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.core.rate_limit import SlidingWindowLimiter
-from app.models import Client
+from app.models import Client, Trainer
 from app.schemas.export import DietPlanDocument, TrainingPlanDocument
 from app.schemas.portal import (
     PortalClientOut,
     PortalWeighInCreate,
     PortalWeighInOut,
 )
-from app.services import docx_export, export_service, pdf_export, portal_service
+from app.schemas.questionnaire import PortalQuestionnaireOut, SubmitAnswersRequest
+from app.services import (
+    docx_export,
+    export_service,
+    pdf_export,
+    portal_service,
+    questionnaire_service,
+)
 
 DOCX_MEDIA_TYPE = (
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -59,6 +66,11 @@ def get_portal_client(
     except HTTPException:
         portal_limiter.record_attempt(caller)
         raise
+
+
+def _trainer_of(db: Session, client: Client) -> Trainer:
+    """The questionnaire belongs to the trainer, reached through the client."""
+    return db.query(Trainer).filter(Trainer.id == client.trainer_id).one()
 
 
 def _download(content: bytes, *, media_type: str, filename: str) -> StreamingResponse:
@@ -117,6 +129,35 @@ def record_portal_weigh_in(
     weigh_in_limiter.record_attempt(token)
 
     return portal_service.record_weigh_in(db, client, payload.weight_kg)
+
+
+@router.get("/{token}/questionnaire", response_model=PortalQuestionnaireOut)
+def get_portal_questionnaire(
+    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+) -> PortalQuestionnaireOut:
+    return questionnaire_service.build_portal_view(
+        db, _trainer_of(db, client), client
+    )
+
+
+@router.put("/{token}/questionnaire", response_model=PortalQuestionnaireOut)
+def submit_portal_questionnaire(
+    token: str,
+    payload: SubmitAnswersRequest,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
+) -> PortalQuestionnaireOut:
+    """The other thing the client may write, besides today's weight."""
+    if weigh_in_limiter.is_blocked(token):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many entries, try again later",
+        )
+    weigh_in_limiter.record_attempt(token)
+
+    return questionnaire_service.submit_answers(
+        db, _trainer_of(db, client), client, payload.answers
+    )
 
 
 @router.get("/{token}/training-plan/export/pdf")

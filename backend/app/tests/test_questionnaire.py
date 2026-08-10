@@ -1,0 +1,190 @@
+from fastapi.testclient import TestClient
+
+QUESTIONS = {
+    "questions": [
+        {"text": "¿Has entrenado antes?", "kind": "yes_no", "required": True},
+        {
+            "text": "¿Tienes alguna lesión?",
+            "kind": "long_text",
+            "help_text": "Cuéntame cuándo fue y si sigue molestando.",
+        },
+        {
+            "text": "¿Cuántos días puedes entrenar?",
+            "kind": "choice",
+            "options": ["2", "3", "4", "5 o más"],
+            "required": True,
+        },
+    ]
+}
+
+
+def _client_with_token(api: TestClient, name: str = "Cliente Cuestionario") -> str:
+    client_id = api.post("/api/clients", json={"full_name": name}).json()["id"]
+    return api.post(f"/api/clients/{client_id}/portal-token").json()["portal_token"]
+
+
+def _set_questions(api: TestClient) -> list[dict]:
+    response = api.put("/api/settings/questionnaire", json=QUESTIONS)
+    assert response.status_code == 200
+    return response.json()
+
+
+def test_the_trainer_writes_the_questions_and_their_order(
+    authenticated_client: TestClient,
+) -> None:
+    stored = _set_questions(authenticated_client)
+
+    assert [question["text"] for question in stored] == [
+        "¿Has entrenado antes?",
+        "¿Tienes alguna lesión?",
+        "¿Cuántos días puedes entrenar?",
+    ]
+    assert [question["order_index"] for question in stored] == [0, 1, 2]
+    assert stored[2]["options"] == ["2", "3", "4", "5 o más"]
+
+
+def test_saving_again_replaces_the_whole_questionnaire(
+    authenticated_client: TestClient,
+) -> None:
+    _set_questions(authenticated_client)
+
+    stored = authenticated_client.put(
+        "/api/settings/questionnaire",
+        json={"questions": [{"text": "¿Alergias?", "kind": "short_text"}]},
+    ).json()
+
+    assert len(stored) == 1
+    assert stored[0]["text"] == "¿Alergias?"
+
+
+def test_a_choice_question_without_options_is_refused(
+    authenticated_client: TestClient,
+) -> None:
+    response = authenticated_client.put(
+        "/api/settings/questionnaire",
+        json={"questions": [{"text": "¿Cuántos días?", "kind": "choice"}]},
+    )
+
+    assert response.status_code == 422
+
+
+def test_the_client_sees_the_questionnaire_and_answers_it(
+    authenticated_client: TestClient, client: TestClient
+) -> None:
+    questions = _set_questions(authenticated_client)
+    token = _client_with_token(authenticated_client, "Elena Cuestionario")
+
+    client.cookies.clear()
+    blank = client.get(f"/api/portal/{token}/questionnaire").json()
+    assert [question["text"] for question in blank["questions"]] == [
+        question["text"] for question in questions
+    ]
+    assert blank["completed_at"] is None
+
+    filled = client.put(
+        f"/api/portal/{token}/questionnaire",
+        json={
+            "answers": [
+                {"question_id": questions[0]["id"], "answer": "Sí"},
+                {"question_id": questions[1]["id"], "answer": "Hombro izquierdo"},
+                {"question_id": questions[2]["id"], "answer": "4"},
+            ]
+        },
+    )
+
+    assert filled.status_code == 200
+    body = filled.json()
+    assert [question["answer"] for question in body["questions"]] == [
+        "Sí",
+        "Hombro izquierdo",
+        "4",
+    ]
+    assert body["completed_at"] is not None
+
+
+def test_a_required_question_cannot_be_left_blank(
+    authenticated_client: TestClient,
+) -> None:
+    questions = _set_questions(authenticated_client)
+    token = _client_with_token(authenticated_client)
+
+    response = authenticated_client.put(
+        f"/api/portal/{token}/questionnaire",
+        json={"answers": [{"question_id": questions[1]["id"], "answer": "Ninguna"}]},
+    )
+
+    assert response.status_code == 422
+    assert "¿Has entrenado antes?" in response.json()["detail"]
+
+
+def test_answering_a_question_that_no_longer_exists_is_a_conflict(
+    authenticated_client: TestClient,
+) -> None:
+    questions = _set_questions(authenticated_client)
+    token = _client_with_token(authenticated_client)
+    stale_id = questions[0]["id"]
+
+    authenticated_client.put(
+        "/api/settings/questionnaire",
+        json={"questions": [{"text": "¿Alergias?", "kind": "short_text"}]},
+    )
+    response = authenticated_client.put(
+        f"/api/portal/{token}/questionnaire",
+        json={"answers": [{"question_id": stale_id, "answer": "Sí"}]},
+    )
+
+    assert response.status_code == 409
+
+
+def test_the_trainer_reads_the_answers_with_the_question_as_it_was_asked(
+    authenticated_client: TestClient,
+) -> None:
+    questions = _set_questions(authenticated_client)
+    client_id = authenticated_client.post(
+        "/api/clients", json={"full_name": "Ruben Respuestas"}
+    ).json()["id"]
+    token = authenticated_client.post(
+        f"/api/clients/{client_id}/portal-token"
+    ).json()["portal_token"]
+
+    authenticated_client.put(
+        f"/api/portal/{token}/questionnaire",
+        json={
+            "answers": [
+                {"question_id": questions[0]["id"], "answer": "No"},
+                {"question_id": questions[2]["id"], "answer": "3"},
+            ]
+        },
+    )
+    # The trainer rewrites the questionnaire afterwards.
+    authenticated_client.put(
+        "/api/settings/questionnaire",
+        json={"questions": [{"text": "¿Fumas?", "kind": "yes_no"}]},
+    )
+
+    view = authenticated_client.get(
+        f"/api/clients/{client_id}/questionnaire"
+    ).json()
+
+    texts = [answer["question_text"] for answer in view["answers"]]
+    assert "¿Has entrenado antes?" in texts
+    assert view["answers"][0]["answer"] == "No"
+    # The link to the live question is gone, the wording survived.
+    assert view["answers"][0]["question_id"] is None
+
+
+def test_the_questionnaire_of_the_portal_needs_no_session(
+    authenticated_client: TestClient, client: TestClient
+) -> None:
+    _set_questions(authenticated_client)
+    token = _client_with_token(authenticated_client)
+
+    client.cookies.clear()
+    assert client.get(f"/api/portal/{token}/questionnaire").status_code == 200
+
+
+def test_editing_the_questionnaire_requires_a_session(client: TestClient) -> None:
+    client.cookies.clear()
+
+    assert client.get("/api/settings/questionnaire").status_code == 401
+    assert client.put("/api/settings/questionnaire", json=QUESTIONS).status_code == 401

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Dumbbell, Home, Salad, Scale } from "lucide-react";
+import { ClipboardList, Dumbbell, Home, Salad, Scale } from "lucide-react";
 
 import { cn } from "@/lib/cn";
 import { portalPath } from "@/types/portal";
@@ -12,6 +12,7 @@ const ITEMS = [
   { segment: "/rutina", label: "Rutina", Icon: Dumbbell },
   { segment: "/dieta", label: "Dieta", Icon: Salad },
   { segment: "/peso", label: "Peso", Icon: Scale },
+  { segment: "/cuestionario", label: "Ficha", Icon: ClipboardList },
 ] as const;
 
 export function PortalNav({ token }: { token: string }) {

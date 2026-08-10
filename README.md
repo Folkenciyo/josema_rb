@@ -49,9 +49,17 @@ está pensado para el móvil: su rutina con las fotos de cada ejercicio, sus men
 macros del día y su histórico de peso con gráfica, más la descarga en PDF o Word. Todo
 en solo lectura y siempre al día, porque sale de la misma base que ve el entrenador.
 
-Lo único que el cliente puede escribir es su peso del día, y siempre con la fecha de
-hoy: si lo apunta dos veces, la segunda corrige a la primera en lugar de duplicar el
-día. Las fotos las sigue subiendo solo el entrenador.
+El cliente solo puede escribir dos cosas: su peso del día —siempre con la fecha de hoy,
+y si lo apunta dos veces la segunda corrige a la primera en lugar de duplicar el día— y
+el **cuestionario inicial**. Las fotos las sigue subiendo solo el entrenador.
+
+**Cuestionario inicial**
+Las preguntas las escribe el entrenador en Ajustes, las que quiera y en el orden que
+quiera, eligiendo el tipo de respuesta (corta, larga, número, sí/no o una lista de
+opciones) y cuáles son obligatorias. El cliente lo rellena desde su enlace y puede
+volver y corregirlo. Cada respuesta guarda **la pregunta tal y como se le hizo**: si el
+entrenador reescribe o borra una pregunta después, lo ya contestado se queda intacto y
+solo pierde el vínculo con la pregunta viva.
 
 El enlace se entrega desde la propia ficha, por WhatsApp o por email. El mensaje sale ya
 montado con el nombre del cliente y su enlace, y **el entrenador escribe el suyo** en
@@ -109,7 +117,7 @@ que el destino se quedaba congelado dentro del contenedor.
 | Imágenes        | Pillow                                                                                   |
 | Infraestructura | Docker Compose · Dokploy · Traefik                                                       |
 
-En números: **75 endpoints**, **17 tablas**, 7 migraciones y ~18.000 líneas entre
+En números: **80 endpoints**, **19 tablas**, 8 migraciones y ~18.000 líneas entre
 `backend/app` y `frontend/src`.
 
 ---
@@ -125,6 +133,9 @@ erDiagram
     CLIENT ||--o{ DIET_PLAN : ""
     CLIENT ||--o{ MEASUREMENT : "pesajes"
     CLIENT ||--o{ PHOTO : "fotos"
+    CLIENT ||--o{ ANSWER : "cuestionario"
+    TRAINER ||--o{ QUESTION : "pregunta"
+    QUESTION |o--o{ ANSWER : "contestada (copia el enunciado)"
     TRAINING_PLAN ||--o{ TRAINING_WEEK : ""
     TRAINING_WEEK ||--o{ TRAINING_DAY : ""
     TRAINING_DAY ||--o{ DAY_EXERCISE : ""
@@ -197,13 +208,13 @@ BACKEND_URL=http://localhost:8000 npm run dev
 
 ```bash
 # Backend
-uv run pytest                 # 96 tests
+uv run pytest                 # 105 tests
 uv run ruff check .
 uv run alembic upgrade head
 uv run alembic revision -m "..."
 
 # Frontend
-npm run test                  # 133 tests
+npm run test                  # 144 tests
 npm run lint
 npm run build
 npx tsc --noEmit

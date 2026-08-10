@@ -27,6 +27,7 @@ import { SEX_LABELS, type ClientDetail, type Sex } from "@/types/client";
 import { ClientForm } from "./client-form";
 import { MeasurementsCard } from "./measurements-card";
 import { PortalAccessCard } from "./portal-access-card";
+import { QuestionnaireCard } from "./questionnaire-card";
 import { PhotosSummaryCard } from "./photos-summary-card";
 import { PlanHistoryCard } from "./plan-history-card";
 
@@ -245,6 +246,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             onCreate={() => setDietPlanOpen(true)}
           />
           <PhotosSummaryCard clientId={clientId} />
+          <QuestionnaireCard clientId={clientId} />
         </div>
       </div>
 
