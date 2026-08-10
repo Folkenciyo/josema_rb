@@ -26,10 +26,13 @@ import { portalPath, type PortalInvite } from "@/types/portal";
 const COPIED_FEEDBACK_MS = 2000;
 
 /**
+ * The message arrives already written from the trainer's own template, and stays
+ * editable here for the one-off tweak that never belongs in the template.
+ *
  * WhatsApp on the desktop app does not always honour a prefilled draft, so the
- * message also goes to the clipboard: worst case the trainer pastes it.
+ * text also goes to the clipboard: worst case the trainer pastes it.
  */
-function SendButtons({
+function SendPanel({
   invite,
   phone,
   email,
@@ -38,43 +41,78 @@ function SendButtons({
   phone: string | null;
   email: string | null;
 }) {
-  const whatsAppHref = toWhatsAppHref(phone, invite.whatsapp_text);
+  const [message, setMessage] = useState(invite.whatsapp_text);
+  const [hasCopied, setCopied] = useState(false);
+
+  const whatsAppHref = toWhatsAppHref(phone, message);
   const mailtoHref = toMailtoHref(email, {
     subject: invite.subject,
-    body: invite.body,
+    // The tweak made here travels to the email too; its body keeps its own
+    // wording only while the trainer has not touched anything.
+    body: message === invite.whatsapp_text ? invite.body : message,
   });
 
   const openWhatsApp = async () => {
-    await navigator.clipboard.writeText(invite.whatsapp_text);
+    await navigator.clipboard.writeText(message);
     window.open(whatsAppHref ?? "", "_blank", "noopener");
   };
 
-  return (
-    <div className="flex flex-wrap gap-2">
-      {whatsAppHref ? (
-        <Button variant="secondary" size="sm" onClick={openWhatsApp}>
-          <MessageCircle className="size-4" />
-          Enviar por WhatsApp
-        </Button>
-      ) : (
-        <p className="text-xs text-slate-400">
-          Añade un teléfono a la ficha para enviarlo por WhatsApp.
-        </p>
-      )}
+  const copyMessage = async () => {
+    await navigator.clipboard.writeText(message);
+    setCopied(true);
+    setTimeout(() => setCopied(false), COPIED_FEEDBACK_MS);
+  };
 
-      {mailtoHref ? (
-        <a
-          href={mailtoHref}
-          className="inline-flex h-8 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-100"
-        >
-          <Mail className="size-4" />
-          Enviar por email
-        </a>
-      ) : (
-        <p className="text-xs text-slate-400">
-          Añade un email a la ficha para enviarlo por correo.
-        </p>
-      )}
+  return (
+    <div className="flex flex-col gap-2 border-t border-slate-200 pt-3">
+      <label
+        htmlFor="portal-invite-message"
+        className="text-sm font-medium text-slate-700"
+      >
+        Mensaje que vas a enviar
+      </label>
+      <textarea
+        id="portal-invite-message"
+        value={message}
+        onChange={(event) => setMessage(event.target.value)}
+        rows={5}
+        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+      />
+      <p className="text-xs text-slate-400">
+        Se edita solo para este envío. Para cambiarlo siempre, ve a Ajustes.
+      </p>
+
+      <div className="flex flex-wrap gap-2">
+        {whatsAppHref ? (
+          <Button variant="secondary" size="sm" onClick={openWhatsApp}>
+            <MessageCircle className="size-4" />
+            WhatsApp
+          </Button>
+        ) : (
+          <p className="text-xs text-slate-400">
+            Añade un teléfono a la ficha para enviarlo por WhatsApp.
+          </p>
+        )}
+
+        {mailtoHref ? (
+          <a
+            href={mailtoHref}
+            className="inline-flex h-8 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+          >
+            <Mail className="size-4" />
+            Email
+          </a>
+        ) : (
+          <p className="text-xs text-slate-400">
+            Añade un email a la ficha para enviarlo por correo.
+          </p>
+        )}
+
+        <Button variant="ghost" size="sm" onClick={copyMessage}>
+          {hasCopied ? <Check className="size-4" /> : <Copy className="size-4" />}
+          {hasCopied ? "Copiado" : "Copiar mensaje"}
+        </Button>
+      </div>
     </div>
   );
 }
@@ -199,7 +237,14 @@ export function PortalAccessCard({
             </div>
 
             {invite && (
-              <SendButtons invite={invite} phone={phone} email={email} />
+              // Keyed on the text: a regenerated link or an edited template
+              // starts a fresh draft instead of keeping a stale one.
+              <SendPanel
+                key={invite.whatsapp_text}
+                invite={invite}
+                phone={phone}
+                email={email}
+              />
             )}
           </>
         )}

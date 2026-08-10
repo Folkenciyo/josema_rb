@@ -53,10 +53,14 @@ Lo único que el cliente puede escribir es su peso del día, y siempre con la fe
 hoy: si lo apunta dos veces, la segunda corrige a la primera en lugar de duplicar el
 día. Las fotos las sigue subiendo solo el entrenador.
 
-El enlace se entrega desde la propia ficha, por WhatsApp o por email. El mensaje lo
-redacta el backend y sale ya montado con el nombre del cliente y su enlace; WhatsApp
-abre el chat con el borrador puesto y además deja el texto en el portapapeles, porque
-la aplicación de escritorio no siempre respeta el borrador.
+El enlace se entrega desde la propia ficha, por WhatsApp o por email. El mensaje sale ya
+montado con el nombre del cliente y su enlace, y **el entrenador escribe el suyo** en
+Ajustes con los comodines `{nombre}`, `{nombre_completo}`, `{enlace}` y `{entrenador}`,
+uno para WhatsApp y otro para el correo. Antes de enviar, el texto sigue siendo
+editable en la ficha para el retoque de ese cliente concreto, que no merece cambiar la
+plantilla. Vaciar un campo en Ajustes recupera el texto de fábrica. WhatsApp abre el
+chat con el borrador puesto y además deja el texto en el portapapeles, porque la
+aplicación de escritorio no siempre respeta el borrador.
 
 El token es de 32 bytes, no caduca, se regenera cuando hace falta —el anterior muere en
 ese mismo instante— y se anula de un clic. Ninguna ruta del portal acepta un
@@ -105,7 +109,7 @@ que el destino se quedaba congelado dentro del contenedor.
 | Imágenes        | Pillow                                                                                   |
 | Infraestructura | Docker Compose · Dokploy · Traefik                                                       |
 
-En números: **73 endpoints**, **17 tablas**, 6 migraciones y ~18.000 líneas entre
+En números: **75 endpoints**, **17 tablas**, 7 migraciones y ~18.000 líneas entre
 `backend/app` y `frontend/src`.
 
 ---
@@ -193,7 +197,7 @@ BACKEND_URL=http://localhost:8000 npm run dev
 
 ```bash
 # Backend
-uv run pytest                 # 91 tests
+uv run pytest                 # 96 tests
 uv run ruff check .
 uv run alembic upgrade head
 uv run alembic revision -m "..."

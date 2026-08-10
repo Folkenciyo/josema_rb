@@ -3,6 +3,7 @@ import {
   CalendarDays,
   Dumbbell,
   LayoutDashboard,
+  Settings,
   UtensilsCrossed,
   Users,
   type LucideIcon,
@@ -38,5 +39,9 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/meal-templates", label: "Comidas", icon: UtensilsCrossed },
       { href: "/menus", label: "Menús", icon: CalendarDays },
     ],
+  },
+  {
+    title: null,
+    items: [{ href: "/settings", label: "Ajustes", icon: Settings }],
   },
 ];

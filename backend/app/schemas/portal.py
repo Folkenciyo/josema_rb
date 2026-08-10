@@ -14,6 +14,24 @@ class PortalTokenOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class InviteTemplatesOut(BaseModel):
+    """The trainer's wording, already resolved to the stock text where unset."""
+
+    whatsapp_template: str
+    email_subject: str
+    email_template: str
+    # Names the trainer may use between braces, so the UI can list them.
+    placeholders: list[str]
+
+
+class InviteTemplatesUpdate(BaseModel):
+    """An empty field restores the stock text for that channel."""
+
+    whatsapp_template: str | None = None
+    email_subject: str | None = None
+    email_template: str | None = None
+
+
 class PortalInviteOut(BaseModel):
     """Ready-to-send wording for the portal link, in both channels."""
 
