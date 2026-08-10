@@ -29,8 +29,13 @@ export function toTelHref(phone: string | null): string | null {
  * wa.me only accepts a full international number, so a bare 9-digit number is
  * assumed to be Spanish. Anything else that lacks a country code is left out
  * rather than guessed wrong.
+ *
+ * `text` prefills the draft; WhatsApp still asks the trainer to press send.
  */
-export function toWhatsAppHref(phone: string | null): string | null {
+export function toWhatsAppHref(
+  phone: string | null,
+  text?: string,
+): string | null {
   if (!phone) {
     return null;
   }
@@ -40,18 +45,36 @@ export function toWhatsAppHref(phone: string | null): string | null {
     return null;
   }
 
+  const query = text ? `?text=${encodeURIComponent(text)}` : "";
+
   if (phone.trim().startsWith("+") || digits.startsWith(DEFAULT_COUNTRY_CODE)) {
-    return `https://wa.me/${digits}`;
+    return `https://wa.me/${digits}${query}`;
   }
 
   if (digits.length === LOCAL_NUMBER_LENGTH) {
-    return `https://wa.me/${DEFAULT_COUNTRY_CODE}${digits}`;
+    return `https://wa.me/${DEFAULT_COUNTRY_CODE}${digits}${query}`;
   }
 
   return null;
 }
 
-export function toMailtoHref(email: string | null): string | null {
+export function toMailtoHref(
+  email: string | null,
+  message?: { subject: string; body: string },
+): string | null {
   const trimmed = email?.trim();
-  return trimmed ? `mailto:${trimmed}` : null;
+  if (!trimmed) {
+    return null;
+  }
+
+  if (!message) {
+    return `mailto:${trimmed}`;
+  }
+
+  const query = new URLSearchParams({
+    subject: message.subject,
+    body: message.body,
+  });
+  // URLSearchParams encodes spaces as "+", which mail clients show literally.
+  return `mailto:${trimmed}?${query.toString().replace(/\+/g, "%20")}`;
 }

@@ -6,6 +6,14 @@ export interface PortalToken {
   portal_token_issued_at: string | null;
 }
 
+/** Ready-to-send wording for the link, composed by the backend. */
+export interface PortalInvite {
+  url: string;
+  subject: string;
+  body: string;
+  whatsapp_text: string;
+}
+
 /** What the client sees through their own link. Carries no client id by design. */
 export interface PortalHome {
   full_name: string;

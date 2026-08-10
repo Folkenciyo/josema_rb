@@ -16,6 +16,10 @@ class Settings(BaseSettings):
 
     cors_origins: list[str] = ["http://localhost:3000"]
 
+    # Used to build the client portal link when the request carries no Origin
+    # header (curl, a script). In the browser the real origin always wins.
+    public_base_url: str = "http://localhost:3000"
+
     # False for local dev over plain HTTP; set to true in production (Dokploy),
     # where Traefik terminates TLS and the browser always sees https.
     cookie_secure: bool = False

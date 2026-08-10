@@ -14,6 +14,15 @@ class PortalTokenOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class PortalInviteOut(BaseModel):
+    """Ready-to-send wording for the portal link, in both channels."""
+
+    url: str
+    subject: str
+    body: str
+    whatsapp_text: str
+
+
 class PortalWeighInCreate(BaseModel):
     """The only thing a client may write. The day is always today, never chosen."""
 

@@ -38,6 +38,15 @@ export function usePortalMeasurements(token: string) {
   });
 }
 
+export function usePortalInvite(clientId: string, enabled: boolean) {
+  return useQuery({
+    queryKey: queryKeys.portalInvite(clientId),
+    queryFn: () => portalApi.getPortalInvite(clientId),
+    // There is no invitation to fetch until the link has been issued.
+    enabled,
+  });
+}
+
 export function useRecordPortalWeighIn(token: string) {
   const queryClient = useQueryClient();
 

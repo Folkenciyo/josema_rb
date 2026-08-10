@@ -353,6 +353,36 @@ def test_the_portal_writes_nothing_else(authenticated_client: TestClient) -> Non
     )
 
 
+def test_the_invite_carries_the_link_ready_to_send(
+    authenticated_client: TestClient,
+) -> None:
+    client_id, token = _client_with_token(authenticated_client, "Marta Ejemplo")
+
+    invite = authenticated_client.get(
+        f"/api/clients/{client_id}/portal-invite",
+        headers={"origin": "https://josema.example.com"},
+    ).json()
+
+    assert invite["url"] == f"https://josema.example.com/p/{token}"
+    # Addressed by first name, and the link inside both channels.
+    assert invite["body"].startswith("Hola Marta")
+    assert invite["url"] in invite["body"]
+    assert invite["url"] in invite["whatsapp_text"]
+    assert invite["subject"]
+
+
+def test_there_is_no_invite_before_the_link_exists(
+    authenticated_client: TestClient,
+) -> None:
+    client_id = authenticated_client.post(
+        "/api/clients", json={"full_name": "Sin Enlace"}
+    ).json()["id"]
+
+    response = authenticated_client.get(f"/api/clients/{client_id}/portal-invite")
+
+    assert response.status_code == 409
+
+
 def test_managing_the_token_requires_the_trainer_session(
     authenticated_client: TestClient, client: TestClient
 ) -> None:

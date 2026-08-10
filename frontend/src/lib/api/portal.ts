@@ -3,6 +3,7 @@ import type { WeighIn } from "@/types/measurement";
 import type {
   PortalDietPlan,
   PortalHome,
+  PortalInvite,
   PortalToken,
   PortalTrainingPlan,
 } from "@/types/portal";
@@ -14,6 +15,11 @@ export function issuePortalToken(clientId: string): Promise<PortalToken> {
 
 export function revokePortalToken(clientId: string): Promise<PortalToken> {
   return api.delete<PortalToken>(`/clients/${clientId}/portal-token`);
+}
+
+/** The wording of the invitation is written by the backend, not here. */
+export function getPortalInvite(clientId: string): Promise<PortalInvite> {
+  return api.get<PortalInvite>(`/clients/${clientId}/portal-invite`);
 }
 
 /** The calls below are the ones the client's own device makes. No session involved. */

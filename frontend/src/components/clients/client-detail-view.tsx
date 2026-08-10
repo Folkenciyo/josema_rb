@@ -225,6 +225,8 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             clientId={clientId}
             token={client.portal_token}
             issuedAt={client.portal_token_issued_at}
+            phone={client.phone}
+            email={client.email}
           />
         </div>
         <div className="flex flex-col gap-4 lg:col-span-2">
