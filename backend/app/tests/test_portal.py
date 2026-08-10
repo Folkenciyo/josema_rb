@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.api.portal import portal_limiter
+from app.models import Exercise
 
 
 @pytest.fixture(autouse=True)
@@ -119,6 +120,153 @@ def test_hammering_unknown_tokens_gets_locked_out(client: TestClient) -> None:
         assert client.get("/api/portal/no-existe").status_code == 404
 
     assert client.get("/api/portal/no-existe").status_code == 429
+
+
+def _give_active_training_plan(
+    api: TestClient, client_id: str, exercise_id: str, title: str
+) -> str:
+    plan = api.post(
+        f"/api/clients/{client_id}/training-plans",
+        json={"title": title, "status": "active"},
+    ).json()
+    week = api.post(
+        f"/api/training-plans/{plan['id']}/weeks", json={"week_number": 1}
+    ).json()
+    api.put(
+        f"/api/training-weeks/{week['id']}/days",
+        json={
+            "days": [
+                {
+                    "day_of_week": "monday",
+                    "order_index": 0,
+                    "exercises": [
+                        {
+                            "exercise_id": exercise_id,
+                            "order_index": 0,
+                            "sets": 4,
+                            "reps": "8-12",
+                        }
+                    ],
+                }
+            ]
+        },
+    )
+    return plan["id"]
+
+
+def test_the_portal_serves_the_active_training_plan(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id, token = _client_with_token(authenticated_client)
+    authenticated_client.post(
+        f"/api/clients/{client_id}/training-plans",
+        json={"title": "Plan Viejo", "status": "archived"},
+    )
+    _give_active_training_plan(
+        authenticated_client, client_id, imported_exercise.id, "Plan En Curso"
+    )
+
+    body = authenticated_client.get(f"/api/portal/{token}/training-plan").json()
+
+    assert body["plan_title"] == "Plan En Curso"
+    exercise = body["weeks"][0]["days"][0]["exercises"][0]
+    assert exercise["sets"] == 4
+    # The client gets the exercise by name and picture, never by catalogue id.
+    assert exercise["name_es"]
+    assert "exercise_id" not in exercise
+
+
+def test_a_token_never_reaches_another_clients_plan(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    mine_id, my_token = _client_with_token(authenticated_client, "Cliente Propio")
+    other_id, _ = _client_with_token(authenticated_client, "Cliente Ajeno")
+
+    _give_active_training_plan(
+        authenticated_client, mine_id, imported_exercise.id, "Mi Plan"
+    )
+    _give_active_training_plan(
+        authenticated_client, other_id, imported_exercise.id, "Plan Ajeno"
+    )
+
+    body = authenticated_client.get(f"/api/portal/{my_token}/training-plan").json()
+
+    assert body["plan_title"] == "Mi Plan"
+    assert body["client_name"] == "Cliente Propio"
+
+
+def test_the_portal_says_404_when_there_is_no_active_plan_yet(
+    authenticated_client: TestClient,
+) -> None:
+    _, token = _client_with_token(authenticated_client)
+
+    training = authenticated_client.get(f"/api/portal/{token}/training-plan")
+    diet = authenticated_client.get(f"/api/portal/{token}/diet-plan")
+
+    assert training.status_code == 404
+    assert diet.status_code == 404
+
+
+def test_the_home_announces_what_there_is_to_open(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id, token = _client_with_token(authenticated_client)
+
+    empty = authenticated_client.get(f"/api/portal/{token}").json()
+    assert empty["has_training_plan"] is False
+    assert empty["has_diet_plan"] is False
+    assert empty["weigh_in_count"] == 0
+
+    _give_active_training_plan(
+        authenticated_client, client_id, imported_exercise.id, "Plan En Curso"
+    )
+    authenticated_client.post(
+        f"/api/clients/{client_id}/measurements",
+        json={"measured_on": "2026-08-09", "weight_kg": 79.5},
+    )
+
+    filled = authenticated_client.get(f"/api/portal/{token}").json()
+    assert filled["has_training_plan"] is True
+    assert filled["weigh_in_count"] == 1
+
+
+def test_the_portal_serves_only_its_own_weigh_ins(
+    authenticated_client: TestClient,
+) -> None:
+    mine_id, my_token = _client_with_token(authenticated_client, "Peso Propio")
+    other_id, _ = _client_with_token(authenticated_client, "Peso Ajeno")
+
+    authenticated_client.post(
+        f"/api/clients/{mine_id}/measurements",
+        json={"measured_on": "2026-08-01", "weight_kg": 70},
+    )
+    authenticated_client.post(
+        f"/api/clients/{other_id}/measurements",
+        json={"measured_on": "2026-08-01", "weight_kg": 95},
+    )
+
+    body = authenticated_client.get(f"/api/portal/{my_token}/measurements").json()
+
+    assert [row["weight_kg"] for row in body] == [70.0]
+    # Neither the client id nor the trainer's private notes travel to the phone.
+    assert "client_id" not in body[0]
+    assert "notes" not in body[0]
+
+
+def test_the_client_can_download_their_own_plan_in_word(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id, token = _client_with_token(authenticated_client)
+    _give_active_training_plan(
+        authenticated_client, client_id, imported_exercise.id, "Plan Descargable"
+    )
+
+    response = authenticated_client.get(
+        f"/api/portal/{token}/training-plan/export/docx"
+    )
+
+    assert response.status_code == 200
+    assert response.content[:2] == b"PK"  # a .docx is a zip archive
 
 
 def test_managing_the_token_requires_the_trainer_session(

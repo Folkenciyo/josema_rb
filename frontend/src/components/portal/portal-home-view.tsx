@@ -1,77 +1,110 @@
 "use client";
 
-import { Scale } from "lucide-react";
+import Link from "next/link";
+import { ChevronRight, Dumbbell, Salad, Scale } from "lucide-react";
 
 import { usePortalHome } from "@/hooks/use-portal";
 import { Card } from "@/components/ui/card";
-import { LoadingState } from "@/components/ui/feedback";
 import { formatDate } from "@/lib/format";
+import { portalPath } from "@/types/portal";
+import {
+  PortalHeader,
+  PortalLoading,
+  PortalNotice,
+  PortalPage,
+} from "./portal-shell";
 
-function InvalidLink() {
+function SectionLink({
+  href,
+  icon,
+  title,
+  detail,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  title: string;
+  detail: string;
+}) {
   return (
-    <Card className="p-6 text-center">
-      <p className="font-semibold text-slate-800">Este enlace ya no sirve</p>
-      <p className="mt-2 text-sm text-slate-500">
-        Puede que tu entrenador lo haya renovado. Pídele el nuevo y vuelve a
-        entrar.
-      </p>
-    </Card>
+    <Link href={href}>
+      <Card className="flex items-center gap-4 px-5 py-4 hover:border-amber-300">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+          {icon}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold text-slate-800">{title}</span>
+          <span className="block text-sm text-slate-500">{detail}</span>
+        </span>
+        <ChevronRight className="size-4 shrink-0 text-slate-400" />
+      </Card>
+    </Link>
   );
 }
 
 export function PortalHomeView({ token }: { token: string }) {
   const { data: home, isPending, error } = usePortalHome(token);
+  const base = portalPath(token);
+
+  if (isPending) {
+    return (
+      <PortalPage>
+        <PortalLoading />
+      </PortalPage>
+    );
+  }
+
+  if (error) {
+    return (
+      <PortalPage>
+        <PortalNotice
+          title="Este enlace ya no sirve"
+          description="Puede que tu entrenador lo haya renovado. Pídele el nuevo y vuelve a entrar."
+        />
+      </PortalPage>
+    );
+  }
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-col gap-4 px-4 py-8">
-      <header>
-        <p className="text-xs font-semibold tracking-widest text-amber-600 uppercase">
-          JOSEMA RB
-        </p>
-        <h1 className="text-2xl font-bold text-slate-900">
-          {home ? `Hola, ${home.full_name.split(" ")[0]}` : "Tu seguimiento"}
-        </h1>
-      </header>
+    <PortalPage>
+      <PortalHeader title={`Hola, ${home.full_name.split(" ")[0]}`} />
 
-      {isPending ? (
-        <LoadingState />
-      ) : error ? (
-        <InvalidLink />
-      ) : (
-        <>
-          {home.goals && (
-            <Card className="px-5 py-4">
-              <h2 className="mb-1 text-sm font-semibold text-slate-500">
-                Tu objetivo
-              </h2>
-              <p className="text-slate-800">{home.goals}</p>
-            </Card>
-          )}
-
-          <Card className="flex items-center gap-4 px-5 py-4">
-            <span className="flex size-11 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
-              <Scale className="size-5" />
-            </span>
-            <div>
-              <p className="text-2xl font-bold text-slate-900">
-                {home.latest_weight_kg !== null
-                  ? `${home.latest_weight_kg} kg`
-                  : "—"}
-              </p>
-              <p className="text-sm text-slate-500">
-                {home.latest_weighed_on
-                  ? `Último pesaje: ${formatDate(home.latest_weighed_on)}`
-                  : "Todavía sin pesajes"}
-              </p>
-            </div>
-          </Card>
-
-          <p className="px-1 text-center text-sm text-slate-400">
-            Tu rutina y tu dieta aparecerán aquí en cuanto tu entrenador las
-            publique.
-          </p>
-        </>
+      {home.goals && (
+        <Card className="px-5 py-4">
+          <h2 className="mb-1 text-sm font-semibold text-slate-500">
+            Tu objetivo
+          </h2>
+          <p className="text-slate-800">{home.goals}</p>
+        </Card>
       )}
-    </main>
+
+      <SectionLink
+        href={`${base}/rutina`}
+        icon={<Dumbbell className="size-5" />}
+        title="Mi rutina"
+        detail={
+          home.has_training_plan
+            ? "Tu entrenamiento de esta etapa"
+            : "Todavía sin publicar"
+        }
+      />
+      <SectionLink
+        href={`${base}/dieta`}
+        icon={<Salad className="size-5" />}
+        title="Mi dieta"
+        detail={
+          home.has_diet_plan ? "Tus menús del día" : "Todavía sin publicar"
+        }
+      />
+      <SectionLink
+        href={`${base}/peso`}
+        icon={<Scale className="size-5" />}
+        title="Mi peso"
+        detail={
+          home.latest_weight_kg !== null && home.latest_weighed_on
+            ? `${home.latest_weight_kg} kg · ${formatDate(home.latest_weighed_on)}`
+            : "Todavía sin pesajes"
+        }
+      />
+    </PortalPage>
   );
 }

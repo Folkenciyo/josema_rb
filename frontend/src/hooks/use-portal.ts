@@ -14,6 +14,30 @@ export function usePortalHome(token: string) {
   });
 }
 
+export function usePortalTrainingPlan(token: string) {
+  return useQuery({
+    queryKey: queryKeys.portalTrainingPlan(token),
+    queryFn: () => portalApi.getPortalTrainingPlan(token),
+    retry: false,
+  });
+}
+
+export function usePortalDietPlan(token: string) {
+  return useQuery({
+    queryKey: queryKeys.portalDietPlan(token),
+    queryFn: () => portalApi.getPortalDietPlan(token),
+    retry: false,
+  });
+}
+
+export function usePortalMeasurements(token: string) {
+  return useQuery({
+    queryKey: queryKeys.portalMeasurements(token),
+    queryFn: () => portalApi.getPortalMeasurements(token),
+    retry: false,
+  });
+}
+
 export function useIssuePortalToken(clientId: string) {
   const queryClient = useQueryClient();
 

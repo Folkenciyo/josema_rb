@@ -45,11 +45,15 @@ pose con pose, mostrando bajo cada foto el peso de ese día.
 
 **Portal del cliente**
 Cada cliente tiene un enlace privado propio (`/p/<token>`) que abre sin contraseña y
-está pensado para el móvil. El token es de 32 bytes, no caduca, se regenera cuando hace
-falta —el anterior muere en ese mismo instante— y se anula de un clic. Ninguna ruta del
-portal acepta un identificador de cliente: todo se resuelve desde el token, así que un
-enlace nunca puede alcanzar los datos de otra persona. Dar de baja a un cliente cierra
-su enlace sin tocarlo.
+está pensado para el móvil: su rutina con las fotos de cada ejercicio, sus menús con las
+macros del día y su histórico de peso con gráfica, más la descarga en PDF o Word. Todo
+en solo lectura y siempre al día, porque sale de la misma base que ve el entrenador.
+
+El token es de 32 bytes, no caduca, se regenera cuando hace falta —el anterior muere en
+ese mismo instante— y se anula de un clic. Ninguna ruta del portal acepta un
+identificador de cliente: todo se resuelve desde el token, así que un enlace nunca puede
+alcanzar los datos de otra persona. Las respuestas tampoco llevan ids internos ni las
+notas privadas del entrenador. Dar de baja a un cliente cierra su enlace sin tocarlo.
 
 **Entrega al cliente**
 Cualquier plan de entrenamiento o dieta se descarga en PDF o Word, con las imágenes
@@ -92,7 +96,7 @@ que el destino se quedaba congelado dentro del contenedor.
 | Imágenes        | Pillow                                                                                   |
 | Infraestructura | Docker Compose · Dokploy · Traefik                                                       |
 
-En números: **64 endpoints**, **17 tablas**, 6 migraciones y ~18.000 líneas entre
+En números: **71 endpoints**, **17 tablas**, 6 migraciones y ~18.000 líneas entre
 `backend/app` y `frontend/src`.
 
 ---
@@ -180,7 +184,7 @@ BACKEND_URL=http://localhost:8000 npm run dev
 
 ```bash
 # Backend
-uv run pytest                 # 78 tests
+uv run pytest                 # 84 tests
 uv run ruff check .
 uv run alembic upgrade head
 uv run alembic revision -m "..."

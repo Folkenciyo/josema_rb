@@ -5,10 +5,15 @@ from datetime import UTC, datetime
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.models import Client
-from app.repositories import client_repository, measurement_repository
-from app.schemas.portal import PortalClientOut
-from app.services import client_service
+from app.models import Client, DietPlan, TrainingPlan
+from app.repositories import (
+    client_repository,
+    diet_plan_repository,
+    measurement_repository,
+    training_plan_repository,
+)
+from app.schemas.portal import PortalClientOut, PortalWeighInOut
+from app.services import client_service, measurement_service
 
 # 32 bytes of entropy, ~43 url-safe characters. Long enough that guessing is
 # hopeless, short enough to fit in a WhatsApp message without wrapping badly.
@@ -62,4 +67,42 @@ def build_portal_view(db: Session, client: Client) -> PortalClientOut:
         goals=client.goals,
         latest_weight_kg=float(latest.weight_kg) if latest else None,
         latest_weighed_on=latest.measured_on if latest else None,
+        has_training_plan=(
+            training_plan_repository.get_active_for_client(db, client.id) is not None
+        ),
+        has_diet_plan=(
+            diet_plan_repository.get_active_for_client(db, client.id) is not None
+        ),
+        weigh_in_count=len(measurements),
     )
+
+
+def list_weigh_ins(db: Session, client: Client) -> list[PortalWeighInOut]:
+    return [
+        PortalWeighInOut(
+            id=measurement.id,
+            measured_on=measurement.measured_on,
+            weight_kg=measurement.weight_kg,
+            bmi=measurement.bmi,
+        )
+        for measurement in measurement_service.list_measurements(db, client.id)
+    ]
+
+
+def get_active_training_plan(db: Session, client: Client) -> TrainingPlan:
+    """The client's own plan, resolved from the client — never from an id in the URL."""
+    plan = training_plan_repository.get_active_for_client(db, client.id)
+    if plan is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="No active training plan"
+        )
+    return plan
+
+
+def get_active_diet_plan(db: Session, client: Client) -> DietPlan:
+    plan = diet_plan_repository.get_active_for_client(db, client.id)
+    if plan is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="No active diet plan"
+        )
+    return plan

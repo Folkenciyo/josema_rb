@@ -1,5 +1,11 @@
 import { api } from "./http";
-import type { PortalHome, PortalToken } from "@/types/portal";
+import type { WeighIn } from "@/types/measurement";
+import type {
+  PortalDietPlan,
+  PortalHome,
+  PortalToken,
+  PortalTrainingPlan,
+} from "@/types/portal";
 
 /** Issues the link, or replaces the previous one — the old token stops working. */
 export function issuePortalToken(clientId: string): Promise<PortalToken> {
@@ -10,7 +16,33 @@ export function revokePortalToken(clientId: string): Promise<PortalToken> {
   return api.delete<PortalToken>(`/clients/${clientId}/portal-token`);
 }
 
-/** The only call the client's own device makes. No session involved. */
+/** The calls below are the ones the client's own device makes. No session involved. */
 export function getPortalHome(token: string): Promise<PortalHome> {
   return api.get<PortalHome>(`/portal/${token}`);
+}
+
+export function getPortalTrainingPlan(
+  token: string,
+): Promise<PortalTrainingPlan> {
+  return api.get<PortalTrainingPlan>(`/portal/${token}/training-plan`);
+}
+
+export function getPortalDietPlan(token: string): Promise<PortalDietPlan> {
+  return api.get<PortalDietPlan>(`/portal/${token}/diet-plan`);
+}
+
+export function getPortalMeasurements(token: string): Promise<WeighIn[]> {
+  return api.get<WeighIn[]>(`/portal/${token}/measurements`);
+}
+
+export type PortalPlanKind = "training-plan" | "diet-plan";
+export type ExportFormat = "pdf" | "docx";
+
+/** Plain href: the browser downloads it straight, no fetch in between. */
+export function portalExportHref(
+  token: string,
+  plan: PortalPlanKind,
+  format: ExportFormat,
+): string {
+  return `/api/portal/${token}/${plan}/export/${format}`;
 }

@@ -4,6 +4,7 @@ from typing import Any
 from sqlalchemy.orm import Session, selectinload
 
 from app.models import DietDay, DietPlan, DietWeek, MealTemplate, Menu, MenuMeal
+from app.models.training_plan import PlanStatus
 
 _DAY_LOADER = selectinload(DietDay.menu).options(
     selectinload(Menu.meals).options(
@@ -21,6 +22,20 @@ def list_by_client(db: Session, client_id: uuid.UUID) -> list[DietPlan]:
         .filter(DietPlan.client_id == client_id)
         .order_by(DietPlan.created_at.desc())
         .all()
+    )
+
+
+def get_active_for_client(db: Session, client_id: uuid.UUID) -> DietPlan | None:
+    """The diet the client is eating right now — the newest one still active."""
+    return (
+        db.query(DietPlan)
+        .options(_DETAIL_LOADER)
+        .filter(
+            DietPlan.client_id == client_id,
+            DietPlan.status == PlanStatus.ACTIVE,
+        )
+        .order_by(DietPlan.created_at.desc())
+        .first()
     )
 
 
