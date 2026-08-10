@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 
 import { ApiError } from "@/lib/api/http";
+import { queryKeys } from "@/lib/query/keys";
 
 const LOGIN_PATH = "/login";
 
@@ -24,9 +25,16 @@ function redirectOnExpiredSession(error: unknown): void {
 }
 
 function createQueryClient(): QueryClient {
-  return new QueryClient({
+  const queryClient = new QueryClient({
     queryCache: new QueryCache({ onError: redirectOnExpiredSession }),
-    mutationCache: new MutationCache({ onError: redirectOnExpiredSession }),
+    mutationCache: new MutationCache({
+      onError: redirectOnExpiredSession,
+      // Plans, weigh-ins and clients all feed the dashboard alerts, so refreshing
+      // them here spares every single mutation from remembering to do it.
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: queryKeys.alerts });
+      },
+    }),
     defaultOptions: {
       queries: {
         staleTime: 30_000,
@@ -38,6 +46,8 @@ function createQueryClient(): QueryClient {
       },
     },
   });
+
+  return queryClient;
 }
 
 export function QueryProvider({ children }: { children: React.ReactNode }) {

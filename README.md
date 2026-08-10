@@ -14,7 +14,15 @@ En producción: **https://josema.fholk.com**
 
 **Clientes**
 Ficha con datos de contacto (pulsables desde el móvil: email, teléfono y WhatsApp),
-objetivos y notas. Baja sin pérdida: desactivar un cliente conserva todo su historial.
+objetivos y notas. Baja sin pérdida: desactivar un cliente conserva todo su historial,
+y reactivarlo lo devuelve al listado tal y como estaba.
+
+**Panel de avisos**
+La portada abre con lo que reclama atención: quién no tiene rutina o dieta activa, qué
+planes se acaban esta semana (o ya vencieron sin archivarse), quién lleva más de un mes
+sin pesarse y quién está de baja, con un botón para reactivarlo ahí mismo. Los clientes
+dados de alta hace menos de un mes no cuentan como "sin pesarse": aún no les ha dado
+tiempo.
 
 **Entrenamiento**
 Librería de **873 ejercicios** traducidos al español con imágenes, más los que el
@@ -164,13 +172,13 @@ BACKEND_URL=http://localhost:8000 npm run dev
 
 ```bash
 # Backend
-uv run pytest                 # 61 tests
+uv run pytest                 # 69 tests
 uv run ruff check .
 uv run alembic upgrade head
 uv run alembic revision -m "..."
 
 # Frontend
-npm run test                  # 115 tests
+npm run test                  # 123 tests
 npm run lint
 npm run build
 npx tsc --noEmit

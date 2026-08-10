@@ -45,3 +45,8 @@ def update_client(
 @router.delete("/{client_id}", response_model=ClientOut)
 def deactivate_client(client_id: uuid.UUID, db: Session = Depends(get_db)) -> Client:
     return client_service.deactivate_client(db, client_id)
+
+
+@router.post("/{client_id}/reactivate", response_model=ClientOut)
+def reactivate_client(client_id: uuid.UUID, db: Session = Depends(get_db)) -> Client:
+    return client_service.reactivate_client(db, client_id)

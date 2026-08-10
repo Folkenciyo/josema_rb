@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from app.api.alerts import router as alerts_router
 from app.api.auth import router as auth_router
 from app.api.clients import router as clients_router
 from app.api.diet_plans import router as diet_plans_router
@@ -37,6 +38,7 @@ app.mount(
 )
 
 app.include_router(auth_router)
+app.include_router(alerts_router)
 app.include_router(clients_router)
 app.include_router(measurements_router)
 app.include_router(photos_router)

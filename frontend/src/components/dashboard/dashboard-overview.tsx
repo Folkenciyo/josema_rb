@@ -8,6 +8,7 @@ import { useCurrentTrainer } from "@/hooks/use-auth";
 import { Card, CardHeader } from "@/components/ui/card";
 import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
 import { PageHeader } from "@/components/ui/page-header";
+import { AlertsPanel } from "./alerts-panel";
 
 const MAX_RECENT_CLIENTS = 5;
 
@@ -48,6 +49,10 @@ export function DashboardOverview() {
           </span>
           <span className="text-sm font-semibold">Gestionar clientes</span>
         </Link>
+      </div>
+
+      <div className="mt-6">
+        <AlertsPanel />
       </div>
 
       <Card className="mt-6">

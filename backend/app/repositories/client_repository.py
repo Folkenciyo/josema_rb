@@ -43,3 +43,10 @@ def soft_delete(db: Session, client: Client) -> Client:
     db.commit()
     db.refresh(client)
     return client
+
+
+def restore(db: Session, client: Client) -> Client:
+    client.active = True
+    db.commit()
+    db.refresh(client)
+    return client
