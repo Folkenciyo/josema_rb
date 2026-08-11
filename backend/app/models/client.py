@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from app.models.photo import ClientPhoto
     from app.models.questionnaire import ClientAnswer
     from app.models.training_plan import TrainingPlan
+    from app.models.workout import WorkoutSession
 
 
 class Client(Base, TimestampMixin):
@@ -61,4 +62,10 @@ class Client(Base, TimestampMixin):
         cascade="all, delete-orphan",
         passive_deletes=True,
         order_by="ClientAnswer.order_index",
+    )
+    workout_sessions: Mapped[list["WorkoutSession"]] = relationship(
+        back_populates="client",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        order_by="WorkoutSession.performed_on.desc()",
     )

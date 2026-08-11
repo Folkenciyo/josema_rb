@@ -1,4 +1,5 @@
 import io
+import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import StreamingResponse
@@ -14,12 +15,20 @@ from app.schemas.portal import (
     PortalWeighInOut,
 )
 from app.schemas.questionnaire import PortalQuestionnaireOut, SubmitAnswersRequest
+from app.schemas.workout import (
+    WorkoutDayDetailOut,
+    WorkoutDayOut,
+    WorkoutSessionCreate,
+    WorkoutSessionOut,
+    WorkoutSessionSummaryOut,
+)
 from app.services import (
     docx_export,
     export_service,
     pdf_export,
     portal_service,
     questionnaire_service,
+    workout_service,
 )
 
 DOCX_MEDIA_TYPE = (
@@ -33,6 +42,9 @@ portal_limiter = SlidingWindowLimiter(max_attempts=20, window_seconds=300)
 # Writes are capped per link, not per IP: correcting today's weight a few times
 # is normal, a script hammering the endpoint is not.
 weigh_in_limiter = SlidingWindowLimiter(max_attempts=20, window_seconds=3600)
+# Sessions get a looser cap: an offline phone retries the same session until it
+# lands, and being locked out would lose a workout that is already done.
+workout_limiter = SlidingWindowLimiter(max_attempts=60, window_seconds=3600)
 
 router = APIRouter(prefix="/api/portal", tags=["portal"])
 
@@ -135,9 +147,7 @@ def record_portal_weigh_in(
 def get_portal_questionnaire(
     client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
 ) -> PortalQuestionnaireOut:
-    return questionnaire_service.build_portal_view(
-        db, _trainer_of(db, client), client
-    )
+    return questionnaire_service.build_portal_view(db, _trainer_of(db, client), client)
 
 
 @router.put("/{token}/questionnaire", response_model=PortalQuestionnaireOut)
@@ -158,6 +168,54 @@ def submit_portal_questionnaire(
     return questionnaire_service.submit_answers(
         db, _trainer_of(db, client), client, payload.answers
     )
+
+
+@router.get("/{token}/workout/days", response_model=list[WorkoutDayOut])
+def list_portal_workout_days(
+    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+) -> list[WorkoutDayOut]:
+    """The days of the active routine, each with the date it was last trained."""
+    return workout_service.list_training_days(db, client)
+
+
+@router.get("/{token}/workout/days/{day_id}", response_model=WorkoutDayDetailOut)
+def get_portal_workout_day(
+    day_id: uuid.UUID,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
+) -> WorkoutDayDetailOut:
+    """Everything the training screen needs, last time's numbers included."""
+    return workout_service.get_training_day(db, client, day_id)
+
+
+@router.get("/{token}/workouts", response_model=list[WorkoutSessionSummaryOut])
+def list_portal_workouts(
+    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+) -> list[WorkoutSessionSummaryOut]:
+    return workout_service.list_sessions(db, client)
+
+
+@router.post("/{token}/workouts", response_model=WorkoutSessionOut)
+def record_portal_workout(
+    token: str,
+    payload: WorkoutSessionCreate,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
+) -> WorkoutSessionOut:
+    """A finished session, sent in one go.
+
+    The cap is looser than the one on weigh-ins: a phone that trained without
+    coverage keeps resending until it is acknowledged, and those retries are
+    harmless because the session id makes them idempotent.
+    """
+    if workout_limiter.is_blocked(token):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many entries, try again later",
+        )
+    workout_limiter.record_attempt(token)
+
+    return workout_service.record_session(db, client, payload)
 
 
 @router.get("/{token}/training-plan/export/pdf")

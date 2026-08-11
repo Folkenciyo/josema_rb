@@ -68,6 +68,24 @@ def delete(db: Session, plan: TrainingPlan) -> None:
     db.commit()
 
 
+def get_day_for_client(
+    db: Session, client_id: uuid.UUID, day_id: uuid.UUID
+) -> TrainingDay | None:
+    """A day of any plan of this client, active or not.
+
+    A session recorded without coverage may only arrive once the trainer has
+    archived the plan it belongs to, so the active plan is not enough here.
+    """
+    return (
+        db.query(TrainingDay)
+        .options(_DAY_LOADER)
+        .join(TrainingWeek, TrainingDay.training_week_id == TrainingWeek.id)
+        .join(TrainingPlan, TrainingWeek.training_plan_id == TrainingPlan.id)
+        .filter(TrainingDay.id == day_id, TrainingPlan.client_id == client_id)
+        .first()
+    )
+
+
 def get_week(db: Session, week_id: uuid.UUID) -> TrainingWeek | None:
     return (
         db.query(TrainingWeek)

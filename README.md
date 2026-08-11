@@ -38,6 +38,24 @@ de la semana de golpe. Las macros se calculan solas al indicar la cantidad real
 ("150 g", "2 unidades") y se guardan como foto fija: editar un alimento después no
 altera los menús ya montados.
 
+**Entreno guiado y registro de cargas**
+El cliente entra en su enlace, elige el día de su rutina y le da a empezar. Va
+ejercicio a ejercicio con una fila por serie, ya rellena con **lo que levantó la
+última vez**: confirma el peso o teclea encima, marca la serie y arranca solo el
+descanso que manda el plan. Puede añadir o quitar series, dejar una nota al
+terminar y ver el resumen de lo que ha movido.
+
+Cada serie guarda el peso, las repeticiones y **el objetivo copiado del plan**,
+así que rehacer la rutina en agosto no reescribe lo que se levantó en julio. En
+la ficha del cliente, el entrenador ve las sesiones entrenadas, serie a serie, y
+la progresión de cada ejercicio a lo largo de los planes.
+
+Está pensado para el sótano sin cobertura: la sesión se va guardando **en el
+propio móvil** mientras se entrena —si se bloquea o se cierra la aplicación, se
+retoma donde estaba— y se envía entera al terminar, o en cuanto vuelve la red.
+Cada sesión lleva un identificador del dispositivo, de modo que reenviarla
+nunca la duplica.
+
 **Seguimiento corporal**
 Historial de pesajes con IMC y gráfica de evolución, y fotos de progreso frontal,
 lateral y trasera por fecha, con galería y un comparador que enfrenta dos momentos
@@ -154,6 +172,10 @@ erDiagram
     TRAINING_WEEK ||--o{ TRAINING_DAY : ""
     TRAINING_DAY ||--o{ DAY_EXERCISE : ""
     DAY_EXERCISE }o--|| EXERCISE : "referencia"
+    CLIENT ||--o{ WORKOUT_SESSION : "entrena"
+    TRAINING_DAY |o--o{ WORKOUT_SESSION : "de qué día fue"
+    WORKOUT_SESSION ||--o{ WORKOUT_SET : "serie a serie"
+    DAY_EXERCISE |o--o{ WORKOUT_SET : "qué ejercicio (copia nombre y objetivo)"
     DIET_PLAN ||--o{ DIET_WEEK : ""
     DIET_WEEK ||--o{ DIET_DAY : ""
     DIET_DAY }o--o| MENU : "menú del día"
@@ -170,6 +192,9 @@ Dos ideas que explican el diagrama:
 - **Las macros se copian, no se calculan en vivo.** Cada línea de una comida guarda
   sus valores en el momento de crearla, así que corregir un alimento no reescribe
   dietas ya entregadas.
+- **Lo entrenado es independiente del plan.** Una serie apunta al ejercicio de la
+  rutina, pero se guarda con el nombre y el objetivo copiados: reescribir o borrar
+  la rutina deja el historial intacto y legible.
 
 ---
 
@@ -292,6 +317,11 @@ Ese directorio se sirve sin pedir sesión. Las fotos corporales salen por un end
 autenticado, se redimensionan a 1600 px y se les borran los metadatos EXIF, que
 incluyen las coordenadas GPS de dónde se tomó la foto.
 
+**Solo se guardan las series que el cliente marcó como hechas.**
+No hay campo de «completada»: una serie que no está es una serie que no se hizo.
+Tres filas donde el plan pedía cuatro se leen solas, y el modelo no arrastra un
+estado que habría que mantener en todas partes.
+
 **Los ejercicios importados están protegidos; los alimentos precargados no.**
 Editar o borrar un ejercicio de la librería base devuelve 403. Los 605 alimentos
 sembrados, en cambio, son del entrenador y puede tocarlos libremente: fue una decisión
@@ -306,6 +336,23 @@ enviárselo al cliente meses después, que es justo el caso de uso. El token no 
 a la cuenta del entrenador ni permite escribir nada, se anula de un clic y la página
 que abre lleva `noindex`. Si algún día se filtrase la base de datos habría que
 regenerar todos los enlaces, y con eso quedaría cerrado.
+
+**La fecha de una sesión entrenada la pone el móvil, no el servidor.**
+Al revés que el peso corporal, que siempre es de hoy. Una sesión se entrena sin
+cobertura y puede llegar horas después, así que la fecha viaja con ella; el
+servidor solo rechaza lo imposible: más de un día en el futuro —un reloj
+desajustado— o más de sesenta días atrás.
+
+**El identificador de la sesión lo genera el móvil.**
+Es lo que hace inofensivo reenviarla: el servidor devuelve la que ya tiene en
+lugar de crear una segunda. Sin eso, la única forma de no duplicar sería no
+reintentar, y entonces una sesión entrenada se perdería a la primera de cambio.
+
+**Una sesión rechazada sale de la cola en vez de reintentarse para siempre.**
+Si el servidor la refuse por algo que no va a cambiar —el enlace se anuló, la
+fecha es imposible—, insistir solo gasta batería. Se descarta y se le dice al
+cliente. Solo se reintenta lo que puede arreglarse solo: sin red, demasiadas
+peticiones o el servidor caído.
 
 **Cerrar sesión le pide al service worker que borre lo que cacheó.**
 Sin eso, un móvil en modo avión seguiría mostrando la lista de clientes desde la caché

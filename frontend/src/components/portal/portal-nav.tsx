@@ -2,13 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardList, Dumbbell, Home, Salad, Scale } from "lucide-react";
+import {
+  ClipboardList,
+  Dumbbell,
+  Home,
+  Play,
+  Salad,
+  Scale,
+} from "lucide-react";
 
 import { cn } from "@/lib/cn";
 import { portalPath } from "@/types/portal";
 
 const ITEMS = [
   { segment: "", label: "Inicio", Icon: Home },
+  { segment: "/entreno", label: "Entreno", Icon: Play },
   { segment: "/rutina", label: "Rutina", Icon: Dumbbell },
   { segment: "/dieta", label: "Dieta", Icon: Salad },
   { segment: "/peso", label: "Peso", Icon: Scale },
@@ -24,7 +32,12 @@ export function PortalNav({ token }: { token: string }) {
       <ul className="mx-auto flex max-w-md">
         {ITEMS.map(({ segment, label, Icon }) => {
           const href = `${base}${segment}`;
-          const isActive = pathname === href;
+          // The training session lives under /entreno/<day>, and the tab has to
+          // stay lit while the client is inside it.
+          const isActive =
+            segment === ""
+              ? pathname === href
+              : pathname === href || pathname.startsWith(`${href}/`);
 
           return (
             <li key={label} className="flex-1">

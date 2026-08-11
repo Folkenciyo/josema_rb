@@ -1,7 +1,11 @@
+import logging
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api.alerts import router as alerts_router
@@ -18,6 +22,7 @@ from app.api.portal import router as portal_router
 from app.api.questionnaire import router as questionnaire_router
 from app.api.settings import router as settings_router
 from app.api.training_plans import router as training_plans_router
+from app.api.workouts import router as workouts_router
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -40,6 +45,37 @@ app.mount(
     name="exercise-images",
 )
 
+logger = logging.getLogger("app.validation")
+
+
+@app.exception_handler(RequestValidationError)
+async def log_validation_error(
+    request: Request, exc: RequestValidationError
+) -> JSONResponse:
+    """A 422 with no trace is impossible to debug from a phone in a gym.
+
+    Only the field and the kind of error are logged — never the value, which
+    could be a client's own data.
+    """
+    logger.warning(
+        "422 on %s %s: %s",
+        request.method,
+        request.url.path,
+        [
+            {
+                "field": ".".join(str(part) for part in error["loc"]),
+                "type": error["type"],
+            }
+            for error in exc.errors()
+        ],
+    )
+    # `jsonable_encoder` because a validation error can carry values FastAPI's
+    # own encoder handles but `json.dumps` does not.
+    return JSONResponse(
+        status_code=422, content=jsonable_encoder({"detail": exc.errors()})
+    )
+
+
 app.include_router(auth_router)
 app.include_router(alerts_router)
 app.include_router(settings_router)
@@ -54,6 +90,7 @@ app.include_router(meal_templates_router)
 app.include_router(menus_router)
 app.include_router(training_plans_router)
 app.include_router(diet_plans_router)
+app.include_router(workouts_router)
 
 
 @app.get("/health")
