@@ -6,11 +6,15 @@ import { LogOut, Menu, X } from "lucide-react";
 
 import { useCurrentTrainer, useLogout } from "@/hooks/use-auth";
 import { cn } from "@/lib/cn";
+import { CommandPalette } from "@/components/search/command-palette";
 import { SidebarNav } from "./sidebar-nav";
 
 function Brand() {
   return (
-    <Link href="/dashboard" className="text-xl font-bold tracking-tight text-white">
+    <Link
+      href="/dashboard"
+      className="text-xl font-bold tracking-tight text-white"
+    >
       JOSEMA <span className="text-amber-500">RB</span>
     </Link>
   );
@@ -86,6 +90,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
         <main className="flex-1 px-4 py-6 sm:px-8">{children}</main>
       </div>
+
+      <CommandPalette />
     </div>
   );
 }
