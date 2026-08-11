@@ -41,9 +41,7 @@ async def create_photo(
     existing = photo_repository.get_by_slot(db, client_id, taken_on, pose)
 
     photo_id = uuid.uuid4()
-    file_path, thumb_path = await photo_storage.save_photo(
-        client_id, photo_id, upload
-    )
+    file_path, thumb_path = await photo_storage.save_photo(client_id, photo_id, upload)
 
     if existing is not None:
         photo_repository.delete(db, existing)
@@ -77,3 +75,17 @@ def delete_photo(db: Session, photo_id: uuid.UUID) -> None:
     file_path, thumb_path = photo.file_path, photo.thumb_path
     photo_repository.delete(db, photo)
     photo_storage.delete_files(file_path, thumb_path)
+
+
+def delete_all_photos(db: Session, client_id: uuid.UUID) -> int:
+    """Every photo of a client, files included.
+
+    What withdrawing consent has to be able to do: leaving the images on disk
+    would make the promise meaningless.
+    """
+    photos = photo_repository.list_for_client(db, client_id)
+    for photo in photos:
+        file_path, thumb_path = photo.file_path, photo.thumb_path
+        photo_repository.delete(db, photo)
+        photo_storage.delete_files(file_path, thumb_path)
+    return len(photos)

@@ -10,6 +10,7 @@ from app.repositories import (
     client_repository,
     diet_plan_repository,
     measurement_repository,
+    photo_repository,
     training_plan_repository,
 )
 from app.schemas.portal import PortalClientOut, PortalWeighInOut
@@ -58,6 +59,21 @@ def resolve_token(db: Session, token: str) -> Client:
     return client
 
 
+def grant_photo_consent(db: Session, client: Client) -> Client:
+    """Recorded with the server's clock: a consent date typed by a phone is worth
+    nothing as a record."""
+    return client_repository.update(db, client, {"photo_consent_at": datetime.now(UTC)})
+
+
+def withdraw_photo_consent(db: Session, client: Client) -> Client:
+    """Withdrawing only says "no from now on"; it does not delete anything.
+
+    Deleting the photos is a separate, explicit act, because it cannot be undone
+    and the client may only want to stop new ones being taken.
+    """
+    return client_repository.update(db, client, {"photo_consent_at": None})
+
+
 def build_portal_view(db: Session, client: Client) -> PortalClientOut:
     measurements = measurement_repository.list_for_client(db, client.id)
     latest = measurements[0] if measurements else None
@@ -74,6 +90,8 @@ def build_portal_view(db: Session, client: Client) -> PortalClientOut:
             diet_plan_repository.get_active_for_client(db, client.id) is not None
         ),
         weigh_in_count=len(measurements),
+        photo_consent_at=client.photo_consent_at,
+        photo_count=len(photo_repository.list_for_client(db, client.id)),
     )
 
 

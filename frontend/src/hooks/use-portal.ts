@@ -59,13 +59,41 @@ export function useRecordPortalWeighIn(token: string) {
   });
 }
 
+function usePortalConsentMutation(
+  token: string,
+  action: (token: string) => Promise<unknown>,
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => action(token),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["portal", token] });
+    },
+  });
+}
+
+export function useGrantPhotoConsent(token: string) {
+  return usePortalConsentMutation(token, portalApi.grantPhotoConsent);
+}
+
+export function useWithdrawPhotoConsent(token: string) {
+  return usePortalConsentMutation(token, portalApi.withdrawPhotoConsent);
+}
+
+export function useDeleteOwnPhotos(token: string) {
+  return usePortalConsentMutation(token, portalApi.deleteOwnPhotos);
+}
+
 export function useIssuePortalToken(clientId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () => portalApi.issuePortalToken(clientId),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: queryKeys.client(clientId) });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.client(clientId),
+      });
     },
   });
 }
@@ -76,7 +104,9 @@ export function useRevokePortalToken(clientId: string) {
   return useMutation({
     mutationFn: () => portalApi.revokePortalToken(clientId),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: queryKeys.client(clientId) });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.client(clientId),
+      });
     },
   });
 }

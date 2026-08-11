@@ -26,6 +26,7 @@ from app.services import (
     docx_export,
     export_service,
     pdf_export,
+    photo_service,
     portal_service,
     questionnaire_service,
     workout_service,
@@ -141,6 +142,42 @@ def record_portal_weigh_in(
     weigh_in_limiter.record_attempt(token)
 
     return portal_service.record_weigh_in(db, client, payload.weight_kg)
+
+
+@router.post("/{token}/photo-consent", response_model=PortalClientOut)
+def grant_photo_consent(
+    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+) -> PortalClientOut:
+    """The client agrees to their progress photos being kept, dated by the server."""
+    portal_service.grant_photo_consent(db, client)
+    return portal_service.build_portal_view(db, client)
+
+
+@router.delete("/{token}/photo-consent", response_model=PortalClientOut)
+def withdraw_photo_consent(
+    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+) -> PortalClientOut:
+    """Stops new photos being kept. Deleting the existing ones is asked separately."""
+    portal_service.withdraw_photo_consent(db, client)
+    return portal_service.build_portal_view(db, client)
+
+
+@router.delete("/{token}/photos", response_model=PortalClientOut)
+def delete_own_photos(
+    token: str,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
+) -> PortalClientOut:
+    """Every photo of this client, files included. There is no undo, by design."""
+    if weigh_in_limiter.is_blocked(token):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many entries, try again later",
+        )
+    weigh_in_limiter.record_attempt(token)
+
+    photo_service.delete_all_photos(db, client.id)
+    return portal_service.build_portal_view(db, client)
 
 
 @router.get("/{token}/questionnaire", response_model=PortalQuestionnaireOut)

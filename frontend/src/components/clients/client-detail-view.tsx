@@ -276,7 +276,10 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             onCreate={() => setDietPlanOpen(true)}
           />
           <WorkoutsCard clientId={clientId} />
-          <PhotosSummaryCard clientId={clientId} />
+          <PhotosSummaryCard
+            clientId={clientId}
+            photoConsentAt={client.photo_consent_at}
+          />
           <QuestionnaireCard clientId={clientId} />
         </div>
       </div>

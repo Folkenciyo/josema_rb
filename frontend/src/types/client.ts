@@ -23,6 +23,7 @@ export interface ClientDetail extends Client {
   /** Only present on the detail endpoint: the listing carries no secrets. */
   portal_token: string | null;
   portal_token_issued_at: string | null;
+  photo_consent_at: string | null;
 }
 
 export interface ClientInput {

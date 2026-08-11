@@ -51,6 +51,19 @@ export function recordPortalWeighIn(
   });
 }
 
+/** The client's say over their own photos: agree, take it back, or wipe them. */
+export function grantPhotoConsent(token: string): Promise<PortalHome> {
+  return api.post<PortalHome>(`/portal/${token}/photo-consent`, {});
+}
+
+export function withdrawPhotoConsent(token: string): Promise<PortalHome> {
+  return api.delete<PortalHome>(`/portal/${token}/photo-consent`);
+}
+
+export function deleteOwnPhotos(token: string): Promise<PortalHome> {
+  return api.delete<PortalHome>(`/portal/${token}/photos`);
+}
+
 export type PortalPlanKind = "training-plan" | "diet-plan";
 export type ExportFormat = "pdf" | "docx";
 
