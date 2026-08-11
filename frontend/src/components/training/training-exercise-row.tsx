@@ -41,7 +41,7 @@ export function TrainingExerciseRow({
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        "rounded-lg border border-slate-200 bg-white p-2",
+        "rounded-lg border border-slate-200 bg-surface p-2",
         isDragging && "z-10 shadow-lg",
       )}
     >

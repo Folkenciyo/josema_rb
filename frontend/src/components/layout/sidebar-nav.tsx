@@ -19,7 +19,8 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
             </p>
           )}
           {group.items.map(({ href, label, icon: Icon }) => {
-            const isActive = pathname === href || pathname.startsWith(`${href}/`);
+            const isActive =
+              pathname === href || pathname.startsWith(`${href}/`);
 
             return (
               <Link
@@ -31,7 +32,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   isActive
                     ? "bg-amber-500 text-slate-900"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white",
+                    : "text-slate-300 hover:bg-white/10 hover:text-white",
                 )}
               >
                 <Icon className="size-4" />

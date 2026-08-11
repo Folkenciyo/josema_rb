@@ -23,7 +23,7 @@ export function Modal({ title, onClose, children }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/40 p-4 sm:p-8"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 sm:p-8"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
           onClose();
@@ -34,7 +34,7 @@ export function Modal({ title, onClose, children }: ModalProps) {
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="w-full max-w-2xl rounded-xl bg-white shadow-xl"
+        className="w-full max-w-2xl rounded-xl bg-surface shadow-xl"
       >
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3">
           <h2 className="font-semibold text-slate-900">{title}</h2>

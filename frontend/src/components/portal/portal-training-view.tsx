@@ -110,7 +110,7 @@ export function PortalTrainingView({ token }: { token: string }) {
                 "shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold",
                 index === weekIndex
                   ? "bg-amber-500 text-slate-900"
-                  : "border border-slate-300 bg-white text-slate-600",
+                  : "border border-slate-300 bg-surface text-slate-600",
               )}
             >
               Semana {candidate.week_number}

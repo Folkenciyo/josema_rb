@@ -78,7 +78,7 @@ export function ImageUpload({
               type="button"
               onClick={() => remove(index)}
               aria-label={`Quitar ${files[index]?.name ?? "imagen"}`}
-              className="absolute -top-2 -right-2 rounded-full bg-slate-900 p-1 text-white"
+              className="absolute -top-2 -right-2 rounded-full bg-inverse p-1 text-white"
             >
               <X className="size-3" />
             </button>

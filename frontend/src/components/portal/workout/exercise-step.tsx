@@ -15,7 +15,7 @@ import {
 import type { DraftExercise, DraftSet } from "@/lib/workout/session-draft";
 
 const FIELD_CLASSES =
-  "h-11 w-full rounded-lg border border-slate-300 bg-white text-center text-lg font-semibold text-slate-900 focus:border-amber-500";
+  "h-11 w-full rounded-lg border border-slate-300 bg-surface text-center text-lg font-semibold text-slate-900 focus:border-amber-500";
 
 function SetRow({
   set,
@@ -80,7 +80,7 @@ function SetRow({
           "flex size-11 shrink-0 items-center justify-center rounded-lg border transition-colors",
           set.done
             ? "border-amber-500 bg-amber-500 text-white"
-            : "border-slate-300 bg-white text-slate-400 hover:border-amber-400",
+            : "border-slate-300 bg-surface text-slate-400 hover:border-amber-400",
         )}
       >
         <Check className="size-5" />

@@ -18,7 +18,7 @@ export function PortalDownloads({
         <a
           key={format}
           href={portalExportHref(token, plan, format)}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
         >
           <Download className="size-4" />
           {format === "pdf" ? "PDF" : "Word"}

@@ -1,8 +1,59 @@
 @import "tailwindcss";
 
+/* The switch wins over the system preference: a script writes the class on
+   <html> before the first paint, so there is never a flash of the wrong theme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Cards, inputs, anything that is a sheet of paper in light mode. */
+  --color-surface: var(--surface);
+  /* The sidebar, the active tab, the rest timer: dark in both themes. */
+  --color-inverse: var(--inverse);
+}
+
+:root {
+  --surface: #ffffff;
+  --inverse: #0f172a;
+}
+
+/**
+ * Dark mode redefines the palette itself instead of adding a `dark:` class to
+ * every component: the whole app already speaks slate and amber, so remapping
+ * those tokens dresses all of it at once — and a component written tomorrow is
+ * dark without anybody remembering to make it so.
+ *
+ * `--color-white` is deliberately left alone: it is the text colour on top of
+ * dark backgrounds, and inverting it would make those labels unreadable.
+ */
+.dark {
+  --surface: #1e293b;
+  --inverse: #020617;
+
+  --color-slate-50: #0f172a;
+  --color-slate-100: #1e293b;
+  --color-slate-200: #334155;
+  --color-slate-300: #475569;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #a8b6c8;
+  --color-slate-600: #cbd5e1;
+  --color-slate-700: #e2e8f0;
+  --color-slate-800: #f1f5f9;
+  --color-slate-900: #f8fafc;
+
+  /* Amber tints are backgrounds in light mode and would glare in the dark. */
+  --color-amber-50: #2a1a05;
+  --color-amber-100: #3b250a;
+  --color-amber-200: #4d3110;
+  --color-amber-300: #b45309;
+
+  /* Status tints, used the same way: a soft background plus a strong text. */
+  --color-emerald-100: #052e21;
+  --color-red-50: #2b0b0b;
+  --color-red-100: #3b1111;
+  --color-red-200: #4c1d1d;
+  --color-sky-100: #082f49;
 }
 
 body {
