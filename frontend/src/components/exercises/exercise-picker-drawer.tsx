@@ -39,7 +39,7 @@ export function ExercisePickerDrawer({
   const results = exercises?.slice(0, MAX_RESULTS) ?? [];
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40">
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/50">
       <div
         className="flex-1"
         onClick={onClose}
@@ -50,7 +50,7 @@ export function ExercisePickerDrawer({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="flex h-full w-full max-w-2xl flex-col bg-white shadow-xl"
+        className="flex h-full w-full max-w-2xl flex-col bg-surface shadow-xl"
       >
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3">
           <h2 className="font-semibold text-slate-900">{title}</h2>

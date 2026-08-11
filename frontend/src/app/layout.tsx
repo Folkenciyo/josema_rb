@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { ServiceWorkerRegistrar } from "@/components/pwa/service-worker-registrar";
 import { QueryProvider } from "@/lib/query/provider";
+import { THEME_SCRIPT } from "@/lib/theme/theme";
 import { THEME_COLOR } from "@/lib/pwa/manifest";
 import "./globals.css";
 
@@ -35,8 +36,14 @@ export default function RootLayout({
   return (
     <html
       lang="es"
+      // The script below adds `dark` before React hydrates, and React must not
+      // undo it: the alternative is a white flash on every single load.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col font-sans">
         <ServiceWorkerRegistrar />
         <QueryProvider>{children}</QueryProvider>

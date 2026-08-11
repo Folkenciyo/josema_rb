@@ -28,7 +28,7 @@ export function PortalNav({ token }: { token: string }) {
   const base = portalPath(token);
 
   return (
-    <nav className="sticky bottom-0 border-t border-slate-200 bg-white/95 backdrop-blur">
+    <nav className="sticky bottom-0 border-t border-slate-200 bg-surface/95 backdrop-blur">
       <ul className="mx-auto flex max-w-md">
         {ITEMS.map(({ segment, label, Icon }) => {
           const href = `${base}${segment}`;

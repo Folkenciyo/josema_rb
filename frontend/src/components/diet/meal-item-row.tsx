@@ -35,7 +35,7 @@ export function MealItemRow({
   const food = item.food_id ? foodMap.get(item.food_id) : undefined;
 
   return (
-    <li className="rounded-lg border border-slate-200 bg-white p-3">
+    <li className="rounded-lg border border-slate-200 bg-surface p-3">
       <div className="flex flex-wrap items-end gap-2">
         {item.mode === "catalog" ? (
           <>

@@ -43,7 +43,7 @@ export function DashboardOverview() {
 
         <Link
           href="/clients"
-          className="flex items-center gap-4 rounded-xl border border-dashed border-slate-300 bg-white p-5 text-slate-600 transition-colors hover:border-amber-400 hover:text-slate-900"
+          className="flex items-center gap-4 rounded-xl border border-dashed border-slate-300 bg-surface p-5 text-slate-600 transition-colors hover:border-amber-400 hover:text-slate-900"
         >
           <span className="flex size-11 items-center justify-center rounded-lg bg-slate-100">
             <UserPlus className="size-5" />
