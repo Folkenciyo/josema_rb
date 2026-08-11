@@ -1,6 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
 
+from app.tests.test_foods import OATS
+
 
 def _create_meal_template(
     client: TestClient, name: str, calories: float, protein_g: float
@@ -74,3 +76,81 @@ def test_cannot_delete_menu_assigned_to_diet_day(
 
     delete_resp = authenticated_client.delete(f"/api/menus/{menu['id']}")
     assert delete_resp.status_code == 409
+
+
+def _menu_from_catalog_food(
+    client: TestClient, name: str, amount: float
+) -> tuple[dict, str]:
+    """A menu built from a real food, which is what carries units and macros."""
+    food = client.post("/api/foods", json=OATS).json()
+    meal = client.post(
+        "/api/meal-templates",
+        json={
+            "name": f"Comida {name}",
+            "items": [{"food_id": food["id"], "quantity_amount": amount}],
+        },
+    ).json()
+    menu = client.post(
+        "/api/menus",
+        json={
+            "name": name,
+            "meals": [{"meal_template_id": meal["id"], "order_index": 0}],
+        },
+    ).json()
+    return menu, food["id"]
+
+
+def test_scaling_a_menu_hits_the_calorie_target(
+    authenticated_client: TestClient,
+) -> None:
+    menu, _ = _menu_from_catalog_food(authenticated_client, "Menú base", 100)
+    current = menu["totals"]["calories"]
+
+    scaled = authenticated_client.post(
+        f"/api/menus/{menu['id']}/scale", json={"target_calories": current * 2}
+    )
+
+    assert scaled.status_code == 201
+    # Portions are rounded to what a person can serve, so the target is a target.
+    assert scaled.json()["totals"]["calories"] == pytest.approx(current * 2, rel=0.05)
+
+
+def test_scaling_leaves_the_original_menu_untouched(
+    authenticated_client: TestClient,
+) -> None:
+    menu, _ = _menu_from_catalog_food(authenticated_client, "Menú original", 100)
+
+    authenticated_client.post(
+        f"/api/menus/{menu['id']}/scale", json={"target_calories": 3000}
+    )
+
+    unchanged = authenticated_client.get(f"/api/menus/{menu['id']}").json()
+    assert unchanged["totals"] == menu["totals"]
+    assert unchanged["name"] == "Menú original"
+
+
+def test_the_scaled_menu_says_what_it_is(authenticated_client: TestClient) -> None:
+    menu, _ = _menu_from_catalog_food(authenticated_client, "Menú base", 100)
+
+    scaled = authenticated_client.post(
+        f"/api/menus/{menu['id']}/scale", json={"target_calories": 2400}
+    ).json()
+
+    assert scaled["name"] == "Menú base · 2400 kcal"
+    # Its meals are copies too: editing them must not touch the original ones.
+    assert (
+        scaled["meals"][0]["meal_template"]["id"]
+        != menu["meals"][0]["meal_template"]["id"]
+    )
+
+
+def test_an_absurd_calorie_target_is_refused(
+    authenticated_client: TestClient,
+) -> None:
+    menu, _ = _menu_from_catalog_food(authenticated_client, "Menú base", 100)
+
+    response = authenticated_client.post(
+        f"/api/menus/{menu['id']}/scale", json={"target_calories": 50}
+    )
+
+    assert response.status_code == 422

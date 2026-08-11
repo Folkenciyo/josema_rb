@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Clock, Pencil, Plus, Trash2 } from "lucide-react";
+import { Clock, Pencil, Plus, Scale, Trash2 } from "lucide-react";
 
 import {
   useCreateMenu,
@@ -11,7 +11,11 @@ import {
 } from "@/hooks/use-diet-catalog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
+import {
+  EmptyState,
+  ErrorMessage,
+  LoadingState,
+} from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
 import {
@@ -23,10 +27,12 @@ import type { Menu } from "@/types/diet";
 import { CatalogSearchBar } from "./catalog-search-bar";
 import { MacroSummary } from "./macro-summary";
 import { MenuForm } from "./menu-form";
+import { ScaleMenuModal } from "./scale-menu-modal";
 
 export function MenusView() {
   const [isCreateOpen, setCreateOpen] = useState(false);
   const [editing, setEditing] = useState<Menu | null>(null);
+  const [scaling, setScaling] = useState<Menu | null>(null);
   const [query, setQuery] = useState(EMPTY_CATALOG_QUERY);
 
   const { data: menus, isPending, error } = useMenus();
@@ -79,9 +85,22 @@ export function MenusView() {
                     {menu.meals.length}{" "}
                     {menu.meals.length === 1 ? "comida" : "comidas"}
                   </p>
-                  <MacroSummary totals={menu.totals} detailed className="mt-1" />
+                  <MacroSummary
+                    totals={menu.totals}
+                    detailed
+                    className="mt-1"
+                  />
                 </div>
                 <div className="flex shrink-0 gap-1">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setScaling(menu)}
+                    aria-label={`Escalar ${menu.name} a otras calorías`}
+                    title="Escalar a otras calorías"
+                  >
+                    <Scale className="size-4" />
+                  </Button>
                   <Button
                     size="sm"
                     variant="ghost"
@@ -113,7 +132,9 @@ export function MenusView() {
                             {meal.time_of_day.slice(0, 5)}
                           </span>
                         )}
-                        <span className="truncate">{meal.meal_template.name}</span>
+                        <span className="truncate">
+                          {meal.meal_template.name}
+                        </span>
                       </div>
                       <MacroSummary
                         totals={meal.meal_template.totals}
@@ -130,7 +151,10 @@ export function MenusView() {
           title="Ningún menú coincide"
           description="Prueba con otro nombre o cambia el rango de calorías."
           action={
-            <Button variant="secondary" onClick={() => setQuery(EMPTY_CATALOG_QUERY)}>
+            <Button
+              variant="secondary"
+              onClick={() => setQuery(EMPTY_CATALOG_QUERY)}
+            >
               Limpiar filtros
             </Button>
           }
@@ -155,7 +179,9 @@ export function MenusView() {
             error={createMenu.error}
             onCancel={() => setCreateOpen(false)}
             onSubmit={(input) =>
-              createMenu.mutate(input, { onSuccess: () => setCreateOpen(false) })
+              createMenu.mutate(input, {
+                onSuccess: () => setCreateOpen(false),
+              })
             }
           />
         </Modal>
@@ -176,6 +202,10 @@ export function MenusView() {
             }
           />
         </Modal>
+      )}
+
+      {scaling && (
+        <ScaleMenuModal menu={scaling} onClose={() => setScaling(null)} />
       )}
     </>
   );
