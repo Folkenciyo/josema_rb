@@ -80,6 +80,20 @@ notas privadas del entrenador. Dar de baja a un cliente cierra su enlace sin toc
 Cualquier plan de entrenamiento o dieta se descarga en PDF o Word, con las imágenes
 de los ejercicios y los totales de macros por comida y por día.
 
+**Aplicación instalable**
+Son **dos aplicaciones instalables**, no una: el entrenador instala JOSEMA RB entera y
+cada cliente instala su propio enlace, con su icono aparte, porque el manifiesto se
+genera por token y arranca en `/p/<token>`. Las dos pueden convivir en el mismo móvil.
+La invitación a instalar aparece en la portada de cada una y desaparece sola en cuanto
+la aplicación corre desde la pantalla de inicio; en iPhone, donde el navegador no
+ofrece el diálogo, explica los dos toques que hacen falta.
+
+Sin cobertura —el caso del gimnasio— sigue viéndose todo lo ya abierto: rutina, dieta,
+menús y las fotos de los ejercicios. Con red se pide siempre la versión fresca y solo
+se recurre a la copia guardada si la respuesta tarda más de tres segundos y medio o no
+llega. Lo que nunca se guarda: la sesión, las descargas en PDF y cualquier escritura.
+Apuntar el peso sin cobertura falla y lo dice, en lugar de fingir que se ha guardado.
+
 ---
 
 ## Arquitectura
@@ -293,6 +307,17 @@ a la cuenta del entrenador ni permite escribir nada, se anula de un clic y la p�
 que abre lleva `noindex`. Si algún día se filtrase la base de datos habría que
 regenerar todos los enlaces, y con eso quedaría cerrado.
 
+**Cerrar sesión le pide al service worker que borre lo que cacheó.**
+Sin eso, un móvil en modo avión seguiría mostrando la lista de clientes desde la caché
+después de haber salido de la cuenta. Se borran los datos y las pantallas visitadas; la
+página de «sin conexión» sobrevive, porque no guarda nada personal y solo se precarga
+al instalar el worker.
+
+**El service worker no se registra en desarrollo.**
+Cachearía los chunks de `next dev` y pelearía con la recarga en caliente. Para probarlo
+hay que levantar `npm run build && npm start`, que además es el único modo en que el
+navegador considera la aplicación instalable.
+
 **El límite de intentos del portal vive en memoria del proceso.**
 Veinte fallos por IP cada cinco minutos, contando solo los que fallan, así que un
 cliente recargando su enlace no se bloquea nunca. Si la API llegara a correr en varias
@@ -316,13 +341,17 @@ backend/
 │   └── tests/
 └── scripts/            # seeds e importación de datos
 
-frontend/src/
-├── app/                # rutas (App Router)
-├── components/         # UI por dominio
-├── hooks/              # React Query
-├── lib/                # cliente HTTP y lógica pura (con sus tests)
-├── types/
-└── proxy.ts            # middleware: reenvía /api y /static al backend
+frontend/
+├── public/
+│   ├── sw.js           # service worker: caché offline
+│   └── icons/          # iconos de la aplicación instalable
+└── src/
+    ├── app/            # rutas (App Router)
+    ├── components/     # UI por dominio
+    ├── hooks/          # React Query
+    ├── lib/            # cliente HTTP y lógica pura (con sus tests)
+    ├── types/
+    └── proxy.ts        # middleware: reenvía /api y /static al backend
 ```
 
 La lógica que merece la pena probar vive en `frontend/src/lib/` como funciones puras

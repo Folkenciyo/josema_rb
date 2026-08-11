@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import * as authApi from "@/lib/api/auth";
+import { clearPrivateCaches } from "@/lib/pwa/private-caches";
 import { queryKeys } from "@/lib/query/keys";
 import type { LoginInput } from "@/types/auth";
 
@@ -38,6 +39,7 @@ export function useLogout() {
     mutationFn: authApi.logout,
     onSuccess: () => {
       queryClient.clear();
+      clearPrivateCaches();
       router.replace("/login");
       router.refresh();
     },

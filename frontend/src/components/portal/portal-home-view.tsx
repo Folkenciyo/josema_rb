@@ -5,6 +5,7 @@ import { ChevronRight, Dumbbell, Salad, Scale } from "lucide-react";
 
 import { usePortalHome } from "@/hooks/use-portal";
 import { Card } from "@/components/ui/card";
+import { InstallCard } from "@/components/pwa/install-card";
 import { formatDate } from "@/lib/format";
 import { portalPath } from "@/types/portal";
 import {
@@ -104,6 +105,11 @@ export function PortalHomeView({ token }: { token: string }) {
             ? `${home.latest_weight_kg} kg · ${formatDate(home.latest_weighed_on)}`
             : "Todavía sin pesajes"
         }
+      />
+
+      <InstallCard
+        title="Tenlo siempre a mano"
+        description="Añádelo a la pantalla de inicio de tu móvil y podrás consultar tu rutina y tu dieta aunque te quedes sin cobertura."
       />
     </PortalPage>
   );

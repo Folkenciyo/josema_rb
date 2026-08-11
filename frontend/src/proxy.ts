@@ -63,5 +63,10 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   // Everything except Next.js internals: /api and /static are proxied above.
-  matcher: ["/((?!_next/|favicon.ico).*)"],
+  // The PWA pieces are listed too — the worker, its manifest, the icons and the
+  // offline page are fetched with no session at all, and a redirect to /login
+  // would make the app uninstallable for the client.
+  matcher: [
+    "/((?!_next/|favicon.ico|icons/|sw.js|manifest.webmanifest|offline).*)",
+  ],
 };
