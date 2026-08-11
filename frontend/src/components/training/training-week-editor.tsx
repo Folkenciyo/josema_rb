@@ -56,7 +56,11 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
             </span>
           )}
         </p>
-        <Button onClick={handleSave} disabled={!isDirty} loading={saveDays.isPending}>
+        <Button
+          onClick={handleSave}
+          disabled={!isDirty}
+          loading={saveDays.isPending}
+        >
           <Save className="size-4" />
           Guardar semana
         </Button>
@@ -76,9 +80,14 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
               )
             }
             onRemoveExercise={(key) =>
-              setDraft((current) => removeExercise(current, day.day_of_week, key))
+              setDraft((current) =>
+                removeExercise(current, day.day_of_week, key),
+              )
             }
-            onUpdateExercise={(key, changes: Partial<Omit<ExerciseDraft, "key">>) =>
+            onUpdateExercise={(
+              key,
+              changes: Partial<Omit<ExerciseDraft, "key">>,
+            ) =>
               setDraft((current) =>
                 updateExercise(current, day.day_of_week, key, changes),
               )

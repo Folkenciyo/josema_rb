@@ -13,10 +13,11 @@ export function useClients(includeInactive = false) {
   });
 }
 
-export function useClient(clientId: string) {
+export function useClient(clientId: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: queryKeys.client(clientId),
     queryFn: () => clientsApi.getClient(clientId),
+    enabled: options?.enabled ?? true,
   });
 }
 

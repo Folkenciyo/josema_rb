@@ -1,6 +1,7 @@
 import {
   Apple,
   CalendarDays,
+  ClipboardList,
   Dumbbell,
   LayoutDashboard,
   Settings,
@@ -30,7 +31,10 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     title: "Entrenamiento",
-    items: [{ href: "/exercises", label: "Ejercicios", icon: Dumbbell }],
+    items: [
+      { href: "/exercises", label: "Ejercicios", icon: Dumbbell },
+      { href: "/routines", label: "Rutinas", icon: ClipboardList },
+    ],
   },
   {
     title: "Dieta",

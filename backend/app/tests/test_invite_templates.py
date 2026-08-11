@@ -66,9 +66,7 @@ def test_a_stray_brace_is_text_and_not_a_crash(
         json={"whatsapp_template": "Hola {nombre} {esto_no_existe} {enlace} 100% {"},
     )
 
-    invite = authenticated_client.get(
-        f"/api/clients/{client_id}/portal-invite"
-    ).json()
+    invite = authenticated_client.get(f"/api/clients/{client_id}/portal-invite").json()
 
     assert invite["whatsapp_text"].startswith("Hola Pedro {esto_no_existe} http")
     assert invite["whatsapp_text"].endswith("100% {")
@@ -78,6 +76,4 @@ def test_templates_need_a_session(client: TestClient) -> None:
     client.cookies.clear()
 
     assert client.get("/api/settings/invite-templates").status_code == 401
-    assert (
-        client.put("/api/settings/invite-templates", json={}).status_code == 401
-    )
+    assert client.put("/api/settings/invite-templates", json={}).status_code == 401

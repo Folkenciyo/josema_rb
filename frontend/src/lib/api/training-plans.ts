@@ -60,3 +60,33 @@ export function duplicateTrainingWeek(
     week_number: weekNumber,
   });
 }
+
+/** Reusable routines: a plan with no client, owned by the trainer. */
+export function listTrainingTemplates(): Promise<TrainingPlan[]> {
+  return api.get<TrainingPlan[]>("/training-templates");
+}
+
+export function createTrainingTemplate(title: string): Promise<TrainingPlan> {
+  return api.post<TrainingPlan>("/training-templates", { title });
+}
+
+/** Copies a template — or another client's routine — onto this client. */
+export function copyTrainingPlanToClient(
+  clientId: string,
+  sourcePlanId: string,
+  title?: string,
+): Promise<TrainingPlan> {
+  return api.post<TrainingPlan>(
+    `/clients/${clientId}/training-plans/from/${sourcePlanId}`,
+    { title: title ?? null },
+  );
+}
+
+export function saveTrainingPlanAsTemplate(
+  planId: string,
+  title?: string,
+): Promise<TrainingPlan> {
+  return api.post<TrainingPlan>(`/training-plans/${planId}/save-as-template`, {
+    title: title ?? null,
+  });
+}

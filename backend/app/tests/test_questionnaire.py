@@ -143,9 +143,9 @@ def test_the_trainer_reads_the_answers_with_the_question_as_it_was_asked(
     client_id = authenticated_client.post(
         "/api/clients", json={"full_name": "Ruben Respuestas"}
     ).json()["id"]
-    token = authenticated_client.post(
-        f"/api/clients/{client_id}/portal-token"
-    ).json()["portal_token"]
+    token = authenticated_client.post(f"/api/clients/{client_id}/portal-token").json()[
+        "portal_token"
+    ]
 
     authenticated_client.put(
         f"/api/portal/{token}/questionnaire",
@@ -162,9 +162,7 @@ def test_the_trainer_reads_the_answers_with_the_question_as_it_was_asked(
         json={"questions": [{"text": "¿Fumas?", "kind": "yes_no"}]},
     )
 
-    view = authenticated_client.get(
-        f"/api/clients/{client_id}/questionnaire"
-    ).json()
+    view = authenticated_client.get(f"/api/clients/{client_id}/questionnaire").json()
 
     texts = [answer["question_text"] for answer in view["answers"]]
     assert "¿Has entrenado antes?" in texts

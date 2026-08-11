@@ -52,9 +52,7 @@ def upgrade() -> None:
     for column_name, column_type in NEW_FOOD_NUTRIENTS:
         op.add_column("foods", sa.Column(column_name, column_type, nullable=True))
 
-    op.execute(
-        sa.text(
-            f"""
+    op.execute(sa.text(f"""
             UPDATE foods SET
                 category = :unclassified,
                 source = 'custom',
@@ -76,9 +74,7 @@ def upgrade() -> None:
                 saturated_fat_g = 0,
                 fiber_g = 0,
                 salt_g = 0
-            """
-        ).bindparams(unclassified=UNCLASSIFIED)
-    )
+            """).bindparams(unclassified=UNCLASSIFIED))
 
     op.alter_column("foods", "category", nullable=False)
     op.alter_column("foods", "unit_amount", nullable=False)
@@ -105,18 +101,14 @@ def upgrade() -> None:
 
     # Rebuild the real amount of existing catalog lines from the multiplier that
     # was stored against the food's reference quantity.
-    op.execute(
-        sa.text(
-            """
+    op.execute(sa.text("""
             UPDATE meal_template_items AS item SET
                 quantity_amount = food.unit_amount * item.quantity_multiplier,
                 quantity_unit = food.unit_type
             FROM foods AS food
             WHERE item.food_id = food.id
               AND item.quantity_multiplier IS NOT NULL
-            """
-        )
-    )
+            """))
 
 
 def downgrade() -> None:
@@ -126,17 +118,13 @@ def downgrade() -> None:
     op.drop_column("meal_template_items", "quantity_amount")
 
     op.add_column("foods", sa.Column("unit_label", sa.String(50), nullable=True))
-    op.execute(
-        sa.text(
-            """
+    op.execute(sa.text("""
             UPDATE foods SET unit_label = concat(
                 trim(trailing '.' from trim(trailing '0' from unit_amount::text)),
                 ' ',
                 unit_type
             )
-            """
-        )
-    )
+            """))
     op.alter_column("foods", "unit_label", nullable=False)
 
     op.drop_index("ix_foods_category", table_name="foods")

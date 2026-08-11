@@ -33,15 +33,21 @@ export function TrainingExerciseRow({
   onRemove,
 }: TrainingExerciseRowProps) {
   const [showDetails, setShowDetails] = useState(false);
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: draft.key });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: draft.key });
 
   return (
     <li
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        "rounded-lg border border-slate-200 bg-surface p-2",
+        "bg-surface rounded-lg border border-slate-200 p-2",
         isDragging && "z-10 shadow-lg",
       )}
     >
@@ -110,7 +116,10 @@ export function TrainingExerciseRow({
           className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
         >
           <ChevronDown
-            className={cn("size-4 transition-transform", showDetails && "rotate-180")}
+            className={cn(
+              "size-4 transition-transform",
+              showDetails && "rotate-180",
+            )}
           />
         </button>
 
@@ -143,7 +152,9 @@ export function TrainingExerciseRow({
             Tempo
             <Input
               value={draft.tempo ?? ""}
-              onChange={(event) => onChange({ tempo: textOrNull(event.target.value) })}
+              onChange={(event) =>
+                onChange({ tempo: textOrNull(event.target.value) })
+              }
               placeholder="3-1-1"
               className="h-8"
             />
@@ -165,7 +176,9 @@ export function TrainingExerciseRow({
             Notas
             <Input
               value={draft.notes ?? ""}
-              onChange={(event) => onChange({ notes: textOrNull(event.target.value) })}
+              onChange={(event) =>
+                onChange({ notes: textOrNull(event.target.value) })
+              }
               className="h-8"
             />
           </label>

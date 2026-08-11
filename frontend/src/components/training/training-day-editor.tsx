@@ -48,7 +48,9 @@ export function TrainingDayEditor({
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -75,7 +77,11 @@ export function TrainingDayEditor({
             </span>
           )}
         </h3>
-        <Button size="sm" variant="secondary" onClick={() => setPickerOpen(true)}>
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => setPickerOpen(true)}
+        >
           <Plus className="size-4" />
           Añadir
         </Button>
