@@ -1,6 +1,7 @@
 import { api } from "./http";
 import type {
   ExerciseHistory,
+  TrainedExercise,
   WorkoutDay,
   WorkoutDayDetail,
   WorkoutSession,
@@ -46,6 +47,12 @@ export function getClientWorkout(
   sessionId: string,
 ): Promise<WorkoutSession> {
   return api.get<WorkoutSession>(`/clients/${clientId}/workouts/${sessionId}`);
+}
+
+export function getTrainedExercises(
+  clientId: string,
+): Promise<TrainedExercise[]> {
+  return api.get<TrainedExercise[]>(`/clients/${clientId}/trained-exercises`);
 }
 
 export function getExerciseHistory(

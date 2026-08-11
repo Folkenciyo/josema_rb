@@ -121,3 +121,13 @@ class ExercisePointOut(BaseModel):
 class ExerciseHistoryOut(BaseModel):
     exercise_name: str
     points: list[ExercisePointOut]
+
+
+class TrainedExerciseOut(BaseModel):
+    """One line per exercise the client has logged, to pick a progression from."""
+
+    exercise_id: str
+    exercise_name: str
+    session_count: int
+    last_performed_on: date
+    best_weight_kg: float | None
