@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, Plus } from "lucide-react";
+import { ChevronRight, ClipboardList, Plus } from "lucide-react";
 
 import { Card, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
@@ -17,6 +17,9 @@ interface PlanHistoryCardProps {
   emptyDescription: string;
   buildHref?: (planId: string) => string;
   onCreate?: () => void;
+  /** Starting from something that already exists, next to starting from zero. */
+  onReuse?: () => void;
+  reuseLabel?: string;
 }
 
 export function PlanHistoryCard({
@@ -25,6 +28,8 @@ export function PlanHistoryCard({
   emptyDescription,
   buildHref,
   onCreate,
+  onReuse,
+  reuseLabel,
 }: PlanHistoryCardProps) {
   // Plans in progress lead the list: they are the ones opened day to day.
   const sortedPlans = [
@@ -32,12 +37,23 @@ export function PlanHistoryCard({
     ...plans.filter((plan) => plan.status !== "active"),
   ];
 
-  const createButton = onCreate ? (
-    <Button size="sm" variant="secondary" onClick={onCreate}>
-      <Plus className="size-4" />
-      Nuevo plan
-    </Button>
-  ) : undefined;
+  const createButton =
+    onCreate || onReuse ? (
+      <div className="flex gap-2">
+        {onReuse && (
+          <Button size="sm" variant="secondary" onClick={onReuse}>
+            <ClipboardList className="size-4" />
+            {reuseLabel ?? "Usar una existente"}
+          </Button>
+        )}
+        {onCreate && (
+          <Button size="sm" variant="secondary" onClick={onCreate}>
+            <Plus className="size-4" />
+            Nuevo plan
+          </Button>
+        )}
+      </div>
+    ) : undefined;
 
   return (
     <Card>
@@ -54,7 +70,8 @@ export function PlanHistoryCard({
             const isActive = plan.status === "active";
             const rowClassName = cn(
               "flex items-center justify-between gap-4 px-5 py-3",
-              isActive && "border-l-2 border-amber-500 bg-amber-50/60 pl-[18px]",
+              isActive &&
+                "border-l-2 border-amber-500 bg-amber-50/60 pl-[18px]",
             );
             const content = (
               <>
@@ -68,7 +85,9 @@ export function PlanHistoryCard({
                 </div>
                 <div className="flex items-center gap-2">
                   <StatusBadge status={plan.status} />
-                  {buildHref && <ChevronRight className="size-4 text-slate-400" />}
+                  {buildHref && (
+                    <ChevronRight className="size-4 text-slate-400" />
+                  )}
                 </div>
               </>
             );

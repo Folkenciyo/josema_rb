@@ -4,7 +4,6 @@ import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  ClipboardList,
   ArrowLeft,
   MessageCircle,
   Pencil,
@@ -271,13 +270,9 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
               `/clients/${clientId}/training-plans/${planId}`
             }
             onCreate={() => setTrainingPlanOpen(true)}
+            onReuse={() => setUseRoutineOpen(true)}
+            reuseLabel="Usar una rutina"
           />
-          <div className="-mt-2">
-            <Button variant="secondary" onClick={() => setUseRoutineOpen(true)}>
-              <ClipboardList className="size-4" />
-              Usar una rutina existente
-            </Button>
-          </div>
           <PlanHistoryCard
             title="Planes de dieta"
             plans={client.diet_plans}
