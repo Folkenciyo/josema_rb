@@ -23,6 +23,9 @@ export interface PortalHome {
   has_training_plan: boolean;
   has_diet_plan: boolean;
   weigh_in_count: number;
+  /** Null means the client never agreed to their progress photos being kept. */
+  photo_consent_at: string | null;
+  photo_count: number;
 }
 
 /**

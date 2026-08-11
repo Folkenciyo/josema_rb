@@ -44,6 +44,9 @@ class Client(Base, TimestampMixin):
     portal_token_issued_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True)
     )
+    # Null means nobody ever asked. Withdrawing puts it back to null: what is
+    # kept is the fact that consent stands right now, not a history of it.
+    photo_consent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     training_plans: Mapped[list["TrainingPlan"]] = relationship(back_populates="client")
     diet_plans: Mapped[list["DietPlan"]] = relationship(back_populates="client")

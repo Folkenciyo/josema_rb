@@ -67,3 +67,7 @@ class PortalClientOut(BaseModel):
     has_training_plan: bool
     has_diet_plan: bool
     weigh_in_count: int
+    # Null means consent was never given. The count is what makes "delete my
+    # photos" honest: the client sees how many there are before deciding.
+    photo_consent_at: datetime | None
+    photo_count: int

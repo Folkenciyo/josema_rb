@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Camera, ChevronRight } from "lucide-react";
+import { Camera, ChevronRight, ShieldAlert, ShieldCheck } from "lucide-react";
 
 import { Card, CardHeader } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/feedback";
@@ -11,8 +11,38 @@ import { groupIntoSessions } from "@/lib/photos/sessions";
 import { usePhotos } from "@/hooks/use-photos";
 import { PHOTO_POSES, POSE_LABELS } from "@/types/photo";
 
+/**
+ * Whether the client has agreed to their photos being kept. Not a lock —
+ * consent may well have been given in person — but the trainer should not have
+ * to remember who said yes.
+ */
+function ConsentNotice({ consentedAt }: { consentedAt: string | null }) {
+  if (consentedAt) {
+    return (
+      <p className="flex items-center gap-1.5 border-b border-slate-100 px-5 py-2 text-xs text-slate-500">
+        <ShieldCheck className="size-3.5 text-emerald-600" />
+        El cliente autorizó guardar sus fotos el {formatDate(consentedAt)}.
+      </p>
+    );
+  }
+
+  return (
+    <p className="flex items-center gap-1.5 border-b border-amber-200 bg-amber-50 px-5 py-2 text-xs text-amber-800">
+      <ShieldAlert className="size-3.5 shrink-0" />
+      Sin consentimiento registrado. El cliente puede darlo desde su enlace, en
+      «Ficha».
+    </p>
+  );
+}
+
 /** Latest session at a glance; the gallery and the comparison live on their own page. */
-export function PhotosSummaryCard({ clientId }: { clientId: string }) {
+export function PhotosSummaryCard({
+  clientId,
+  photoConsentAt,
+}: {
+  clientId: string;
+  photoConsentAt: string | null;
+}) {
   const { data: photos } = usePhotos(clientId);
   const sessions = groupIntoSessions(photos ?? []);
   const latest = sessions[0];
@@ -30,6 +60,7 @@ export function PhotosSummaryCard({ clientId }: { clientId: string }) {
   return (
     <Card>
       <CardHeader title="Fotos de progreso" action={openLink} />
+      <ConsentNotice consentedAt={photoConsentAt} />
       {!latest ? (
         <EmptyState
           title="Sin fotos todavía"
@@ -49,8 +80,8 @@ export function PhotosSummaryCard({ clientId }: { clientId: string }) {
           <p className="mb-2 text-sm text-slate-500">
             Última tanda: {formatDate(latest.takenOn)}
             <span className="ml-2 text-xs">
-              · {sessions.length}{" "}
-              {sessions.length === 1 ? "fecha" : "fechas"} en total
+              · {sessions.length} {sessions.length === 1 ? "fecha" : "fechas"}{" "}
+              en total
             </span>
           </p>
           <div className="grid grid-cols-3 gap-3">

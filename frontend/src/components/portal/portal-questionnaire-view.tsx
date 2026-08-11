@@ -12,7 +12,11 @@ import { Card } from "@/components/ui/card";
 import { ErrorMessage } from "@/components/ui/feedback";
 import { Input } from "@/components/ui/input";
 import { formatDate } from "@/lib/format";
-import type { PortalQuestion, PortalQuestionnaire } from "@/types/questionnaire";
+import { PortalPhotoConsent } from "./portal-photo-consent";
+import type {
+  PortalQuestion,
+  PortalQuestionnaire,
+} from "@/types/questionnaire";
 import {
   PortalHeader,
   PortalLoading,
@@ -131,10 +135,7 @@ function QuestionnaireForm({
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {questionnaire.questions.map((question) => (
         <Card key={question.id} className="flex flex-col gap-2 px-5 py-4">
-          <label
-            htmlFor={question.id}
-            className="font-medium text-slate-800"
-          >
+          <label htmlFor={question.id} className="font-medium text-slate-800">
             {question.text}
             {question.required && <span className="text-amber-600"> *</span>}
           </label>
@@ -179,7 +180,11 @@ function QuestionnaireForm({
 }
 
 export function PortalQuestionnaireView({ token }: { token: string }) {
-  const { data: questionnaire, isPending, error } = usePortalQuestionnaire(token);
+  const {
+    data: questionnaire,
+    isPending,
+    error,
+  } = usePortalQuestionnaire(token);
 
   if (isPending) {
     return (
@@ -224,6 +229,7 @@ export function PortalQuestionnaireView({ token }: { token: string }) {
         }
       />
       <QuestionnaireForm token={token} questionnaire={questionnaire} />
+      <PortalPhotoConsent token={token} />
     </PortalPage>
   );
 }

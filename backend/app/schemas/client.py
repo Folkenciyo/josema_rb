@@ -55,3 +55,5 @@ class ClientDetailOut(ClientOut):
     # Only on the detail view: the listing has no business carrying secrets.
     portal_token: str | None = None
     portal_token_issued_at: datetime | None = None
+    # So the trainer knows whether the client agreed to their photos being kept.
+    photo_consent_at: datetime | None = None
