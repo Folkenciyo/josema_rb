@@ -3,7 +3,7 @@
  */
 import { NextRequest } from "next/server";
 
-import { proxy } from "./proxy";
+import { config, proxy } from "./proxy";
 
 const SESSION_COOKIE = "josema_session";
 
@@ -32,5 +32,25 @@ describe("proxy", () => {
     const response = proxy(requestFor("/p/some-token", { signedIn: true }));
 
     expect(response.headers.get("location")).toBeNull();
+  });
+});
+
+describe("proxy matcher", () => {
+  const matches = (path: string) =>
+    new RegExp(`^${config.matcher[0]}$`).test(path);
+
+  it.each([
+    "/sw.js",
+    "/manifest.webmanifest",
+    "/icons/icon-192.png",
+    "/offline",
+  ])("never runs for %s, which is fetched with no session", (path) => {
+    expect(matches(path)).toBe(false);
+  });
+
+  it("still runs for the rest of the app", () => {
+    expect(matches("/clients")).toBe(true);
+    // The per-client manifest is a portal route and goes through the guard above.
+    expect(matches("/p/some-token/manifest.webmanifest")).toBe(true);
   });
 });

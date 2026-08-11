@@ -8,6 +8,7 @@ import { useCurrentTrainer } from "@/hooks/use-auth";
 import { Card, CardHeader } from "@/components/ui/card";
 import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
 import { PageHeader } from "@/components/ui/page-header";
+import { InstallCard } from "@/components/pwa/install-card";
 import { AlertsPanel } from "./alerts-panel";
 
 const MAX_RECENT_CLIENTS = 5;
@@ -92,6 +93,13 @@ export function DashboardOverview() {
           />
         )}
       </Card>
+
+      <div className="mt-6">
+        <InstallCard
+          title="Instala JOSEMA RB en el móvil"
+          description="La tendrás a un toque, y lo que ya hayas abierto se seguirá viendo aunque el gimnasio no tenga cobertura."
+        />
+      </div>
     </>
   );
 }

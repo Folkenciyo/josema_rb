@@ -4,6 +4,20 @@ import type { NextConfig } from "next";
 // build time, which would freeze BACKEND_URL into the standalone image.
 const nextConfig: NextConfig = {
   output: "standalone",
+  async headers() {
+    return [
+      {
+        // A cached worker would keep serving an old app after a deploy.
+        source: "/sw.js",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
