@@ -12,6 +12,7 @@ from app.schemas.workout import (
     ExerciseHistoryOut,
     ExercisePointOut,
     LoggedSetOut,
+    TrainedExerciseOut,
     WorkoutDayDetailOut,
     WorkoutDayOut,
     WorkoutExerciseOut,
@@ -253,6 +254,25 @@ def get_session(
             status_code=status.HTTP_404_NOT_FOUND, detail="Session not found"
         )
     return _to_session_out(session)
+
+
+def list_trained_exercises(db: Session, client: Client) -> list[TrainedExerciseOut]:
+    return [
+        TrainedExerciseOut(
+            exercise_id=exercise_id,
+            exercise_name=exercise_name,
+            session_count=session_count,
+            last_performed_on=last_performed_on,
+            best_weight_kg=_as_float(best_weight_kg),
+        )
+        for (
+            exercise_id,
+            exercise_name,
+            session_count,
+            last_performed_on,
+            best_weight_kg,
+        ) in workout_repository.list_trained_exercises(db, client.id)
+    ]
 
 
 def exercise_history(

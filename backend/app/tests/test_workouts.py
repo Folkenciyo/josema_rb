@@ -337,6 +337,41 @@ def test_the_progression_of_an_exercise_takes_the_heaviest_set_of_each_day(
     assert history["points"][0]["total_volume_kg"] == 1100.0
 
 
+def test_the_trainer_can_list_which_exercises_have_been_logged(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id, token = _new_client_with_plan(authenticated_client, imported_exercise.id)
+    day = _day_of(authenticated_client, token)
+    planned_id = authenticated_client.get(
+        f"/api/portal/{token}/workout/days/{day['id']}"
+    ).json()["exercises"][0]["id"]
+    payload = _session_payload(day["id"])
+    for performed in payload["sets"]:
+        performed["training_day_exercise_id"] = planned_id
+    authenticated_client.post(f"/api/portal/{token}/workouts", json=payload)
+
+    trained = authenticated_client.get(
+        f"/api/clients/{client_id}/trained-exercises"
+    ).json()
+
+    assert len(trained) == 1
+    assert trained[0]["exercise_id"] == imported_exercise.id
+    assert trained[0]["session_count"] == 1
+    assert trained[0]["best_weight_kg"] == 62.5
+
+
+def test_an_exercise_never_logged_is_not_offered_to_chart(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id, _ = _new_client_with_plan(authenticated_client, imported_exercise.id)
+
+    trained = authenticated_client.get(
+        f"/api/clients/{client_id}/trained-exercises"
+    ).json()
+
+    assert trained == []
+
+
 def test_sessions_are_not_readable_without_a_session_cookie(
     authenticated_client: TestClient, client: TestClient, imported_exercise: Exercise
 ) -> None:

@@ -96,7 +96,9 @@ it("keeps the reason a session was lost, which no screen may swallow", async () 
   // Out of the queue — retrying would fail the same way — but still on screen,
   // even after leaving the session and landing on the list of days.
   expect(store.getSnapshot().queue).toEqual([]);
-  expect(store.getSnapshot().rejected).toBe("La fecha de la sesión no es válida");
+  expect(store.getSnapshot().rejected).toBe(
+    "La fecha de la sesión no es válida",
+  );
 
   store.dismissRejection();
   expect(store.getSnapshot().rejected).toBeNull();

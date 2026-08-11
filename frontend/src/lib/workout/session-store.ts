@@ -108,10 +108,7 @@ export function acknowledgeSession(deviceSessionId: string): void {
 }
 
 /** The session will never be accepted: it leaves the queue and this says why. */
-export function rejectSession(
-  deviceSessionId: string,
-  reason: string,
-): void {
+export function rejectSession(deviceSessionId: string, reason: string): void {
   const current = getSnapshot();
   commit({
     ...current,

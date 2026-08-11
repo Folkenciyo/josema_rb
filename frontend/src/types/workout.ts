@@ -93,3 +93,12 @@ export interface ExerciseHistory {
   exercise_name: string;
   points: ExercisePoint[];
 }
+
+/** An exercise the client has logged at least once, offered to be charted. */
+export interface TrainedExercise {
+  exercise_id: string;
+  exercise_name: string;
+  session_count: number;
+  last_performed_on: string;
+  best_weight_kg: number | null;
+}

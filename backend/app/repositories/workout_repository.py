@@ -104,6 +104,31 @@ def last_sets_per_exercise(
     return last
 
 
+def list_trained_exercises(db: Session, client_id: uuid.UUID) -> list[tuple]:
+    """Every exercise this client has actually logged, with how much of it.
+
+    Sets whose exercise was deleted from the catalogue are left out: there would
+    be nothing to open. Their sets are still readable inside the session.
+    """
+    return (
+        db.query(
+            WorkoutSet.exercise_id,
+            func.max(WorkoutSet.exercise_name),
+            func.count(func.distinct(WorkoutSession.id)),
+            func.max(WorkoutSession.performed_on),
+            func.max(WorkoutSet.weight_kg),
+        )
+        .join(WorkoutSession, WorkoutSet.session_id == WorkoutSession.id)
+        .filter(
+            WorkoutSession.client_id == client_id,
+            WorkoutSet.exercise_id.isnot(None),
+        )
+        .group_by(WorkoutSet.exercise_id)
+        .order_by(func.max(WorkoutSession.performed_on).desc())
+        .all()
+    )
+
+
 def list_sets_for_exercise(
     db: Session, client_id: uuid.UUID, exercise_id: str
 ) -> list[tuple[date, WorkoutSet]]:
