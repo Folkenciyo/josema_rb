@@ -29,9 +29,7 @@ def upgrade() -> None:
     )
     # Unique so a token can never resolve to two clients, and indexed because
     # every single portal request looks a client up by it.
-    op.create_index(
-        "ix_clients_portal_token", "clients", ["portal_token"], unique=True
-    )
+    op.create_index("ix_clients_portal_token", "clients", ["portal_token"], unique=True)
 
 
 def downgrade() -> None:

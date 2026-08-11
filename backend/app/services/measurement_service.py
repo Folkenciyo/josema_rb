@@ -78,9 +78,7 @@ def delete_measurement(db: Session, measurement_id: uuid.UUID) -> None:
     measurement_repository.delete(db, _get_measurement(db, measurement_id))
 
 
-def _reject_duplicate_day(
-    db: Session, client_id: uuid.UUID, measured_on: date
-) -> None:
+def _reject_duplicate_day(db: Session, client_id: uuid.UUID, measured_on: date) -> None:
     """One weigh-in per day keeps the chart honest and the edit flow obvious."""
     if measurement_repository.get_by_day(db, client_id, measured_on) is not None:
         raise HTTPException(

@@ -40,8 +40,7 @@ PLACEHOLDERS = ("nombre", "nombre_completo", "enlace", "entrenador")
 def get_templates(trainer: Trainer) -> InviteTemplatesOut:
     """What the settings screen edits, already filled in with the stock text."""
     return InviteTemplatesOut(
-        whatsapp_template=trainer.invite_whatsapp_template
-        or DEFAULT_WHATSAPP_TEMPLATE,
+        whatsapp_template=trainer.invite_whatsapp_template or DEFAULT_WHATSAPP_TEMPLATE,
         email_subject=trainer.invite_email_subject or DEFAULT_EMAIL_SUBJECT,
         email_template=trainer.invite_email_template or DEFAULT_EMAIL_TEMPLATE,
         placeholders=list(PLACEHOLDERS),

@@ -23,6 +23,17 @@ def list_by_client(db: Session, client_id: uuid.UUID) -> list[TrainingPlan]:
     )
 
 
+def list_templates(db: Session, trainer_id: uuid.UUID) -> list[TrainingPlan]:
+    """Reusable routines: the ones that belong to the trainer and to no client."""
+    return (
+        db.query(TrainingPlan)
+        .options(_DETAIL_LOADER)
+        .filter(TrainingPlan.trainer_id == trainer_id)
+        .order_by(TrainingPlan.title)
+        .all()
+    )
+
+
 def get_active_for_client(db: Session, client_id: uuid.UUID) -> TrainingPlan | None:
     """The plan the client is training right now — the newest one still active."""
     return (

@@ -7,8 +7,9 @@ from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.core.security import get_current_trainer
-from app.models import TrainingPlan, TrainingWeek
+from app.models import Trainer, TrainingPlan, TrainingWeek
 from app.schemas.training_plan import (
+    CopyTrainingPlanRequest,
     DuplicateWeekRequest,
     SetTrainingDaysRequest,
     TrainingPlanCreate,
@@ -49,6 +50,65 @@ def create_training_plan(
 ) -> TrainingPlan:
     client = client_service.get_client(db, client_id)
     return training_plan_service.create_plan(db, client, payload)
+
+
+@router.post(
+    "/api/clients/{client_id}/training-plans/from/{source_plan_id}",
+    response_model=TrainingPlanOut,
+    status_code=status.HTTP_201_CREATED,
+)
+def copy_training_plan_to_client(
+    client_id: uuid.UUID,
+    source_plan_id: uuid.UUID,
+    payload: CopyTrainingPlanRequest,
+    db: Session = Depends(get_db),
+) -> TrainingPlan:
+    """Start this client from a template, or from what already works for another.
+
+    The copy lands as a draft with no dates: the trainer adjusts it and decides
+    when it starts, instead of a second plan quietly going live.
+    """
+    client = client_service.get_client(db, client_id)
+    return training_plan_service.copy_plan(
+        db, source_plan_id, client_id=client.id, title=payload.title
+    )
+
+
+@router.get("/api/training-templates", response_model=list[TrainingPlanOut])
+def list_training_templates(
+    trainer: Trainer = Depends(get_current_trainer), db: Session = Depends(get_db)
+) -> list[TrainingPlan]:
+    return training_plan_service.list_templates(db, trainer)
+
+
+@router.post(
+    "/api/training-templates",
+    response_model=TrainingPlanOut,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_training_template(
+    payload: TrainingPlanCreate,
+    trainer: Trainer = Depends(get_current_trainer),
+    db: Session = Depends(get_db),
+) -> TrainingPlan:
+    return training_plan_service.create_template(db, trainer, payload)
+
+
+@router.post(
+    "/api/training-plans/{plan_id}/save-as-template",
+    response_model=TrainingPlanOut,
+    status_code=status.HTTP_201_CREATED,
+)
+def save_plan_as_template(
+    plan_id: uuid.UUID,
+    payload: CopyTrainingPlanRequest,
+    trainer: Trainer = Depends(get_current_trainer),
+    db: Session = Depends(get_db),
+) -> TrainingPlan:
+    """Templates worth having are the ones that already worked with somebody."""
+    return training_plan_service.copy_plan(
+        db, plan_id, trainer_id=trainer.id, title=payload.title
+    )
 
 
 @router.get("/api/training-plans/{plan_id}", response_model=TrainingPlanDetailOut)

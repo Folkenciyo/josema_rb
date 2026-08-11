@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 
 from app.models import (
     Client,
+    PlanStatus,
+    Trainer,
     TrainingDay,
     TrainingDayExercise,
     TrainingPlan,
@@ -36,6 +38,77 @@ def get_plan(db: Session, plan_id: uuid.UUID) -> TrainingPlan:
 
 def create_plan(db: Session, client: Client, data: TrainingPlanCreate) -> TrainingPlan:
     plan = TrainingPlan(client_id=client.id, **data.model_dump())
+    return training_plan_repository.create(db, plan)
+
+
+def _copy_day(source: TrainingDay) -> TrainingDay:
+    day = TrainingDay(day_of_week=source.day_of_week, order_index=source.order_index)
+    day.exercises = [
+        TrainingDayExercise(
+            exercise_id=exercise.exercise_id,
+            order_index=exercise.order_index,
+            sets=exercise.sets,
+            reps=exercise.reps,
+            rest_seconds=exercise.rest_seconds,
+            tempo=exercise.tempo,
+            superset_group=exercise.superset_group,
+            notes=exercise.notes,
+        )
+        for exercise in source.exercises
+    ]
+    return day
+
+
+def copy_plan(
+    db: Session,
+    source_plan_id: uuid.UUID,
+    *,
+    client_id: uuid.UUID | None = None,
+    trainer_id: uuid.UUID | None = None,
+    title: str | None = None,
+) -> TrainingPlan:
+    """Copy a whole routine — weeks, days and exercises — onto a new owner.
+
+    The one operation behind all three cases: reusing another client's routine,
+    saving one as a template, and starting a client from a template. The copy is
+    always a draft with no dates: it is a starting point, not a plan already
+    running, and the trainer decides when it begins.
+    """
+    source = get_plan(db, source_plan_id)
+
+    copy = TrainingPlan(
+        client_id=client_id,
+        trainer_id=trainer_id,
+        title=title or source.title,
+        notes=source.notes,
+        status=PlanStatus.DRAFT,
+    )
+    copy.weeks = [
+        TrainingWeek(
+            week_number=week.week_number,
+            notes=week.notes,
+            days=[_copy_day(day) for day in week.days],
+        )
+        for week in source.weeks
+    ]
+
+    return training_plan_repository.create(db, copy)
+
+
+def list_templates(db: Session, trainer: Trainer) -> list[TrainingPlan]:
+    return training_plan_repository.list_templates(db, trainer.id)
+
+
+def create_template(
+    db: Session, trainer: Trainer, data: TrainingPlanCreate
+) -> TrainingPlan:
+    """An empty template, filled in with the same editor a client's plan uses."""
+    plan = TrainingPlan(
+        trainer_id=trainer.id,
+        title=data.title,
+        notes=data.notes,
+        status=PlanStatus.DRAFT,
+    )
     return training_plan_repository.create(db, plan)
 
 
@@ -108,26 +181,6 @@ def duplicate_week(
     source_week = _get_week(db, week_id)
     plan = get_plan(db, source_week.training_plan_id)
 
-    new_days = []
-    for source_day in source_week.days:
-        new_day = TrainingDay(
-            day_of_week=source_day.day_of_week, order_index=source_day.order_index
-        )
-        new_day.exercises = [
-            TrainingDayExercise(
-                exercise_id=exercise.exercise_id,
-                order_index=exercise.order_index,
-                sets=exercise.sets,
-                reps=exercise.reps,
-                rest_seconds=exercise.rest_seconds,
-                tempo=exercise.tempo,
-                superset_group=exercise.superset_group,
-                notes=exercise.notes,
-            )
-            for exercise in source_day.exercises
-        ]
-        new_days.append(new_day)
-
     new_week = TrainingWeek(week_number=new_week_number, notes=source_week.notes)
-    new_week.days = new_days
+    new_week.days = [_copy_day(day) for day in source_week.days]
     return training_plan_repository.add_week(db, plan, new_week)

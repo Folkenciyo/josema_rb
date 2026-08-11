@@ -41,7 +41,12 @@ def build_training_plan_document(
     db: Session, plan_id: uuid.UUID
 ) -> TrainingPlanDocument:
     plan: TrainingPlan = training_plan_service.get_plan(db, plan_id)
-    client = client_service.get_client(db, plan.client_id)
+    # A template belongs to no one, so there is no name to put on the cover.
+    client_name = (
+        client_service.get_client(db, plan.client_id).full_name
+        if plan.client_id
+        else "Plantilla"
+    )
 
     weeks = []
     for week in plan.weeks:
@@ -76,7 +81,7 @@ def build_training_plan_document(
         )
 
     return TrainingPlanDocument(
-        client_name=client.full_name,
+        client_name=client_name,
         plan_title=plan.title,
         plan_notes=plan.notes,
         start_date=plan.start_date.isoformat() if plan.start_date else None,

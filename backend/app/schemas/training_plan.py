@@ -14,6 +14,12 @@ class TrainingPlanCreate(BaseModel):
     status: PlanStatus = PlanStatus.DRAFT
 
 
+class CopyTrainingPlanRequest(BaseModel):
+    """A copy usually wants its own name: "Fuerza de Laura" on Marta reads odd."""
+
+    title: str | None = None
+
+
 class TrainingPlanUpdate(BaseModel):
     title: str | None = None
     notes: str | None = None
@@ -24,7 +30,8 @@ class TrainingPlanUpdate(BaseModel):
 
 class TrainingPlanOut(BaseModel):
     id: uuid.UUID
-    client_id: uuid.UUID
+    # Null on a template: it belongs to the trainer, not to a client.
+    client_id: uuid.UUID | None
     title: str
     notes: str | None
     start_date: date | None

@@ -187,9 +187,7 @@ def test_a_corrupt_image_is_rejected(authenticated_client: TestClient) -> None:
 
 
 def test_photos_require_a_session(client: TestClient) -> None:
-    response = client.get(
-        "/api/clients/00000000-0000-0000-0000-000000000000/photos"
-    )
+    response = client.get("/api/clients/00000000-0000-0000-0000-000000000000/photos")
 
     assert response.status_code == 401
 

@@ -3,7 +3,15 @@ from datetime import date
 from enum import StrEnum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Date, Enum, ForeignKey, Integer, String, Text
+from sqlalchemy import (
+    CheckConstraint,
+    Date,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -31,13 +39,30 @@ class DayOfWeek(StrEnum):
 
 
 class TrainingPlan(Base, TimestampMixin):
+    """A client's routine — or, with no client, a reusable template.
+
+    A template is the same thing as a plan on purpose: it is edited with the
+    same weeks-and-days editor, exported by the same code and copied onto a
+    client by the same routine. The only difference is who owns it.
+    """
+
     __tablename__ = "training_plans"
+    __table_args__ = (
+        CheckConstraint(
+            "(client_id IS NULL) <> (trainer_id IS NULL)",
+            name="ck_training_plan_owner",
+        ),
+    )
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
     )
-    client_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("clients.id"), nullable=False
+    client_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("clients.id"), index=True
+    )
+    # Set only on templates, which belong to the trainer and to no client.
+    trainer_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("trainers.id"), index=True
     )
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     notes: Mapped[str | None] = mapped_column(Text)
