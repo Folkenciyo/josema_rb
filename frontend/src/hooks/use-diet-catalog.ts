@@ -58,7 +58,8 @@ export function useCreateFood() {
 
   return useMutation({
     mutationFn: (input: FoodInput) => catalogApi.createFood(input),
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: FOODS_KEY }),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: FOODS_KEY }),
   });
 }
 
@@ -66,9 +67,15 @@ export function useUpdateFood() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ foodId, input }: { foodId: string; input: Partial<FoodInput> }) =>
-      catalogApi.updateFood(foodId, input),
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: FOODS_KEY }),
+    mutationFn: ({
+      foodId,
+      input,
+    }: {
+      foodId: string;
+      input: Partial<FoodInput>;
+    }) => catalogApi.updateFood(foodId, input),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: FOODS_KEY }),
   });
 }
 
@@ -77,7 +84,8 @@ export function useDeleteFood() {
 
   return useMutation({
     mutationFn: (foodId: string) => catalogApi.deleteFood(foodId),
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: FOODS_KEY }),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: FOODS_KEY }),
   });
 }
 
@@ -138,7 +146,8 @@ export function useCreateMenu() {
 
   return useMutation({
     mutationFn: (input: MenuInput) => catalogApi.createMenu(input),
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: MENUS_KEY }),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: MENUS_KEY }),
   });
 }
 
@@ -146,9 +155,31 @@ export function useUpdateMenu() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ menuId, input }: { menuId: string; input: Partial<MenuInput> }) =>
-      catalogApi.updateMenu(menuId, input),
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: MENUS_KEY }),
+    mutationFn: ({
+      menuId,
+      input,
+    }: {
+      menuId: string;
+      input: Partial<MenuInput>;
+    }) => catalogApi.updateMenu(menuId, input),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: MENUS_KEY }),
+  });
+}
+
+export function useScaleMenu() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      menuId,
+      targetCalories,
+    }: {
+      menuId: string;
+      targetCalories: number;
+    }) => catalogApi.scaleMenu(menuId, targetCalories),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: MENUS_KEY }),
   });
 }
 
@@ -157,6 +188,7 @@ export function useDeleteMenu() {
 
   return useMutation({
     mutationFn: (menuId: string) => catalogApi.deleteMenu(menuId),
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: MENUS_KEY }),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: MENUS_KEY }),
   });
 }

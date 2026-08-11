@@ -3,7 +3,8 @@ import uuid
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.models import Menu, MenuMeal, Trainer
+from app.models import MealTemplate, MealTemplateItem, Menu, MenuMeal, Trainer
+from app.models.food import format_unit_label
 from app.repositories import meal_template_repository, menu_repository
 from app.schemas.meal_template import MacroTotals
 from app.schemas.menu import (
@@ -13,7 +14,7 @@ from app.schemas.menu import (
     MenuOut,
     MenuUpdate,
 )
-from app.services import meal_template_service
+from app.services import meal_template_service, menu_scaling
 
 
 def _build_menu_meal(db: Session, data: MenuMealCreate) -> MenuMeal:
@@ -93,6 +94,79 @@ def update_menu(db: Session, menu_id: uuid.UUID, data: MenuUpdate) -> Menu:
         new_meals = _build_menu_meals(db, data.meals)
         menu_repository.replace_meals(db, menu, new_meals)
     return menu
+
+
+def _scale_item(item: MealTemplateItem, factor: float) -> MealTemplateItem:
+    """A copy of the line with the portion — and its macros — grown or shrunk."""
+    amount = menu_scaling.scale_amount(item.quantity_amount, factor, item.quantity_unit)
+    # What the rounded portion really represents, so the macros match the grams
+    # that end up printed instead of the ones that were asked for.
+    applied = menu_scaling.realised_factor(item.quantity_amount, amount, factor)
+
+    return MealTemplateItem(
+        food_id=item.food_id,
+        food_name=item.food_name,
+        # A hand-written line has no unit to rebuild the label from; its own
+        # wording travels unchanged rather than being invented.
+        quantity_label=(
+            format_unit_label(float(amount), item.quantity_unit)
+            if amount is not None and item.quantity_unit
+            else item.quantity_label
+        ),
+        quantity_amount=amount,
+        quantity_unit=item.quantity_unit,
+        quantity_multiplier=menu_scaling.scale_nutrient(
+            item.quantity_multiplier, applied
+        ),
+        order_index=item.order_index,
+        **{
+            field: menu_scaling.scale_nutrient(getattr(item, field), applied)
+            for field in meal_template_service.NUTRIENT_FIELDS
+        },
+    )
+
+
+def scale_menu(
+    db: Session, trainer: Trainer, menu_id: uuid.UUID, target_calories: float
+) -> Menu:
+    """Build a new menu at a different calorie target, portion by portion.
+
+    Always a new menu, never an edit: menus are shared, and the same one may
+    already be handed out inside somebody else's week.
+    """
+    menu = get_menu(db, menu_id)
+    current = compute_totals(menu).calories
+    if current <= 0:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail="No se puede escalar un menú sin calorías",
+        )
+
+    factor = menu_scaling.scaling_factor(current, target_calories)
+    suffix = f"{round(target_calories)} kcal"
+
+    scaled = Menu(
+        trainer_id=trainer.id,
+        name=f"{menu.name} · {suffix}",
+        notes=menu.notes,
+    )
+    scaled.meals = [
+        MenuMeal(
+            meal_template=MealTemplate(
+                trainer_id=trainer.id,
+                name=f"{menu_meal.meal_template.name} · {suffix}",
+                notes=menu_meal.meal_template.notes,
+                items=[
+                    _scale_item(item, factor) for item in menu_meal.meal_template.items
+                ],
+            ),
+            order_index=menu_meal.order_index,
+            time_of_day=menu_meal.time_of_day,
+        )
+        for menu_meal in menu.meals
+    ]
+
+    return menu_repository.create(db, scaled)
 
 
 def delete_menu(db: Session, menu_id: uuid.UUID) -> None:

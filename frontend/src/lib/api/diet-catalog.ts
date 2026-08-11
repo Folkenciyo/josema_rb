@@ -74,6 +74,16 @@ export function updateMenu(
   return api.patch<Menu>(`/menus/${menuId}`, input);
 }
 
+/** Returns a brand new menu: the original is never touched. */
+export function scaleMenu(
+  menuId: string,
+  targetCalories: number,
+): Promise<Menu> {
+  return api.post<Menu>(`/menus/${menuId}/scale`, {
+    target_calories: targetCalories,
+  });
+}
+
 export function deleteMenu(menuId: string): Promise<void> {
   return api.delete(`/menus/${menuId}`);
 }
