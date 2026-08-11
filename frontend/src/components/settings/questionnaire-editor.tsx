@@ -24,7 +24,7 @@ import {
 
 const KINDS = Object.keys(QUESTION_KIND_LABELS) as QuestionKind[];
 const SELECT_CLASSES =
-  "rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-700 outline-none focus:border-amber-400";
+  "rounded-lg border border-slate-300 bg-surface px-2 py-1.5 text-sm text-slate-700 outline-none focus:border-amber-400";
 
 function QuestionRow({
   draft,

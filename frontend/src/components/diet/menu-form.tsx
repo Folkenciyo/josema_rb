@@ -154,7 +154,7 @@ export function MenuForm({
               return (
                 <li
                   key={meal.key}
-                  className="flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 bg-white p-3"
+                  className="flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 bg-surface p-3"
                 >
                   <label className="flex min-w-48 flex-1 flex-col gap-1 text-xs text-slate-500">
                     Comida

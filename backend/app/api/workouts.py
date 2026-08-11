@@ -7,6 +7,7 @@ from app.core.db import get_db
 from app.core.security import get_current_trainer
 from app.schemas.workout import (
     ExerciseHistoryOut,
+    TrainedExerciseOut,
     WorkoutSessionOut,
     WorkoutSessionSummaryOut,
 )
@@ -36,6 +37,18 @@ def get_client_workout(
 ) -> WorkoutSessionOut:
     client = client_service.get_client(db, client_id)
     return workout_service.get_session(db, client, session_id)
+
+
+@router.get(
+    "/api/clients/{client_id}/trained-exercises",
+    response_model=list[TrainedExerciseOut],
+)
+def list_trained_exercises(
+    client_id: uuid.UUID, db: Session = Depends(get_db)
+) -> list[TrainedExerciseOut]:
+    """The exercises this client has logged, newest first: the ones worth charting."""
+    client = client_service.get_client(db, client_id)
+    return workout_service.list_trained_exercises(db, client)
 
 
 @router.get(

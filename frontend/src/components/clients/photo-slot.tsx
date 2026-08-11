@@ -65,7 +65,7 @@ export function PhotoSlot({
           </span>
         )}
         {photo && (
-          <span className="absolute inset-x-0 bottom-0 bg-slate-900/60 py-1 text-center text-xs text-white opacity-0 group-hover:opacity-100">
+          <span className="absolute inset-x-0 bottom-0 bg-black/60 py-1 text-center text-xs text-white opacity-0 group-hover:opacity-100">
             Reemplazar
           </span>
         )}

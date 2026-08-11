@@ -95,7 +95,7 @@ export function AssignMenuModal({
                     "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
                     isSelected
                       ? "border-amber-500 bg-amber-500 text-slate-900"
-                      : "border-slate-300 bg-white text-slate-600 hover:bg-slate-50",
+                      : "border-slate-300 bg-surface text-slate-600 hover:bg-slate-50",
                   )}
                 >
                   {DAY_LABELS[day]}

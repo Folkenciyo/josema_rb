@@ -76,7 +76,7 @@ function SendPanel({
         value={message}
         onChange={(event) => setMessage(event.target.value)}
         rows={5}
-        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+        className="w-full rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm text-slate-800 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
       />
       <p className="text-xs text-slate-400">
         Se edita solo para este envío. Para cambiarlo siempre, ve a Ajustes.
@@ -97,7 +97,7 @@ function SendPanel({
         {mailtoHref ? (
           <a
             href={mailtoHref}
-            className="inline-flex h-8 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+            className="inline-flex h-8 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-surface px-3 text-sm font-semibold text-slate-700 hover:bg-slate-100"
           >
             <Mail className="size-4" />
             Email

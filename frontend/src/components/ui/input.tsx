@@ -3,7 +3,7 @@ import type { InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes 
 import { cn } from "@/lib/cn";
 
 const CONTROL_CLASSES =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 disabled:bg-slate-100 aria-[invalid=true]:border-red-400";
+  "w-full rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 disabled:bg-slate-100 aria-[invalid=true]:border-red-400";
 
 export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElement>) {
   return <input className={cn(CONTROL_CLASSES, "h-10", className)} {...props} />;

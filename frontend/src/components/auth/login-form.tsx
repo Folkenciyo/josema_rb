@@ -28,6 +28,7 @@ function safeRedirect(next: string | null): string {
 export function LoginForm() {
   const searchParams = useSearchParams();
   const login = useLogin(safeRedirect(searchParams.get("next")));
+  const hasExpired = searchParams.get("expired") === "1";
 
   const {
     register,
@@ -44,6 +45,12 @@ export function LoginForm() {
       onSubmit={handleSubmit((values) => login.mutate(values))}
       noValidate
     >
+      {hasExpired && (
+        <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          Tu sesión ha caducado. Vuelve a entrar y seguimos donde lo dejaste.
+        </p>
+      )}
+
       <Field label="Email" error={errors.email?.message}>
         {(props) => (
           <Input

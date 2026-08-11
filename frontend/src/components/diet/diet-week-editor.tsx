@@ -93,7 +93,7 @@ export function DietWeekEditor({ planId, week, targets }: DietWeekEditorProps) {
           return (
             <li
               key={day.day_of_week}
-              className="rounded-lg border border-slate-200 bg-white p-3"
+              className="rounded-lg border border-slate-200 bg-surface p-3"
             >
               <div className="flex flex-wrap items-center gap-3">
               <span className="w-24 font-semibold text-slate-800">

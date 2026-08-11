@@ -13,7 +13,7 @@ export function ExerciseCard({ exercise, onSelect }: ExerciseCardProps) {
     <button
       type="button"
       onClick={() => onSelect(exercise)}
-      className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white text-left shadow-sm transition-shadow hover:shadow-md"
+      className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface text-left shadow-sm transition-shadow hover:shadow-md"
     >
       <ExerciseImage
         path={exercise.images[0]}

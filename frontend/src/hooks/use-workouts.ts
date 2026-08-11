@@ -58,6 +58,13 @@ export function useClientWorkout(clientId: string, sessionId: string) {
   });
 }
 
+export function useTrainedExercises(clientId: string) {
+  return useQuery({
+    queryKey: queryKeys.trainedExercises(clientId),
+    queryFn: () => workoutsApi.getTrainedExercises(clientId),
+  });
+}
+
 export function useExerciseHistory(clientId: string, exerciseId: string) {
   return useQuery({
     queryKey: queryKeys.exerciseHistory(clientId, exerciseId),

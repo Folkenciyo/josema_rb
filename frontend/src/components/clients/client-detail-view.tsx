@@ -37,6 +37,7 @@ import { QuestionnaireCard } from "./questionnaire-card";
 import { PhotosSummaryCard } from "./photos-summary-card";
 import { PlanHistoryCard } from "./plan-history-card";
 import { WorkoutsCard } from "./workouts-card";
+import { ExerciseProgressionCard } from "./exercise-progression-card";
 
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
   return (
@@ -280,6 +281,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             clientId={clientId}
             photoConsentAt={client.photo_consent_at}
           />
+          <ExerciseProgressionCard clientId={clientId} />
           <QuestionnaireCard clientId={clientId} />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import uuid
 from datetime import time
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.schemas.meal_template import MacroTotals, MealTemplateOut
 
@@ -30,6 +30,12 @@ class MenuUpdate(BaseModel):
     notes: str | None = None
     # When provided, replaces the full meal slot list transactionally.
     meals: list[MenuMealCreate] | None = None
+
+
+class MenuScaleRequest(BaseModel):
+    """A day's worth of eating: below or above this is not a menu, it is a typo."""
+
+    target_calories: float = Field(gt=500, le=6000)
 
 
 class MenuOut(BaseModel):

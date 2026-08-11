@@ -35,7 +35,7 @@ export function WeekTabs({
             className={cn(
               "rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors",
               week.id === activeWeekId
-                ? "bg-slate-900 text-white"
+                ? "bg-inverse text-white"
                 : "text-slate-600 hover:bg-slate-100",
             )}
           >

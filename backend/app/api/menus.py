@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.db import get_db
 from app.core.security import get_current_trainer
 from app.models import Trainer
-from app.schemas.menu import MenuCreate, MenuOut, MenuUpdate
+from app.schemas.menu import MenuCreate, MenuOut, MenuScaleRequest, MenuUpdate
 from app.services import menu_service
 
 router = APIRouter(
@@ -29,6 +29,24 @@ def create_menu(
     db: Session = Depends(get_db),
 ) -> MenuOut:
     menu = menu_service.create_menu(db, trainer, payload)
+    return menu_service.to_out(menu)
+
+
+@router.post(
+    "/{menu_id}/scale", response_model=MenuOut, status_code=status.HTTP_201_CREATED
+)
+def scale_menu(
+    menu_id: uuid.UUID,
+    payload: MenuScaleRequest,
+    trainer: Trainer = Depends(get_current_trainer),
+    db: Session = Depends(get_db),
+) -> MenuOut:
+    """The same menu at another calorie target, as a new menu.
+
+    Never an edit: menus are shared, and this one may already be handed out
+    inside somebody else's week.
+    """
+    menu = menu_service.scale_menu(db, trainer, menu_id, payload.target_calories)
     return menu_service.to_out(menu)
 
 

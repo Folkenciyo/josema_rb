@@ -25,7 +25,7 @@ import {
 } from "./portal-shell";
 
 const TEXTAREA_CLASSES =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100";
+  "w-full rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm text-slate-800 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100";
 
 function AnswerField({
   question,
@@ -59,7 +59,7 @@ function AnswerField({
             className={
               value === option
                 ? "rounded-lg bg-amber-500 px-4 py-1.5 text-sm font-semibold text-slate-900"
-                : "rounded-lg border border-slate-300 bg-white px-4 py-1.5 text-sm font-semibold text-slate-600"
+                : "rounded-lg border border-slate-300 bg-surface px-4 py-1.5 text-sm font-semibold text-slate-600"
             }
           >
             {option}
@@ -80,7 +80,7 @@ function AnswerField({
             className={
               value === option
                 ? "rounded-lg bg-amber-500 px-3 py-1.5 text-sm font-semibold text-slate-900"
-                : "rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-600"
+                : "rounded-lg border border-slate-300 bg-surface px-3 py-1.5 text-sm font-semibold text-slate-600"
             }
           >
             {option}
