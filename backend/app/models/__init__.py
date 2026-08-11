@@ -17,6 +17,7 @@ from app.models.training_plan import (
     TrainingPlan,
     TrainingWeek,
 )
+from app.models.workout import WorkoutSession, WorkoutSet
 
 __all__ = [
     "Base",
@@ -43,4 +44,6 @@ __all__ = [
     "TrainingDayExercise",
     "TrainingPlan",
     "TrainingWeek",
+    "WorkoutSession",
+    "WorkoutSet",
 ]

@@ -3,7 +3,13 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, MessageCircle, Pencil, RotateCcw, UserMinus } from "lucide-react";
+import {
+  ArrowLeft,
+  MessageCircle,
+  Pencil,
+  RotateCcw,
+  UserMinus,
+} from "lucide-react";
 
 import {
   useClient,
@@ -30,6 +36,7 @@ import { PortalAccessCard } from "./portal-access-card";
 import { QuestionnaireCard } from "./questionnaire-card";
 import { PhotosSummaryCard } from "./photos-summary-card";
 import { PlanHistoryCard } from "./plan-history-card";
+import { WorkoutsCard } from "./workouts-card";
 
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
   return (
@@ -41,7 +48,13 @@ function DetailRow({ label, value }: { label: string; value: ReactNode }) {
 }
 
 /** Contact details are links so the trainer can write or call straight from the phone. */
-function ContactValue({ href, text }: { href: string | null; text: string | null }) {
+function ContactValue({
+  href,
+  text,
+}: {
+  href: string | null;
+  text: string | null;
+}) {
   if (!text) {
     return <>—</>;
   }
@@ -59,7 +72,9 @@ function ContactValue({ href, text }: { href: string | null; text: string | null
 
 function ClientProfileCard({ client }: { client: ClientDetail }) {
   const age = calculateAge(client.birth_date);
-  const sexLabel = client.sex ? (SEX_LABELS[client.sex as Sex] ?? client.sex) : "—";
+  const sexLabel = client.sex
+    ? (SEX_LABELS[client.sex as Sex] ?? client.sex)
+    : "—";
   const whatsAppHref = toWhatsAppHref(client.phone);
 
   return (
@@ -68,13 +83,21 @@ function ClientProfileCard({ client }: { client: ClientDetail }) {
       <div className="divide-y divide-slate-100">
         <DetailRow
           label="Email"
-          value={<ContactValue href={toMailtoHref(client.email)} text={client.email} />}
+          value={
+            <ContactValue
+              href={toMailtoHref(client.email)}
+              text={client.email}
+            />
+          }
         />
         <DetailRow
           label="Teléfono"
           value={
             <span className="inline-flex items-center gap-2">
-              <ContactValue href={toTelHref(client.phone)} text={client.phone} />
+              <ContactValue
+                href={toTelHref(client.phone)}
+                text={client.phone}
+              />
               {whatsAppHref && (
                 <a
                   href={whatsAppHref}
@@ -103,7 +126,10 @@ function ClientProfileCard({ client }: { client: ClientDetail }) {
           label="Altura"
           value={client.height_cm ? `${client.height_cm} cm` : "—"}
         />
-        <DetailRow label="Cliente desde" value={formatDate(client.created_at)} />
+        <DetailRow
+          label="Cliente desde"
+          value={formatDate(client.created_at)}
+        />
       </div>
       {(client.goals || client.notes) && (
         <div className="space-y-3 border-t border-slate-100 px-5 py-4">
@@ -151,7 +177,9 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
   }
 
   if (error || !client) {
-    return <ErrorMessage error={error ?? new Error("Cliente no encontrado.")} />;
+    return (
+      <ErrorMessage error={error ?? new Error("Cliente no encontrado.")} />
+    );
   }
 
   const handleDeactivate = () => {
@@ -235,7 +263,9 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             title="Planes de entrenamiento"
             plans={client.training_plans}
             emptyDescription="Aquí aparecerá el historial de rutinas de este cliente."
-            buildHref={(planId) => `/clients/${clientId}/training-plans/${planId}`}
+            buildHref={(planId) =>
+              `/clients/${clientId}/training-plans/${planId}`
+            }
             onCreate={() => setTrainingPlanOpen(true)}
           />
           <PlanHistoryCard
@@ -245,6 +275,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             buildHref={(planId) => `/clients/${clientId}/diet-plans/${planId}`}
             onCreate={() => setDietPlanOpen(true)}
           />
+          <WorkoutsCard clientId={clientId} />
           <PhotosSummaryCard clientId={clientId} />
           <QuestionnaireCard clientId={clientId} />
         </div>
