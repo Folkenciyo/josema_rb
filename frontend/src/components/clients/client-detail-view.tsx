@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  ClipboardList,
   ArrowLeft,
   MessageCircle,
   Pencil,
@@ -37,6 +38,7 @@ import { QuestionnaireCard } from "./questionnaire-card";
 import { PhotosSummaryCard } from "./photos-summary-card";
 import { PlanHistoryCard } from "./plan-history-card";
 import { WorkoutsCard } from "./workouts-card";
+import { UseRoutineModal } from "./use-routine-modal";
 import { ExerciseProgressionCard } from "./exercise-progression-card";
 
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
@@ -165,6 +167,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
   const [isEditOpen, setEditOpen] = useState(false);
   const [isTrainingPlanOpen, setTrainingPlanOpen] = useState(false);
   const [isDietPlanOpen, setDietPlanOpen] = useState(false);
+  const [isUseRoutineOpen, setUseRoutineOpen] = useState(false);
 
   const { data: client, isPending, error } = useClient(clientId);
   const updateClient = useUpdateClient(clientId);
@@ -269,6 +272,12 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             }
             onCreate={() => setTrainingPlanOpen(true)}
           />
+          <div className="-mt-2">
+            <Button variant="secondary" onClick={() => setUseRoutineOpen(true)}>
+              <ClipboardList className="size-4" />
+              Usar una rutina existente
+            </Button>
+          </div>
           <PlanHistoryCard
             title="Planes de dieta"
             plans={client.diet_plans}
@@ -304,6 +313,13 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             }
           />
         </Modal>
+      )}
+
+      {isUseRoutineOpen && (
+        <UseRoutineModal
+          clientId={clientId}
+          onClose={() => setUseRoutineOpen(false)}
+        />
       )}
 
       {isDietPlanOpen && (
