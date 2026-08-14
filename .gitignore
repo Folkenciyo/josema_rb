@@ -6,17 +6,22 @@ backend/.pytest_cache/
 backend/.ruff_cache/
 backend/*.egg-info/
 backend/app/static/exercise-images/
+backend/app/static/quote-images/
 
 # Frontend (Next.js)
 frontend/node_modules/
 frontend/.next/
 frontend/next-env.d.ts
 
-# Env files
+# Env files. The wildcard covers every `.env.<service>` — `*.env` alone did not,
+# which left credentials like .env.minio one `git add .` away from the remote.
 .env
-.env.local
+.env.*
 *.env
-.env.dokploy
+!.env.example
+
+# Restored database dumps and client photos: never in the repo.
+backups/
 
 # OS / editors
 .DS_Store

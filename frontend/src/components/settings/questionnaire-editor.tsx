@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Plus, Save, Trash2 } from "lucide-react";
 
-import { useQuestionnaire, useSetQuestionnaire } from "@/hooks/use-questionnaire";
+import {
+  useQuestionnaire,
+  useSetQuestionnaire,
+} from "@/hooks/use-questionnaire";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ErrorMessage, LoadingState } from "@/components/ui/feedback";
@@ -24,7 +27,7 @@ import {
 
 const KINDS = Object.keys(QUESTION_KIND_LABELS) as QuestionKind[];
 const SELECT_CLASSES =
-  "rounded-lg border border-slate-300 bg-surface px-2 py-1.5 text-sm text-slate-700 outline-none focus:border-amber-400";
+  "rounded-lg border border-slate-300 bg-surface px-2 py-1.5 text-sm text-slate-700 outline-none focus:border-brand-500";
 
 function QuestionRow({
   draft,
@@ -104,7 +107,7 @@ function QuestionRow({
             type="checkbox"
             checked={draft.required}
             onChange={(event) => onChange({ required: event.target.checked })}
-            className="size-4 accent-amber-500"
+            className="accent-brand-600 size-4"
           />
           Obligatoria
         </label>
@@ -190,7 +193,9 @@ function QuestionnaireForm({ questions }: { questions: Question[] }) {
             index={index}
             total={drafts.length}
             onChange={(changes) => patch(index, changes)}
-            onMove={(direction) => setDrafts(moveDraft(drafts, index, direction))}
+            onMove={(direction) =>
+              setDrafts(moveDraft(drafts, index, direction))
+            }
             onRemove={() =>
               setDrafts(drafts.filter((_, position) => position !== index))
             }
@@ -226,8 +231,8 @@ function QuestionnaireForm({ questions }: { questions: Question[] }) {
         </div>
 
         <p className="text-xs text-slate-400">
-          Cambiar el cuestionario no toca lo que ya contestó nadie: cada respuesta
-          guarda la pregunta tal y como se le hizo.
+          Cambiar el cuestionario no toca lo que ya contestó nadie: cada
+          respuesta guarda la pregunta tal y como se le hizo.
         </p>
       </div>
     </Card>

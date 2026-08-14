@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Montserrat, Raleway } from "next/font/google";
 
 import { ServiceWorkerRegistrar } from "@/components/pwa/service-worker-registrar";
 import { QueryProvider } from "@/lib/query/provider";
@@ -7,8 +7,13 @@ import { THEME_SCRIPT } from "@/lib/theme/theme";
 import { THEME_COLOR } from "@/lib/pwa/manifest";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+});
+
+const raleway = Raleway({
+  variable: "--font-raleway",
   subsets: ["latin"],
 });
 
@@ -39,7 +44,7 @@ export default function RootLayout({
       // The script below adds `dark` before React hydrates, and React must not
       // undo it: the alternative is a white flash on every single load.
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${montserrat.variable} ${raleway.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

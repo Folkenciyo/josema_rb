@@ -31,4 +31,6 @@ export const queryKeys = {
     ["clients", clientId, "trained-exercises"] as const,
   exerciseHistory: (clientId: string, exerciseId: string) =>
     ["clients", clientId, "exercise-history", exerciseId] as const,
+  quotes: ["quotes"] as const,
+  pinnedQuote: (clientId: string) => ["clients", clientId, "quote"] as const,
 };

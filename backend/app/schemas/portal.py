@@ -3,6 +3,8 @@ from datetime import date, datetime
 
 from pydantic import BaseModel, Field
 
+from app.schemas.quote import QuoteOut
+
 
 class PortalTokenOut(BaseModel):
     """What the trainer sees after issuing (or revoking) a portal link."""
@@ -71,3 +73,6 @@ class PortalClientOut(BaseModel):
     # photos" honest: the client sees how many there are before deciding.
     photo_consent_at: datetime | None
     photo_count: int
+    # Today's message, pinned or drawn from the rotation. Null when the trainer
+    # has not written any yet.
+    quote: QuoteOut | None = None

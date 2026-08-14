@@ -28,7 +28,7 @@ function DeltaLabel({ kilos }: { kilos: number | null }) {
 
   const isDown = kilos < 0;
   return (
-    <span className={isDown ? "text-emerald-600" : "text-amber-600"}>
+    <span className={isDown ? "text-emerald-600" : "text-brand-600"}>
       {isDown ? "−" : "+"}
       {formatWeight(Math.abs(kilos))}
     </span>
@@ -61,7 +61,8 @@ export function PortalWeightView({ token }: { token: string }) {
   const progress = summarizeProgress(measurements);
   const today = todayIso();
   const weighedToday =
-    measurements.find((entry) => entry.measured_on === today)?.weight_kg ?? null;
+    measurements.find((entry) => entry.measured_on === today)?.weight_kg ??
+    null;
 
   return (
     <PortalPage>
@@ -79,11 +80,14 @@ export function PortalWeightView({ token }: { token: string }) {
           <Card>
             <div className="px-5 pt-4">
               <p className="text-3xl font-bold text-slate-900">
-                {progress.latest ? formatWeight(progress.latest.weight_kg) : "—"}
+                {progress.latest
+                  ? formatWeight(progress.latest.weight_kg)
+                  : "—"}
               </p>
               <p className="text-sm text-slate-500">
                 {progress.latest && formatDate(progress.latest.measured_on)}
-                {progress.latest?.bmi != null && ` · IMC ${progress.latest.bmi}`}
+                {progress.latest?.bmi != null &&
+                  ` · IMC ${progress.latest.bmi}`}
               </p>
               <p className="mt-1 text-sm">
                 Desde el principio: <DeltaLabel kilos={progress.sinceStart} />

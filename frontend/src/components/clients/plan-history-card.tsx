@@ -71,7 +71,7 @@ export function PlanHistoryCard({
             const rowClassName = cn(
               "flex items-center justify-between gap-4 px-5 py-3",
               isActive &&
-                "border-l-2 border-amber-500 bg-amber-50/60 pl-[18px]",
+                "border-l-2 border-brand-600 bg-brand-50/60 pl-[18px]",
             );
             const content = (
               <>
@@ -99,7 +99,7 @@ export function PlanHistoryCard({
                     href={buildHref(plan.id)}
                     className={cn(
                       rowClassName,
-                      isActive ? "hover:bg-amber-100/70" : "hover:bg-slate-50",
+                      isActive ? "hover:bg-brand-100/70" : "hover:bg-slate-50",
                     )}
                   >
                     {content}

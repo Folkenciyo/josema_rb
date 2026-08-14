@@ -46,6 +46,8 @@ services:
       - exercise_images:/app/app/static/exercise-images/custom
       # Client progress photos: irreplaceable, they only exist here.
       - client_photos:/app/app/media/client-photos
+      # Motivational images, uploaded by hand and public to the portal.
+      - quote_images:/app/app/static/quote-images
     depends_on:
       josema-db:
         condition: service_healthy
@@ -66,3 +68,4 @@ volumes:
   pgdata:
   exercise_images:
   client_photos:
+  quote_images:

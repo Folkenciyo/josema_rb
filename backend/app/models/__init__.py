@@ -8,6 +8,7 @@ from app.models.measurement import ClientMeasurement
 from app.models.menu import Menu, MenuMeal
 from app.models.photo import ClientPhoto, PhotoPose
 from app.models.questionnaire import ClientAnswer, QuestionKind, QuestionnaireQuestion
+from app.models.quote import MotivationalQuote, QuoteMedia
 from app.models.trainer import Trainer
 from app.models.training_plan import (
     DayOfWeek,
@@ -33,12 +34,14 @@ __all__ = [
     "Food",
     "MealTemplate",
     "MealTemplateItem",
+    "MotivationalQuote",
     "Menu",
     "MenuMeal",
     "PhotoPose",
     "PlanStatus",
     "QuestionKind",
     "QuestionnaireQuestion",
+    "QuoteMedia",
     "Trainer",
     "TrainingDay",
     "TrainingDayExercise",

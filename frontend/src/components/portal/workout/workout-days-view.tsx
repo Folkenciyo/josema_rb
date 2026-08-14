@@ -46,9 +46,9 @@ function PendingNotice({ token }: { token: string }) {
   }
 
   return (
-    <Card className="flex items-center gap-3 border-amber-200 bg-amber-50 px-5 py-4">
-      <CloudUpload className="size-5 shrink-0 text-amber-600" />
-      <p className="text-sm text-amber-900">
+    <Card className="border-brand-200 bg-brand-50 flex items-center gap-3 px-5 py-4">
+      <CloudUpload className="text-brand-600 size-5 shrink-0" />
+      <p className="text-brand-900 text-sm">
         {pendingCount === 1
           ? "Tienes una sesión guardada en el móvil"
           : `Tienes ${pendingCount} sesiones guardadas en el móvil`}
@@ -99,8 +99,8 @@ export function WorkoutDaysView({ token }: { token: string }) {
 
         return (
           <Link key={day.id} href={`${base}/entreno/${day.id}`}>
-            <Card className="flex items-center gap-4 px-5 py-4 hover:border-amber-300">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+            <Card className="hover:border-brand-300 flex items-center gap-4 px-5 py-4">
+              <span className="bg-brand-100 text-brand-600 flex size-11 shrink-0 items-center justify-center rounded-lg">
                 {isOpen ? (
                   <Play className="size-5" />
                 ) : (
@@ -121,7 +121,7 @@ export function WorkoutDaysView({ token }: { token: string }) {
                 </span>
               </span>
               {isOpen && (
-                <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700">
+                <span className="bg-brand-100 text-brand-700 shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold">
                   Sin terminar
                 </span>
               )}

@@ -1,5 +1,6 @@
 "use client";
 
+import { BrandWordmark } from "@/components/ui/brand-logo";
 import { Card } from "@/components/ui/card";
 import { LoadingState } from "@/components/ui/feedback";
 
@@ -12,9 +13,7 @@ export function PortalHeader({
 }) {
   return (
     <header className="mb-4">
-      <p className="text-xs font-semibold tracking-widest text-amber-600 uppercase">
-        JOSEMA RB
-      </p>
+      <BrandWordmark className="mb-2 h-5 w-auto" />
       <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
       {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
     </header>

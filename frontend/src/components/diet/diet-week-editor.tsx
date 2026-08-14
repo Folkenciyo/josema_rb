@@ -59,7 +59,7 @@ export function DietWeekEditor({ planId, week, targets }: DietWeekEditorProps) {
         <p className="text-sm text-slate-500">
           {countAssignedDays(draft)} de 7 días con menú
           {isDirty && (
-            <span className="ml-2 font-medium text-amber-600">
+            <span className="text-brand-600 ml-2 font-medium">
               · cambios sin guardar
             </span>
           )}
@@ -70,13 +70,19 @@ export function DietWeekEditor({ planId, week, targets }: DietWeekEditorProps) {
             onClick={() => setAssignOpen(true)}
             disabled={isDirty}
             title={
-              isDirty ? "Guarda los cambios antes de asignar en bloque" : undefined
+              isDirty
+                ? "Guarda los cambios antes de asignar en bloque"
+                : undefined
             }
           >
             <CalendarRange className="size-4" />
             Asignar a varios días
           </Button>
-          <Button onClick={handleSave} disabled={!isDirty} loading={saveDays.isPending}>
+          <Button
+            onClick={handleSave}
+            disabled={!isDirty}
+            loading={saveDays.isPending}
+          >
             <Save className="size-4" />
             Guardar semana
           </Button>
@@ -93,40 +99,40 @@ export function DietWeekEditor({ planId, week, targets }: DietWeekEditorProps) {
           return (
             <li
               key={day.day_of_week}
-              className="rounded-lg border border-slate-200 bg-surface p-3"
+              className="bg-surface rounded-lg border border-slate-200 p-3"
             >
               <div className="flex flex-wrap items-center gap-3">
-              <span className="w-24 font-semibold text-slate-800">
-                {DAY_LABELS[day.day_of_week]}
-              </span>
+                <span className="w-24 font-semibold text-slate-800">
+                  {DAY_LABELS[day.day_of_week]}
+                </span>
 
-              <Select
-                value={day.menu_id ?? ""}
-                aria-label={`Menú de ${DAY_LABELS[day.day_of_week]}`}
-                onChange={(event) =>
-                  setDraft((current) =>
-                    setDayMenu(
-                      current,
-                      day.day_of_week,
-                      event.target.value === "" ? null : event.target.value,
-                    ),
-                  )
-                }
-                className="h-9 w-auto min-w-52"
-              >
-                <option value="">Sin menú (día libre)</option>
-                {(menus ?? []).map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-              </Select>
+                <Select
+                  value={day.menu_id ?? ""}
+                  aria-label={`Menú de ${DAY_LABELS[day.day_of_week]}`}
+                  onChange={(event) =>
+                    setDraft((current) =>
+                      setDayMenu(
+                        current,
+                        day.day_of_week,
+                        event.target.value === "" ? null : event.target.value,
+                      ),
+                    )
+                  }
+                  className="h-9 w-auto min-w-52"
+                >
+                  <option value="">Sin menú (día libre)</option>
+                  {(menus ?? []).map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
+                    </option>
+                  ))}
+                </Select>
 
-              {menu && (
-                <div className="ml-auto">
-                  <MacroSummary totals={menu.totals} detailed />
-                </div>
-              )}
+                {menu && (
+                  <div className="ml-auto">
+                    <MacroSummary totals={menu.totals} detailed />
+                  </div>
+                )}
               </div>
 
               {showTargets && (

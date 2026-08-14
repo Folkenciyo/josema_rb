@@ -1,21 +1,21 @@
 import { Suspense } from "react";
 
 import { LoginForm } from "@/components/auth/login-form";
+import { BrandWordmark } from "@/components/ui/brand-logo";
 import { LoadingState } from "@/components/ui/feedback";
 
 export default function LoginPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-inverse px-4">
+    <main className="bg-inverse flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-white">
-            JOSEMA <span className="text-amber-500">RB</span>
-          </h1>
-          <p className="mt-1 text-sm text-slate-400">
-            Planes de entrenamiento y dieta
+        <div className="mb-8 flex flex-col items-center">
+          <h1 className="sr-only">JOSEMA RB</h1>
+          <BrandWordmark className="h-auto w-60" preload />
+          <p className="mt-4 text-[0.65rem] font-medium tracking-[0.3em] text-slate-400 uppercase">
+            Strength · Discipline · Results
           </p>
         </div>
-        <div className="rounded-xl bg-surface p-6 shadow-xl">
+        <div className="bg-surface rounded-xl p-6 shadow-xl">
           <Suspense fallback={<LoadingState />}>
             <LoginForm />
           </Suspense>

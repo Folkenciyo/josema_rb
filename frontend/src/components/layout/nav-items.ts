@@ -4,6 +4,7 @@ import {
   ClipboardList,
   Dumbbell,
   LayoutDashboard,
+  Quote,
   Settings,
   UtensilsCrossed,
   Users,
@@ -46,6 +47,9 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     title: null,
-    items: [{ href: "/settings", label: "Ajustes", icon: Settings }],
+    items: [
+      { href: "/quotes", label: "Motivación", icon: Quote },
+      { href: "/settings", label: "Ajustes", icon: Settings },
+    ],
   },
 ];

@@ -8,7 +8,11 @@ import { useClients, useCreateClient } from "@/hooks/use-clients";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
+import {
+  EmptyState,
+  ErrorMessage,
+  LoadingState,
+} from "@/components/ui/feedback";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
@@ -69,7 +73,7 @@ export function ClientsView() {
             type="checkbox"
             checked={includeInactive}
             onChange={(event) => setIncludeInactive(event.target.checked)}
-            className="size-4 accent-amber-500"
+            className="accent-brand-600 size-4"
           />
           Mostrar inactivos
         </label>

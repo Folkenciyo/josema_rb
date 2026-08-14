@@ -13,7 +13,7 @@ export function ExerciseCard({ exercise, onSelect }: ExerciseCardProps) {
     <button
       type="button"
       onClick={() => onSelect(exercise)}
-      className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-surface text-left shadow-sm transition-shadow hover:shadow-md"
+      className="bg-surface flex flex-col overflow-hidden rounded-xl border border-slate-200 text-left shadow-sm transition-shadow hover:shadow-md"
     >
       <ExerciseImage
         path={exercise.images[0]}
@@ -34,7 +34,7 @@ export function ExerciseCard({ exercise, onSelect }: ExerciseCardProps) {
             </Badge>
           )}
           {isCustomExercise(exercise) && (
-            <Badge className="bg-amber-100 text-amber-700">Propio</Badge>
+            <Badge className="bg-brand-100 text-brand-700">Propio</Badge>
           )}
         </div>
       </div>

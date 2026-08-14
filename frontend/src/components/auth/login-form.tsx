@@ -46,7 +46,7 @@ export function LoginForm() {
       noValidate
     >
       {hasExpired && (
-        <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
+        <p className="bg-brand-50 text-brand-800 rounded-lg px-3 py-2 text-sm">
           Tu sesión ha caducado. Vuelve a entrar y seguimos donde lo dejaste.
         </p>
       )}

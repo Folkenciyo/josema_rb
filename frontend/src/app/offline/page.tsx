@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function OfflinePage() {
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-3 px-4 py-16 text-center">
-      <span className="flex size-12 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+      <span className="bg-brand-100 text-brand-600 flex size-12 items-center justify-center rounded-full">
         <WifiOff className="size-6" />
       </span>
       <h1 className="text-xl font-bold text-slate-900">Estás sin conexión</h1>

@@ -6,6 +6,7 @@ import { ChevronRight, Dumbbell, Salad, Scale } from "lucide-react";
 import { usePortalHome } from "@/hooks/use-portal";
 import { Card } from "@/components/ui/card";
 import { InstallCard } from "@/components/pwa/install-card";
+import { PortalQuoteCard } from "./portal-quote-card";
 import { formatDate } from "@/lib/format";
 import { portalPath } from "@/types/portal";
 import {
@@ -28,8 +29,8 @@ function SectionLink({
 }) {
   return (
     <Link href={href}>
-      <Card className="flex items-center gap-4 px-5 py-4 hover:border-amber-300">
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+      <Card className="hover:border-brand-300 flex items-center gap-4 px-5 py-4">
+        <span className="bg-brand-100 text-brand-600 flex size-11 shrink-0 items-center justify-center rounded-lg">
           {icon}
         </span>
         <span className="min-w-0 flex-1">
@@ -68,6 +69,8 @@ export function PortalHomeView({ token }: { token: string }) {
   return (
     <PortalPage>
       <PortalHeader title={`Hola, ${home.full_name.split(" ")[0]}`} />
+
+      {home.quote && <PortalQuoteCard quote={home.quote} />}
 
       {home.goals && (
         <Card className="px-5 py-4">

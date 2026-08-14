@@ -43,6 +43,7 @@ describe("proxy matcher", () => {
     "/sw.js",
     "/manifest.webmanifest",
     "/icons/icon-192.png",
+    "/brand/logo-wordmark.png",
     "/offline",
   ])("never runs for %s, which is fetched with no session", (path) => {
     expect(matches(path)).toBe(false);

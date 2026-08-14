@@ -115,7 +115,9 @@ export function AlertsPanel() {
     <Card>
       <CardHeader
         title="Avisos"
-        action={<Badge className="bg-amber-100 text-amber-700">{alerts.total}</Badge>}
+        action={
+          <Badge className="bg-amber-100 text-amber-700">{alerts.total}</Badge>
+        }
       />
 
       <div className="divide-y divide-slate-100">

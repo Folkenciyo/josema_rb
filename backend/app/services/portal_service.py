@@ -14,7 +14,7 @@ from app.repositories import (
     training_plan_repository,
 )
 from app.schemas.portal import PortalClientOut, PortalWeighInOut
-from app.services import client_service, measurement_service
+from app.services import client_service, measurement_service, quote_service
 
 # 32 bytes of entropy, ~43 url-safe characters. Long enough that guessing is
 # hopeless, short enough to fit in a WhatsApp message without wrapping badly.
@@ -92,6 +92,7 @@ def build_portal_view(db: Session, client: Client) -> PortalClientOut:
         weigh_in_count=len(measurements),
         photo_consent_at=client.photo_consent_at,
         photo_count=len(photo_repository.list_for_client(db, client.id)),
+        quote=quote_service.quote_for_client(db, client),
     )
 
 

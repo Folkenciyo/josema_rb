@@ -40,7 +40,7 @@ function PaletteList({
               aria-current={index === selected ? "true" : undefined}
               className={cn(
                 "flex w-full items-center justify-between gap-3 px-4 py-2 text-left",
-                index === selected ? "bg-amber-50" : "hover:bg-slate-50",
+                index === selected ? "bg-brand-50" : "hover:bg-slate-50",
               )}
             >
               <span className="truncate text-slate-800">{item.label}</span>

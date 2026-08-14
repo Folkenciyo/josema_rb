@@ -51,7 +51,7 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
         <p className="text-sm text-slate-500">
           {countExercises(draft)} ejercicios en la semana
           {isDirty && (
-            <span className="ml-2 font-medium text-amber-600">
+            <span className="text-brand-600 ml-2 font-medium">
               · cambios sin guardar
             </span>
           )}

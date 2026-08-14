@@ -35,7 +35,7 @@ function SourceTab({
       className={cn(
         "flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium",
         isActive
-          ? "bg-amber-500 text-slate-900"
+          ? "bg-brand-600 text-white"
           : "text-slate-600 hover:bg-slate-100",
       )}
     >

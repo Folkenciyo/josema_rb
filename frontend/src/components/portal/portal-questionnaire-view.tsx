@@ -25,7 +25,7 @@ import {
 } from "./portal-shell";
 
 const TEXTAREA_CLASSES =
-  "w-full rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm text-slate-800 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100";
+  "w-full rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm text-slate-800 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100";
 
 function AnswerField({
   question,
@@ -58,8 +58,8 @@ function AnswerField({
             onClick={() => onChange(option)}
             className={
               value === option
-                ? "rounded-lg bg-amber-500 px-4 py-1.5 text-sm font-semibold text-slate-900"
-                : "rounded-lg border border-slate-300 bg-surface px-4 py-1.5 text-sm font-semibold text-slate-600"
+                ? "bg-brand-600 rounded-lg px-4 py-1.5 text-sm font-semibold text-white"
+                : "bg-surface rounded-lg border border-slate-300 px-4 py-1.5 text-sm font-semibold text-slate-600"
             }
           >
             {option}
@@ -79,8 +79,8 @@ function AnswerField({
             onClick={() => onChange(option)}
             className={
               value === option
-                ? "rounded-lg bg-amber-500 px-3 py-1.5 text-sm font-semibold text-slate-900"
-                : "rounded-lg border border-slate-300 bg-surface px-3 py-1.5 text-sm font-semibold text-slate-600"
+                ? "bg-brand-600 rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
+                : "bg-surface rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-600"
             }
           >
             {option}
@@ -137,7 +137,7 @@ function QuestionnaireForm({
         <Card key={question.id} className="flex flex-col gap-2 px-5 py-4">
           <label htmlFor={question.id} className="font-medium text-slate-800">
             {question.text}
-            {question.required && <span className="text-amber-600"> *</span>}
+            {question.required && <span className="text-brand-600"> *</span>}
           </label>
           {question.help_text && (
             <p className="text-sm text-slate-500">{question.help_text}</p>

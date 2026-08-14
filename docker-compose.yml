@@ -20,6 +20,7 @@ services:
     volumes:
       - exercise_images:/app/app/static/exercise-images/custom
       - client_photos:/app/app/media/client-photos
+      - quote_images:/app/app/static/quote-images
     ports:
       - "8001:8000"
     depends_on:
@@ -40,3 +41,4 @@ volumes:
   pgdata:
   exercise_images:
   client_photos:
+  quote_images:

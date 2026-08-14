@@ -24,7 +24,7 @@ export function ErrorMessage({ error }: { error: unknown }) {
 export function LoadingState({ label = "Cargando…" }: { label?: string }) {
   return (
     <div className="flex items-center justify-center gap-3 py-12 text-sm text-slate-500">
-      <Spinner className="size-5 text-amber-500" />
+      <Spinner className="text-brand-600 size-5" />
       {label}
     </div>
   );

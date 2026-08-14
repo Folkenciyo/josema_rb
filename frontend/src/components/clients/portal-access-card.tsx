@@ -76,7 +76,7 @@ function SendPanel({
         value={message}
         onChange={(event) => setMessage(event.target.value)}
         rows={5}
-        className="w-full rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm text-slate-800 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+        className="bg-surface focus:border-brand-500 focus:ring-brand-100 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 outline-none focus:ring-2"
       />
       <p className="text-xs text-slate-400">
         Se edita solo para este envío. Para cambiarlo siempre, ve a Ajustes.
@@ -97,7 +97,7 @@ function SendPanel({
         {mailtoHref ? (
           <a
             href={mailtoHref}
-            className="inline-flex h-8 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-surface px-3 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+            className="bg-surface inline-flex h-8 items-center justify-center gap-2 rounded-lg border border-slate-300 px-3 text-sm font-semibold text-slate-700 hover:bg-slate-100"
           >
             <Mail className="size-4" />
             Email
@@ -109,7 +109,11 @@ function SendPanel({
         )}
 
         <Button variant="ghost" size="sm" onClick={copyMessage}>
-          {hasCopied ? <Check className="size-4" /> : <Copy className="size-4" />}
+          {hasCopied ? (
+            <Check className="size-4" />
+          ) : (
+            <Copy className="size-4" />
+          )}
           {hasCopied ? "Copiado" : "Copiar mensaje"}
         </Button>
       </div>
@@ -185,8 +189,8 @@ export function PortalAccessCard({
         {!token ? (
           <>
             <p className="text-sm text-slate-500">
-              Genera un enlace privado para que vea su rutina, su dieta y su peso
-              desde el móvil. No caduca, y puedes anularlo cuando quieras.
+              Genera un enlace privado para que vea su rutina, su dieta y su
+              peso desde el móvil. No caduca, y puedes anularlo cuando quieras.
             </p>
             <Button
               onClick={() => issueToken.mutate()}

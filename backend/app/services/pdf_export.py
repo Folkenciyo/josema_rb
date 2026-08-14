@@ -10,6 +10,9 @@ TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "templates" / "pdf"
 STATIC_IMAGES_DIR = (
     Path(__file__).resolve().parent.parent / "static" / "exercise-images"
 )
+# The brand assets live elsewhere, so the templates reference them through an
+# absolute file:// URL instead of the relative base above.
+BRAND_URL = (Path(__file__).resolve().parent.parent / "static" / "brand").as_uri()
 
 _env = Environment(
     loader=FileSystemLoader(TEMPLATES_DIR),
@@ -17,20 +20,20 @@ _env = Environment(
 )
 
 
-def render_training_plan_pdf(document: TrainingPlanDocument) -> bytes:
+def _render(template_name: str, document: object) -> bytes:
     # Imported lazily: WeasyPrint binds to native Pango/Cairo/GDK-Pixbuf
     # libraries at import time, which aren't available on every dev machine
     # (only inside the Docker image, where the Dockerfile installs them).
     from weasyprint import HTML
 
-    template = _env.get_template("training_plan.html")
-    html = template.render(doc=document)
+    template = _env.get_template(template_name)
+    html = template.render(doc=document, brand=BRAND_URL)
     return HTML(string=html, base_url=str(STATIC_IMAGES_DIR)).write_pdf()
+
+
+def render_training_plan_pdf(document: TrainingPlanDocument) -> bytes:
+    return _render("training_plan.html", document)
 
 
 def render_diet_plan_pdf(document: DietPlanDocument) -> bytes:
-    from weasyprint import HTML
-
-    template = _env.get_template("diet_plan.html")
-    html = template.render(doc=document)
-    return HTML(string=html, base_url=str(STATIC_IMAGES_DIR)).write_pdf()
+    return _render("diet_plan.html", document)

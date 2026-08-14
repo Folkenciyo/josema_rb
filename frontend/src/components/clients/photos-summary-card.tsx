@@ -27,7 +27,7 @@ function ConsentNotice({ consentedAt }: { consentedAt: string | null }) {
   }
 
   return (
-    <p className="flex items-center gap-1.5 border-b border-amber-200 bg-amber-50 px-5 py-2 text-xs text-amber-800">
+    <p className="border-brand-200 bg-brand-50 text-brand-800 flex items-center gap-1.5 border-b px-5 py-2 text-xs">
       <ShieldAlert className="size-3.5 shrink-0" />
       Sin consentimiento registrado. El cliente puede darlo desde su enlace, en
       «Ficha».
@@ -50,7 +50,7 @@ export function PhotosSummaryCard({
   const openLink = (
     <Link
       href={`/clients/${clientId}/photos`}
-      className="inline-flex items-center gap-1 text-sm font-medium text-amber-700 hover:underline"
+      className="text-brand-700 inline-flex items-center gap-1 text-sm font-medium hover:underline"
     >
       {sessions.length > 1 ? "Ver y comparar" : "Ver galería"}
       <ChevronRight className="size-4" />
@@ -68,7 +68,7 @@ export function PhotosSummaryCard({
           action={
             <Link
               href={`/clients/${clientId}/photos`}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-amber-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-600"
+              className="bg-brand-600 hover:bg-brand-500 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-white"
             >
               <Camera className="size-4" />
               Añadir fotos

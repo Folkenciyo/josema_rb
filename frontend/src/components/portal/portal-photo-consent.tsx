@@ -43,7 +43,7 @@ export function PortalPhotoConsent({ token }: { token: string }) {
   return (
     <Card className="px-5 py-4">
       <div className="flex items-start gap-3">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+        <span className="bg-brand-100 text-brand-600 flex size-9 shrink-0 items-center justify-center rounded-lg">
           <Camera className="size-4" />
         </span>
         <div className="min-w-0">

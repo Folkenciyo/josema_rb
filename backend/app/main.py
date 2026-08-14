@@ -20,6 +20,7 @@ from app.api.menus import router as menus_router
 from app.api.photos import router as photos_router
 from app.api.portal import router as portal_router
 from app.api.questionnaire import router as questionnaire_router
+from app.api.quotes import router as quotes_router
 from app.api.search import router as search_router
 from app.api.settings import router as settings_router
 from app.api.training_plans import router as training_plans_router
@@ -44,6 +45,16 @@ app.mount(
     "/static/exercise-images",
     StaticFiles(directory=STATIC_IMAGES_DIR),
     name="exercise-images",
+)
+
+# Motivational images are public on purpose: the portal is opened by a token,
+# not a session, and the same picture is shown to every client.
+QUOTE_IMAGES_DIR = Path(__file__).resolve().parent / "static" / "quote-images"
+QUOTE_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
+app.mount(
+    "/static/quote-images",
+    StaticFiles(directory=QUOTE_IMAGES_DIR),
+    name="quote-images",
 )
 
 logger = logging.getLogger("app.validation")
@@ -87,6 +98,7 @@ app.include_router(measurements_router)
 app.include_router(photos_router)
 app.include_router(exercises_router)
 app.include_router(foods_router)
+app.include_router(quotes_router)
 app.include_router(meal_templates_router)
 app.include_router(menus_router)
 app.include_router(training_plans_router)

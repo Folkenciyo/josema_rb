@@ -79,7 +79,7 @@ export function ExerciseDetailModal({
             </p>
             <div className="flex flex-wrap gap-1.5">
               {exercise.primary_muscles_es.map((muscle) => (
-                <Badge key={muscle} className="bg-amber-100 text-amber-700">
+                <Badge key={muscle} className="bg-brand-100 text-brand-700">
                   {muscle}
                 </Badge>
               ))}
