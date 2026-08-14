@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-export const THEME_COLOR = "#d97706"; // amber-600, the brand accent
+export const THEME_COLOR = "#8b1e24"; // brand-600, the accent from the guide
 export const BACKGROUND_COLOR = "#f8fafc"; // slate-50, the app background
 
 /** Shared by both installable apps, so trainer and client get the same icon set. */

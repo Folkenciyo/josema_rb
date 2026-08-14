@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ doc.plan_title }}</title>
+  <style>
+    /* Montserrat is the guide's primary face and ships as a Debian package, so
+       the container has it without bundling font files. Raleway, the secondary
+       face, is not packaged; using the primary throughout keeps the documents
+       on-brand without a fragile download in the image build. */
+    @page {
+      size: A4;
+      margin: 2.6cm 1.8cm 1.8cm;
+      /* Without the width the margin box shrinks to fit and the header ends up
+         centred instead of spanning the page. */
+      @top-center { content: element(header); width: 100%; }
+      @bottom-left {
+        content: "JOSEMA RB · Strength · Discipline · Results";
+        font-family: "Montserrat", sans-serif;
+        font-size: 7pt;
+        letter-spacing: 0.08em;
+        color: #6b6b6f;
+      }
+      @bottom-right {
+        content: "Página " counter(page) " / " counter(pages);
+        font-family: "Montserrat", sans-serif;
+        font-size: 7pt;
+        color: #6b6b6f;
+      }
+    }
+
+    /* The cover carries the banner instead of the running header. */
+    @page :first {
+      margin-top: 1.6cm;
+      @top-center { content: none; }
+    }
+
+    body {
+      font-family: "Montserrat", "Helvetica", sans-serif;
+      color: #1c1c1e;
+      font-size: 9.5pt;
+      line-height: 1.45;
+    }
+
+    .running-header {
+      position: running(header);
+      width: 100%;
+      border-bottom: 1.5pt solid #8b1e24;
+      padding-bottom: 4pt;
+    }
+    .running-header img { height: 0.62cm; vertical-align: middle; }
+    .running-header span {
+      float: right;
+      font-size: 7.5pt;
+      color: #6b6b6f;
+      padding-top: 4pt;
+    }
+
+    .cover-banner {
+      width: 100%;
+      margin-bottom: 1.1cm;
+    }
+    .cover h1 {
+      font-size: 24pt;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.15cm;
+      color: #0b0b0d;
+    }
+    .cover .rule {
+      width: 2.4cm;
+      height: 3pt;
+      background: #8b1e24;
+      margin: 0.35cm 0 0.45cm;
+    }
+    .cover dl {
+      margin: 0;
+      font-size: 9.5pt;
+    }
+    .cover dt {
+      float: left;
+      clear: left;
+      width: 3.7cm;
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6b6b6f;
+      padding-top: 1.5pt;
+    }
+    .cover dd { margin: 0 0 0.18cm 3.7cm; font-weight: 500; }
+    .cover .notes {
+      margin-top: 0.9cm;
+      padding: 0.4cm 0.5cm;
+      background: #f7f7f8;
+      border-left: 3pt solid #8b1e24;
+      font-size: 9pt;
+      color: #3f3f43;
+    }
+    h2 {
+      font-size: 13pt;
+      font-weight: 700;
+      margin: 0.9cm 0 0.1cm;
+      padding-bottom: 0.12cm;
+      border-bottom: 1.5pt solid #0b0b0d;
+      color: #0b0b0d;
+      /* A week heading alone at the foot of a page reads as an orphan. */
+      break-after: avoid;
+    }
+    h3 {
+      font-size: 10pt;
+      font-weight: 600;
+      margin: 0.5cm 0 0.1cm;
+      color: #8b1e24;
+      letter-spacing: 0.02em;
+      break-after: avoid;
+    }
+    h4 {
+      font-size: 8.5pt;
+      font-weight: 600;
+      margin: 0.35cm 0 0.08cm;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b6b6f;
+      break-after: avoid;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.15cm 0 0.4cm;
+      /* Auto layout sizes each table to its own content, so two tables on the
+         same page end up with different column widths. Fixed keeps the grid
+         steady down the whole document. */
+      table-layout: fixed;
+    }
+    th {
+      background: #8b1e24;
+      color: #ffffff;
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 0.16cm 0.22cm;
+    }
+    td {
+      border-bottom: 0.5pt solid #e5e5e7;
+      padding: 0.14cm 0.22cm;
+      font-size: 8.5pt;
+      vertical-align: middle;
+    }
+    tbody tr:nth-child(even) td { background: #fafafa; }
+    tfoot td {
+      font-weight: 700;
+      border-top: 1pt solid #0b0b0d;
+      border-bottom: none;
+      background: #ffffff;
+    }
+    .num { text-align: right; }
+
+    .exercise-img { max-width: 2.2cm; max-height: 2.2cm; }
+    .day-total {
+      margin: 0 0 0.5cm;
+      padding: 0.18cm 0.25cm;
+      background: #f7f7f8;
+      border-left: 3pt solid #8b1e24;
+      font-size: 8.5pt;
+    }
+    .muted { color: #6b6b6f; font-style: italic; font-size: 9pt; }
+    .note { color: #6b6b6f; font-size: 9pt; margin: 0.1cm 0 0.3cm; }
+  </style>
+</head>
+<body>
+  <div class="running-header">
+    <img src="{{ brand }}/logo-wordmark.png" alt="JOSEMA RB" />
+    <span>{{ doc.client_name }} · {{ doc.plan_title }}</span>
+  </div>
+
+  <section class="cover">
+    <img class="cover-banner" src="{{ brand }}/document-header.png" alt="JOSEMA RB" />
+    <h1>{{ doc.plan_title }}</h1>
+    <div class="rule"></div>
+    <dl>
+      <dt>Cliente</dt>
+      <dd>{{ doc.client_name }}</dd>
+      {% if doc.start_date %}
+        <dt>Inicio</dt>
+        <dd>{{ doc.start_date }}</dd>
+      {% endif %}
+      {% if doc.end_date %}
+        <dt>Fin</dt>
+        <dd>{{ doc.end_date }}</dd>
+      {% endif %}
+      {% block cover_meta %}{% endblock %}
+    </dl>
+    {% if doc.plan_notes %}
+      <div class="notes">{{ doc.plan_notes }}</div>
+    {% endif %}
+  </section>
+
+  {% block content %}{% endblock %}
+</body>
+</html>

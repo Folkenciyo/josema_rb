@@ -56,7 +56,10 @@ function DayCard({ day }: { day: PortalTrainingDay }) {
       ) : (
         <ul className="divide-y divide-slate-100">
           {day.exercises.map((exercise, index) => (
-            <ExerciseRow key={`${exercise.name_es}-${index}`} exercise={exercise} />
+            <ExerciseRow
+              key={`${exercise.name_es}-${index}`}
+              exercise={exercise}
+            />
           ))}
         </ul>
       )}
@@ -109,8 +112,8 @@ export function PortalTrainingView({ token }: { token: string }) {
               className={cn(
                 "shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold",
                 index === weekIndex
-                  ? "bg-amber-500 text-slate-900"
-                  : "border border-slate-300 bg-surface text-slate-600",
+                  ? "bg-brand-600 text-white"
+                  : "bg-surface border border-slate-300 text-slate-600",
               )}
             >
               Semana {candidate.week_number}
@@ -119,9 +122,7 @@ export function PortalTrainingView({ token }: { token: string }) {
         </div>
       )}
 
-      {week?.notes && (
-        <p className="text-sm text-slate-500">{week.notes}</p>
-      )}
+      {week?.notes && <p className="text-sm text-slate-500">{week.notes}</p>}
 
       {week?.days.map((day) => (
         <DayCard key={day.day_of_week_es} day={day} />

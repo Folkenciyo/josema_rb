@@ -5,12 +5,37 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  /* Raleway sets the text, Montserrat the headings and buttons: the two faces
+     the brand guide names. */
+  --font-sans: var(--font-raleway);
+  --font-display: var(--font-montserrat);
   --font-mono: var(--font-geist-mono);
   /* Cards, inputs, anything that is a sheet of paper in light mode. */
   --color-surface: var(--surface);
   /* The sidebar, the active tab, the rest timer: dark in both themes. */
   --color-inverse: var(--inverse);
+}
+
+/**
+ * The brand accent. `brand-600` is #8B1E24 from the guide; the rest of the ramp
+ * is built around it so tints and hovers stay on the same hue instead of being
+ * eyeballed per component.
+ */
+@theme {
+  --color-brand-50: #fdf3f4;
+  --color-brand-100: #fae3e5;
+  --color-brand-200: #f3c7ca;
+  --color-brand-300: #e59ba1;
+  --color-brand-400: #d06770;
+  --color-brand-500: #b23a43;
+  --color-brand-600: #8b1e24;
+  --color-brand-700: #74191e;
+  --color-brand-800: #5c1418;
+  --color-brand-900: #3d0d10;
+
+  /* Brand neutrals, for the surfaces that carry the logo. */
+  --color-ink: #0b0b0d;
+  --color-coal: #1c1c1e;
 }
 
 :root {
@@ -20,7 +45,7 @@
 
 /**
  * Dark mode redefines the palette itself instead of adding a `dark:` class to
- * every component: the whole app already speaks slate and amber, so remapping
+ * every component: the whole app already speaks slate and brand, so remapping
  * those tokens dresses all of it at once — and a component written tomorrow is
  * dark without anybody remembering to make it so.
  *
@@ -42,11 +67,22 @@
   --color-slate-800: #f1f5f9;
   --color-slate-900: #f8fafc;
 
-  /* Amber tints are backgrounds in light mode and would glare in the dark. */
-  --color-amber-50: #2a1a05;
+  /* Amber survives the rebrand only as the middle step of the status scales
+     (alert severity, BMI, macros off target), where turning it red would make
+     it indistinguishable from the step above. It still needs its tint darkened
+     so the badges do not glare. */
   --color-amber-100: #3b250a;
-  --color-amber-200: #4d3110;
-  --color-amber-300: #b45309;
+
+  /* Brand tints are backgrounds in light mode and would glare in the dark.
+     The accent itself goes the other way: #8B1E24 is already dark, so on a
+     near-black page it has to be lifted to read as an accent at all. */
+  --color-brand-50: #2a0d0f;
+  --color-brand-100: #3b1215;
+  --color-brand-200: #4d181c;
+  --color-brand-300: #8b1e24;
+  --color-brand-500: #c4323c;
+  --color-brand-600: #a8282f;
+  --color-brand-700: #c4323c;
 
   /* Status tints, used the same way: a soft background plus a strong text. */
   --color-emerald-100: #052e21;
@@ -63,6 +99,13 @@ body {
 /* Consistent focus ring for every interactive element. */
 @layer base {
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-amber-500;
+    @apply outline-brand-600 outline-2 outline-offset-2;
+  }
+
+  /* Headings carry the display face without every component asking for it. */
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
   }
 }

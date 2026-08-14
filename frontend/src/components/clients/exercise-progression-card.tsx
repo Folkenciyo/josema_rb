@@ -77,7 +77,7 @@ function ProgressionChart({ history }: { history: ExercisePoint[] }) {
           strokeLinejoin="round"
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"
-          className="text-amber-500"
+          className="text-brand-600"
         />
         {points.map((item) => (
           <circle
@@ -85,7 +85,7 @@ function ProgressionChart({ history }: { history: ExercisePoint[] }) {
             cx={item.x}
             cy={item.y}
             r={2.5}
-            className="fill-amber-600"
+            className="fill-brand-600"
             vectorEffect="non-scaling-stroke"
           >
             <title>

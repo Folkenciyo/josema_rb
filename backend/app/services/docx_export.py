@@ -2,47 +2,71 @@ import io
 from pathlib import Path
 
 from docx import Document
-from docx.shared import Inches
-from docx.table import Table
+from docx.shared import Inches, Pt
 
 from app.schemas.export import DietPlanDocument, TrainingPlanDocument
+from app.services.docx_brand import (
+    add_cover,
+    add_row,
+    add_running_furniture,
+    apply_brand_styles,
+    brand_table,
+)
 from app.services.meal_template_service import NUTRIENT_FIELDS
 
 STATIC_IMAGES_DIR = (
     Path(__file__).resolve().parent.parent / "static" / "exercise-images"
 )
 
+# Abbreviated as in the PDF: eight nutrient columns leave ~1.5 cm each, and the
+# full words wrap onto a second line at that width.
 NUTRIENT_HEADERS = [
     "Kcal",
-    "Proteína",
-    "Hidratos",
-    "Azúcares",
+    "Prot.",
+    "Hidr.",
+    "Azúc.",
     "Grasa",
-    "Saturadas",
+    "Sat.",
     "Fibra",
     "Sal",
 ]
 
+# Column widths in cm, summing to the 17.4 cm of body between the A4 margins.
+TRAINING_WIDTHS_CM = [5.6, 1.8, 2.2, 2.4, 5.4]
+DIET_WIDTHS_CM = [3.2, 2.2, *[1.5] * len(NUTRIENT_HEADERS)]
 
-def _add_table(doc: Document, headers: list[str]) -> Table:
-    table = doc.add_table(rows=1, cols=len(headers))
-    table.style = "Light Grid Accent 1"
-    for cell, header in zip(table.rows[0].cells, headers, strict=True):
-        cell.text = header
-    return table
+
+def _plan_meta(
+    document: TrainingPlanDocument | DietPlanDocument,
+) -> list[tuple[str, str]]:
+    meta = [("Cliente", document.client_name)]
+    if document.start_date:
+        meta.append(("Inicio", str(document.start_date)))
+    if document.end_date:
+        meta.append(("Fin", str(document.end_date)))
+    return meta
+
+
+def _new_document(
+    plan: TrainingPlanDocument | DietPlanDocument,
+    meta: list[tuple[str, str]],
+) -> Document:
+    doc = Document()
+    apply_brand_styles(doc)
+    add_running_furniture(doc, f"{plan.client_name} · {plan.plan_title}")
+    add_cover(doc, plan.plan_title, meta, plan.plan_notes)
+    return doc
+
+
+def _muted(doc: Document, text: str) -> None:
+    paragraph = doc.add_paragraph()
+    run = paragraph.add_run(text)
+    run.italic = True
+    run.font.size = Pt(9)
 
 
 def render_training_plan_docx(document: TrainingPlanDocument) -> bytes:
-    doc = Document()
-    doc.add_heading(document.plan_title, level=0)
-    subtitle = f"Cliente: {document.client_name}"
-    if document.start_date:
-        subtitle += f" · Desde {document.start_date}"
-    if document.end_date:
-        subtitle += f" hasta {document.end_date}"
-    doc.add_paragraph(subtitle)
-    if document.plan_notes:
-        doc.add_paragraph(document.plan_notes)
+    doc = _new_document(document, _plan_meta(document))
 
     for week in document.weeks:
         doc.add_heading(f"Semana {week.week_number}", level=1)
@@ -51,21 +75,25 @@ def render_training_plan_docx(document: TrainingPlanDocument) -> bytes:
         for day in week.days:
             doc.add_heading(day.day_of_week_es, level=2)
             if not day.exercises:
-                doc.add_paragraph("Descanso")
+                _muted(doc, "Descanso")
                 continue
 
-            table = _add_table(
-                doc, ["Ejercicio", "Series", "Reps", "Descanso", "Notas"]
+            table = brand_table(
+                doc,
+                ["Ejercicio", "Series", "Reps", "Descanso", "Notas"],
+                TRAINING_WIDTHS_CM,
             )
             for exercise in day.exercises:
-                row = table.add_row().cells
-                row[0].text = exercise.name_es
-                row[1].text = str(exercise.sets)
-                row[2].text = exercise.reps
-                row[3].text = (
-                    f"{exercise.rest_seconds}s" if exercise.rest_seconds else ""
+                add_row(
+                    table,
+                    [
+                        exercise.name_es,
+                        str(exercise.sets),
+                        exercise.reps,
+                        f"{exercise.rest_seconds}s" if exercise.rest_seconds else "",
+                        exercise.notes or "",
+                    ],
                 )
-                row[4].text = exercise.notes or ""
 
                 if exercise.image_path:
                     image_path = STATIC_IMAGES_DIR / exercise.image_path
@@ -78,15 +106,7 @@ def render_training_plan_docx(document: TrainingPlanDocument) -> bytes:
 
 
 def render_diet_plan_docx(document: DietPlanDocument) -> bytes:
-    doc = Document()
-    doc.add_heading(document.plan_title, level=0)
-    subtitle = f"Cliente: {document.client_name}"
-    if document.start_date:
-        subtitle += f" · Desde {document.start_date}"
-    if document.end_date:
-        subtitle += f" hasta {document.end_date}"
-    doc.add_paragraph(subtitle)
-
+    meta = _plan_meta(document)
     if document.daily_calories_target:
         targets = [f"{document.daily_calories_target} kcal"]
         if document.daily_protein_g:
@@ -95,10 +115,9 @@ def render_diet_plan_docx(document: DietPlanDocument) -> bytes:
             targets.append(f"{document.daily_carbs_g} g hidratos")
         if document.daily_fat_g:
             targets.append(f"{document.daily_fat_g} g grasa")
-        doc.add_paragraph("Objetivo diario: " + " · ".join(targets))
+        meta.append(("Objetivo diario", " · ".join(targets)))
 
-    if document.plan_notes:
-        doc.add_paragraph(document.plan_notes)
+    doc = _new_document(document, meta)
 
     for week in document.weeks:
         doc.add_heading(f"Semana {week.week_number}", level=1)
@@ -111,7 +130,7 @@ def render_diet_plan_docx(document: DietPlanDocument) -> bytes:
             doc.add_heading(heading, level=2)
 
             if not day.meals:
-                doc.add_paragraph("Sin menú asignado")
+                _muted(doc, "Sin menú asignado")
                 continue
 
             for meal in day.meals:
@@ -120,19 +139,24 @@ def render_diet_plan_docx(document: DietPlanDocument) -> bytes:
                     meal_heading += f" ({meal.time_of_day})"
                 doc.add_heading(meal_heading, level=3)
 
-                table = _add_table(doc, ["Alimento", "Cantidad", *NUTRIENT_HEADERS])
+                table = brand_table(
+                    doc, ["Alimento", "Cantidad", *NUTRIENT_HEADERS], DIET_WIDTHS_CM
+                )
                 for item in meal.items:
-                    row = table.add_row().cells
-                    row[0].text = item.food_name
-                    row[1].text = item.quantity_label or ""
-                    for offset, field in enumerate(NUTRIENT_FIELDS, start=2):
+                    values = [item.food_name, item.quantity_label or ""]
+                    for field in NUTRIENT_FIELDS:
                         value = getattr(item, field)
-                        row[offset].text = str(value) if value is not None else ""
+                        values.append(str(value) if value is not None else "")
+                    add_row(table, values)
 
-                total_row = table.add_row().cells
-                total_row[0].text = "Total de la comida"
-                for offset, field in enumerate(NUTRIENT_FIELDS, start=2):
-                    total_row[offset].text = str(getattr(meal.totals, field))
+                totals = ["Total de la comida", ""]
+                totals += [
+                    str(getattr(meal.totals, field)) for field in NUTRIENT_FIELDS
+                ]
+                add_row(table, totals)
+                for cell in table.rows[-1].cells:
+                    for run in cell.paragraphs[0].runs:
+                        run.bold = True
 
             if day.totals:
                 doc.add_paragraph(

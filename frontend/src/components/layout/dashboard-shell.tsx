@@ -7,16 +7,14 @@ import { LogOut, Menu, X } from "lucide-react";
 import { useCurrentTrainer, useLogout } from "@/hooks/use-auth";
 import { cn } from "@/lib/cn";
 import { CommandPalette } from "@/components/search/command-palette";
+import { BrandWordmark } from "@/components/ui/brand-logo";
 import { SidebarNav } from "./sidebar-nav";
 import { ThemeToggle } from "./theme-toggle";
 
 function Brand() {
   return (
-    <Link
-      href="/dashboard"
-      className="text-xl font-bold tracking-tight text-white"
-    >
-      JOSEMA <span className="text-amber-500">RB</span>
+    <Link href="/dashboard" aria-label="JOSEMA RB">
+      <BrandWordmark className="h-7 w-auto" preload />
     </Link>
   );
 }
@@ -87,9 +85,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           >
             <Menu className="size-6" />
           </button>
-          <span className="font-bold text-slate-900">
-            JOSEMA <span className="text-amber-500">RB</span>
-          </span>
+          <BrandWordmark className="h-6 w-auto" />
         </header>
 
         <main className="flex-1 px-4 py-6 sm:px-8">{children}</main>

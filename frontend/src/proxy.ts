@@ -65,8 +65,10 @@ export const config = {
   // Everything except Next.js internals: /api and /static are proxied above.
   // The PWA pieces are listed too — the worker, its manifest, the icons and the
   // offline page are fetched with no session at all, and a redirect to /login
-  // would make the app uninstallable for the client.
+  // would make the app uninstallable for the client. `brand/` is here for the
+  // same reason: the logo is on the login screen and in the client portal,
+  // where there is no session to redirect with.
   matcher: [
-    "/((?!_next/|favicon.ico|icons/|sw.js|manifest.webmanifest|offline).*)",
+    "/((?!_next/|favicon.ico|icons/|brand/|sw.js|manifest.webmanifest|offline).*)",
   ],
 };

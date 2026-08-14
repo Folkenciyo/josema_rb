@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { RotateCcw, Save } from "lucide-react";
 
-import { useInviteTemplates, useUpdateInviteTemplates } from "@/hooks/use-settings";
+import {
+  useInviteTemplates,
+  useUpdateInviteTemplates,
+} from "@/hooks/use-settings";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ErrorMessage, LoadingState } from "@/components/ui/feedback";
@@ -13,7 +16,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { PLACEHOLDER_HINTS, type InviteTemplates } from "@/types/settings";
 
 const TEXTAREA_CLASSES =
-  "w-full rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm text-slate-800 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100";
+  "w-full rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm text-slate-800 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100";
 
 function PlaceholderLegend({ placeholders }: { placeholders: string[] }) {
   return (

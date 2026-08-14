@@ -89,7 +89,7 @@ export function RoutinesView() {
         <div className="grid gap-3 md:grid-cols-2">
           {templates.map((template) => (
             <Link key={template.id} href={`/routines/${template.id}`}>
-              <Card className="flex items-center gap-3 p-4 hover:border-amber-300">
+              <Card className="hover:border-brand-300 flex items-center gap-3 p-4">
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold text-slate-800">
                     {template.title}

@@ -31,7 +31,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-amber-500 text-slate-900"
+                    ? "bg-brand-600 text-white"
                     : "text-slate-300 hover:bg-white/10 hover:text-white",
                 )}
               >

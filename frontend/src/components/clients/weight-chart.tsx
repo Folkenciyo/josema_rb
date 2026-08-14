@@ -40,7 +40,7 @@ export function WeightChart({ measurements }: { measurements: WeighIn[] }) {
           strokeLinejoin="round"
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"
-          className="text-amber-500"
+          className="text-brand-600"
         />
         {points.map((point) => (
           <circle
@@ -48,7 +48,7 @@ export function WeightChart({ measurements }: { measurements: WeighIn[] }) {
             cx={point.x}
             cy={point.y}
             r={2.5}
-            className="fill-amber-600"
+            className="fill-brand-600"
             vectorEffect="non-scaling-stroke"
           >
             <title>

@@ -38,8 +38,8 @@ export function RestTimer({
   }, [left, onDone]);
 
   return (
-    <div className="sticky bottom-16 z-10 mx-auto flex max-w-md items-center gap-3 rounded-xl bg-inverse px-4 py-3 text-white shadow-lg">
-      <Timer className="size-5 shrink-0 text-amber-400" />
+    <div className="bg-inverse sticky bottom-16 z-10 mx-auto flex max-w-md items-center gap-3 rounded-xl px-4 py-3 text-white shadow-lg">
+      <Timer className="text-brand-500 size-5 shrink-0" />
       <span className="flex-1 text-sm">
         Descanso <span className="font-mono text-lg">{format(left)}</span>
       </span>

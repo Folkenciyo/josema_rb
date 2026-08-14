@@ -23,7 +23,10 @@ function useObjectUrls(files: File[]): string[] {
     [files],
   );
 
-  useEffect(() => () => urls.forEach((url) => URL.revokeObjectURL(url)), [urls]);
+  useEffect(
+    () => () => urls.forEach((url) => URL.revokeObjectURL(url)),
+    [urls],
+  );
 
   return urls;
 }
@@ -78,7 +81,7 @@ export function ImageUpload({
               type="button"
               onClick={() => remove(index)}
               aria-label={`Quitar ${files[index]?.name ?? "imagen"}`}
-              className="absolute -top-2 -right-2 rounded-full bg-inverse p-1 text-white"
+              className="bg-inverse absolute -top-2 -right-2 rounded-full p-1 text-white"
             >
               <X className="size-3" />
             </button>
@@ -86,7 +89,7 @@ export function ImageUpload({
         ))}
 
         {canAddMore && (
-          <label className="flex size-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-slate-300 text-slate-400 hover:border-amber-400 hover:text-amber-500">
+          <label className="hover:border-brand-500 hover:text-brand-600 flex size-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-slate-300 text-slate-400">
             <ImagePlus className="size-5" />
             <span className="text-xs">Añadir</span>
             <input

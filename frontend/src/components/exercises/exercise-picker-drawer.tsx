@@ -24,8 +24,15 @@ export function ExercisePickerDrawer({
   onClose,
   onConfirm,
 }: ExercisePickerDrawerProps) {
-  const { search, setSearch, filters, setFilter, reset, query, hasActiveFilters } =
-    useExerciseSearch();
+  const {
+    search,
+    setSearch,
+    filters,
+    setFilter,
+    reset,
+    query,
+    hasActiveFilters,
+  } = useExerciseSearch();
   const { data: exercises, isPending } = useExercises(query);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -50,7 +57,7 @@ export function ExercisePickerDrawer({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="flex h-full w-full max-w-2xl flex-col bg-surface shadow-xl"
+        className="bg-surface flex h-full w-full max-w-2xl flex-col shadow-xl"
       >
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3">
           <h2 className="font-semibold text-slate-900">{title}</h2>
@@ -92,7 +99,7 @@ export function ExercisePickerDrawer({
                     className={cn(
                       "relative flex flex-col overflow-hidden rounded-lg border text-left transition-colors",
                       isSelected
-                        ? "border-amber-500 ring-2 ring-amber-200"
+                        ? "border-brand-600 ring-brand-200 ring-2"
                         : "border-slate-200 hover:border-slate-300",
                     )}
                   >
@@ -102,7 +109,7 @@ export function ExercisePickerDrawer({
                       className="h-24 w-full"
                     />
                     {isSelected && (
-                      <span className="absolute top-1.5 right-1.5 rounded-full bg-amber-500 p-1 text-slate-900">
+                      <span className="bg-brand-600 absolute top-1.5 right-1.5 rounded-full p-1 text-white">
                         <Check className="size-3" />
                       </span>
                     )}

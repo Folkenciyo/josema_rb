@@ -38,8 +38,8 @@ export function MusclePicker({
               className={cn(
                 "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
                 isSelected
-                  ? "border-amber-500 bg-amber-500 text-slate-900"
-                  : "border-slate-300 bg-surface text-slate-600 hover:bg-slate-50",
+                  ? "border-brand-600 bg-brand-600 text-white"
+                  : "bg-surface border-slate-300 text-slate-600 hover:bg-slate-50",
               )}
             >
               {muscle}

@@ -57,7 +57,7 @@ export function PhotoSlot({
             className="size-full object-cover"
           />
         ) : (
-          <span className="flex size-full flex-col items-center justify-center gap-1 text-slate-400 group-hover:text-amber-600">
+          <span className="group-hover:text-brand-600 flex size-full flex-col items-center justify-center gap-1 text-slate-400">
             <Camera className="size-6" />
             <span className="text-xs">
               {isUploading ? "Subiendo…" : "Añadir"}

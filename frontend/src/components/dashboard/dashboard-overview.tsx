@@ -6,7 +6,11 @@ import { ArrowRight, UserPlus, Users } from "lucide-react";
 import { useClients } from "@/hooks/use-clients";
 import { useCurrentTrainer } from "@/hooks/use-auth";
 import { Card, CardHeader } from "@/components/ui/card";
-import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
+import {
+  EmptyState,
+  ErrorMessage,
+  LoadingState,
+} from "@/components/ui/feedback";
 import { PageHeader } from "@/components/ui/page-header";
 import { InstallCard } from "@/components/pwa/install-card";
 import { AlertsPanel } from "./alerts-panel";
@@ -30,7 +34,7 @@ export function DashboardOverview() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card className="flex items-center gap-4 p-5">
-          <span className="flex size-11 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+          <span className="bg-brand-100 text-brand-600 flex size-11 items-center justify-center rounded-lg">
             <Users className="size-5" />
           </span>
           <div>
@@ -43,7 +47,7 @@ export function DashboardOverview() {
 
         <Link
           href="/clients"
-          className="flex items-center gap-4 rounded-xl border border-dashed border-slate-300 bg-surface p-5 text-slate-600 transition-colors hover:border-amber-400 hover:text-slate-900"
+          className="bg-surface hover:border-brand-500 flex items-center gap-4 rounded-xl border border-dashed border-slate-300 p-5 text-slate-600 transition-colors hover:text-slate-900"
         >
           <span className="flex size-11 items-center justify-center rounded-lg bg-slate-100">
             <UserPlus className="size-5" />
@@ -62,7 +66,7 @@ export function DashboardOverview() {
           action={
             <Link
               href="/clients"
-              className="flex items-center gap-1 text-sm font-semibold text-amber-600 hover:text-amber-700"
+              className="text-brand-600 hover:text-brand-700 flex items-center gap-1 text-sm font-semibold"
             >
               Ver todos <ArrowRight className="size-4" />
             </Link>

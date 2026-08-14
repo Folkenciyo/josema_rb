@@ -26,8 +26,15 @@ export function FoodPickerDrawer({
   onClose,
   onConfirm,
 }: FoodPickerDrawerProps) {
-  const { search, setSearch, filters, setFilter, reset, query, hasActiveFilters } =
-    useFoodSearch();
+  const {
+    search,
+    setSearch,
+    filters,
+    setFilter,
+    reset,
+    query,
+    hasActiveFilters,
+  } = useFoodSearch();
   const { data: foods, isPending } = useFoods(query);
   const [selected, setSelected] = useState<Food[]>([]);
 
@@ -52,7 +59,7 @@ export function FoodPickerDrawer({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="flex h-full w-full max-w-2xl flex-col bg-surface shadow-xl"
+        className="bg-surface flex h-full w-full max-w-2xl flex-col shadow-xl"
       >
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3">
           <h2 className="font-semibold text-slate-900">{title}</h2>
@@ -83,7 +90,9 @@ export function FoodPickerDrawer({
           ) : (
             <ul className="flex flex-col gap-1.5 pb-4">
               {results.map((food) => {
-                const isSelected = selected.some((entry) => entry.id === food.id);
+                const isSelected = selected.some(
+                  (entry) => entry.id === food.id,
+                );
 
                 return (
                   <li key={food.id}>
@@ -94,7 +103,7 @@ export function FoodPickerDrawer({
                       className={cn(
                         "flex w-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left transition-colors",
                         isSelected
-                          ? "border-amber-500 ring-2 ring-amber-200"
+                          ? "border-brand-600 ring-brand-200 ring-2"
                           : "border-slate-200 hover:border-slate-300",
                       )}
                     >
@@ -112,7 +121,7 @@ export function FoodPickerDrawer({
                         <MacroSummary totals={food} className="mt-0.5" />
                       </div>
                       {isSelected && (
-                        <span className="shrink-0 rounded-full bg-amber-500 p-1 text-slate-900">
+                        <span className="bg-brand-600 shrink-0 rounded-full p-1 text-white">
                           <Check className="size-3" />
                         </span>
                       )}

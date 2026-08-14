@@ -97,7 +97,7 @@ export function MeasurementsCard({
 
       {isPending ? (
         <div className="flex justify-center py-8">
-          <Spinner className="size-5 text-amber-500" />
+          <Spinner className="text-brand-600 size-5" />
         </div>
       ) : error ? (
         <div className="px-5 py-4">

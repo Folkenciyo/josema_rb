@@ -1,48 +1,23 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <title>{{ doc.plan_title }}</title>
-  <style>
-    @page { size: A4; margin: 1.5cm; }
-    body { font-family: "Helvetica", "Arial", sans-serif; color: #1a1a1a; font-size: 11pt; }
-    h1 { font-size: 20pt; margin-bottom: 0.2cm; }
-    .subtitle { color: #555; margin-bottom: 0.3cm; }
-    .targets { color: #555; margin-bottom: 1cm; }
-    h2 { font-size: 15pt; margin-top: 1cm; border-bottom: 2px solid #333; padding-bottom: 0.1cm; }
-    h3 { font-size: 12pt; margin-top: 0.6cm; color: #333; }
-    h4 { font-size: 11pt; margin-top: 0.4cm; margin-bottom: 0.1cm; }
-    table { width: 100%; border-collapse: collapse; margin-top: 0.2cm; margin-bottom: 0.3cm; }
-    th, td { border: 1px solid #ccc; padding: 0.12cm 0.15cm; text-align: left; font-size: 8pt; }
-    th { background-color: #f0f0f0; }
-    td.num, th.num { text-align: right; }
-    tr.meal-total td { background-color: #fafafa; font-weight: bold; }
-    .totals { font-weight: bold; color: #333; margin-bottom: 0.4cm; }
-    .no-menu { color: #777; font-style: italic; }
-  </style>
-</head>
-<body>
-  {% macro num(value) %}{{ value if value is not none else "" }}{% endmacro %}
+{% extends "_base.html" %}
 
-  <h1>{{ doc.plan_title }}</h1>
-  <p class="subtitle">
-    Cliente: {{ doc.client_name }}
-    {% if doc.start_date %} · Desde {{ doc.start_date }}{% endif %}
-    {% if doc.end_date %} hasta {{ doc.end_date }}{% endif %}
-  </p>
+{% macro num(value) %}{{ value if value is not none else "" }}{% endmacro %}
+
+{% block cover_meta %}
   {% if doc.daily_calories_target %}
-    <p class="targets">
-      Objetivo diario: {{ doc.daily_calories_target }} kcal
+    <dt>Objetivo diario</dt>
+    <dd>
+      {{ doc.daily_calories_target }} kcal
       {% if doc.daily_protein_g %} · {{ doc.daily_protein_g }} g proteína{% endif %}
       {% if doc.daily_carbs_g %} · {{ doc.daily_carbs_g }} g hidratos{% endif %}
       {% if doc.daily_fat_g %} · {{ doc.daily_fat_g }} g grasa{% endif %}
-    </p>
+    </dd>
   {% endif %}
-  {% if doc.plan_notes %}<p>{{ doc.plan_notes }}</p>{% endif %}
+{% endblock %}
 
+{% block content %}
   {% for week in doc.weeks %}
     <h2>Semana {{ week.week_number }}</h2>
-    {% if week.notes %}<p>{{ week.notes }}</p>{% endif %}
+    {% if week.notes %}<p class="note">{{ week.notes }}</p>{% endif %}
     {% for day in week.days %}
       <h3>{{ day.day_of_week_es }}{% if day.menu_name %} — {{ day.menu_name }}{% endif %}</h3>
       {% if day.meals %}
@@ -51,8 +26,8 @@
           <table>
             <thead>
               <tr>
-                <th>Alimento</th>
-                <th>Cantidad</th>
+                <th style="width: 22%">Alimento</th>
+                <th style="width: 11%">Cantidad</th>
                 <th class="num">Kcal</th>
                 <th class="num">Prot.</th>
                 <th class="num">Hidr.</th>
@@ -78,7 +53,9 @@
                   <td class="num">{{ num(item.salt_g) }}</td>
                 </tr>
               {% endfor %}
-              <tr class="meal-total">
+            </tbody>
+            <tfoot>
+              <tr>
                 <td colspan="2">Total de la comida</td>
                 <td class="num">{{ meal.totals.calories }}</td>
                 <td class="num">{{ meal.totals.protein_g }}</td>
@@ -89,21 +66,21 @@
                 <td class="num">{{ meal.totals.fiber_g }}</td>
                 <td class="num">{{ meal.totals.salt_g }}</td>
               </tr>
-            </tbody>
+            </tfoot>
           </table>
         {% endfor %}
         {% if day.totals %}
-          <p class="totals">
-            Total del día: {{ day.totals.calories }} kcal · {{ day.totals.protein_g }} g proteína ·
+          <p class="day-total">
+            <strong>Total del día:</strong>
+            {{ day.totals.calories }} kcal · {{ day.totals.protein_g }} g proteína ·
             {{ day.totals.carbs_g }} g hidratos ({{ day.totals.sugars_g }} g azúcares) ·
             {{ day.totals.fat_g }} g grasa ({{ day.totals.saturated_fat_g }} g saturadas) ·
             {{ day.totals.fiber_g }} g fibra · {{ day.totals.salt_g }} g sal
           </p>
         {% endif %}
       {% else %}
-        <p class="no-menu">Sin menú asignado</p>
+        <p class="muted">Sin menú asignado</p>
       {% endif %}
     {% endfor %}
   {% endfor %}
-</body>
-</html>
+{% endblock %}
