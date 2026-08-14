@@ -9,6 +9,9 @@
 # (~99 MB) into the build context.
 app/static/exercise-images/
 
+# Motivational images live in a Docker volume, never in the image.
+app/static/quote-images/
+
 # Translation working files: only the merged artifact (app/data/*.json) is needed.
 scripts/translation/batches/
 

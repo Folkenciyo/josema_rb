@@ -47,6 +47,12 @@ class Client(Base, TimestampMixin):
     # Null means nobody ever asked. Withdrawing puts it back to null: what is
     # kept is the fact that consent stands right now, not a history of it.
     photo_consent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # A message chosen for this client by hand, which overrides the daily
+    # rotation until it is cleared. Deleting the quote clears it.
+    pinned_quote_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("motivational_quotes.id", ondelete="SET NULL"),
+    )
 
     training_plans: Mapped[list["TrainingPlan"]] = relationship(back_populates="client")
     diet_plans: Mapped[list["DietPlan"]] = relationship(back_populates="client")

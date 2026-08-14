@@ -32,6 +32,7 @@ import { calculateAge, formatDate } from "@/lib/format";
 import { SEX_LABELS, type ClientDetail, type Sex } from "@/types/client";
 import { ClientForm } from "./client-form";
 import { MeasurementsCard } from "./measurements-card";
+import { PinnedQuoteCard } from "./pinned-quote-card";
 import { PortalAccessCard } from "./portal-access-card";
 import { QuestionnaireCard } from "./questionnaire-card";
 import { PhotosSummaryCard } from "./photos-summary-card";
@@ -66,7 +67,7 @@ function ContactValue({
   }
 
   return (
-    <a href={href} className="text-amber-700 hover:underline">
+    <a href={href} className="text-brand-700 hover:underline">
       {text}
     </a>
   );
@@ -260,6 +261,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             phone={client.phone}
             email={client.email}
           />
+          <PinnedQuoteCard clientId={clientId} />
         </div>
         <div className="flex flex-col gap-4 lg:col-span-2">
           <PlanHistoryCard
