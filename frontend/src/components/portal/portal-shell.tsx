@@ -13,7 +13,9 @@ export function PortalHeader({
 }) {
   return (
     <header className="mb-4">
-      <BrandWordmark className="mb-2 h-5 w-auto" />
+      {/* `block` matters: next/image renders an inline <img>, which `mx-auto`
+          alone would leave hugging the left margin. */}
+      <BrandWordmark className="mx-auto mb-5 block h-auto w-44" />
       <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
       {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
     </header>
