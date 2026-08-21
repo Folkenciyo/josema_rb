@@ -1,8 +1,9 @@
 import uuid
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException, Request, status
 from sqlalchemy.orm import Session
 
+from app.core.config import get_settings
 from app.models import Trainer
 from app.schemas.portal import (
     InviteTemplatesOut,
@@ -58,6 +59,33 @@ def update_templates(
     db.refresh(trainer)
 
     return get_templates(trainer)
+
+
+def public_base_url(request: Request) -> str:
+    """Where the client will actually open their link.
+
+    `Origin` only travels on cross-origin or non-GET requests, so a plain GET
+    from the trainer's own browser arrives without it — and falling straight to
+    the configured default is what put `localhost:3000` inside the message the
+    trainer was about to send. Traefik and the Next proxy do forward the real
+    host, so that is what gets asked next.
+    """
+    origin = request.headers.get("origin")
+    if origin:
+        return origin
+
+    forwarded_host = request.headers.get("x-forwarded-host") or request.headers.get(
+        "host"
+    )
+    if forwarded_host:
+        # Both headers may carry a list once a request crosses several proxies.
+        host = forwarded_host.split(",")[0].strip()
+        proto = (
+            request.headers.get("x-forwarded-proto") or request.url.scheme
+        ).split(",")[0].strip()
+        return f"{proto}://{host}"
+
+    return get_settings().public_base_url
 
 
 def build_invite(

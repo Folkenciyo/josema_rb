@@ -3,7 +3,6 @@ import uuid
 from fastapi import APIRouter, Depends, Request, status
 from sqlalchemy.orm import Session
 
-from app.core.config import get_settings
 from app.core.db import get_db
 from app.core.security import get_current_trainer
 from app.models import Client, Trainer
@@ -73,7 +72,7 @@ def get_portal_invite(
     trainer: Trainer = Depends(get_current_trainer),
     db: Session = Depends(get_db),
 ) -> PortalInviteOut:
-    base_url = request.headers.get("origin") or get_settings().public_base_url
+    base_url = invite_service.public_base_url(request)
     return invite_service.build_invite(db, client_id, trainer, base_url)
 
 

@@ -371,6 +371,60 @@ def test_the_invite_carries_the_link_ready_to_send(
     assert invite["subject"]
 
 
+def test_the_invite_uses_the_forwarded_host_when_there_is_no_origin(
+    authenticated_client: TestClient,
+) -> None:
+    """A same-origin GET carries no Origin, and that is the normal case.
+
+    Trusting the default instead put `localhost:3000` inside the message the
+    trainer was about to send to a real client.
+    """
+    client_id, token = _client_with_token(authenticated_client, "Sara Proxy")
+
+    invite = authenticated_client.get(
+        f"/api/clients/{client_id}/portal-invite",
+        headers={
+            "x-forwarded-host": "josema.fholk.com",
+            "x-forwarded-proto": "https",
+        },
+    ).json()
+
+    assert invite["url"] == f"https://josema.fholk.com/p/{token}"
+    assert "localhost" not in invite["whatsapp_text"]
+
+
+def test_the_origin_still_wins_over_the_forwarded_host(
+    authenticated_client: TestClient,
+) -> None:
+    client_id, token = _client_with_token(authenticated_client, "Ana Origen")
+
+    invite = authenticated_client.get(
+        f"/api/clients/{client_id}/portal-invite",
+        headers={
+            "origin": "https://josema.example.com",
+            "x-forwarded-host": "interno.local",
+        },
+    ).json()
+
+    assert invite["url"] == f"https://josema.example.com/p/{token}"
+
+
+def test_a_chain_of_proxies_leaves_one_host(
+    authenticated_client: TestClient,
+) -> None:
+    client_id, _ = _client_with_token(authenticated_client, "Luis Cadena")
+
+    invite = authenticated_client.get(
+        f"/api/clients/{client_id}/portal-invite",
+        headers={
+            "x-forwarded-host": "josema.fholk.com, interno.local",
+            "x-forwarded-proto": "https, http",
+        },
+    ).json()
+
+    assert invite["url"].startswith("https://josema.fholk.com/p/")
+
+
 def test_there_is_no_invite_before_the_link_exists(
     authenticated_client: TestClient,
 ) -> None:
