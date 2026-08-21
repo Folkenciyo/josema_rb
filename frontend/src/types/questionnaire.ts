@@ -31,12 +31,20 @@ export interface QuestionInput {
   required: boolean;
 }
 
+/** The questionnaire as the trainer edits it: the intro plus the questions. */
+export interface Questionnaire {
+  /** Null when the questionnaire opens straight into the first question. */
+  intro: string | null;
+  questions: Question[];
+}
+
 /** A question as the client sees it: with whatever they answered before. */
 export interface PortalQuestion extends Question {
   answer: string | null;
 }
 
 export interface PortalQuestionnaire {
+  intro: string | null;
   questions: PortalQuestion[];
   completed_at: string | null;
 }

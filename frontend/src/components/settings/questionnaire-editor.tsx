@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ErrorMessage, LoadingState } from "@/components/ui/feedback";
 import { Input } from "@/components/ui/input";
+import { IntroEditor } from "./intro-editor";
 import {
   emptyDraft,
   moveDraft,
@@ -137,7 +138,7 @@ function QuestionRow({
 }
 
 export function QuestionnaireEditor() {
-  const { data: questions, isPending, error } = useQuestionnaire();
+  const { data: questionnaire, isPending, error } = useQuestionnaire();
 
   if (isPending) {
     return (
@@ -156,14 +157,27 @@ export function QuestionnaireEditor() {
     );
   }
 
-  return <QuestionnaireForm key={questions.length} questions={questions} />;
+  return (
+    <QuestionnaireForm
+      key={questionnaire.questions.length}
+      questions={questionnaire.questions}
+      intro={questionnaire.intro}
+    />
+  );
 }
 
-function QuestionnaireForm({ questions }: { questions: Question[] }) {
+function QuestionnaireForm({
+  questions,
+  intro,
+}: {
+  questions: Question[];
+  intro: string | null;
+}) {
   const saveQuestionnaire = useSetQuestionnaire();
   const [drafts, setDrafts] = useState<QuestionDraft[]>(() =>
     questions.length > 0 ? questions.map(toDraft) : [emptyDraft()],
   );
+  const [introDraft, setIntroDraft] = useState(intro ?? "");
 
   const localError = validationError(drafts);
 
@@ -184,6 +198,8 @@ function QuestionnaireForm({ questions }: { questions: Question[] }) {
           </span>
         }
       />
+
+      <IntroEditor value={introDraft} onChange={setIntroDraft} />
 
       <ul className="divide-y divide-slate-100">
         {drafts.map((draft, index) => (
@@ -218,7 +234,12 @@ function QuestionnaireForm({ questions }: { questions: Question[] }) {
 
         <div className="flex items-center gap-3">
           <Button
-            onClick={() => saveQuestionnaire.mutate(toRequest(drafts))}
+            onClick={() =>
+              saveQuestionnaire.mutate({
+                questions: toRequest(drafts),
+                intro: introDraft.trim() || null,
+              })
+            }
             loading={saveQuestionnaire.isPending}
             disabled={localError !== null}
           >

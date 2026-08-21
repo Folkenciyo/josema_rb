@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ErrorMessage } from "@/components/ui/feedback";
 import { Input } from "@/components/ui/input";
+import { RichText } from "@/components/ui/rich-text";
 import { formatDate } from "@/lib/format";
 import { PortalPhotoConsent } from "./portal-photo-consent";
 import type {
@@ -228,6 +229,11 @@ export function PortalQuestionnaireView({ token }: { token: string }) {
             : "Cuéntale a tu entrenador de dónde partes."
         }
       />
+      {questionnaire.intro && (
+        <Card className="px-5 py-4">
+          <RichText text={questionnaire.intro} />
+        </Card>
+      )}
       <QuestionnaireForm token={token} questionnaire={questionnaire} />
       <PortalPhotoConsent token={token} />
     </PortalPage>

@@ -26,7 +26,7 @@ def _client_with_token(api: TestClient, name: str = "Cliente Cuestionario") -> s
 def _set_questions(api: TestClient) -> list[dict]:
     response = api.put("/api/settings/questionnaire", json=QUESTIONS)
     assert response.status_code == 200
-    return response.json()
+    return response.json()["questions"]
 
 
 def test_the_trainer_writes_the_questions_and_their_order(
@@ -51,7 +51,7 @@ def test_saving_again_replaces_the_whole_questionnaire(
     stored = authenticated_client.put(
         "/api/settings/questionnaire",
         json={"questions": [{"text": "¿Alergias?", "kind": "short_text"}]},
-    ).json()
+    ).json()["questions"]
 
     assert len(stored) == 1
     assert stored[0]["text"] == "¿Alergias?"
@@ -179,6 +179,80 @@ def test_the_questionnaire_of_the_portal_needs_no_session(
 
     client.cookies.clear()
     assert client.get(f"/api/portal/{token}/questionnaire").status_code == 200
+
+
+INTRO = "Bienvenido.\n\nEstas preguntas me ayudan a **no lesionarte**."
+
+
+def test_the_trainer_writes_an_introduction(
+    authenticated_client: TestClient,
+) -> None:
+    saved = authenticated_client.put(
+        "/api/settings/questionnaire", json={**QUESTIONS, "intro": INTRO}
+    ).json()
+
+    assert saved["intro"] == INTRO
+    # And it is still there when the editor is loaded again.
+    assert authenticated_client.get("/api/settings/questionnaire").json()["intro"] == (
+        INTRO
+    )
+
+
+def test_the_client_reads_the_introduction_above_the_questions(
+    authenticated_client: TestClient,
+) -> None:
+    authenticated_client.put(
+        "/api/settings/questionnaire", json={**QUESTIONS, "intro": INTRO}
+    )
+    token = _client_with_token(authenticated_client)
+
+    view = authenticated_client.get(f"/api/portal/{token}/questionnaire").json()
+
+    assert view["intro"] == INTRO
+    assert len(view["questions"]) == 3
+
+
+def test_the_introduction_survives_a_rewrite_of_the_questions(
+    authenticated_client: TestClient,
+) -> None:
+    authenticated_client.put(
+        "/api/settings/questionnaire", json={**QUESTIONS, "intro": INTRO}
+    )
+
+    # Saving without touching the intro must not wipe it: the editor always
+    # sends both, but a blank one is what clears it.
+    saved = authenticated_client.put(
+        "/api/settings/questionnaire",
+        json={
+            "questions": [{"text": "¿Alergias?", "kind": "short_text"}],
+            "intro": INTRO,
+        },
+    ).json()
+
+    assert saved["intro"] == INTRO
+
+
+def test_a_blank_introduction_clears_it(authenticated_client: TestClient) -> None:
+    authenticated_client.put(
+        "/api/settings/questionnaire", json={**QUESTIONS, "intro": INTRO}
+    )
+
+    saved = authenticated_client.put(
+        "/api/settings/questionnaire", json={**QUESTIONS, "intro": "   "}
+    ).json()
+
+    assert saved["intro"] is None
+
+
+def test_a_questionnaire_without_introduction_says_so(
+    authenticated_client: TestClient,
+) -> None:
+    _set_questions(authenticated_client)
+    token = _client_with_token(authenticated_client)
+
+    view = authenticated_client.get(f"/api/portal/{token}/questionnaire").json()
+
+    assert view["intro"] is None
 
 
 def test_editing_the_questionnaire_requires_a_session(client: TestClient) -> None:
