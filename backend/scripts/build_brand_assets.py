@@ -91,8 +91,24 @@ def main() -> None:
             PUBLIC_ICONS / f"icon-maskable-{size}.png"
         )
     on_ink(monogram, 180, 0.62).save(PUBLIC_ICONS / "apple-touch-icon.png")
-    # App Router picks this one up as the favicon by filename convention.
     on_ink(monogram, 96, 0.72).save(APP_DIR / "icon.png")
+    # favicon.ico wins over icon.png in the App Router, so it has to carry the
+    # brand too: leaving the one Next ships with is what put a stranger's logo
+    # on every shared link.
+    # RGBA and not RGB: Next refuses to decode an .ico whose frames are not
+    # RGBA, and the build fails outright rather than warning.
+    on_ink(monogram, 256, 0.72).convert("RGBA").save(
+        APP_DIR / "favicon.ico",
+        sizes=[(16, 16), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)],
+    )
+
+    # What WhatsApp, Telegram and the like show when the link is shared. 1200x630
+    # is the size every one of them crops from.
+    preview = Image.new("RGBA", (1200, 630), (*INK, 255))
+    art = wordmark.copy()
+    art.thumbnail((820, 380), Image.LANCZOS)
+    preview.paste(art, ((1200 - art.width) // 2, (630 - art.height) // 2), art)
+    preview.convert("RGB").save(PUBLIC_BRAND / "og-image.png", quality=92)
 
     print(f"Brand assets rebuilt from {SOURCE.name}")
 
