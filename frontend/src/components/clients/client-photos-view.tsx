@@ -150,7 +150,11 @@ export function ClientPhotosView({ clientId }: { clientId: string }) {
           </Card>
         </div>
 
-        <PhotoCompare sessions={sessions} measurements={measurements ?? []} />
+        <PhotoCompare
+          clientId={clientId}
+          sessions={sessions}
+          measurements={measurements ?? []}
+        />
       </div>
     </>
   );

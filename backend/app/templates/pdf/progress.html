@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Seguimiento de {{ doc.client_name }}</title>
+  <style>
+    @page { size: A4; margin: 1.5cm; }
+    body { font-family: "Helvetica", "Arial", sans-serif; color: #1a1a1a; font-size: 11pt; }
+    h1 { font-size: 20pt; margin-bottom: 0.2cm; }
+    .subtitle { color: #555; margin-bottom: 0.6cm; }
+    .summary { width: 100%; border-collapse: collapse; margin-bottom: 0.8cm; }
+    .summary td { border: 1px solid #ccc; padding: 0.25cm; width: 50%; vertical-align: top; }
+    .summary .date { font-size: 13pt; font-weight: bold; }
+    .summary .weight { font-size: 12pt; }
+    .summary .hint { color: #777; font-size: 9pt; }
+    .delta { font-size: 12pt; font-weight: bold; margin-bottom: 0.8cm; }
+    h2 { font-size: 13pt; margin: 0 0 0.2cm 0; }
+    .pose { page-break-inside: avoid; margin-bottom: 0.7cm; }
+    .pair { width: 100%; border-collapse: collapse; }
+    .pair td { width: 50%; text-align: center; vertical-align: top; padding: 0.1cm; }
+    .pair img { max-width: 100%; max-height: 9cm; }
+    .missing { color: #999; font-style: italic; font-size: 10pt; padding: 1.5cm 0; }
+  </style>
+</head>
+<body>
+  <h1>Seguimiento</h1>
+  <p class="subtitle">{{ doc.client_name }}</p>
+
+  <table class="summary">
+    <tr>
+      <td>
+        <p class="date">{{ doc.before.taken_on.strftime("%d/%m/%Y") }}</p>
+        {% if doc.before.weight_kg %}
+          <p class="weight">
+            {{ "%.1f"|format(doc.before.weight_kg)|replace(".", ",") }} kg
+            {% if doc.before.bmi %} · IMC {{ "%.1f"|format(doc.before.bmi)|replace(".", ",") }}{% endif %}
+          </p>
+          {% if doc.before.weight_measured_on != doc.before.taken_on %}
+            <p class="hint">Pesaje del {{ doc.before.weight_measured_on.strftime("%d/%m/%Y") }}</p>
+          {% endif %}
+        {% else %}
+          <p class="hint">Sin pesajes registrados</p>
+        {% endif %}
+      </td>
+      <td>
+        <p class="date">{{ doc.after.taken_on.strftime("%d/%m/%Y") }}</p>
+        {% if doc.after.weight_kg %}
+          <p class="weight">
+            {{ "%.1f"|format(doc.after.weight_kg)|replace(".", ",") }} kg
+            {% if doc.after.bmi %} · IMC {{ "%.1f"|format(doc.after.bmi)|replace(".", ",") }}{% endif %}
+          </p>
+          {% if doc.after.weight_measured_on != doc.after.taken_on %}
+            <p class="hint">Pesaje del {{ doc.after.weight_measured_on.strftime("%d/%m/%Y") }}</p>
+          {% endif %}
+        {% else %}
+          <p class="hint">Sin pesajes registrados</p>
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+
+  {% if doc.weight_delta_kg is not none %}
+    <p class="delta">
+      Diferencia de peso:
+      {% if doc.weight_delta_kg > 0 %}+{% elif doc.weight_delta_kg < 0 %}−{% endif %}{{ "%.1f"|format(doc.weight_delta_kg|abs)|replace(".", ",") }} kg
+    </p>
+  {% endif %}
+
+  {% for row in doc.rows %}
+    <div class="pose">
+      <h2>{{ row.pose_label_es }}</h2>
+      <table class="pair">
+        <tr>
+          <td>
+            {% if row.before_image %}
+              <img src="{{ row.before_image }}" />
+            {% else %}
+              <p class="missing">Sin foto en esta fecha</p>
+            {% endif %}
+          </td>
+          <td>
+            {% if row.after_image %}
+              <img src="{{ row.after_image }}" />
+            {% else %}
+              <p class="missing">Sin foto en esta fecha</p>
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
+  {% endfor %}
+</body>
+</html>

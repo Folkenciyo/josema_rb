@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FileDown } from "lucide-react";
 
 import { Card, CardHeader } from "@/components/ui/card";
 import { Select } from "@/components/ui/input";
@@ -65,10 +65,13 @@ function Side({
 
 /** Two dates face to face, pose by pose, with the weight of each moment. */
 export function PhotoCompare<T extends DatedPhoto>({
+  clientId,
   sessions,
   measurements,
   photoSrc = photoUrl,
 }: {
+  /** Only the trainer has one: without it the export links are not offered. */
+  clientId?: string;
   sessions: PhotoSession<T>[];
   measurements: WeighIn[];
   photoSrc?: PhotoSrc;
@@ -86,9 +89,29 @@ export function PhotoCompare<T extends DatedPhoto>({
   const rows = buildComparison(before, after);
   const delta = weightDeltaBetween(measurements, beforeDate, afterDate);
 
+  // Plain download links: the same-origin proxy carries the session cookie,
+  // so there is no need to fetch a blob by hand. The client's portal has no
+  // session and no client id, so from there the document is simply not offered.
+  const exportQuery = `?before=${beforeDate}&after=${afterDate}`;
+  const exportLinks = clientId && (
+    <span className="flex gap-2">
+      {(["pdf", "docx"] as const).map((format) => (
+        <a
+          key={format}
+          href={`/api/clients/${clientId}/progress/export/${format}${exportQuery}`}
+          download
+          className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50"
+        >
+          <FileDown className="size-3.5" />
+          {format === "pdf" ? "PDF" : "Word"}
+        </a>
+      ))}
+    </span>
+  );
+
   return (
     <Card>
-      <CardHeader title="Comparar dos fechas" />
+      <CardHeader title="Comparar dos fechas" action={exportLinks} />
 
       <div className="flex flex-wrap items-end gap-3 px-5 py-4">
         <label className="flex flex-col gap-1 text-sm">

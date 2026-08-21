@@ -1,0 +1,142 @@
+import io
+from datetime import date
+
+import pytest
+from fastapi.testclient import TestClient
+from PIL import Image
+
+from app.models import ClientMeasurement
+from app.services.progress_service import nearest_measurement
+
+
+def _measurement(measured_on: str, weight: float) -> ClientMeasurement:
+    return ClientMeasurement(
+        measured_on=date.fromisoformat(measured_on), weight_kg=weight
+    )
+
+
+def _jpeg() -> bytes:
+    buffer = io.BytesIO()
+    Image.new("RGB", (900, 1200), color=(90, 110, 130)).save(buffer, format="JPEG")
+    return buffer.getvalue()
+
+
+def _client_with_two_sessions(api: TestClient) -> str:
+    client_id = api.post(
+        "/api/clients", json={"full_name": "Cliente de Prueba", "height_cm": 180}
+    ).json()["id"]
+
+    for taken_on, poses in (
+        ("2025-05-01", ("front", "side", "back")),
+        ("2026-05-01", ("front", "back")),
+    ):
+        for pose in poses:
+            api.post(
+                f"/api/clients/{client_id}/photos",
+                data={"taken_on": taken_on, "pose": pose},
+                files={"file": ("p.jpg", _jpeg(), "image/jpeg")},
+            )
+
+    for measured_on, weight in (("2025-05-02", 84), ("2026-04-28", 78)):
+        api.post(
+            f"/api/clients/{client_id}/measurements",
+            json={"measured_on": measured_on, "weight_kg": weight},
+        )
+
+    return client_id
+
+
+def _cleanup(api: TestClient, client_id: str) -> None:
+    for photo in api.get(f"/api/clients/{client_id}/photos").json():
+        api.delete(f"/api/photos/{photo['id']}")
+
+
+def test_nearest_measurement_picks_the_closest_weigh_in() -> None:
+    measurements = [
+        _measurement("2026-05-10", 78),
+        _measurement("2026-04-01", 80),
+        _measurement("2025-05-02", 84),
+    ]
+
+    assert nearest_measurement(measurements, date(2026, 5, 1)).measured_on == date(
+        2026, 5, 10
+    )
+    assert nearest_measurement(measurements, date(2025, 5, 1)).measured_on == date(
+        2025, 5, 2
+    )
+
+
+def test_nearest_measurement_prefers_the_earlier_one_on_a_tie() -> None:
+    measurements = [_measurement("2026-05-11", 79), _measurement("2026-05-09", 81)]
+
+    nearest = nearest_measurement(measurements, date(2026, 5, 10))
+
+    assert nearest.measured_on == date(2026, 5, 9)
+
+
+def test_nearest_measurement_without_weigh_ins() -> None:
+    assert nearest_measurement([], date(2026, 5, 1)) is None
+
+
+def test_progress_docx_pairs_both_dates(authenticated_client: TestClient) -> None:
+    client_id = _client_with_two_sessions(authenticated_client)
+
+    response = authenticated_client.get(
+        f"/api/clients/{client_id}/progress/export/docx"
+    )
+
+    assert response.status_code == 200
+    assert response.content[:2] == b"PK"
+    # Three poses x two dates, minus the side shot missing in 2026.
+    assert len(response.content) > 10_000
+
+    _cleanup(authenticated_client, client_id)
+
+
+def test_progress_export_needs_two_dates(authenticated_client: TestClient) -> None:
+    client_id = authenticated_client.post(
+        "/api/clients", json={"full_name": "Cliente de Prueba"}
+    ).json()["id"]
+    authenticated_client.post(
+        f"/api/clients/{client_id}/photos",
+        data={"taken_on": "2026-05-01", "pose": "front"},
+        files={"file": ("p.jpg", _jpeg(), "image/jpeg")},
+    )
+
+    response = authenticated_client.get(
+        f"/api/clients/{client_id}/progress/export/docx"
+    )
+
+    assert response.status_code == 422
+
+    _cleanup(authenticated_client, client_id)
+
+
+def test_explicit_dates_are_honoured(authenticated_client: TestClient) -> None:
+    client_id = _client_with_two_sessions(authenticated_client)
+
+    response = authenticated_client.get(
+        f"/api/clients/{client_id}/progress/export/docx",
+        params={"before": "2025-05-01", "after": "2026-05-01"},
+    )
+
+    assert response.status_code == 200
+
+    _cleanup(authenticated_client, client_id)
+
+
+def test_progress_pdf_renders(authenticated_client: TestClient) -> None:
+    client_id = _client_with_two_sessions(authenticated_client)
+
+    try:
+        response = authenticated_client.get(
+            f"/api/clients/{client_id}/progress/export/pdf"
+        )
+    except OSError as exc:  # pragma: no cover - depends on the machine
+        _cleanup(authenticated_client, client_id)
+        pytest.skip(f"WeasyPrint native libraries unavailable: {exc}")
+
+    assert response.status_code == 200
+    assert response.content[:4] == b"%PDF"
+
+    _cleanup(authenticated_client, client_id)
