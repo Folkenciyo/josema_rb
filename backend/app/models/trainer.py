@@ -22,6 +22,10 @@ class Trainer(Base, TimestampMixin):
     invite_whatsapp_template: Mapped[str | None] = mapped_column(Text)
     invite_email_subject: Mapped[str | None] = mapped_column(String(255))
     invite_email_template: Mapped[str | None] = mapped_column(Text)
+    # A few paragraphs shown above the questions in the client's portal, in the
+    # light markup the editor explains. Null means the questionnaire opens
+    # straight into the first question.
+    questionnaire_intro: Mapped[str | None] = mapped_column(Text)
 
     # Where the motivational queue stood on a given day: which message was
     # showing, and when. Everything after that is counted forward from here, so

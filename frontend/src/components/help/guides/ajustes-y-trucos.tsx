@@ -35,6 +35,15 @@ export function AjustesYTrucos() {
           cerrada: pones las que necesites, en el orden que quieras.
         </P>
         <Steps>
+          <Step title="Escribe la introducción">
+            Unos párrafos que el cliente lee <strong>encima</strong> de las
+            preguntas: una bienvenida, o por qué le pides estos datos. Admite{" "}
+            <Term>**negrita**</Term>, <Term>*cursiva*</Term> y listas con{" "}
+            <Term>-</Term>, y una línea en blanco empieza párrafo nuevo. Debajo
+            del cuadro tienes la leyenda con ejemplos y una vista previa de cómo
+            queda. Si lo dejas vacío, el cuestionario empieza por la primera
+            pregunta.
+          </Step>
           <Step title="Añade preguntas">
             <Btn icon={Plus} variant="secondary">Añadir pregunta</Btn> y escribe
             el enunciado.

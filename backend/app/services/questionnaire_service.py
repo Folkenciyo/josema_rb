@@ -18,6 +18,8 @@ from app.schemas.questionnaire import (
     PortalQuestionnaireOut,
     PortalQuestionOut,
     QuestionIn,
+    QuestionnaireOut,
+    QuestionOut,
 )
 
 
@@ -30,14 +32,32 @@ def list_questions(db: Session, trainer: Trainer) -> list[QuestionnaireQuestion]
     )
 
 
-def set_questions(
-    db: Session, trainer: Trainer, questions: list[QuestionIn]
-) -> list[QuestionnaireQuestion]:
+def build_editor_view(db: Session, trainer: Trainer) -> QuestionnaireOut:
+    return QuestionnaireOut(
+        intro=trainer.questionnaire_intro,
+        questions=[
+            QuestionOut.model_validate(question)
+            for question in list_questions(db, trainer)
+        ],
+    )
+
+
+def set_questionnaire(
+    db: Session, trainer: Trainer, questions: list[QuestionIn], intro: str | None
+) -> QuestionnaireOut:
     """Replace the questionnaire with the list given, in that order.
 
     Answers already given are not touched: they carry their own copy of the
     wording, and the ones whose question disappears simply lose the link.
     """
+    trainer.questionnaire_intro = (intro or "").strip() or None
+    _set_questions(db, trainer, questions)
+    return build_editor_view(db, trainer)
+
+
+def _set_questions(
+    db: Session, trainer: Trainer, questions: list[QuestionIn]
+) -> list[QuestionnaireQuestion]:
     for question in list_questions(db, trainer):
         db.delete(question)
     db.flush()
@@ -73,6 +93,7 @@ def build_portal_view(
     }
 
     return PortalQuestionnaireOut(
+        intro=trainer.questionnaire_intro,
         questions=[
             PortalQuestionOut(
                 id=question.id,

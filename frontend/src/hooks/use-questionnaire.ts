@@ -17,8 +17,13 @@ export function useSetQuestionnaire() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (questions: QuestionInput[]) =>
-      questionnaireApi.setQuestionnaire(questions),
+    mutationFn: ({
+      questions,
+      intro,
+    }: {
+      questions: QuestionInput[];
+      intro: string | null;
+    }) => questionnaireApi.setQuestionnaire(questions, intro),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: queryKeys.questionnaire });
     },

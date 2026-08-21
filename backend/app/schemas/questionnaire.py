@@ -15,10 +15,18 @@ class QuestionIn(BaseModel):
     required: bool = False
 
 
+# Long enough for a real welcome, short enough that nobody pastes a book into
+# a client's phone screen.
+MAX_INTRO_LENGTH = 4000
+
+
 class SetQuestionnaireRequest(BaseModel):
     """Replaces the whole questionnaire in one go, in the order given."""
 
     questions: list[QuestionIn] = []
+    # Empty or blank clears it, the same way an empty invitation template
+    # restores the stock wording.
+    intro: str | None = Field(default=None, max_length=MAX_INTRO_LENGTH)
 
 
 class QuestionOut(BaseModel):
@@ -60,7 +68,17 @@ class PortalQuestionOut(QuestionOut):
     answer: str | None = None
 
 
+class QuestionnaireOut(BaseModel):
+    """The whole questionnaire as the trainer edits it."""
+
+    intro: str | None
+    questions: list[QuestionOut]
+
+
 class PortalQuestionnaireOut(BaseModel):
+    # Shown above the questions, every time: it is a welcome, not an instruction
+    # that stops being true once answered.
+    intro: str | None
     questions: list[PortalQuestionOut]
     # Null while the client has not answered a single question.
     completed_at: datetime | None

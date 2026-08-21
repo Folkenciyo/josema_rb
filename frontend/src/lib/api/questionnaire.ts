@@ -2,17 +2,20 @@ import { api } from "./http";
 import type {
   ClientQuestionnaire,
   PortalQuestionnaire,
-  Question,
+  Questionnaire,
   QuestionInput,
 } from "@/types/questionnaire";
 
-export function getQuestionnaire(): Promise<Question[]> {
-  return api.get<Question[]>("/settings/questionnaire");
+export function getQuestionnaire(): Promise<Questionnaire> {
+  return api.get<Questionnaire>("/settings/questionnaire");
 }
 
-/** Replaces the whole questionnaire, in the order given. */
-export function setQuestionnaire(questions: QuestionInput[]): Promise<Question[]> {
-  return api.put<Question[]>("/settings/questionnaire", { questions });
+/** Replaces the whole questionnaire — intro included — in the order given. */
+export function setQuestionnaire(
+  questions: QuestionInput[],
+  intro: string | null,
+): Promise<Questionnaire> {
+  return api.put<Questionnaire>("/settings/questionnaire", { questions, intro });
 }
 
 export function getClientQuestionnaire(

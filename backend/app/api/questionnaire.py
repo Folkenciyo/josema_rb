@@ -5,10 +5,10 @@ from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.core.security import get_current_trainer
-from app.models import QuestionnaireQuestion, Trainer
+from app.models import Trainer
 from app.schemas.questionnaire import (
     ClientQuestionnaireOut,
-    QuestionOut,
+    QuestionnaireOut,
     SetQuestionnaireRequest,
 )
 from app.services import client_service, questionnaire_service
@@ -16,20 +16,22 @@ from app.services import client_service, questionnaire_service
 router = APIRouter(tags=["questionnaire"], dependencies=[Depends(get_current_trainer)])
 
 
-@router.get("/api/settings/questionnaire", response_model=list[QuestionOut])
+@router.get("/api/settings/questionnaire", response_model=QuestionnaireOut)
 def get_questionnaire(
     trainer: Trainer = Depends(get_current_trainer), db: Session = Depends(get_db)
-) -> list[QuestionnaireQuestion]:
-    return questionnaire_service.list_questions(db, trainer)
+) -> QuestionnaireOut:
+    return questionnaire_service.build_editor_view(db, trainer)
 
 
-@router.put("/api/settings/questionnaire", response_model=list[QuestionOut])
+@router.put("/api/settings/questionnaire", response_model=QuestionnaireOut)
 def set_questionnaire(
     payload: SetQuestionnaireRequest,
     trainer: Trainer = Depends(get_current_trainer),
     db: Session = Depends(get_db),
-) -> list[QuestionnaireQuestion]:
-    return questionnaire_service.set_questions(db, trainer, payload.questions)
+) -> QuestionnaireOut:
+    return questionnaire_service.set_questionnaire(
+        db, trainer, payload.questions, payload.intro
+    )
 
 
 @router.get(
