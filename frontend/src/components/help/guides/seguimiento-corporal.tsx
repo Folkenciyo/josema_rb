@@ -16,15 +16,15 @@ export function SeguimientoCorporal() {
   return (
     <>
       <P>
-        Tres cosas cuentan la evolución de un cliente: el peso, las fotos y lo
-        que levanta. Las dos primeras viven en su ficha y son las que dan el
-        documento de Seguimiento.
+        Cuatro cosas cuentan la evolución de un cliente: el peso, las medidas,
+        las fotos y lo que levanta. Las tres primeras viven en su ficha y son las
+        que dan el documento de Seguimiento.
       </P>
 
       <OpenScreen
         href="/clients"
         label="Abrir Clientes"
-        note="Peso y fotos están dentro de la ficha"
+        note="Peso, medidas y fotos están dentro de la ficha"
       />
 
       <Section id="peso" title="Peso e IMC">
@@ -48,6 +48,42 @@ export function SeguimientoCorporal() {
           Las variaciones se muestran en color neutro a propósito: la aplicación
           no da por hecho que adelgazar sea el objetivo.
         </P>
+      </Section>
+
+      <Section id="medidas" title="Medidas corporales">
+        <P>
+          La báscula sola engaña: el peso se queda quieto mientras la cintura
+          baja y el brazo sube. La tarjeta <Term>Medidas corporales</Term> lleva
+          nueve zonas fijas —cuello, pecho, brazo derecho, brazo izquierdo,
+          antebrazo, cintura, cadera, muslo y gemelo— y se rellenan solo las que
+          midas.
+        </P>
+        <P>
+          Las apuntáis los dos, igual que el peso: tú con{" "}
+          <Btn icon={Plus} variant="secondary">Añadir medidas</Btn> y el cliente
+          desde <strong>Mi cuerpo</strong> en su portal. Hay{" "}
+          <strong>una toma por día</strong>, y volver a guardar el mismo día
+          corrige la anterior.
+        </P>
+        <Bullets>
+          <li>
+            Arriba eliges una zona y ves su gráfica: cada zona lleva su propia
+            evolución, y una zona que no mediste ese día no rompe la línea.
+          </li>
+          <li>
+            Debajo, la tabla del histórico con todas las zonas medidas, una
+            columna por zona.
+          </li>
+          <li>
+            Cuando el cliente guarda una zona suelta, se suma a la toma de ese
+            día en vez de borrar las demás.
+          </li>
+        </Bullets>
+        <Note>
+          Dile que mida siempre a la misma hora y sin apretar la cinta. Media
+          hora después de comer, o con la cinta tirante, cambian más centímetros
+          que una semana de entreno.
+        </Note>
       </Section>
 
       <Section id="permiso" title="El permiso del cliente">
@@ -109,13 +145,15 @@ export function SeguimientoCorporal() {
         <P>
           Desde el comparador, <Btn icon={FileDown} variant="secondary">PDF</Btn> o{" "}
           <Btn icon={FileDown} variant="secondary">Word</Btn> generan un
-          documento con las dos fechas enfrentadas, foto a foto, y el peso y el
-          IMC de cada momento. Es el tercer documento que entrega la aplicación,
-          junto a la rutina y la dieta.
+          documento con las dos fechas enfrentadas, foto a foto, el peso y el IMC
+          de cada momento y una tabla con las medidas de las dos tomas y su
+          diferencia. Es el tercer documento que entrega la aplicación, junto a
+          la rutina y la dieta.
         </P>
         <Note>
-          Si el pesaje más cercano a una foto no es exactamente del mismo día, el
-          documento lo dice en vez de fingir que coinciden.
+          Si el pesaje o las medidas más cercanas a una foto no son exactamente
+          del mismo día, el documento lo dice en vez de fingir que coinciden. Y
+          las zonas que nunca mediste no salen en la tabla.
         </Note>
       </Section>
 

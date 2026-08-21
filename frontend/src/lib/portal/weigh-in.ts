@@ -33,3 +33,30 @@ export function parseWeightInput(raw: string): WeightParseResult {
   // One decimal is all a bathroom scale gives, and all the history stores.
   return { ok: true, weightKg: Math.round(weightKg * 10) / 10 };
 }
+
+/** A tape reading in centimetres. Blank is fine here: it means "not measured". */
+const MAX_ZONE_CM = 300;
+
+export type ZoneParseResult =
+  | { ok: true; value: number | null }
+  | { ok: false; error: string };
+
+export function parseZoneInput(raw: string): ZoneParseResult {
+  const cleaned = raw.trim().replace(",", ".");
+
+  if (cleaned === "") {
+    return { ok: true, value: null };
+  }
+
+  const value = Number(cleaned);
+
+  if (!Number.isFinite(value)) {
+    return { ok: false, error: "Escribe solo números, por ejemplo 86,5." };
+  }
+
+  if (value <= 0 || value > MAX_ZONE_CM) {
+    return { ok: false, error: `Escribe una medida entre 1 y ${MAX_ZONE_CM} cm.` };
+  }
+
+  return { ok: true, value: Math.round(value * 10) / 10 };
+}

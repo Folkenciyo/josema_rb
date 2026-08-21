@@ -98,9 +98,24 @@ class ProgressRow(BaseModel):
     after_image: str | None
 
 
+class ProgressZone(BaseModel):
+    """One tape spot on both dates. A blank end is a spot that was not measured."""
+
+    label_es: str
+    before_cm: float | None
+    after_cm: float | None
+    delta_cm: float | None
+
+
 class ProgressDocument(BaseModel):
     client_name: str
     before: ProgressSide
     after: ProgressSide
     weight_delta_kg: float | None
     rows: list[ProgressRow]
+    # Only the zones with a reading on at least one of the two dates: the rest
+    # would be a table of dashes.
+    zones: list[ProgressZone] = []
+    # The days those readings are from, which need not be the photo days.
+    zones_before_on: date | None = None
+    zones_after_on: date | None = None

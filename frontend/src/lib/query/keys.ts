@@ -12,6 +12,8 @@ export const queryKeys = {
   client: (clientId: string) => ["clients", clientId] as const,
   measurements: (clientId: string) =>
     ["clients", clientId, "measurements"] as const,
+  bodyMeasurements: (clientId: string) =>
+    ["clients", clientId, "body-measurements"] as const,
   photos: (clientId: string) => ["clients", clientId, "photos"] as const,
   portalInvite: (clientId: string) =>
     ["clients", clientId, "portal-invite"] as const,
@@ -21,6 +23,8 @@ export const queryKeys = {
   portalDietPlan: (token: string) => ["portal", token, "diet-plan"] as const,
   portalMeasurements: (token: string) =>
     ["portal", token, "measurements"] as const,
+  portalBodyMeasurements: (token: string) =>
+    ["portal", token, "body-measurements"] as const,
   workoutDays: (token: string) => ["portal", token, "workout-days"] as const,
   workoutDay: (token: string, dayId: string) =>
     ["portal", token, "workout-days", dayId] as const,

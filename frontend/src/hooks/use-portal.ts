@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import * as portalApi from "@/lib/api/portal";
 import { queryKeys } from "@/lib/query/keys";
+import type { BodyZones } from "@/types/measurement";
 
 export function usePortalHome(token: string) {
   return useQuery({
@@ -70,6 +71,31 @@ export function usePortalInvite(clientId: string, enabled: boolean) {
     queryFn: () => portalApi.getPortalInvite(clientId),
     // There is no invitation to fetch until the link has been issued.
     enabled,
+  });
+}
+
+export function usePortalBodyMeasurements(token: string) {
+  return useQuery({
+    queryKey: queryKeys.portalBodyMeasurements(token),
+    queryFn: () => portalApi.getPortalBodyMeasurements(token),
+    retry: false,
+  });
+}
+
+export function useRecordPortalBodyMeasurement(token: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      zones,
+      notes,
+    }: {
+      zones: Partial<BodyZones>;
+      notes: string | null;
+    }) => portalApi.recordPortalBodyMeasurement(token, zones, notes),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["portal", token] });
+    },
   });
 }
 

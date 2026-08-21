@@ -1,10 +1,15 @@
 "use client";
 
-import { usePortalMeasurements } from "@/hooks/use-portal";
+import {
+  usePortalBodyMeasurements,
+  usePortalMeasurements,
+} from "@/hooks/use-portal";
 import { WeightChart } from "@/components/clients/weight-chart";
 import { Card } from "@/components/ui/card";
 import { formatDate } from "@/lib/format";
 import { formatWeight, summarizeProgress } from "@/lib/measurements/progress";
+import { PortalBodyForm } from "./portal-body-form";
+import { PortalBodyProgress } from "./portal-body-progress";
 import { PortalWeighInForm } from "./portal-weigh-in-form";
 import {
   PortalHeader,
@@ -37,8 +42,9 @@ function DeltaLabel({ kilos }: { kilos: number | null }) {
 
 export function PortalWeightView({ token }: { token: string }) {
   const { data: measurements, isPending, error } = usePortalMeasurements(token);
+  const bodyMeasurements = usePortalBodyMeasurements(token);
 
-  if (isPending) {
+  if (isPending || bodyMeasurements.isPending) {
     return (
       <PortalPage>
         <PortalLoading />
@@ -49,7 +55,7 @@ export function PortalWeightView({ token }: { token: string }) {
   if (error) {
     return (
       <PortalPage>
-        <PortalHeader title="Mi peso" />
+        <PortalHeader title="Mi cuerpo" />
         <PortalNotice
           title="Este enlace ya no sirve"
           description="Pídele a tu entrenador el enlace nuevo y vuelve a entrar."
@@ -62,10 +68,13 @@ export function PortalWeightView({ token }: { token: string }) {
   const today = todayIso();
   const entryToday =
     measurements.find((entry) => entry.measured_on === today) ?? null;
+  const readings = bodyMeasurements.data ?? [];
+  const bodyToday =
+    readings.find((entry) => entry.measured_on === today) ?? null;
 
   return (
     <PortalPage>
-      <PortalHeader title="Mi peso" />
+      <PortalHeader title="Mi cuerpo" />
 
       <PortalWeighInForm
         token={token}
@@ -125,6 +134,9 @@ export function PortalWeightView({ token }: { token: string }) {
           </Card>
         </>
       )}
+
+      <PortalBodyForm token={token} today={bodyToday} />
+      <PortalBodyProgress readings={readings} />
     </PortalPage>
   );
 }

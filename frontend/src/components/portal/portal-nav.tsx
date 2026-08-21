@@ -19,7 +19,8 @@ const ITEMS = [
   { segment: "/entreno", label: "Entreno", Icon: Play },
   { segment: "/rutina", label: "Rutina", Icon: Dumbbell },
   { segment: "/dieta", label: "Dieta", Icon: Salad },
-  { segment: "/peso", label: "Peso", Icon: Scale },
+  // The URL stays /peso: links already sent to clients have to keep working.
+  { segment: "/peso", label: "Cuerpo", Icon: Scale },
   { segment: "/cuestionario", label: "Ficha", Icon: ClipboardList },
 ] as const;
 
