@@ -74,8 +74,8 @@ export function PortalDelCliente() {
             macros, también descargables.
           </li>
           <li>
-            <strong>Peso</strong> — apunta el peso de hoy y ve su gráfica y su
-            historial.
+            <strong>Cuerpo</strong> — apunta el peso y las medidas de hoy, y ve
+            la gráfica y el historial de cada uno.
           </li>
           <li>
             <strong>Ficha</strong> — el cuestionario inicial y el permiso para
@@ -95,13 +95,19 @@ export function PortalDelCliente() {
       </Section>
 
       <Section id="que-escribe" title="Qué puede escribir">
-        <P>Tres cosas, y ninguna más:</P>
+        <P>Cuatro cosas, y ninguna más:</P>
         <Bullets>
           <li>
             <strong>Su peso de hoy.</strong> La fecha la pone el servidor, así
             que no puede inventarse pesajes de otros días. Si se equivoca y lo
             vuelve a apuntar el mismo día, corrige el anterior en vez de crear
             uno nuevo.
+          </li>
+          <li>
+            <strong>Sus medidas de hoy.</strong> Las nueve zonas, las que quiera
+            de una vez. Misma regla que el peso: una toma por día y la fecha la
+            pone el servidor. Guardar una zona suelta se suma a la toma del día,
+            no borra las demás.
           </li>
           <li>
             <strong>Las series que entrena.</strong> Peso y repeticiones de cada

@@ -6,9 +6,21 @@ from datetime import date
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.models import Client, ClientMeasurement, ClientPhoto, PhotoPose
+from app.models import (
+    BODY_ZONES,
+    Client,
+    ClientBodyMeasurement,
+    ClientMeasurement,
+    ClientPhoto,
+    PhotoPose,
+)
 from app.repositories import measurement_repository, photo_repository
-from app.schemas.export import ProgressDocument, ProgressRow, ProgressSide
+from app.schemas.export import (
+    ProgressDocument,
+    ProgressRow,
+    ProgressSide,
+    ProgressZone,
+)
 from app.services import client_service
 from app.services.measurement_service import calculate_bmi
 
@@ -16,6 +28,18 @@ POSE_LABELS_ES: dict[PhotoPose, str] = {
     PhotoPose.FRONT: "Frontal",
     PhotoPose.SIDE: "Lateral",
     PhotoPose.BACK: "Trasera",
+}
+
+ZONE_LABELS_ES: dict[str, str] = {
+    "neck_cm": "Cuello",
+    "chest_cm": "Pecho",
+    "arm_right_cm": "Brazo derecho",
+    "arm_left_cm": "Brazo izquierdo",
+    "forearm_cm": "Antebrazo",
+    "waist_cm": "Cintura",
+    "hip_cm": "Cadera",
+    "thigh_cm": "Muslo",
+    "calf_cm": "Gemelo",
 }
 
 
@@ -34,13 +58,13 @@ def photos_on(
     return session
 
 
-def nearest_measurement(
-    measurements: list[ClientMeasurement], target: date
-) -> ClientMeasurement | None:
-    """The weigh-in closest to a date, so a photo can carry the weight of its day.
+def nearest_measurement[Dated: (ClientMeasurement, ClientBodyMeasurement)](
+    measurements: list[Dated], target: date
+) -> Dated | None:
+    """The entry closest to a date, so a photo can carry the numbers of its day.
 
-    Ties go to the earlier one: that is the weigh-in that already existed when
-    the photo was taken.
+    Ties go to the earlier one: that is the entry that already existed when the
+    photo was taken. Used for both the weigh-ins and the tape readings.
     """
     if not measurements:
         return None
@@ -52,6 +76,39 @@ def nearest_measurement(
             measurement.measured_on,
         ),
     )
+
+
+def _build_zones(
+    before: ClientBodyMeasurement | None, after: ClientBodyMeasurement | None
+) -> list[ProgressZone]:
+    zones = []
+
+    for zone in BODY_ZONES:
+        before_cm = getattr(before, zone, None) if before else None
+        after_cm = getattr(after, zone, None) if after else None
+
+        if before_cm is None and after_cm is None:
+            continue
+
+        zones.append(
+            ProgressZone(
+                label_es=ZONE_LABELS_ES[zone],
+                before_cm=float(before_cm) if before_cm is not None else None,
+                after_cm=float(after_cm) if after_cm is not None else None,
+                # No difference to show when both ends resolved to the same
+                # entry: with a single set of readings there is nothing to
+                # compare, only a number to state.
+                delta_cm=(
+                    round(float(after_cm) - float(before_cm), 1)
+                    if before_cm is not None
+                    and after_cm is not None
+                    and before is not after
+                    else None
+                ),
+            )
+        )
+
+    return zones
 
 
 def _build_side(
@@ -104,11 +161,18 @@ def build_progress_document(
     ):
         delta = round(after_side.weight_kg - before_side.weight_kg, 1)
 
+    body_measurements = measurement_repository.list_body_for_client(db, client_id)
+    before_body = nearest_measurement(body_measurements, before_date)
+    after_body = nearest_measurement(body_measurements, after_date)
+
     return ProgressDocument(
         client_name=client.full_name,
         before=before_side,
         after=after_side,
         weight_delta_kg=delta,
+        zones=_build_zones(before_body, after_body),
+        zones_before_on=before_body.measured_on if before_body else None,
+        zones_after_on=after_body.measured_on if after_body else None,
         rows=[
             ProgressRow(
                 pose_label_es=POSE_LABELS_ES[pose],

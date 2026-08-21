@@ -4,11 +4,15 @@ from datetime import date
 import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
+from sqlalchemy.orm import Session
 
 from app.models import ClientMeasurement
 from app.schemas.export import ProgressDocument, ProgressRow, ProgressSide
 from app.services.pdf_export import _env
-from app.services.progress_service import nearest_measurement
+from app.services.progress_service import (
+    build_progress_document,
+    nearest_measurement,
+)
 
 
 def _measurement(measured_on: str, weight: float) -> ClientMeasurement:
@@ -128,6 +132,45 @@ def test_nearest_measurement_prefers_the_earlier_one_on_a_tie() -> None:
 
 def test_nearest_measurement_without_weigh_ins() -> None:
     assert nearest_measurement([], date(2026, 5, 1)) is None
+
+
+def test_the_document_compares_the_zones_that_were_measured(
+    authenticated_client: TestClient, db_session: Session
+) -> None:
+    client_id = _client_with_two_sessions(authenticated_client)
+    for measured_on, waist in (("2025-05-01", 96), ("2026-05-01", 88.5)):
+        authenticated_client.post(
+            f"/api/clients/{client_id}/body-measurements",
+            json={"measured_on": measured_on, "waist_cm": waist},
+        )
+
+    document = build_progress_document(db_session, client_id)
+
+    waist_row = next(zone for zone in document.zones if zone.label_es == "Cintura")
+    assert waist_row.before_cm == 96
+    assert waist_row.after_cm == 88.5
+    assert waist_row.delta_cm == -7.5
+    # The eight spots nobody measured stay out of the table.
+    assert len(document.zones) == 1
+
+    _cleanup(authenticated_client, client_id)
+
+
+def test_a_single_set_of_readings_states_the_numbers_without_a_difference(
+    authenticated_client: TestClient, db_session: Session
+) -> None:
+    client_id = _client_with_two_sessions(authenticated_client)
+    authenticated_client.post(
+        f"/api/clients/{client_id}/body-measurements",
+        json={"measured_on": "2026-05-01", "waist_cm": 88.5},
+    )
+
+    document = build_progress_document(db_session, client_id)
+
+    # Both ends resolve to the same entry: there is nothing to compare.
+    assert document.zones[0].delta_cm is None
+
+    _cleanup(authenticated_client, client_id)
 
 
 def test_progress_docx_pairs_both_dates(authenticated_client: TestClient) -> None:

@@ -1,3 +1,4 @@
+import { buildSeriesGeometry } from "./chart";
 import type { WeighIn } from "@/types/measurement";
 
 export type BmiCategory =
@@ -75,45 +76,38 @@ export interface ChartGeometry<T extends WeighIn = WeighIn> {
   maxWeight: number;
 }
 
-const CHART_PADDING = 4;
-
 /**
  * Maps weigh-ins onto a viewBox of `width` x `height`, oldest on the left.
- * A flat series is drawn through the middle instead of dividing by zero.
+ * The maths lives in `buildSeriesGeometry`, shared with the body zone charts;
+ * this only speaks in kilos.
  */
 export function buildChartGeometry<T extends WeighIn>(
   measurements: T[],
   width: number,
   height: number,
 ): ChartGeometry<T> | null {
-  if (measurements.length < 2) {
+  const geometry = buildSeriesGeometry(
+    measurements.map((measurement) => ({
+      ...measurement,
+      value: measurement.weight_kg,
+    })),
+    width,
+    height,
+  );
+
+  if (!geometry) {
     return null;
   }
 
-  const oldestFirst = [...measurements].reverse();
-  const weights = oldestFirst.map((m) => m.weight_kg);
-  const minWeight = Math.min(...weights);
-  const maxWeight = Math.max(...weights);
-  const span = maxWeight - minWeight;
-  const usableHeight = height - CHART_PADDING * 2;
-
-  const points = oldestFirst.map((measurement, index) => ({
-    x: (index / (oldestFirst.length - 1)) * width,
-    y:
-      span === 0
-        ? height / 2
-        : CHART_PADDING +
-          ((maxWeight - measurement.weight_kg) / span) * usableHeight,
-    measurement,
-  }));
-
   return {
-    points,
-    path: points
-      .map((point, index) => `${index === 0 ? "M" : "L"}${point.x} ${point.y}`)
-      .join(" "),
-    minWeight,
-    maxWeight,
+    points: geometry.points.map(({ x, y, entry }) => ({
+      x,
+      y,
+      measurement: entry,
+    })),
+    path: geometry.path,
+    minWeight: geometry.min,
+    maxWeight: geometry.max,
   };
 }
 

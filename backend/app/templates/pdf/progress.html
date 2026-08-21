@@ -83,6 +83,39 @@
     {% endif %}
   {% endfor %}
 
+  {% if doc.zones %}
+    <h2>Medidas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 34%">Zona</th>
+          <th class="num">{{ doc.zones_before_on.strftime("%d/%m/%Y") }}</th>
+          <th class="num">{{ doc.zones_after_on.strftime("%d/%m/%Y") }}</th>
+          <th class="num" style="width: 18%">Diferencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for zone in doc.zones %}
+          <tr>
+            <td><strong>{{ zone.label_es }}</strong></td>
+            <td class="num">{% if zone.before_cm %}{{ decimal(zone.before_cm) }} cm{% else %}—{% endif %}</td>
+            <td class="num">{% if zone.after_cm %}{{ decimal(zone.after_cm) }} cm{% else %}—{% endif %}</td>
+            <td class="num">
+              {% if zone.delta_cm is not none %}
+                {% if zone.delta_cm > 0 %}+{% elif zone.delta_cm < 0 %}−{% endif %}{{ decimal(zone.delta_cm|abs) }} cm
+              {% else %}—{% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {# The tape readings are the nearest ones, not necessarily the photo days. #}
+    {% if doc.zones_before_on != doc.before.taken_on or doc.zones_after_on != doc.after.taken_on %}
+      <p class="note">Medidas tomadas en las fechas de la tabla.</p>
+    {% endif %}
+  {% endif %}
+
+  <h2>Fotos</h2>
   {% for row in doc.rows %}
     <div class="pose">
       <h3>{{ row.pose_label_es }}</h3>

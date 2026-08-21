@@ -6,7 +6,14 @@ from pathlib import Path
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.models import Client, ClientMeasurement, DietPlan, TrainingPlan
+from app.models import (
+    BODY_ZONES,
+    Client,
+    ClientBodyMeasurement,
+    ClientMeasurement,
+    DietPlan,
+    TrainingPlan,
+)
 from app.repositories import (
     client_repository,
     diet_plan_repository,
@@ -15,7 +22,13 @@ from app.repositories import (
     training_plan_repository,
     workout_repository,
 )
-from app.schemas.portal import PortalClientOut, PortalPhotoOut, PortalWeighInOut
+from app.schemas.portal import (
+    PortalBodyMeasurementCreate,
+    PortalBodyMeasurementOut,
+    PortalClientOut,
+    PortalPhotoOut,
+    PortalWeighInOut,
+)
 from app.services import (
     client_service,
     measurement_service,
@@ -187,6 +200,55 @@ def list_weigh_ins(db: Session, client: Client) -> list[PortalWeighInOut]:
             notes=measurement.client_notes,
         )
         for measurement in measurement_service.list_measurements(db, client.id)
+    ]
+
+
+def record_body_measurement(
+    db: Session, client: Client, data: PortalBodyMeasurementCreate
+) -> PortalBodyMeasurementOut:
+    """Save today's tape readings, correcting today's entry if there is one.
+
+    Only the zones actually sent are written: the client measures one spot,
+    saves, and comes back for the next one. Clearing a zone is the trainer's
+    job from the panel, not something to do by accident from a phone.
+    """
+    today = date.today()
+    existing = measurement_repository.get_body_by_day(db, client.id, today)
+    data_dict = {
+        **data.filled_zones(),
+        "client_notes": (data.notes or "").strip() or None,
+    }
+
+    if existing is not None:
+        measurement = measurement_repository.update(db, existing, data_dict)
+    else:
+        measurement = measurement_repository.create_body(
+            db, client_id=client.id, data={"measured_on": today, **data_dict}
+        )
+
+    return _to_body_measurement(measurement)
+
+
+def _to_body_measurement(
+    measurement: ClientBodyMeasurement,
+) -> PortalBodyMeasurementOut:
+    # Built field by field rather than from the row: `notes` on the row is the
+    # trainer's private note, and reading it here would put their remarks in
+    # front of the client they are about.
+    return PortalBodyMeasurementOut(
+        id=measurement.id,
+        measured_on=measurement.measured_on,
+        notes=measurement.client_notes,
+        **{zone: getattr(measurement, zone) for zone in BODY_ZONES},
+    )
+
+
+def list_body_measurements(
+    db: Session, client: Client
+) -> list[PortalBodyMeasurementOut]:
+    return [
+        _to_body_measurement(measurement)
+        for measurement in measurement_repository.list_body_for_client(db, client.id)
     ]
 
 

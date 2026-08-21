@@ -10,6 +10,8 @@ from app.core.rate_limit import SlidingWindowLimiter
 from app.models import Client, Trainer
 from app.schemas.export import DietPlanDocument, TrainingPlanDocument
 from app.schemas.portal import (
+    PortalBodyMeasurementCreate,
+    PortalBodyMeasurementOut,
     PortalClientOut,
     PortalPhotoOut,
     PortalWeighInCreate,
@@ -144,9 +146,32 @@ def record_portal_weigh_in(
         )
     weigh_in_limiter.record_attempt(token)
 
-    return portal_service.record_weigh_in(
-        db, client, payload.weight_kg, payload.notes
-    )
+    return portal_service.record_weigh_in(db, client, payload.weight_kg, payload.notes)
+
+
+@router.get("/{token}/body-measurements", response_model=list[PortalBodyMeasurementOut])
+def list_portal_body_measurements(
+    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+) -> list[PortalBodyMeasurementOut]:
+    return portal_service.list_body_measurements(db, client)
+
+
+@router.post("/{token}/body-measurements", response_model=PortalBodyMeasurementOut)
+def record_portal_body_measurement(
+    token: str,
+    payload: PortalBodyMeasurementCreate,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
+) -> PortalBodyMeasurementOut:
+    """Today's tape readings, zone by zone and always on today's date."""
+    if weigh_in_limiter.is_blocked(token):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many entries, try again later",
+        )
+    weigh_in_limiter.record_attempt(token)
+
+    return portal_service.record_body_measurement(db, client, payload)
 
 
 @router.post("/{token}/photo-consent", response_model=PortalClientOut)

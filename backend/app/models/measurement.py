@@ -41,3 +41,68 @@ class ClientMeasurement(Base, TimestampMixin):
     client_notes: Mapped[str | None] = mapped_column(Text)
 
     client: Mapped["Client"] = relationship(back_populates="measurements")
+
+
+# The tape-measure spots, in the order the forms and the documents show them:
+# top to bottom, and the right arm before the left one.
+BODY_ZONES = (
+    "neck_cm",
+    "chest_cm",
+    "arm_right_cm",
+    "arm_left_cm",
+    "forearm_cm",
+    "waist_cm",
+    "hip_cm",
+    "thigh_cm",
+    "calf_cm",
+)
+
+
+def _zone() -> Mapped[Decimal | None]:
+    """One tape reading in centimetres, to one decimal. Blank is the normal case:
+    nobody measures all nine spots every time."""
+    return mapped_column(Numeric(4, 1))
+
+
+class ClientBodyMeasurement(Base, TimestampMixin):
+    """The tape readings of one day, one row per client and day.
+
+    A table of its own instead of columns on `client_measurements`: the weight
+    is NOT NULL there, so sharing the row would force someone to step on the
+    scale before they could write down their waist.
+    """
+
+    __tablename__ = "client_body_measurements"
+    __table_args__ = (
+        UniqueConstraint(
+            "client_id", "measured_on", name="uq_body_measurement_client_day"
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+    client_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("clients.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    measured_on: Mapped[date] = mapped_column(Date, nullable=False)
+
+    neck_cm: Mapped[Decimal | None] = _zone()
+    chest_cm: Mapped[Decimal | None] = _zone()
+    arm_right_cm: Mapped[Decimal | None] = _zone()
+    arm_left_cm: Mapped[Decimal | None] = _zone()
+    forearm_cm: Mapped[Decimal | None] = _zone()
+    waist_cm: Mapped[Decimal | None] = _zone()
+    hip_cm: Mapped[Decimal | None] = _zone()
+    thigh_cm: Mapped[Decimal | None] = _zone()
+    calf_cm: Mapped[Decimal | None] = _zone()
+
+    # Same split as the weigh-in: `notes` is the trainer's and never travels to
+    # the client's phone, `client_notes` is what the client wrote themselves.
+    notes: Mapped[str | None] = mapped_column(Text)
+    client_notes: Mapped[str | None] = mapped_column(Text)
+
+    client: Mapped["Client"] = relationship(back_populates="body_measurements")

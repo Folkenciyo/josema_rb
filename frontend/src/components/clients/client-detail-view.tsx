@@ -30,6 +30,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { toMailtoHref, toTelHref, toWhatsAppHref } from "@/lib/contact";
 import { calculateAge, formatDate } from "@/lib/format";
 import { SEX_LABELS, type ClientDetail, type Sex } from "@/types/client";
+import { BodyMeasurementsCard } from "./body-measurements-card";
 import { ClientForm } from "./client-form";
 import { MeasurementsCard } from "./measurements-card";
 import { PinnedQuoteCard } from "./pinned-quote-card";
@@ -285,6 +286,9 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
           />
           <TrainingCalendarCard clientId={clientId} />
           <WorkoutsCard clientId={clientId} />
+          {/* In the wide column, not next to the weight: the history table is
+              one column per measured zone. */}
+          <BodyMeasurementsCard clientId={clientId} />
           <PhotosSummaryCard
             clientId={clientId}
             photoConsentAt={client.photo_consent_at}

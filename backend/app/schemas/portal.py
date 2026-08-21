@@ -1,9 +1,11 @@
 import uuid
 from datetime import date, datetime
+from typing import Self
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from app.models.photo import PhotoPose
+from app.schemas.measurement import BodyZones
 from app.schemas.quote import QuoteOut
 
 
@@ -64,6 +66,31 @@ class PortalWeighInOut(BaseModel):
     weight_kg: float
     bmi: float | None
     # What the client wrote down themselves — the numbers their scale gave.
+    notes: str | None = None
+
+
+class PortalBodyMeasurementCreate(BodyZones):
+    """The tape readings the client sends. The day is always today, like the weight.
+
+    Zones left out keep whatever was written earlier today: the form is filled
+    in bits, one spot at a time, with the tape in the other hand.
+    """
+
+    notes: str | None = Field(default=None, max_length=500)
+
+    @model_validator(mode="after")
+    def reject_empty_entry(self) -> Self:
+        if not self.filled_zones():
+            raise ValueError("At least one zone is needed")
+        return self
+
+
+class PortalBodyMeasurementOut(BodyZones):
+    """A day's tape readings as the client sees them: no client id, and none of
+    the trainer's private notes."""
+
+    id: uuid.UUID
+    measured_on: date
     notes: str | None = None
 
 

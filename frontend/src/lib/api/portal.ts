@@ -1,5 +1,5 @@
 import { api } from "./http";
-import type { WeighIn } from "@/types/measurement";
+import type { BodyReading, BodyZones, WeighIn } from "@/types/measurement";
 import type {
   PortalDietPlan,
   PortalHome,
@@ -51,6 +51,27 @@ export function recordPortalWeighIn(
 ): Promise<WeighIn> {
   return api.post<WeighIn>(`/portal/${token}/measurements`, {
     weight_kg: weightKg,
+    notes,
+  });
+}
+
+export function getPortalBodyMeasurements(
+  token: string,
+): Promise<BodyReading[]> {
+  return api.get<BodyReading[]>(`/portal/${token}/body-measurements`);
+}
+
+/**
+ * Today's tape readings, dated by the backend. Only the zones sent are written,
+ * so saving the waist now and the chest later adds to the same day.
+ */
+export function recordPortalBodyMeasurement(
+  token: string,
+  zones: Partial<BodyZones>,
+  notes: string | null = null,
+): Promise<BodyReading> {
+  return api.post<BodyReading>(`/portal/${token}/body-measurements`, {
+    ...zones,
     notes,
   });
 }

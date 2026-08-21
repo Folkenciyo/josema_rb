@@ -179,6 +179,17 @@ def render_diet_plan_docx(document: DietPlanDocument) -> bytes:
     return buffer.getvalue()
 
 
+def _centimetres(value: float | None) -> str:
+    return "—" if value is None else f"{value:.1f} cm".replace(".", ",")
+
+
+def _centimetre_delta(value: float | None) -> str:
+    if value is None:
+        return "—"
+    sign = "+" if value > 0 else "−" if value < 0 else ""
+    return f"{sign}{abs(value):.1f} cm".replace(".", ",")
+
+
 def render_progress_docx(document: ProgressDocument) -> bytes:
     doc = Document()
     doc.add_heading("Seguimiento", level=0)
@@ -201,6 +212,26 @@ def render_progress_docx(document: ProgressDocument) -> bytes:
         sign = "+" if document.weight_delta_kg > 0 else "−"
         delta = f"{abs(document.weight_delta_kg):.1f}".replace(".", ",")
         doc.add_paragraph(f"Diferencia de peso: {sign}{delta} kg")
+
+    if document.zones:
+        doc.add_heading("Medidas", level=1)
+        table = doc.add_table(rows=1, cols=4)
+        table.style = "Table Grid"
+        headers = (
+            "Zona",
+            document.zones_before_on.strftime("%d/%m/%Y"),
+            document.zones_after_on.strftime("%d/%m/%Y"),
+            "Diferencia",
+        )
+        for cell, header in zip(table.rows[0].cells, headers, strict=True):
+            cell.paragraphs[0].add_run(header).bold = True
+
+        for zone in document.zones:
+            cells = table.add_row().cells
+            cells[0].text = zone.label_es
+            cells[1].text = _centimetres(zone.before_cm)
+            cells[2].text = _centimetres(zone.after_cm)
+            cells[3].text = _centimetre_delta(zone.delta_cm)
 
     for row in document.rows:
         doc.add_heading(row.pose_label_es, level=1)
