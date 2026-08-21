@@ -10,7 +10,8 @@ import { useClientWorkout, useClientWorkouts } from "@/hooks/use-workouts";
 import { formatDate } from "@/lib/format";
 import type { WorkoutSessionSummary } from "@/types/workout";
 
-function SessionDetail({
+/** The sets of one session, exercise by exercise. Shared with the calendar. */
+export function SessionDetail({
   clientId,
   sessionId,
 }: {

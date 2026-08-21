@@ -94,6 +94,30 @@ export interface ExerciseHistory {
   points: ExercisePoint[];
 }
 
+/**
+ * A day worth painting on the calendar: one the client trained, one the routine
+ * asked for, or both. Quiet days are simply not in the list.
+ */
+export interface TrainingCalendarDay {
+  date: string;
+  trained: boolean;
+  planned: boolean;
+  session_id: string | null;
+  set_count: number | null;
+  exercise_count: number | null;
+}
+
+export interface TrainingCalendar {
+  days: TrainingCalendarDay[];
+  /** Days with at least one session, not sessions: two in a day is one day. */
+  trained_count: number;
+  planned_count: number;
+  missed_count: number;
+  /** Null when the active plan has no start date, so it cannot be placed. */
+  plan_starts_on: string | null;
+  has_active_plan: boolean;
+}
+
 /** An exercise the client has logged at least once, offered to be charted. */
 export interface TrainedExercise {
   exercise_id: string;

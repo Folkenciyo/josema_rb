@@ -37,6 +37,7 @@ import { PortalAccessCard } from "./portal-access-card";
 import { QuestionnaireCard } from "./questionnaire-card";
 import { PhotosSummaryCard } from "./photos-summary-card";
 import { PlanHistoryCard } from "./plan-history-card";
+import { TrainingCalendarCard } from "./training-calendar-card";
 import { WorkoutsCard } from "./workouts-card";
 import { UseRoutineModal } from "./use-routine-modal";
 import { ExerciseProgressionCard } from "./exercise-progression-card";
@@ -282,6 +283,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             buildHref={(planId) => `/clients/${clientId}/diet-plans/${planId}`}
             onCreate={() => setDietPlanOpen(true)}
           />
+          <TrainingCalendarCard clientId={clientId} />
           <WorkoutsCard clientId={clientId} />
           <PhotosSummaryCard
             clientId={clientId}

@@ -58,6 +58,18 @@ export function useClientWorkout(clientId: string, sessionId: string) {
   });
 }
 
+/** One query per month on screen, so moving back and forth is instant once seen. */
+export function useTrainingCalendar(
+  clientId: string,
+  since: string,
+  until: string,
+) {
+  return useQuery({
+    queryKey: queryKeys.trainingCalendar(clientId, since, until),
+    queryFn: () => workoutsApi.getTrainingCalendar(clientId, since, until),
+  });
+}
+
 export function useTrainedExercises(clientId: string) {
   return useQuery({
     queryKey: queryKeys.trainedExercises(clientId),
