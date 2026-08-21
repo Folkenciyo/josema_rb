@@ -1,3 +1,5 @@
+from datetime import date
+
 from pydantic import BaseModel
 
 from app.schemas.meal_template import MacroTotals
@@ -77,3 +79,28 @@ class DietPlanDocument(BaseModel):
     daily_carbs_g: float | None
     daily_fat_g: float | None
     weeks: list[ExportDietWeek]
+
+
+class ProgressSide(BaseModel):
+    """One end of the comparison: a photo date and the weight around it."""
+
+    taken_on: date
+    weight_kg: float | None
+    # May differ from taken_on: it is the nearest weigh-in, not necessarily the
+    # same day, and the document says so.
+    weight_measured_on: date | None
+    bmi: float | None
+
+
+class ProgressRow(BaseModel):
+    pose_label_es: str
+    before_image: str | None
+    after_image: str | None
+
+
+class ProgressDocument(BaseModel):
+    client_name: str
+    before: ProgressSide
+    after: ProgressSide
+    weight_delta_kg: float | None
+    rows: list[ProgressRow]
