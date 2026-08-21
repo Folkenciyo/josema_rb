@@ -1,5 +1,6 @@
 import {
   Apple,
+  BookOpen,
   CalendarDays,
   ClipboardList,
   Dumbbell,
@@ -50,6 +51,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/quotes", label: "Motivación", icon: Quote },
       { href: "/settings", label: "Ajustes", icon: Settings },
+      { href: "/ayuda", label: "Guía de uso", icon: BookOpen },
     ],
   },
 ];
