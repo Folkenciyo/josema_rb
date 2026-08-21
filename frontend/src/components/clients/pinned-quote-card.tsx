@@ -58,7 +58,7 @@ export function PinnedQuoteCard({ clientId }: { clientId: string }) {
               disabled={setPinned.isPending}
               onChange={(event) => setPinned.mutate(event.target.value || null)}
             >
-              <option value="">Uno distinto cada día (automático)</option>
+              <option value="">El de la cola de cada día (automático)</option>
               {library.map((quote) => (
                 <option key={quote.id} value={quote.id}>
                   {summarize(quote.text)}
@@ -70,7 +70,7 @@ export function PinnedQuoteCard({ clientId }: { clientId: string }) {
               <Shuffle className="mt-0.5 size-3.5 shrink-0" />
               {pin?.pinned_quote
                 ? "Este cliente verá siempre este mensaje hasta que lo vuelvas a dejar en automático."
-                : "Cada día ve un mensaje distinto de la biblioteca. Elige uno para fijárselo."}
+                : "Ve el mensaje que toque en la cola, igual que el resto. Elige uno para fijárselo solo a él."}
             </p>
           </>
         )}

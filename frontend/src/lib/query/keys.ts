@@ -32,10 +32,14 @@ export const queryKeys = {
     ["portal", token, "exercise-history", exerciseId] as const,
   clientWorkouts: (clientId: string) =>
     ["clients", clientId, "workouts"] as const,
+  trainingCalendar: (clientId: string, since: string, until: string) =>
+    ["clients", clientId, "training-calendar", since, until] as const,
   trainedExercises: (clientId: string) =>
     ["clients", clientId, "trained-exercises"] as const,
   exerciseHistory: (clientId: string, exerciseId: string) =>
     ["clients", clientId, "exercise-history", exerciseId] as const,
   quotes: ["quotes"] as const,
+  // Nested under "quotes" so any change to the library refreshes the queue too.
+  quoteQueue: (days: number) => ["quotes", "queue", days] as const,
   pinnedQuote: (clientId: string) => ["clients", clientId, "quote"] as const,
 };

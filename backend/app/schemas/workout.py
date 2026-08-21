@@ -123,6 +123,35 @@ class ExerciseHistoryOut(BaseModel):
     points: list[ExercisePointOut]
 
 
+class TrainingCalendarDayOut(BaseModel):
+    """A day worth painting: one the client trained, one the routine asked for,
+    or both. Days where nothing was expected and nothing happened are absent."""
+
+    date: date
+    trained: bool
+    planned: bool
+    # Only on days that were trained, so the calendar can open that session.
+    session_id: uuid.UUID | None
+    set_count: int | None
+    # Only on planned days: how many exercises the routine has that day.
+    exercise_count: int | None
+
+
+class TrainingCalendarOut(BaseModel):
+    """The month as a whole, so the card can say how the range went."""
+
+    days: list[TrainingCalendarDayOut]
+    # Days with at least one session, not sessions: two on one day is one day.
+    trained_count: int
+    planned_count: int
+    # Only days already past: a planned day still to come is not a missed one.
+    missed_count: int
+    # Null when there is no active plan, or when it has no start date — without
+    # one a routine cannot be placed on a calendar at all.
+    plan_starts_on: date | None
+    has_active_plan: bool
+
+
 class TrainedExerciseOut(BaseModel):
     """One line per exercise the client has logged, to pick a progression from."""
 

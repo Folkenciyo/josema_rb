@@ -1,7 +1,7 @@
 import uuid
 from enum import StrEnum
 
-from sqlalchemy import Enum, ForeignKey, String, Text
+from sqlalchemy import Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -36,6 +36,9 @@ class MotivationalQuote(Base, TimestampMixin):
     )
     text: Mapped[str] = mapped_column(Text, nullable=False)
     author: Mapped[str | None] = mapped_column(String(120))
+    # Place in the trainer's queue. Ties are broken by id so the order is total
+    # even if two quotes end up sharing a number.
+    position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
     media_kind: Mapped[QuoteMedia] = mapped_column(
         Enum(QuoteMedia, name="quote_media"),

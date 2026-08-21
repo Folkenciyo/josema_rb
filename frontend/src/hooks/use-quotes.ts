@@ -13,6 +13,44 @@ export function useQuotes() {
   });
 }
 
+export function useQuoteQueue(days = 7) {
+  return useQuery({
+    queryKey: queryKeys.quoteQueue(days),
+    queryFn: () => quotesApi.getQuoteQueue(days),
+  });
+}
+
+/** Every change to the queue moves both the order and what is showing today. */
+function useQueueMutation(action: (quoteId: string) => Promise<unknown>) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (quoteId: string) => action(quoteId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.quotes });
+    },
+  });
+}
+
+export function useShowQuoteToday() {
+  return useQueueMutation(quotesApi.showQuoteToday);
+}
+
+export function useShowQuoteNext() {
+  return useQueueMutation(quotesApi.showQuoteNext);
+}
+
+export function useReorderQuotes() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (quoteIds: string[]) => quotesApi.reorderQuotes(quoteIds),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.quotes });
+    },
+  });
+}
+
 export function useCreateQuote() {
   const queryClient = useQueryClient();
 

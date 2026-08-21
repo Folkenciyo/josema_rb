@@ -1,5 +1,5 @@
 import { api } from "./http";
-import type { Quote, QuoteInput, QuotePin } from "@/types/quote";
+import type { Quote, QuoteInput, QuotePin, QuoteQueue } from "@/types/quote";
 
 /** Only the fields the trainer actually filled in are sent, so a PATCH with an
  *  untouched image field does not wipe the picture already stored. */
@@ -42,6 +42,23 @@ export function updateQuote(
 
 export function deleteQuote(quoteId: string): Promise<void> {
   return api.delete<void>(`/quotes/${quoteId}`);
+}
+
+/** What is showing today and the days lined up behind it. */
+export function getQuoteQueue(days = 7): Promise<QuoteQueue> {
+  return api.get<QuoteQueue>(`/quotes/queue?days=${days}`);
+}
+
+export function showQuoteToday(quoteId: string): Promise<QuoteQueue> {
+  return api.put<QuoteQueue>(`/quotes/${quoteId}/today`, {});
+}
+
+export function showQuoteNext(quoteId: string): Promise<QuoteQueue> {
+  return api.put<QuoteQueue>(`/quotes/${quoteId}/next`, {});
+}
+
+export function reorderQuotes(quoteIds: string[]): Promise<QuoteQueue> {
+  return api.put<QuoteQueue>("/quotes/queue/order", { quote_ids: quoteIds });
 }
 
 export function getPinnedQuote(clientId: string): Promise<QuotePin> {

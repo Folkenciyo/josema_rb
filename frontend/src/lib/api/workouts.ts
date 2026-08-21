@@ -2,6 +2,7 @@ import { api } from "./http";
 import type {
   ExerciseHistory,
   TrainedExercise,
+  TrainingCalendar,
   WorkoutDay,
   WorkoutDayDetail,
   WorkoutSession,
@@ -47,6 +48,17 @@ export function getClientWorkout(
   sessionId: string,
 ): Promise<WorkoutSession> {
   return api.get<WorkoutSession>(`/clients/${clientId}/workouts/${sessionId}`);
+}
+
+/** One month at a time: which days were trained and which ones were planned. */
+export function getTrainingCalendar(
+  clientId: string,
+  since: string,
+  until: string,
+): Promise<TrainingCalendar> {
+  return api.get<TrainingCalendar>(
+    `/clients/${clientId}/training-calendar?since=${since}&until=${until}`,
+  );
 }
 
 export function getTrainedExercises(

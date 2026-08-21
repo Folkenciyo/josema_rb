@@ -4,6 +4,7 @@ from enum import StrEnum
 from typing import TYPE_CHECKING
 
 from sqlalchemy import (
+    Boolean,
     CheckConstraint,
     Date,
     Enum,
@@ -11,6 +12,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    false,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -68,6 +70,12 @@ class TrainingPlan(Base, TimestampMixin):
     notes: Mapped[str | None] = mapped_column(Text)
     start_date: Mapped[date | None] = mapped_column(Date)
     end_date: Mapped[date | None] = mapped_column(Date)
+    # Whether the weeks start over once the last one is done — the usual shape
+    # of a routine that is one week repeated all month. Only the calendar reads
+    # it: the plan itself is still written once.
+    repeats: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default=false()
+    )
     status: Mapped[PlanStatus] = mapped_column(
         Enum(PlanStatus, name="plan_status"), default=PlanStatus.DRAFT
     )

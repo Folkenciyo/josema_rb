@@ -12,6 +12,7 @@ function quote(overrides: Partial<Quote>): Quote {
     image_url: null,
     embed_url: null,
     created_at: "2026-08-14T09:00:00Z",
+    position: 0,
     ...overrides,
   };
 }

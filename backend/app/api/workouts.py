@@ -1,6 +1,7 @@
 import uuid
+from datetime import date
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
@@ -8,10 +9,11 @@ from app.core.security import get_current_trainer
 from app.schemas.workout import (
     ExerciseHistoryOut,
     TrainedExerciseOut,
+    TrainingCalendarOut,
     WorkoutSessionOut,
     WorkoutSessionSummaryOut,
 )
-from app.services import client_service, workout_service
+from app.services import client_service, training_calendar, workout_service
 
 router = APIRouter(tags=["workouts"], dependencies=[Depends(get_current_trainer)])
 
@@ -37,6 +39,32 @@ def get_client_workout(
 ) -> WorkoutSessionOut:
     client = client_service.get_client(db, client_id)
     return workout_service.get_session(db, client, session_id)
+
+
+@router.get(
+    "/api/clients/{client_id}/training-calendar",
+    response_model=TrainingCalendarOut,
+)
+def get_training_calendar(
+    client_id: uuid.UUID,
+    since: date = Query(..., description="First day of the range, inclusive"),
+    until: date = Query(..., description="Last day of the range, inclusive"),
+    db: Session = Depends(get_db),
+) -> TrainingCalendarOut:
+    """Which days the client trained, and which ones the routine asked for."""
+    if until < since:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail="The range ends before it starts",
+        )
+    if (until - since).days > training_calendar.MAX_RANGE_DAYS:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail="The range is too long",
+        )
+
+    client = client_service.get_client(db, client_id)
+    return training_calendar.build_calendar(db, client, since=since, until=until)
 
 
 @router.get(

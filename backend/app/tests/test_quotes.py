@@ -91,29 +91,48 @@ def test_parse_media_url_rejects_anything_else(url: str) -> None:
     assert error.value.status_code == 422
 
 
-def test_rotation_is_stable_within_a_day_and_moves_on_the_next() -> None:
-    quotes = [uuid.uuid4() for _ in range(5)]
-    client = uuid.uuid4()
-
-    today = date(2026, 8, 14)
-    assert pick_for_day(quotes, client, today) == pick_for_day(quotes, client, today)
-    assert pick_for_day(quotes, client, today) != pick_for_day(
-        quotes, client, date(2026, 8, 15)
+def _pick(quotes: list[uuid.UUID], today: date, anchor=None, anchor_date=None):
+    return pick_for_day(
+        quotes, today=today, anchor_id=anchor, anchor_date=anchor_date
     )
 
 
-def test_rotation_spreads_clients_across_the_library() -> None:
+def test_the_queue_holds_all_day_and_steps_on_the_next() -> None:
+    quotes = [uuid.uuid4() for _ in range(5)]
+    today = date(2026, 8, 14)
+
+    assert _pick(quotes, today) == _pick(quotes, today)
+    assert _pick(quotes, today) != _pick(quotes, date(2026, 8, 15))
+
+
+def test_everyone_reads_the_same_message_on_a_given_day() -> None:
     quotes = [uuid.uuid4() for _ in range(4)]
     today = date(2026, 8, 14)
 
-    picked = {pick_for_day(quotes, uuid.uuid4(), today) for _ in range(60)}
+    # No client id in sight: the queue is common, which is what makes "the
+    # active one" mean anything on the trainer's screen.
+    assert _pick(quotes, today) == _pick(quotes, today)
 
-    # With 60 clients over 4 messages, all four should come up.
-    assert len(picked) == len(quotes)
+
+def test_the_anchor_decides_what_is_showing() -> None:
+    quotes = [uuid.uuid4() for _ in range(4)]
+    today = date(2026, 8, 14)
+
+    assert _pick(quotes, today, quotes[2], today) == quotes[2]
+    # And the day after it has moved one step down the queue, wrapping around.
+    assert _pick(quotes, date(2026, 8, 15), quotes[2], today) == quotes[3]
+    assert _pick(quotes, date(2026, 8, 16), quotes[2], today) == quotes[0]
+
+
+def test_a_deleted_anchor_falls_back_to_the_start() -> None:
+    quotes = [uuid.uuid4() for _ in range(3)]
+    today = date(2026, 8, 14)
+
+    assert _pick(quotes, today, uuid.uuid4(), today) == quotes[0]
 
 
 def test_rotation_of_an_empty_library_is_none() -> None:
-    assert pick_for_day([], uuid.uuid4(), date(2026, 8, 14)) is None
+    assert _pick([], date(2026, 8, 14)) is None
 
 
 def test_create_quote_with_a_youtube_link(authenticated_client: TestClient) -> None:
