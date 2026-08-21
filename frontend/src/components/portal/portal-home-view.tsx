@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, Dumbbell, Salad, Scale } from "lucide-react";
+import {
+  Camera,
+  ChevronRight,
+  Dumbbell,
+  Salad,
+  Scale,
+  TrendingUp,
+} from "lucide-react";
 
 import { usePortalHome } from "@/hooks/use-portal";
 import { Card } from "@/components/ui/card";
@@ -109,6 +116,25 @@ export function PortalHomeView({ token }: { token: string }) {
             : "Todavía sin pesajes"
         }
       />
+
+      {/* Both only when there is something behind them: an empty screen the
+          client cannot fill is worse than no link at all. */}
+      {home.workout_count > 0 && (
+        <SectionLink
+          href={`${base}/progreso`}
+          icon={<TrendingUp className="size-5" />}
+          title="Mi progreso"
+          detail={`${home.workout_count} ${home.workout_count === 1 ? "sesión apuntada" : "sesiones apuntadas"}`}
+        />
+      )}
+      {home.photo_consent_at !== null && home.photo_count > 0 && (
+        <SectionLink
+          href={`${base}/fotos`}
+          icon={<Camera className="size-5" />}
+          title="Mis fotos"
+          detail={`${home.photo_count} ${home.photo_count === 1 ? "foto guardada" : "fotos guardadas"}`}
+        />
+      )}
 
       <InstallCard
         title="Tenlo siempre a mano"

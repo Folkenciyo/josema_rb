@@ -12,20 +12,25 @@ import {
   buildComparison,
   weightDeltaBetween,
   weightNearestTo,
+  type DatedPhoto,
   type PhotoSession,
 } from "@/lib/photos/sessions";
 import { POSE_LABELS } from "@/types/photo";
-import type { Measurement } from "@/types/measurement";
-import type { Photo } from "@/types/photo";
+import type { WeighIn } from "@/types/measurement";
+
+/** Where the image comes from: the trainer's endpoint, or the client's token. */
+type PhotoSrc = (photoId: string) => string;
 
 function Side({
   photo,
   date,
   measurements,
+  photoSrc,
 }: {
-  photo: Photo | null;
+  photo: DatedPhoto | null;
   date: string;
-  measurements: Measurement[];
+  measurements: WeighIn[];
+  photoSrc: PhotoSrc;
 }) {
   const weight = weightNearestTo(measurements, date);
 
@@ -35,7 +40,7 @@ function Side({
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element -- served by our own authenticated endpoint
           <img
-            src={photoUrl(photo.id)}
+            src={photoSrc(photo.id)}
             alt={`${POSE_LABELS[photo.pose]} del ${photo.taken_on}`}
             className="size-full object-cover"
           />
@@ -59,14 +64,17 @@ function Side({
 }
 
 /** Two dates face to face, pose by pose, with the weight of each moment. */
-export function PhotoCompare({
+export function PhotoCompare<T extends DatedPhoto>({
   clientId,
   sessions,
   measurements,
+  photoSrc = photoUrl,
 }: {
-  clientId: string;
-  sessions: PhotoSession[];
-  measurements: Measurement[];
+  /** Only the trainer has one: without it the export links are not offered. */
+  clientId?: string;
+  sessions: PhotoSession<T>[];
+  measurements: WeighIn[];
+  photoSrc?: PhotoSrc;
 }) {
   const dates = sessions.map((session) => session.takenOn);
   const [beforeDate, setBeforeDate] = useState(dates[dates.length - 1] ?? "");
@@ -82,9 +90,10 @@ export function PhotoCompare({
   const delta = weightDeltaBetween(measurements, beforeDate, afterDate);
 
   // Plain download links: the same-origin proxy carries the session cookie,
-  // so there is no need to fetch a blob by hand.
+  // so there is no need to fetch a blob by hand. The client's portal has no
+  // session and no client id, so from there the document is simply not offered.
   const exportQuery = `?before=${beforeDate}&after=${afterDate}`;
-  const exportLinks = (
+  const exportLinks = clientId && (
     <span className="flex gap-2">
       {(["pdf", "docx"] as const).map((format) => (
         <a
@@ -153,11 +162,13 @@ export function PhotoCompare({
                 photo={row.before}
                 date={beforeDate}
                 measurements={measurements}
+                photoSrc={photoSrc}
               />
               <Side
                 photo={row.after}
                 date={afterDate}
                 measurements={measurements}
+                photoSrc={photoSrc}
               />
             </div>
           </div>

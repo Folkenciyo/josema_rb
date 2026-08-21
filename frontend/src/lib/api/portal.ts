@@ -4,9 +4,11 @@ import type {
   PortalDietPlan,
   PortalHome,
   PortalInvite,
+  PortalPhoto,
   PortalToken,
   PortalTrainingPlan,
 } from "@/types/portal";
+import type { ExerciseHistory, TrainedExercise } from "@/types/workout";
 
 /** Issues the link, or replaces the previous one — the old token stops working. */
 export function issuePortalToken(clientId: string): Promise<PortalToken> {
@@ -62,6 +64,38 @@ export function withdrawPhotoConsent(token: string): Promise<PortalHome> {
 
 export function deleteOwnPhotos(token: string): Promise<PortalHome> {
   return api.delete<PortalHome>(`/portal/${token}/photos`);
+}
+
+/** The gallery answers 403 while the client has not agreed to keeping the photos. */
+export function getPortalPhotos(token: string): Promise<PortalPhoto[]> {
+  return api.get<PortalPhoto[]>(`/portal/${token}/photos`);
+}
+
+/**
+ * Same idea as the trainer's `photoUrl`, only the token is what authorises it:
+ * a plain same-origin URL an <img> can load with no session at all.
+ */
+export function portalPhotoUrl(
+  token: string,
+  photoId: string,
+  { thumbnail = false } = {},
+): string {
+  return `/api/portal/${token}/photos/${photoId}/file${thumbnail ? "?thumbnail=true" : ""}`;
+}
+
+export function getPortalTrainedExercises(
+  token: string,
+): Promise<TrainedExercise[]> {
+  return api.get<TrainedExercise[]>(`/portal/${token}/trained-exercises`);
+}
+
+export function getPortalExerciseHistory(
+  token: string,
+  exerciseId: string,
+): Promise<ExerciseHistory> {
+  return api.get<ExerciseHistory>(
+    `/portal/${token}/exercises/${exerciseId}/history`,
+  );
 }
 
 export type PortalPlanKind = "training-plan" | "diet-plan";

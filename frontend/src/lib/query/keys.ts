@@ -25,6 +25,11 @@ export const queryKeys = {
   workoutDay: (token: string, dayId: string) =>
     ["portal", token, "workout-days", dayId] as const,
   portalWorkouts: (token: string) => ["portal", token, "workouts"] as const,
+  portalPhotos: (token: string) => ["portal", token, "photos"] as const,
+  portalTrainedExercises: (token: string) =>
+    ["portal", token, "trained-exercises"] as const,
+  portalExerciseHistory: (token: string, exerciseId: string) =>
+    ["portal", token, "exercise-history", exerciseId] as const,
   clientWorkouts: (clientId: string) =>
     ["clients", clientId, "workouts"] as const,
   trainedExercises: (clientId: string) =>
