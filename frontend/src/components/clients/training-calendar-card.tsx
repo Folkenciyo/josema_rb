@@ -103,7 +103,8 @@ function Summary({ calendar }: { calendar: TrainingCalendar }) {
   if (calendar.planned_count === 0) {
     return (
       <p className="text-sm text-slate-500">
-        {calendar.trained_count} días entrenados. El plan no cubre este mes.
+        {calendar.trained_count} días entrenados. El plan no llega a este mes: si
+        son semanas que se repiten, márcalo al editarlo.
       </p>
     );
   }

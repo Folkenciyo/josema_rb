@@ -35,31 +35,48 @@ def _monday_of(day: date) -> date:
     return day - timedelta(days=day.weekday())
 
 
-def _planned_dates(plan: TrainingPlan) -> dict[date, int]:
+def _planned_dates(plan: TrainingPlan, *, until: date) -> dict[date, int]:
     """Every date the routine asks for, with how many exercises that day has.
 
     The convention: **week 1 is the calendar week containing the plan's start
     date**, so "week 2, Wednesday" is the Wednesday seven days after that. Days
     that fall before the start date — the Monday of week 1 when the plan starts
-    on a Wednesday — are left out, and so is anything past the end date. With no
-    end date the plan simply runs out when its last week does.
+    on a Wednesday — are left out, and so is anything past the end date.
+
+    A plan that does not repeat runs out when its last week does. One that does
+    starts its weeks over, which is the usual shape of a routine written as a
+    single week done all month. Repeating with no end date would go on forever,
+    so the projection stops at the end of the range being asked about.
     """
-    if plan.start_date is None:
+    if plan.start_date is None or not plan.weeks:
         return {}
 
     first_monday = _monday_of(plan.start_date)
+    horizon = min(plan.end_date, until) if plan.end_date is not None else until
+    if horizon < plan.start_date:
+        return {}
+
+    # Weeks are walked by their position in the plan, not by week_number: the
+    # numbering can have gaps, and the loop has to survive them.
+    weeks = list(plan.weeks)
+    last_week_index = (horizon - first_monday).days // 7
     planned: dict[date, int] = {}
 
-    for week in plan.weeks:
+    for absolute_week in range(last_week_index + 1):
+        if absolute_week < len(weeks):
+            week = weeks[absolute_week]
+        elif plan.repeats:
+            week = weeks[absolute_week % len(weeks)]
+        else:
+            break
+
         for day in week.days:
             when = (
                 first_monday
-                + timedelta(weeks=week.week_number - 1)
+                + timedelta(weeks=absolute_week)
                 + timedelta(days=WEEKDAY_INDEX[day.day_of_week])
             )
-            if when < plan.start_date:
-                continue
-            if plan.end_date is not None and when > plan.end_date:
+            if when < plan.start_date or when > horizon:
                 continue
             planned[when] = len(day.exercises)
 
@@ -81,7 +98,7 @@ def build_calendar(
     }
 
     plan = training_plan_repository.get_active_for_client(db, client.id)
-    planned = _planned_dates(plan) if plan is not None else {}
+    planned = _planned_dates(plan, until=until) if plan is not None else {}
 
     days = [
         TrainingCalendarDayOut(

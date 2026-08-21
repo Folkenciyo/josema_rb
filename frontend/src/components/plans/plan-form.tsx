@@ -15,6 +15,7 @@ const planFormSchema = z.object({
   status: z.enum(["draft", "active", "archived"]),
   start_date: z.string(),
   end_date: z.string(),
+  repeats: z.boolean(),
   notes: z.string(),
 });
 
@@ -25,6 +26,7 @@ export interface PlanFormInput {
   status: PlanStatus;
   start_date: string | null;
   end_date: string | null;
+  repeats: boolean;
   notes: string | null;
 }
 
@@ -56,6 +58,7 @@ export function PlanForm({
       status: "draft",
       start_date: "",
       end_date: "",
+      repeats: false,
       notes: "",
       ...defaultValues,
     },
@@ -71,6 +74,7 @@ export function PlanForm({
           status: values.status,
           start_date: values.start_date || null,
           end_date: values.end_date || null,
+          repeats: values.repeats,
           notes: values.notes.trim() || null,
         }),
       )}
@@ -98,6 +102,21 @@ export function PlanForm({
           {(props) => <Input {...props} {...register("end_date")} type="date" />}
         </Field>
       </div>
+
+      <label className="flex items-start gap-2 text-sm text-slate-600">
+        <input
+          type="checkbox"
+          {...register("repeats")}
+          className="accent-brand-600 mt-0.5 size-4"
+        />
+        <span>
+          Repetir las semanas hasta la fecha de fin
+          <span className="block text-xs text-slate-400">
+            Para una rutina de una semana que se repite todo el mes. El
+            calendario de la ficha proyecta el ciclo entero.
+          </span>
+        </span>
+      </label>
 
       <Field label="Notas" error={errors.notes?.message}>
         {(props) => <Textarea {...props} {...register("notes")} />}

@@ -167,6 +167,7 @@ export function TrainingPlanView({ clientId, planId }: TrainingPlanViewProps) {
               status: plan.status,
               start_date: plan.start_date ?? "",
               end_date: plan.end_date ?? "",
+              repeats: plan.repeats,
               notes: plan.notes ?? "",
             }}
             submitLabel="Guardar cambios"

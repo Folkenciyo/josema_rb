@@ -12,6 +12,8 @@ class TrainingPlanCreate(BaseModel):
     start_date: date | None = None
     end_date: date | None = None
     status: PlanStatus = PlanStatus.DRAFT
+    # A routine written as one week and repeated all month is the usual case.
+    repeats: bool = False
 
 
 class CopyTrainingPlanRequest(BaseModel):
@@ -26,6 +28,7 @@ class TrainingPlanUpdate(BaseModel):
     start_date: date | None = None
     end_date: date | None = None
     status: PlanStatus | None = None
+    repeats: bool | None = None
 
 
 class TrainingPlanOut(BaseModel):
@@ -37,6 +40,7 @@ class TrainingPlanOut(BaseModel):
     start_date: date | None
     end_date: date | None
     status: PlanStatus
+    repeats: bool
 
     model_config = {"from_attributes": True}
 

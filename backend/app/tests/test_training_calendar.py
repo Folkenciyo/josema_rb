@@ -35,8 +35,9 @@ def _plan(
     days: tuple[str, ...] = ("monday", "wednesday"),
     start_date: str | None = START.isoformat(),
     end_date: str | None = None,
+    repeats: bool = False,
 ) -> str:
-    payload = {"title": "Plan", "status": "active"}
+    payload = {"title": "Plan", "status": "active", "repeats": repeats}
     if start_date is not None:
         payload["start_date"] = start_date
     if end_date is not None:
@@ -226,6 +227,110 @@ def test_the_range_only_counts_what_falls_inside_it(
     assert body["trained_count"] == 0
     assert body["planned_count"] == 2
     assert [day["date"] for day in body["days"]] == ["2026-08-10", "2026-08-12"]
+
+
+def test_one_week_repeated_covers_the_whole_month(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id, _ = _client_with_token(authenticated_client)
+    # The usual routine: a single week the client repeats over and over.
+    _plan(authenticated_client, client_id, imported_exercise.id, weeks=1, repeats=True)
+
+    body = _calendar(authenticated_client, client_id, START, date(2026, 8, 31))
+
+    assert [day["date"] for day in body["days"]] == [
+        "2026-08-03",
+        "2026-08-05",
+        "2026-08-10",
+        "2026-08-12",
+        "2026-08-17",
+        "2026-08-19",
+        "2026-08-24",
+        "2026-08-26",
+        "2026-08-31",
+    ]
+
+
+def test_a_repeating_plan_still_stops_at_its_end_date(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id, _ = _client_with_token(authenticated_client)
+    _plan(
+        authenticated_client,
+        client_id,
+        imported_exercise.id,
+        weeks=1,
+        repeats=True,
+        end_date="2026-08-12",
+    )
+
+    body = _calendar(authenticated_client, client_id, START, date(2026, 8, 31))
+
+    assert [day["date"] for day in body["days"]] == [
+        "2026-08-03",
+        "2026-08-05",
+        "2026-08-10",
+        "2026-08-12",
+    ]
+
+
+def test_a_two_week_cycle_starts_over_in_order(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id, _ = _client_with_token(authenticated_client)
+    # Week 1 trains Monday, week 2 trains Friday: the third week is a Monday again.
+    plan_id = api_plan_with_alternating_weeks(
+        authenticated_client, client_id, imported_exercise.id
+    )
+    assert plan_id
+
+    body = _calendar(authenticated_client, client_id, START, date(2026, 8, 24))
+
+    assert [day["date"] for day in body["days"]] == [
+        "2026-08-03",  # week 1, Monday
+        "2026-08-14",  # week 2, Friday
+        "2026-08-17",  # week 1 again, Monday
+    ]
+
+
+def api_plan_with_alternating_weeks(
+    api: TestClient, client_id: str, exercise_id: str
+) -> str:
+    plan = api.post(
+        f"/api/clients/{client_id}/training-plans",
+        json={
+            "title": "Alterno",
+            "status": "active",
+            "start_date": START.isoformat(),
+            "end_date": "2026-08-20",
+            "repeats": True,
+        },
+    ).json()
+
+    for number, day_of_week in ((1, "monday"), (2, "friday")):
+        week = api.post(
+            f"/api/training-plans/{plan['id']}/weeks", json={"week_number": number}
+        ).json()
+        api.put(
+            f"/api/training-weeks/{week['id']}/days",
+            json={
+                "days": [
+                    {
+                        "day_of_week": day_of_week,
+                        "order_index": 0,
+                        "exercises": [
+                            {
+                                "exercise_id": exercise_id,
+                                "order_index": 0,
+                                "sets": 3,
+                                "reps": "8-12",
+                            }
+                        ],
+                    }
+                ]
+            },
+        )
+    return plan["id"]
 
 
 def test_days_still_to_come_are_not_missed_days(

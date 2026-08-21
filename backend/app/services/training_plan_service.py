@@ -82,6 +82,9 @@ def copy_plan(
         title=title or source.title,
         notes=source.notes,
         status=PlanStatus.DRAFT,
+        # Part of the shape of the routine, like its weeks: a plan meant to loop
+        # keeps looping wherever it is copied.
+        repeats=source.repeats,
     )
     copy.weeks = [
         TrainingWeek(

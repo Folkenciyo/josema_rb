@@ -8,6 +8,8 @@ export interface TrainingPlan {
   start_date: string | null;
   end_date: string | null;
   status: PlanStatus;
+  /** Whether the weeks start over once the last one is done. */
+  repeats: boolean;
 }
 
 export interface TrainingDayExercise {
@@ -46,6 +48,7 @@ export interface TrainingPlanInput {
   start_date?: string | null;
   end_date?: string | null;
   status?: PlanStatus;
+  repeats?: boolean;
 }
 
 /** Payload shape of `PUT /training-weeks/{id}/days`: replaces the whole week tree. */
