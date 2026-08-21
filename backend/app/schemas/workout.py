@@ -110,8 +110,13 @@ class WorkoutSessionSummaryOut(BaseModel):
 
 
 class ExercisePointOut(BaseModel):
-    """The heaviest set of a day, which is what a progression chart is made of."""
+    """The heaviest set of one session: what a progression chart is made of.
 
+    Two sessions on the same day are two points, so the date alone does not
+    identify one — the session id does.
+    """
+
+    session_id: uuid.UUID
     performed_on: date
     top_weight_kg: float | None
     top_reps: int | None

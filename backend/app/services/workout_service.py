@@ -278,21 +278,29 @@ def list_trained_exercises(db: Session, client: Client) -> list[TrainedExerciseO
 def exercise_history(
     db: Session, client: Client, exercise_id: str
 ) -> ExerciseHistoryOut:
-    """One point per day: the heaviest set, plus the volume of the whole day."""
+    """One point per session: the heaviest set, plus the volume of that session.
+
+    Per session and not per day on purpose: someone who trains the same exercise
+    twice in one day has two things to compare, and grouping them by date hid
+    the second one — the chart then claimed there was nothing to draw.
+    """
     rows = workout_repository.list_sets_for_exercise(db, client.id, exercise_id)
     if not rows:
         return ExerciseHistoryOut(exercise_name="", points=[])
 
-    by_day: dict[date, list[WorkoutSet]] = {}
-    for performed_on, performed_set in rows:
-        by_day.setdefault(performed_on, []).append(performed_set)
+    # Insertion order is the query order — by date, then by when the session was
+    # recorded — so the points come out in the order they were trained.
+    by_session: dict[uuid.UUID, tuple[date, list[WorkoutSet]]] = {}
+    for session_id, performed_on, performed_set in rows:
+        by_session.setdefault(session_id, (performed_on, []))[1].append(performed_set)
 
     points = []
-    for performed_on, sets in sorted(by_day.items()):
+    for session_id, (performed_on, sets) in by_session.items():
         weighted = [item for item in sets if item.weight_kg is not None]
         top = max(weighted, key=lambda item: item.weight_kg) if weighted else None
         points.append(
             ExercisePointOut(
+                session_id=session_id,
                 performed_on=performed_on,
                 top_weight_kg=_as_float(top.weight_kg) if top else None,
                 top_reps=top.reps if top else None,
@@ -307,4 +315,4 @@ def exercise_history(
             )
         )
 
-    return ExerciseHistoryOut(exercise_name=rows[-1][1].exercise_name, points=points)
+    return ExerciseHistoryOut(exercise_name=rows[-1][2].exercise_name, points=points)

@@ -337,6 +337,52 @@ def test_the_progression_of_an_exercise_takes_the_heaviest_set_of_each_day(
     assert history["points"][0]["total_volume_kg"] == 1100.0
 
 
+def test_two_sessions_on_the_same_day_are_two_points(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    """A double session is two points, not one.
+
+    The chart needs two to draw a line, and grouping by day hid the second one:
+    training the same exercise twice showed as if there were nothing to compare.
+    """
+    client_id, token = _new_client_with_plan(authenticated_client, imported_exercise.id)
+    day = _day_of(authenticated_client, token)
+    planned_id = authenticated_client.get(
+        f"/api/portal/{token}/workout/days/{day['id']}"
+    ).json()["exercises"][0]["id"]
+
+    for index, weight in enumerate((60.0, 70.0)):
+        payload = _session_payload(day["id"], device_id=f"device-session-{index}")
+        payload["sets"] = [
+            {
+                "training_day_exercise_id": planned_id,
+                "exercise_name": "Press banca",
+                "order_index": 0,
+                "set_number": 1,
+                "weight_kg": weight,
+                "reps": 8,
+            }
+        ]
+        assert (
+            authenticated_client.post(
+                f"/api/portal/{token}/workouts", json=payload
+            ).status_code
+            == 200
+        )
+
+    history = authenticated_client.get(
+        f"/api/clients/{client_id}/exercises/{imported_exercise.id}/history"
+    ).json()
+
+    assert [point["top_weight_kg"] for point in history["points"]] == [60.0, 70.0]
+    # Same date on both, and each one carries its session so the chart can tell
+    # them apart.
+    assert history["points"][0]["performed_on"] == history["points"][1]["performed_on"]
+    assert (
+        history["points"][0]["session_id"] != history["points"][1]["session_id"]
+    )
+
+
 def test_the_trainer_can_list_which_exercises_have_been_logged(
     authenticated_client: TestClient, imported_exercise: Exercise
 ) -> None:
