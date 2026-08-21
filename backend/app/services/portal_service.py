@@ -143,7 +143,9 @@ def build_portal_view(db: Session, client: Client) -> PortalClientOut:
     )
 
 
-def record_weigh_in(db: Session, client: Client, weight_kg: float) -> PortalWeighInOut:
+def record_weigh_in(
+    db: Session, client: Client, weight_kg: float, notes: str | None = None
+) -> PortalWeighInOut:
     """Save today's weight, replacing today's entry if the client corrects it.
 
     Overwriting instead of refusing is deliberate: from a phone, a typo would
@@ -151,16 +153,13 @@ def record_weigh_in(db: Session, client: Client, weight_kg: float) -> PortalWeig
     """
     today = date.today()
     existing = measurement_repository.get_by_day(db, client.id, today)
+    data = {"weight_kg": weight_kg, "client_notes": (notes or "").strip() or None}
 
     if existing is not None:
-        measurement = measurement_repository.update(
-            db, existing, {"weight_kg": weight_kg}
-        )
+        measurement = measurement_repository.update(db, existing, data)
     else:
         measurement = measurement_repository.create(
-            db,
-            client_id=client.id,
-            data={"measured_on": today, "weight_kg": weight_kg},
+            db, client_id=client.id, data={"measured_on": today, **data}
         )
 
     return _to_weigh_in(measurement, client)
@@ -174,6 +173,7 @@ def _to_weigh_in(measurement: ClientMeasurement, client: Client) -> PortalWeighI
         bmi=measurement_service.calculate_bmi(
             float(measurement.weight_kg), client.height_cm
         ),
+        notes=measurement.client_notes,
     )
 
 
@@ -184,6 +184,7 @@ def list_weigh_ins(db: Session, client: Client) -> list[PortalWeighInOut]:
             measured_on=measurement.measured_on,
             weight_kg=measurement.weight_kg,
             bmi=measurement.bmi,
+            notes=measurement.client_notes,
         )
         for measurement in measurement_service.list_measurements(db, client.id)
     ]

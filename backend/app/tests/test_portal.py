@@ -107,6 +107,62 @@ def test_the_portal_shows_the_latest_weigh_in(
     assert body["latest_weighed_on"] == "2026-08-08"
 
 
+def test_the_client_writes_observations_with_their_weight(
+    authenticated_client: TestClient,
+) -> None:
+    """Every scale reports something different, so the note is free text."""
+    client_id, token = _client_with_token(authenticated_client)
+
+    saved = authenticated_client.post(
+        f"/api/portal/{token}/measurements",
+        json={"weight_kg": 80.4, "notes": "Grasa 18%, agua 55%"},
+    ).json()
+
+    assert saved["notes"] == "Grasa 18%, agua 55%"
+    # The trainer reads it on the client's file, in its own field: their private
+    # note about the client keeps `notes` to itself.
+    listed = authenticated_client.get(
+        f"/api/clients/{client_id}/measurements"
+    ).json()
+    assert listed[0]["client_notes"] == "Grasa 18%, agua 55%"
+    assert listed[0]["notes"] is None
+    # And the client sees their own note when they come back.
+    assert authenticated_client.get(f"/api/portal/{token}/measurements").json()[0][
+        "notes"
+    ] == "Grasa 18%, agua 55%"
+
+
+def test_correcting_todays_weight_also_corrects_the_note(
+    authenticated_client: TestClient,
+) -> None:
+    _, token = _client_with_token(authenticated_client)
+    authenticated_client.post(
+        f"/api/portal/{token}/measurements",
+        json={"weight_kg": 80.4, "notes": "Grasa 18%"},
+    )
+
+    corrected = authenticated_client.post(
+        f"/api/portal/{token}/measurements",
+        json={"weight_kg": 80.9, "notes": "   "},
+    ).json()
+
+    assert corrected["weight_kg"] == 80.9
+    # A blank note clears it instead of leaving yesterday's numbers hanging.
+    assert corrected["notes"] is None
+
+
+def test_a_weigh_in_without_a_note_is_still_fine(
+    authenticated_client: TestClient,
+) -> None:
+    _, token = _client_with_token(authenticated_client)
+
+    saved = authenticated_client.post(
+        f"/api/portal/{token}/measurements", json={"weight_kg": 77.0}
+    ).json()
+
+    assert saved["notes"] is None
+
+
 def test_the_portal_never_leaks_the_client_id(
     authenticated_client: TestClient,
 ) -> None:
@@ -241,7 +297,11 @@ def test_the_portal_serves_only_its_own_weigh_ins(
 
     authenticated_client.post(
         f"/api/clients/{mine_id}/measurements",
-        json={"measured_on": "2026-08-01", "weight_kg": 70},
+        json={
+            "measured_on": "2026-08-01",
+            "weight_kg": 70,
+            "notes": "Viene desanimado, no insistir con el peso",
+        },
     )
     authenticated_client.post(
         f"/api/clients/{other_id}/measurements",
@@ -251,9 +311,11 @@ def test_the_portal_serves_only_its_own_weigh_ins(
     body = authenticated_client.get(f"/api/portal/{my_token}/measurements").json()
 
     assert [row["weight_kg"] for row in body] == [70.0]
-    # Neither the client id nor the trainer's private notes travel to the phone.
     assert "client_id" not in body[0]
-    assert "notes" not in body[0]
+    # The trainer's private remark stays on the trainer's side: what the client
+    # gets back under "notes" is only ever what the client wrote themselves.
+    assert "desanimado" not in str(body)
+    assert body[0]["notes"] is None
 
 
 def test_the_client_can_download_their_own_plan_in_word(

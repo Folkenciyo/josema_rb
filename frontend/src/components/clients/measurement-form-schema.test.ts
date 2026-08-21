@@ -13,6 +13,7 @@ const measurement: Measurement = {
   measured_on: "2026-08-01",
   weight_kg: 81.5,
   notes: "Tras el desayuno",
+  client_notes: null,
   bmi: 25.2,
   created_at: "2026-08-01T09:00:00Z",
   updated_at: "2026-08-01T09:00:00Z",

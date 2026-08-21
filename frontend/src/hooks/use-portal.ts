@@ -77,8 +77,13 @@ export function useRecordPortalWeighIn(token: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (weightKg: number) =>
-      portalApi.recordPortalWeighIn(token, weightKg),
+    mutationFn: ({
+      weightKg,
+      notes,
+    }: {
+      weightKg: number;
+      notes: string | null;
+    }) => portalApi.recordPortalWeighIn(token, weightKg, notes),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["portal", token] });
     },

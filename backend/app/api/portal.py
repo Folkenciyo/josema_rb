@@ -144,7 +144,9 @@ def record_portal_weigh_in(
         )
     weigh_in_limiter.record_attempt(token)
 
-    return portal_service.record_weigh_in(db, client, payload.weight_kg)
+    return portal_service.record_weigh_in(
+        db, client, payload.weight_kg, payload.notes
+    )
 
 
 @router.post("/{token}/photo-consent", response_model=PortalClientOut)
