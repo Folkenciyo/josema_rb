@@ -121,15 +121,14 @@ def test_the_client_writes_observations_with_their_weight(
     assert saved["notes"] == "Grasa 18%, agua 55%"
     # The trainer reads it on the client's file, in its own field: their private
     # note about the client keeps `notes` to itself.
-    listed = authenticated_client.get(
-        f"/api/clients/{client_id}/measurements"
-    ).json()
+    listed = authenticated_client.get(f"/api/clients/{client_id}/measurements").json()
     assert listed[0]["client_notes"] == "Grasa 18%, agua 55%"
     assert listed[0]["notes"] is None
     # And the client sees their own note when they come back.
-    assert authenticated_client.get(f"/api/portal/{token}/measurements").json()[0][
-        "notes"
-    ] == "Grasa 18%, agua 55%"
+    assert (
+        authenticated_client.get(f"/api/portal/{token}/measurements").json()[0]["notes"]
+        == "Grasa 18%, agua 55%"
+    )
 
 
 def test_correcting_todays_weight_also_corrects_the_note(

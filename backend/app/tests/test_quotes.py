@@ -92,9 +92,7 @@ def test_parse_media_url_rejects_anything_else(url: str) -> None:
 
 
 def _pick(quotes: list[uuid.UUID], today: date, anchor=None, anchor_date=None):
-    return pick_for_day(
-        quotes, today=today, anchor_id=anchor, anchor_date=anchor_date
-    )
+    return pick_for_day(quotes, today=today, anchor_id=anchor, anchor_date=anchor_date)
 
 
 def test_the_queue_holds_all_day_and_steps_on_the_next() -> None:
