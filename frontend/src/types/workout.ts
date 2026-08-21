@@ -83,6 +83,8 @@ export interface WorkoutSessionSummary {
 }
 
 export interface ExercisePoint {
+  /** Two sessions can share a day, so this is what identifies a point. */
+  session_id: string;
   performed_on: string;
   top_weight_kg: number | null;
   top_reps: number | null;

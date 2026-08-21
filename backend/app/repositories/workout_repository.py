@@ -141,16 +141,20 @@ def list_trained_exercises(db: Session, client_id: uuid.UUID) -> list[tuple]:
 
 def list_sets_for_exercise(
     db: Session, client_id: uuid.UUID, exercise_id: str
-) -> list[tuple[date, WorkoutSet]]:
-    """Every set of one exercise across every plan, oldest first: the progression."""
+) -> list[tuple[uuid.UUID, date, WorkoutSet]]:
+    """Every set of one exercise across every plan, oldest first: the progression.
+
+    The session id travels with each set because two sessions can share a day —
+    a double session is two points on the chart, not one.
+    """
     return (
-        db.query(WorkoutSession.performed_on, WorkoutSet)
+        db.query(WorkoutSession.id, WorkoutSession.performed_on, WorkoutSet)
         .join(WorkoutSet, WorkoutSet.session_id == WorkoutSession.id)
         .filter(
             WorkoutSession.client_id == client_id,
             WorkoutSet.exercise_id == exercise_id,
         )
-        .order_by(WorkoutSession.performed_on.asc())
+        .order_by(WorkoutSession.performed_on.asc(), WorkoutSession.created_at.asc())
         .all()
     )
 

@@ -83,7 +83,7 @@ export function ProgressionChart({ history }: { history: ExercisePoint[] }) {
         />
         {points.map((item) => (
           <circle
-            key={item.point.performed_on}
+            key={item.point.session_id}
             cx={item.x}
             cy={item.y}
             r={2.5}
