@@ -38,6 +38,32 @@ export function usePortalMeasurements(token: string) {
   });
 }
 
+/** Enabled only where consent stands: without it the endpoint answers 403. */
+export function usePortalPhotos(token: string, enabled: boolean) {
+  return useQuery({
+    queryKey: queryKeys.portalPhotos(token),
+    queryFn: () => portalApi.getPortalPhotos(token),
+    enabled,
+    retry: false,
+  });
+}
+
+export function usePortalTrainedExercises(token: string) {
+  return useQuery({
+    queryKey: queryKeys.portalTrainedExercises(token),
+    queryFn: () => portalApi.getPortalTrainedExercises(token),
+    retry: false,
+  });
+}
+
+export function usePortalExerciseHistory(token: string, exerciseId: string) {
+  return useQuery({
+    queryKey: queryKeys.portalExerciseHistory(token, exerciseId),
+    queryFn: () => portalApi.getPortalExerciseHistory(token, exerciseId),
+    retry: false,
+  });
+}
+
 export function usePortalInvite(clientId: string, enabled: boolean) {
   return useQuery({
     queryKey: queryKeys.portalInvite(clientId),

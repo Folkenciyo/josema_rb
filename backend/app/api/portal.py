@@ -2,7 +2,7 @@ import io
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
@@ -11,11 +11,14 @@ from app.models import Client, Trainer
 from app.schemas.export import DietPlanDocument, TrainingPlanDocument
 from app.schemas.portal import (
     PortalClientOut,
+    PortalPhotoOut,
     PortalWeighInCreate,
     PortalWeighInOut,
 )
 from app.schemas.questionnaire import PortalQuestionnaireOut, SubmitAnswersRequest
 from app.schemas.workout import (
+    ExerciseHistoryOut,
+    TrainedExerciseOut,
     WorkoutDayDetailOut,
     WorkoutDayOut,
     WorkoutSessionCreate,
@@ -178,6 +181,50 @@ def delete_own_photos(
 
     photo_service.delete_all_photos(db, client.id)
     return portal_service.build_portal_view(db, client)
+
+
+@router.get("/{token}/photos", response_model=list[PortalPhotoOut])
+def list_own_photos(
+    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+) -> list[PortalPhotoOut]:
+    """The client's own gallery, only while the permission stands."""
+    return portal_service.list_photos(db, client)
+
+
+@router.get("/{token}/photos/{photo_id}/file")
+def get_own_photo_file(
+    photo_id: uuid.UUID,
+    thumbnail: bool = False,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
+) -> FileResponse:
+    """Body photos through the token, never through the trainer's endpoint."""
+    path = portal_service.photo_file(db, client, photo_id, thumbnail=thumbnail)
+    return FileResponse(
+        path,
+        media_type="image/jpeg",
+        headers={"Cache-Control": "private, max-age=3600"},
+    )
+
+
+@router.get("/{token}/trained-exercises", response_model=list[TrainedExerciseOut])
+def list_own_trained_exercises(
+    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+) -> list[TrainedExerciseOut]:
+    """The exercises this client has logged: the ones with a chart worth showing."""
+    return workout_service.list_trained_exercises(db, client)
+
+
+@router.get(
+    "/{token}/exercises/{exercise_id}/history", response_model=ExerciseHistoryOut
+)
+def get_own_exercise_history(
+    exercise_id: str,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
+) -> ExerciseHistoryOut:
+    """One point per training day: the heaviest set and that day's volume."""
+    return workout_service.exercise_history(db, client, exercise_id)
 
 
 @router.get("/{token}/questionnaire", response_model=PortalQuestionnaireOut)

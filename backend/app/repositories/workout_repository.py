@@ -23,6 +23,16 @@ def list_for_client(
     return query.limit(limit).all() if limit else query.all()
 
 
+def count_for_client(db: Session, client_id: uuid.UUID) -> int:
+    """How many sessions there are, without loading a single set."""
+    return (
+        db.query(func.count(WorkoutSession.id))
+        .filter(WorkoutSession.client_id == client_id)
+        .scalar()
+        or 0
+    )
+
+
 def get_by_device_id(
     db: Session, client_id: uuid.UUID, device_session_id: str
 ) -> WorkoutSession | None:

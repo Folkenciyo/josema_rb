@@ -18,7 +18,8 @@ import type { ExercisePoint } from "@/types/workout";
 const VIEWBOX_WIDTH = 300;
 const VIEWBOX_HEIGHT = 80;
 
-function Delta({ history }: { history: ExercisePoint[] }) {
+/** How much the top set has moved since the first one, in kilos. */
+export function ProgressionDelta({ history }: { history: ExercisePoint[] }) {
   const delta = progressionDelta(history);
 
   if (delta === null || delta === 0) {
@@ -41,7 +42,8 @@ function Delta({ history }: { history: ExercisePoint[] }) {
   );
 }
 
-function ProgressionChart({ history }: { history: ExercisePoint[] }) {
+/** The line itself, shared by the trainer's card and the client's portal. */
+export function ProgressionChart({ history }: { history: ExercisePoint[] }) {
   const geometry = buildProgressionGeometry(
     history,
     VIEWBOX_WIDTH,
@@ -140,7 +142,7 @@ function Progression({
         <p className="text-sm text-slate-500">
           Serie más pesada de cada sesión
         </p>
-        <Delta history={history.points} />
+        <ProgressionDelta history={history.points} />
       </div>
       <ProgressionChart history={history.points} />
     </>

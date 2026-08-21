@@ -1,6 +1,7 @@
 import secrets
 import uuid
 from datetime import UTC, date, datetime
+from pathlib import Path
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -12,9 +13,15 @@ from app.repositories import (
     measurement_repository,
     photo_repository,
     training_plan_repository,
+    workout_repository,
 )
-from app.schemas.portal import PortalClientOut, PortalWeighInOut
-from app.services import client_service, measurement_service, quote_service
+from app.schemas.portal import PortalClientOut, PortalPhotoOut, PortalWeighInOut
+from app.services import (
+    client_service,
+    measurement_service,
+    photo_service,
+    quote_service,
+)
 
 # 32 bytes of entropy, ~43 url-safe characters. Long enough that guessing is
 # hopeless, short enough to fit in a WhatsApp message without wrapping badly.
@@ -74,6 +81,45 @@ def withdraw_photo_consent(db: Session, client: Client) -> Client:
     return client_repository.update(db, client, {"photo_consent_at": None})
 
 
+def _require_photo_consent(client: Client) -> None:
+    """The same act that allows keeping the photos is what opens them.
+
+    Withdrawing the permission therefore closes the gallery too, even though the
+    files stay until the client asks for them to be deleted.
+    """
+    if client.photo_consent_at is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Photo consent not granted"
+        )
+
+
+def list_photos(db: Session, client: Client) -> list[PortalPhotoOut]:
+    _require_photo_consent(client)
+    return [
+        PortalPhotoOut.model_validate(photo)
+        for photo in photo_repository.list_for_client(db, client.id)
+    ]
+
+
+def photo_file(
+    db: Session, client: Client, photo_id: uuid.UUID, *, thumbnail: bool
+) -> Path:
+    """A photo of this client, or nothing.
+
+    Someone else's id answers the same 404 as one that never existed: the portal
+    never confirms what other clients have.
+    """
+    _require_photo_consent(client)
+
+    photo = photo_repository.get_by_id(db, photo_id)
+    if photo is None or photo.client_id != client.id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Photo not found"
+        )
+
+    return photo_service.photo_file(db, photo_id, thumbnail=thumbnail)
+
+
 def build_portal_view(db: Session, client: Client) -> PortalClientOut:
     measurements = measurement_repository.list_for_client(db, client.id)
     latest = measurements[0] if measurements else None
@@ -92,6 +138,7 @@ def build_portal_view(db: Session, client: Client) -> PortalClientOut:
         weigh_in_count=len(measurements),
         photo_consent_at=client.photo_consent_at,
         photo_count=len(photo_repository.list_for_client(db, client.id)),
+        workout_count=workout_repository.count_for_client(db, client.id),
         quote=quote_service.quote_for_client(db, client),
     )
 

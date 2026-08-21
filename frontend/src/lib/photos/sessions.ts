@@ -1,14 +1,24 @@
 import { PHOTO_POSES, type Photo, type PhotoPose } from "@/types/photo";
-import type { Measurement } from "@/types/measurement";
+import type { WeighIn } from "@/types/measurement";
+
+/**
+ * The little a photo needs for any of this: the trainer's `Photo` and the
+ * portal's `PortalPhoto` — which carries no client id — both fit.
+ */
+export interface DatedPhoto {
+  id: string;
+  taken_on: string;
+  pose: PhotoPose;
+}
 
 /** All the photos taken on one day, one slot per pose. */
-export interface PhotoSession {
+export interface PhotoSession<T extends DatedPhoto = Photo> {
   takenOn: string;
-  photos: Record<PhotoPose, Photo | null>;
+  photos: Record<PhotoPose, T | null>;
   count: number;
 }
 
-const EMPTY_SLOTS = (): Record<PhotoPose, Photo | null> => ({
+const EMPTY_SLOTS = <T extends DatedPhoto>(): Record<PhotoPose, T | null> => ({
   front: null,
   side: null,
   back: null,
@@ -18,11 +28,13 @@ const EMPTY_SLOTS = (): Record<PhotoPose, Photo | null> => ({
  * Groups the flat list the API returns into one session per date, newest first.
  * The input is never mutated.
  */
-export function groupIntoSessions(photos: Photo[]): PhotoSession[] {
-  const byDate = new Map<string, Record<PhotoPose, Photo | null>>();
+export function groupIntoSessions<T extends DatedPhoto>(
+  photos: T[],
+): PhotoSession<T>[] {
+  const byDate = new Map<string, Record<PhotoPose, T | null>>();
 
   for (const photo of photos) {
-    const slots = byDate.get(photo.taken_on) ?? EMPTY_SLOTS();
+    const slots = byDate.get(photo.taken_on) ?? EMPTY_SLOTS<T>();
     slots[photo.pose] = photo;
     byDate.set(photo.taken_on, slots);
   }
@@ -36,10 +48,10 @@ export function groupIntoSessions(photos: Photo[]): PhotoSession[] {
     }));
 }
 
-export interface ComparisonRow {
+export interface ComparisonRow<T extends DatedPhoto = Photo> {
   pose: PhotoPose;
-  before: Photo | null;
-  after: Photo | null;
+  before: T | null;
+  after: T | null;
 }
 
 /**
@@ -47,10 +59,10 @@ export interface ComparisonRow {
  * Always returns the three rows: a missing shot is a visible gap, not a
  * silently shifted row.
  */
-export function buildComparison(
-  before: PhotoSession | null,
-  after: PhotoSession | null,
-): ComparisonRow[] {
+export function buildComparison<T extends DatedPhoto>(
+  before: PhotoSession<T> | null,
+  after: PhotoSession<T> | null,
+): ComparisonRow<T>[] {
   return PHOTO_POSES.map((pose) => ({
     pose,
     before: before?.photos[pose] ?? null,
@@ -65,9 +77,9 @@ export function buildComparison(
  * taken.
  */
 export function weightNearestTo(
-  measurements: Measurement[],
+  measurements: WeighIn[],
   isoDate: string,
-): Measurement | null {
+): WeighIn | null {
   if (measurements.length === 0) {
     return null;
   }
@@ -87,7 +99,7 @@ export function weightNearestTo(
 
 /** Kilos between two sessions, using the weigh-in nearest to each one. */
 export function weightDeltaBetween(
-  measurements: Measurement[],
+  measurements: WeighIn[],
   beforeDate: string,
   afterDate: string,
 ): number | null {

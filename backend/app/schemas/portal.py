@@ -3,6 +3,7 @@ from datetime import date, datetime
 
 from pydantic import BaseModel, Field
 
+from app.models.photo import PhotoPose
 from app.schemas.quote import QuoteOut
 
 
@@ -58,6 +59,20 @@ class PortalWeighInOut(BaseModel):
     bmi: float | None
 
 
+class PortalPhotoOut(BaseModel):
+    """A progress photo as the client sees it: no client id, no path on disk.
+
+    The id is only good for asking for the file through the same token, so it
+    tells a leaked link nothing it could use anywhere else.
+    """
+
+    id: uuid.UUID
+    taken_on: date
+    pose: PhotoPose
+
+    model_config = {"from_attributes": True}
+
+
 class PortalClientOut(BaseModel):
     """What the client sees. Never carries the client id: the token is the key."""
 
@@ -73,6 +88,9 @@ class PortalClientOut(BaseModel):
     # photos" honest: the client sees how many there are before deciding.
     photo_consent_at: datetime | None
     photo_count: int
+    # How many sessions the client has logged, so the portal only offers the
+    # progression screen once there is something to draw.
+    workout_count: int
     # Today's message, pinned or drawn from the rotation. Null when the trainer
     # has not written any yet.
     quote: QuoteOut | None = None

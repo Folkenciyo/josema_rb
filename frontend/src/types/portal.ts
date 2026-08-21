@@ -1,4 +1,5 @@
 import type { MacroTotals } from "./diet";
+import type { PhotoPose } from "./photo";
 import type { Quote } from "./quote";
 
 export interface PortalToken {
@@ -27,8 +28,17 @@ export interface PortalHome {
   /** Null means the client never agreed to their progress photos being kept. */
   photo_consent_at: string | null;
   photo_count: number;
+  /** Sessions logged: the portal only offers the charts once there are any. */
+  workout_count: number;
   /** Today's message: the one pinned to this client, or one from the rotation. */
   quote: Quote | null;
+}
+
+/** A progress photo as the client gets it: no client id, no path on disk. */
+export interface PortalPhoto {
+  id: string;
+  taken_on: string;
+  pose: PhotoPose;
 }
 
 /**
