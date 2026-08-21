@@ -33,8 +33,7 @@ def upgrade() -> None:
         sa.Column("position", sa.Integer(), nullable=False, server_default="0"),
     )
     # Keep the order the old rotation used, per trainer.
-    op.execute(
-        """
+    op.execute("""
         UPDATE motivational_quotes AS q
         SET position = ordered.row_number - 1
         FROM (
@@ -46,8 +45,7 @@ def upgrade() -> None:
             FROM motivational_quotes
         ) AS ordered
         WHERE q.id = ordered.id
-        """
-    )
+        """)
 
     op.add_column(
         "trainers",
@@ -58,9 +56,7 @@ def upgrade() -> None:
             nullable=True,
         ),
     )
-    op.add_column(
-        "trainers", sa.Column("quote_anchor_date", sa.Date(), nullable=True)
-    )
+    op.add_column("trainers", sa.Column("quote_anchor_date", sa.Date(), nullable=True))
 
 
 def downgrade() -> None:

@@ -268,9 +268,7 @@ def show_next(db: Session, trainer: Trainer, quote_id: uuid.UUID) -> QuoteQueueO
         return build_queue(db, trainer, days=DEFAULT_QUEUE_DAYS)
 
     remaining = [item for item in quotes if item.id != quote.id]
-    at = next(
-        index for index, item in enumerate(remaining) if item.id == current.id
-    )
+    at = next(index for index, item in enumerate(remaining) if item.id == current.id)
     remaining.insert(at + 1, quote)
 
     # Renumbering moves today's message too, so the anchor is pinned to it again
@@ -283,9 +281,7 @@ def show_next(db: Session, trainer: Trainer, quote_id: uuid.UUID) -> QuoteQueueO
     return build_queue(db, trainer, days=DEFAULT_QUEUE_DAYS)
 
 
-def reorder(
-    db: Session, trainer: Trainer, quote_ids: list[uuid.UUID]
-) -> QuoteQueueOut:
+def reorder(db: Session, trainer: Trainer, quote_ids: list[uuid.UUID]) -> QuoteQueueOut:
     """Write a new order for the whole queue, keeping today's message showing."""
     quotes = quote_repository.list_for_trainer(db, trainer.id)
     by_id = {quote.id: quote for quote in quotes}

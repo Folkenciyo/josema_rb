@@ -378,9 +378,7 @@ def test_two_sessions_on_the_same_day_are_two_points(
     # Same date on both, and each one carries its session so the chart can tell
     # them apart.
     assert history["points"][0]["performed_on"] == history["points"][1]["performed_on"]
-    assert (
-        history["points"][0]["session_id"] != history["points"][1]["session_id"]
-    )
+    assert history["points"][0]["session_id"] != history["points"][1]["session_id"]
 
 
 def test_the_trainer_can_list_which_exercises_have_been_logged(

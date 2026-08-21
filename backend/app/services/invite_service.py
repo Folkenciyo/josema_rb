@@ -81,8 +81,10 @@ def public_base_url(request: Request) -> str:
         # Both headers may carry a list once a request crosses several proxies.
         host = forwarded_host.split(",")[0].strip()
         proto = (
-            request.headers.get("x-forwarded-proto") or request.url.scheme
-        ).split(",")[0].strip()
+            (request.headers.get("x-forwarded-proto") or request.url.scheme)
+            .split(",")[0]
+            .strip()
+        )
         return f"{proto}://{host}"
 
     return get_settings().public_base_url
