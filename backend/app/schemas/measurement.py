@@ -22,6 +22,9 @@ class MeasurementOut(BaseModel):
     measured_on: date
     weight_kg: float
     notes: str | None
+    # Written by the client from their portal, and read-only here: the trainer
+    # has `notes` for their own remarks.
+    client_notes: str | None = None
     created_at: datetime
     updated_at: datetime
     # Derived from the client height, so it is null while the height is unknown.

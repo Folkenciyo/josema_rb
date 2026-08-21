@@ -35,6 +35,9 @@ class ClientMeasurement(Base, TimestampMixin):
     )
     measured_on: Mapped[date] = mapped_column(Date, nullable=False)
     weight_kg: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False)
+    # The trainer's private note: it has never travelled to the client's phone.
     notes: Mapped[str | None] = mapped_column(Text)
+    # What the client wrote themselves — whatever extra their scale reported.
+    client_notes: Mapped[str | None] = mapped_column(Text)
 
     client: Mapped["Client"] = relationship(back_populates="measurements")

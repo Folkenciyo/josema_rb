@@ -60,15 +60,18 @@ export function PortalWeightView({ token }: { token: string }) {
 
   const progress = summarizeProgress(measurements);
   const today = todayIso();
-  const weighedToday =
-    measurements.find((entry) => entry.measured_on === today)?.weight_kg ??
-    null;
+  const entryToday =
+    measurements.find((entry) => entry.measured_on === today) ?? null;
 
   return (
     <PortalPage>
       <PortalHeader title="Mi peso" />
 
-      <PortalWeighInForm token={token} weighedToday={weighedToday} />
+      <PortalWeighInForm
+        token={token}
+        weighedToday={entryToday?.weight_kg ?? null}
+        notesToday={entryToday?.notes ?? null}
+      />
 
       {measurements.length === 0 ? (
         <PortalNotice
@@ -102,16 +105,20 @@ export function PortalWeightView({ token }: { token: string }) {
             </h2>
             <ul className="divide-y divide-slate-100">
               {measurements.map((measurement) => (
-                <li
-                  key={measurement.id}
-                  className="flex items-center justify-between px-4 py-2.5 text-sm"
-                >
-                  <span className="text-slate-500">
-                    {formatDate(measurement.measured_on)}
-                  </span>
-                  <span className="font-medium text-slate-800">
-                    {formatWeight(measurement.weight_kg)}
-                  </span>
+                <li key={measurement.id} className="px-4 py-2.5 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">
+                      {formatDate(measurement.measured_on)}
+                    </span>
+                    <span className="font-medium text-slate-800">
+                      {formatWeight(measurement.weight_kg)}
+                    </span>
+                  </div>
+                  {measurement.notes && (
+                    <p className="mt-0.5 text-xs whitespace-pre-line text-slate-500">
+                      {measurement.notes}
+                    </p>
+                  )}
                 </li>
               ))}
             </ul>

@@ -7,20 +7,23 @@ import { useRecordPortalWeighIn } from "@/hooks/use-portal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ErrorMessage } from "@/components/ui/feedback";
-import { Input } from "@/components/ui/input";
+import { Input, Textarea } from "@/components/ui/input";
 import { parseWeightInput } from "@/lib/portal/weigh-in";
 
 export function PortalWeighInForm({
   token,
   weighedToday,
+  notesToday,
 }: {
   token: string;
   /** Today's weight if it is already on record, so a correction starts filled in. */
   weighedToday: number | null;
+  notesToday: string | null;
 }) {
   const [value, setValue] = useState(
     weighedToday !== null ? String(weighedToday).replace(".", ",") : "",
   );
+  const [notes, setNotes] = useState(notesToday ?? "");
   const [localError, setLocalError] = useState<string | null>(null);
   const recordWeighIn = useRecordPortalWeighIn(token);
 
@@ -34,7 +37,7 @@ export function PortalWeighInForm({
     }
 
     setLocalError(null);
-    recordWeighIn.mutate(parsed.weightKg);
+    recordWeighIn.mutate({ weightKg: parsed.weightKg, notes: notes.trim() || null });
   };
 
   return (
@@ -69,6 +72,29 @@ export function PortalWeighInForm({
             Guardar
           </Button>
         </div>
+
+        <label
+          htmlFor="portal-weight-notes"
+          className="mt-3 block text-sm text-slate-500"
+        >
+          Observaciones (opcional)
+          <Textarea
+            id="portal-weight-notes"
+            value={notes}
+            onChange={(event) => {
+              setNotes(event.target.value);
+              recordWeighIn.reset();
+            }}
+            rows={2}
+            maxLength={500}
+            className="mt-1"
+            placeholder="Grasa 18%, agua 55%, músculo 38 kg…"
+          />
+        </label>
+        <p className="mt-1 text-xs text-slate-400">
+          Si tu báscula te da más datos, apúntalos aquí como quieras: tu
+          entrenador los verá junto al peso.
+        </p>
 
         {localError && <p className="mt-2 text-sm text-red-600">{localError}</p>}
         {recordWeighIn.isSuccess && !localError && (

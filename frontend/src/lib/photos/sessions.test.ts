@@ -25,6 +25,7 @@ function measurement(id: string, measuredOn: string, weightKg: number): Measurem
     measured_on: measuredOn,
     weight_kg: weightKg,
     notes: null,
+    client_notes: null,
     bmi: null,
     created_at: "2026-01-01T00:00:00Z",
     updated_at: "2026-01-01T00:00:00Z",

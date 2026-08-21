@@ -163,8 +163,13 @@ export function MeasurementsCard({
                         </span>
                       )}
                     </p>
+                    {measurement.client_notes && (
+                      <p className="text-xs whitespace-pre-line text-slate-600">
+                        {measurement.client_notes}
+                      </p>
+                    )}
                     {measurement.notes && (
-                      <p className="truncate text-xs text-slate-500">
+                      <p className="truncate text-xs text-slate-500 italic">
                         {measurement.notes}
                       </p>
                     )}

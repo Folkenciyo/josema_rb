@@ -47,9 +47,11 @@ export function getPortalMeasurements(token: string): Promise<WeighIn[]> {
 export function recordPortalWeighIn(
   token: string,
   weightKg: number,
+  notes: string | null = null,
 ): Promise<WeighIn> {
   return api.post<WeighIn>(`/portal/${token}/measurements`, {
     weight_kg: weightKg,
+    notes,
   });
 }
 

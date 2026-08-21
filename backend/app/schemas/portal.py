@@ -45,18 +45,26 @@ class PortalInviteOut(BaseModel):
 
 
 class PortalWeighInCreate(BaseModel):
-    """The only thing a client may write. The day is always today, never chosen."""
+    """What the client writes when they weigh themselves. The day is always today.
+
+    The note is free text on purpose: every scale reports something different —
+    body fat, water, muscle mass — and pinning down fields for all of them would
+    only fit the machine we happened to think of.
+    """
 
     weight_kg: float = Field(gt=0, le=500)
+    notes: str | None = Field(default=None, max_length=500)
 
 
 class PortalWeighInOut(BaseModel):
-    """A weigh-in as the client sees it: no client id, and no trainer notes."""
+    """A weigh-in as the client sees it: no client id, no internal fields."""
 
     id: uuid.UUID
     measured_on: date
     weight_kg: float
     bmi: float | None
+    # What the client wrote down themselves — the numbers their scale gave.
+    notes: str | None = None
 
 
 class PortalPhotoOut(BaseModel):
