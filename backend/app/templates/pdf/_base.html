@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <title>{{ doc.plan_title }}</title>
+  <title>{% block doc_title %}{{ doc.plan_title }}{% endblock %}</title>
   <style>
     /* Montserrat is the guide's primary face and ships as a Debian package, so
        the container has it without bundling font files. Raleway, the secondary
@@ -169,34 +169,40 @@
     }
     .muted { color: #6b6b6f; font-style: italic; font-size: 9pt; }
     .note { color: #6b6b6f; font-size: 9pt; margin: 0.1cm 0 0.3cm; }
+
+    {% block extra_styles %}{% endblock %}
   </style>
 </head>
 <body>
   <div class="running-header">
     <img src="{{ brand }}/logo-wordmark.png" alt="JOSEMA RB" />
-    <span>{{ doc.client_name }} · {{ doc.plan_title }}</span>
+    <span>{{ doc.client_name }} · {% block header_label %}{{ doc.plan_title }}{% endblock %}</span>
   </div>
 
   <section class="cover">
     <img class="cover-banner" src="{{ brand }}/document-header.png" alt="JOSEMA RB" />
-    <h1>{{ doc.plan_title }}</h1>
+    <h1>{% block cover_title %}{{ doc.plan_title }}{% endblock %}</h1>
     <div class="rule"></div>
     <dl>
       <dt>Cliente</dt>
       <dd>{{ doc.client_name }}</dd>
-      {% if doc.start_date %}
-        <dt>Inicio</dt>
-        <dd>{{ doc.start_date }}</dd>
-      {% endif %}
-      {% if doc.end_date %}
-        <dt>Fin</dt>
-        <dd>{{ doc.end_date }}</dd>
-      {% endif %}
+      {% block cover_dates %}
+        {% if doc.start_date %}
+          <dt>Inicio</dt>
+          <dd>{{ doc.start_date }}</dd>
+        {% endif %}
+        {% if doc.end_date %}
+          <dt>Fin</dt>
+          <dd>{{ doc.end_date }}</dd>
+        {% endif %}
+      {% endblock %}
       {% block cover_meta %}{% endblock %}
     </dl>
-    {% if doc.plan_notes %}
-      <div class="notes">{{ doc.plan_notes }}</div>
-    {% endif %}
+    {% block cover_notes %}
+      {% if doc.plan_notes %}
+        <div class="notes">{{ doc.plan_notes }}</div>
+      {% endif %}
+    {% endblock %}
   </section>
 
   {% block content %}{% endblock %}

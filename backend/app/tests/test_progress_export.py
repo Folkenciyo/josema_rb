@@ -6,6 +6,8 @@ from fastapi.testclient import TestClient
 from PIL import Image
 
 from app.models import ClientMeasurement
+from app.schemas.export import ProgressDocument, ProgressRow, ProgressSide
+from app.services.pdf_export import _env
 from app.services.progress_service import nearest_measurement
 
 
@@ -49,6 +51,56 @@ def _client_with_two_sessions(api: TestClient) -> str:
 def _cleanup(api: TestClient, client_id: str) -> None:
     for photo in api.get(f"/api/clients/{client_id}/photos").json():
         api.delete(f"/api/photos/{photo['id']}")
+
+
+def _progress_document(*, weighed: bool = True) -> ProgressDocument:
+    return ProgressDocument(
+        client_name="Ana Torres",
+        before=ProgressSide(
+            taken_on=date(2026, 1, 10),
+            weight_kg=78.4 if weighed else None,
+            weight_measured_on=date(2026, 1, 9) if weighed else None,
+            bmi=25.6 if weighed else None,
+        ),
+        after=ProgressSide(
+            taken_on=date(2026, 6, 10),
+            weight_kg=72.1 if weighed else None,
+            weight_measured_on=date(2026, 6, 10) if weighed else None,
+            bmi=23.5 if weighed else None,
+        ),
+        weight_delta_kg=-6.3 if weighed else None,
+        rows=[
+            ProgressRow(pose_label_es="Frontal", before_image="a.jpg", after_image=None)
+        ],
+    )
+
+
+def _render_progress_html(document: ProgressDocument) -> str:
+    return _env.get_template("progress.html").render(
+        doc=document, brand="file:///brand"
+    )
+
+
+def test_progress_template_wears_the_brand() -> None:
+    html = _render_progress_html(_progress_document())
+
+    # All three come from _base.html: the template is on the shared skin, not on
+    # a stylesheet of its own.
+    assert "file:///brand/logo-wordmark.png" in html
+    assert "file:///brand/document-header.png" in html
+    assert "Montserrat" in html
+
+    assert "Diferencia de peso" in html
+    assert "6,3 kg" in html
+    # The nearest weigh-in is a day off the photo, and the document says so.
+    assert "pesaje del 09/01/2026" in html
+
+
+def test_progress_template_without_weigh_ins() -> None:
+    html = _render_progress_html(_progress_document(weighed=False))
+
+    assert "Diferencia de peso" not in html
+    assert html.count("sin pesajes registrados") == 2
 
 
 def test_nearest_measurement_picks_the_closest_weigh_in() -> None:
