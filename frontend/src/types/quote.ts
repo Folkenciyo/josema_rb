@@ -10,6 +10,19 @@ export interface Quote {
   /** Set for "youtube" and "instagram": the address the iframe loads. */
   embed_url: string | null;
   created_at: string;
+  /** Place in the trainer's queue: 0 is the first one. */
+  position: number;
+}
+
+/** One day of the queue: what every client reads that morning. */
+export interface QueueEntry {
+  date: string;
+  quote: Quote;
+}
+
+export interface QuoteQueue {
+  today: QueueEntry | null;
+  upcoming: QueueEntry[];
 }
 
 export interface QuotePin {

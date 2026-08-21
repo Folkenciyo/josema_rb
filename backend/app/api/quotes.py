@@ -1,12 +1,20 @@
 import uuid
 
-from fastapi import APIRouter, Depends, File, Form, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, Query, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.core.security import get_current_trainer
 from app.models import Trainer
-from app.schemas.quote import QuoteOut, QuotePinOut, QuotePinUpdate
+from app.schemas.quote import (
+    DEFAULT_QUEUE_DAYS,
+    MAX_QUEUE_DAYS,
+    QuoteOut,
+    QuotePinOut,
+    QuotePinUpdate,
+    QuoteQueueOut,
+    ReorderQuotesRequest,
+)
 from app.services import client_service, quote_service
 
 router = APIRouter(
@@ -21,6 +29,45 @@ def list_quotes(
     db: Session = Depends(get_db), trainer: Trainer = Depends(get_current_trainer)
 ) -> list[QuoteOut]:
     return quote_service.list_quotes(db, trainer)
+
+
+@router.get("/queue", response_model=QuoteQueueOut)
+def get_queue(
+    days: int = Query(DEFAULT_QUEUE_DAYS, ge=1, le=MAX_QUEUE_DAYS),
+    db: Session = Depends(get_db),
+    trainer: Trainer = Depends(get_current_trainer),
+) -> QuoteQueueOut:
+    """What is showing today and what comes after it, day by day."""
+    return quote_service.build_queue(db, trainer, days=days)
+
+
+@router.put("/queue/order", response_model=QuoteQueueOut)
+def reorder_queue(
+    payload: ReorderQuotesRequest,
+    db: Session = Depends(get_db),
+    trainer: Trainer = Depends(get_current_trainer),
+) -> QuoteQueueOut:
+    return quote_service.reorder(db, trainer, payload.quote_ids)
+
+
+@router.put("/{quote_id}/today", response_model=QuoteQueueOut)
+def show_today(
+    quote_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    trainer: Trainer = Depends(get_current_trainer),
+) -> QuoteQueueOut:
+    """Put this one up now; tomorrow the queue carries on from it."""
+    return quote_service.show_today(db, trainer, quote_id)
+
+
+@router.put("/{quote_id}/next", response_model=QuoteQueueOut)
+def show_next(
+    quote_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    trainer: Trainer = Depends(get_current_trainer),
+) -> QuoteQueueOut:
+    """Move this one to right behind today's."""
+    return quote_service.show_next(db, trainer, quote_id)
 
 
 @router.post("", response_model=QuoteOut, status_code=status.HTTP_201_CREATED)

@@ -34,5 +34,7 @@ export const queryKeys = {
   exerciseHistory: (clientId: string, exerciseId: string) =>
     ["clients", clientId, "exercise-history", exerciseId] as const,
   quotes: ["quotes"] as const,
+  // Nested under "quotes" so any change to the library refreshes the queue too.
+  quoteQueue: (days: number) => ["quotes", "queue", days] as const,
   pinnedQuote: (clientId: string) => ["clients", clientId, "quote"] as const,
 };

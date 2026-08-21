@@ -1,9 +1,14 @@
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.models.quote import QuoteMedia
+
+# A week ahead is what fits on the screen and as far as anyone plans a
+# motivational message.
+DEFAULT_QUEUE_DAYS = 7
+MAX_QUEUE_DAYS = 30
 
 
 class QuoteOut(BaseModel):
@@ -21,6 +26,28 @@ class QuoteOut(BaseModel):
     image_url: str | None
     embed_url: str | None
     created_at: datetime
+    # Place in the trainer's queue, so the library screen can show the order.
+    position: int
+
+
+class QueueEntryOut(BaseModel):
+    """One day of the queue: what everyone will read that morning."""
+
+    date: date
+    quote: QuoteOut
+
+
+class QuoteQueueOut(BaseModel):
+    """Today's message and the ones lined up behind it."""
+
+    today: QueueEntryOut | None
+    upcoming: list[QueueEntryOut]
+
+
+class ReorderQuotesRequest(BaseModel):
+    """The whole queue in its new order. Ids not listed keep their tail place."""
+
+    quote_ids: list[uuid.UUID] = Field(min_length=1)
 
 
 class QuotePinOut(BaseModel):

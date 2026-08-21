@@ -1,6 +1,7 @@
 import uuid
+from datetime import date
 
-from sqlalchemy import String, Text
+from sqlalchemy import Date, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -21,3 +22,13 @@ class Trainer(Base, TimestampMixin):
     invite_whatsapp_template: Mapped[str | None] = mapped_column(Text)
     invite_email_subject: Mapped[str | None] = mapped_column(String(255))
     invite_email_template: Mapped[str | None] = mapped_column(Text)
+
+    # Where the motivational queue stood on a given day: which message was
+    # showing, and when. Everything after that is counted forward from here, so
+    # the daily change needs no scheduled job. Null means "start of the queue".
+    quote_anchor_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("motivational_quotes.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    quote_anchor_date: Mapped[date | None] = mapped_column(Date)
