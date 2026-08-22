@@ -54,9 +54,9 @@ export function SeguimientoCorporal() {
         <P>
           La báscula sola engaña: el peso se queda quieto mientras la cintura
           baja y el brazo sube. La tarjeta <Term>Medidas corporales</Term> lleva
-          nueve zonas fijas —cuello, pecho, brazo derecho, brazo izquierdo,
-          antebrazo, cintura, cadera, muslo y gemelo— y se rellenan solo las que
-          midas.
+          once zonas fijas —cuello, pecho, brazo derecho, brazo izquierdo,
+          antebrazo, cintura, cadera, muslo derecho, muslo izquierdo, gemelo
+          derecho y gemelo izquierdo— y se rellenan solo las que midas.
         </P>
         <P>
           Las apuntáis los dos, igual que el peso: tú con{" "}

@@ -39,7 +39,8 @@ class MeasurementOut(BaseModel):
 
 
 class BodyZones(BaseModel):
-    """The nine spots the tape goes round, in the order every screen shows them.
+    """The eleven spots the tape goes round, in the order every screen shows
+    them.
 
     All optional: measuring the waist without the calf is the normal case, not
     an incomplete entry.
@@ -52,8 +53,10 @@ class BodyZones(BaseModel):
     forearm_cm: Zone
     waist_cm: Zone
     hip_cm: Zone
-    thigh_cm: Zone
-    calf_cm: Zone
+    thigh_right_cm: Zone
+    thigh_left_cm: Zone
+    calf_right_cm: Zone
+    calf_left_cm: Zone
 
     def filled_zones(self) -> dict[str, float]:
         zones = BodyZones.model_fields
@@ -70,8 +73,8 @@ class BodyMeasurementCreate(BodyZones):
 
     @model_validator(mode="after")
     def reject_empty_entry(self) -> Self:
-        """A row with a date and nine blanks says nothing and would still take up
-        the client's one slot for that day."""
+        """A row with a date and every zone blank says nothing and would still take
+        up the client's one slot for that day."""
         if not self.filled_zones():
             raise ValueError("At least one zone is needed")
         return self

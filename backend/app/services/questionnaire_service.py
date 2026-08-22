@@ -11,6 +11,7 @@ from app.models import (
     QuestionnaireQuestion,
     Trainer,
 )
+from app.schemas.profile import ClientProfileIn
 from app.schemas.questionnaire import (
     AnswerIn,
     AnswerOut,
@@ -21,6 +22,7 @@ from app.schemas.questionnaire import (
     QuestionnaireOut,
     QuestionOut,
 )
+from app.services import client_profile_service
 
 
 def list_questions(db: Session, trainer: Trainer) -> list[QuestionnaireQuestion]:
@@ -94,6 +96,7 @@ def build_portal_view(
 
     return PortalQuestionnaireOut(
         intro=trainer.questionnaire_intro,
+        profile=client_profile_service.profile_of(client),
         questions=[
             PortalQuestionOut(
                 id=question.id,
@@ -112,17 +115,27 @@ def build_portal_view(
 
 
 def submit_answers(
-    db: Session, trainer: Trainer, client: Client, answers: list[AnswerIn]
+    db: Session,
+    trainer: Trainer,
+    client: Client,
+    answers: list[AnswerIn],
+    profile: ClientProfileIn,
 ) -> PortalQuestionnaireOut:
     """Save what the client filled in, replacing their previous answers.
 
-    Optional questions may be left blank and the client can come back and fill
-    them in later; only the ones the trainer marked as required are demanded.
+    The five file fields at the top are demanded every time — they are the ones
+    the trainer cannot work without. Beyond them, optional questions may be left
+    blank and filled in on a later visit; only the ones the trainer marked as
+    required are asked for.
     """
     questions = {question.id: question for question in list_questions(db, trainer)}
     given = {answer.question_id: answer.answer for answer in answers}
 
     _reject_unknown_questions(given, questions)
+    # The file block comes first because that is where it sits on the screen:
+    # being told about the last question while the first box is empty reads
+    # like the form skipped over it.
+    client_profile_service.apply_profile(client, profile, datetime.now(UTC).date())
     _reject_missing_required(given, questions)
 
     for previous in _client_answers(db, client.id):

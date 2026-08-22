@@ -26,7 +26,7 @@ export interface MeasurementInput {
   notes?: string | null;
 }
 
-/** The nine tape spots, in the order every screen and document shows them. */
+/** The eleven tape spots, in the order every screen and document shows them. */
 export const BODY_ZONE_KEYS = [
   "neck_cm",
   "chest_cm",
@@ -35,8 +35,10 @@ export const BODY_ZONE_KEYS = [
   "forearm_cm",
   "waist_cm",
   "hip_cm",
-  "thigh_cm",
-  "calf_cm",
+  "thigh_right_cm",
+  "thigh_left_cm",
+  "calf_right_cm",
+  "calf_left_cm",
 ] as const;
 
 export type BodyZoneKey = (typeof BODY_ZONE_KEYS)[number];

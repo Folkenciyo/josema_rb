@@ -14,6 +14,13 @@ import { Input } from "@/components/ui/input";
 import { RichText } from "@/components/ui/rich-text";
 import { formatDate } from "@/lib/format";
 import { PortalPhotoConsent } from "./portal-photo-consent";
+import { PortalProfileFields } from "./portal-profile-fields";
+import {
+  draftFromProfile,
+  draftToProfileInput,
+  missingProfileFields,
+  type ProfileDraft,
+} from "@/lib/questionnaire/profile";
 import type {
   PortalQuestion,
   PortalQuestionnaire,
@@ -109,6 +116,9 @@ function QuestionnaireForm({
   questionnaire: PortalQuestionnaire;
 }) {
   const submit = useSubmitPortalQuestionnaire(token);
+  const [profile, setProfile] = useState<ProfileDraft>(() =>
+    draftFromProfile(questionnaire.profile),
+  );
   const [answers, setAnswers] = useState<Record<string, string>>(() =>
     Object.fromEntries(
       questionnaire.questions.map((question) => [
@@ -118,22 +128,26 @@ function QuestionnaireForm({
     ),
   );
 
+  const missingProfile = missingProfileFields(profile);
   const missing = questionnaire.questions.filter(
     (question) => question.required && !(answers[question.id] ?? "").trim(),
   );
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    submit.mutate(
-      questionnaire.questions.map((question) => ({
+    submit.mutate({
+      answers: questionnaire.questions.map((question) => ({
         question_id: question.id,
         answer: answers[question.id] ?? null,
       })),
-    );
+      profile: draftToProfileInput(profile),
+    });
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <PortalProfileFields draft={profile} onChange={setProfile} />
+
       {questionnaire.questions.map((question) => (
         <Card key={question.id} className="flex flex-col gap-2 px-5 py-4">
           <label htmlFor={question.id} className="font-medium text-slate-800">
@@ -165,10 +179,16 @@ function QuestionnaireForm({
       <Button
         type="submit"
         loading={submit.isPending}
-        disabled={missing.length > 0}
+        disabled={missing.length > 0 || missingProfile.length > 0}
       >
         {questionnaire.completed_at ? "Guardar cambios" : "Enviar"}
       </Button>
+
+      {missingProfile.length > 0 && (
+        <p className="text-center text-sm text-slate-500">
+          Te faltan tus datos: {missingProfile.join(", ")}.
+        </p>
+      )}
 
       {missing.length > 0 && (
         <p className="text-center text-sm text-slate-500">
@@ -178,6 +198,17 @@ function QuestionnaireForm({
       )}
     </form>
   );
+}
+
+function subtitleFor(questionnaire: PortalQuestionnaire): string {
+  if (questionnaire.completed_at) {
+    return `Lo enviaste el ${formatDate(questionnaire.completed_at)}. Puedes cambiar lo que quieras.`;
+  }
+  // Without questions the file block is the whole form, so promising a
+  // questionnaire that is not there would be a lie.
+  return questionnaire.questions.length === 0
+    ? "Deja tus datos para que tu entrenador los tenga."
+    : "Cuéntale a tu entrenador de dónde partes.";
 }
 
 export function PortalQuestionnaireView({ token }: { token: string }) {
@@ -207,27 +238,11 @@ export function PortalQuestionnaireView({ token }: { token: string }) {
     );
   }
 
-  if (questionnaire.questions.length === 0) {
-    return (
-      <PortalPage>
-        <PortalHeader title="Cuestionario" />
-        <PortalNotice
-          title="No hay nada que rellenar"
-          description="Tu entrenador todavía no ha preparado ninguna pregunta."
-        />
-      </PortalPage>
-    );
-  }
-
   return (
     <PortalPage>
       <PortalHeader
         title="Cuestionario"
-        subtitle={
-          questionnaire.completed_at
-            ? `Lo enviaste el ${formatDate(questionnaire.completed_at)}. Puedes cambiar lo que quieras.`
-            : "Cuéntale a tu entrenador de dónde partes."
-        }
+        subtitle={subtitleFor(questionnaire)}
       />
       {questionnaire.intro && (
         <Card className="px-5 py-4">

@@ -1,5 +1,6 @@
 import { api } from "./http";
 import type {
+  ClientProfileInput,
   ClientQuestionnaire,
   PortalQuestionnaire,
   Questionnaire,
@@ -31,11 +32,14 @@ export function getPortalQuestionnaire(
   return api.get<PortalQuestionnaire>(`/portal/${token}/questionnaire`);
 }
 
+/** The file block travels whole every time, answers or no answers. */
 export function submitPortalQuestionnaire(
   token: string,
   answers: { question_id: string; answer: string | null }[],
+  profile: ClientProfileInput,
 ): Promise<PortalQuestionnaire> {
   return api.put<PortalQuestionnaire>(`/portal/${token}/questionnaire`, {
     answers,
+    profile,
   });
 }

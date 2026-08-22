@@ -42,9 +42,32 @@ def test_only_the_zones_that_were_measured_are_stored(
     body = response.json()
     assert body["waist_cm"] == 86.5
     assert body["chest_cm"] == 104
-    # The seven spots nobody put the tape round stay empty instead of guessing.
-    assert body["calf_cm"] is None
+    # The nine spots nobody put the tape round stay empty instead of guessing.
+    assert body["calf_left_cm"] is None
     assert body["arm_left_cm"] is None
+
+
+def test_each_leg_is_measured_on_its_own(authenticated_client: TestClient) -> None:
+    """Legs are as uneven as arms, so one reading for both would hide the gap."""
+    client_id = _client_id(authenticated_client)
+
+    response = authenticated_client.post(
+        f"/api/clients/{client_id}/body-measurements",
+        json={
+            "measured_on": "2026-09-01",
+            "thigh_right_cm": 58.5,
+            "thigh_left_cm": 57,
+            "calf_right_cm": 38.5,
+            "calf_left_cm": 38,
+        },
+    )
+
+    assert response.status_code == 201
+    body = response.json()
+    assert body["thigh_right_cm"] == 58.5
+    assert body["thigh_left_cm"] == 57
+    assert body["calf_right_cm"] == 38.5
+    assert body["calf_left_cm"] == 38
 
 
 def test_an_entry_with_no_zone_at_all_is_refused(

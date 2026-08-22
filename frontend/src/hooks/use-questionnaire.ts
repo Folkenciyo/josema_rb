@@ -4,7 +4,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import * as questionnaireApi from "@/lib/api/questionnaire";
 import { queryKeys } from "@/lib/query/keys";
-import type { QuestionInput } from "@/types/questionnaire";
+import type {
+  ClientProfileInput,
+  QuestionInput,
+} from "@/types/questionnaire";
 
 export function useQuestionnaire() {
   return useQuery({
@@ -49,8 +52,13 @@ export function useSubmitPortalQuestionnaire(token: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (answers: { question_id: string; answer: string | null }[]) =>
-      questionnaireApi.submitPortalQuestionnaire(token, answers),
+    mutationFn: ({
+      answers,
+      profile,
+    }: {
+      answers: { question_id: string; answer: string | null }[];
+      profile: ClientProfileInput;
+    }) => questionnaireApi.submitPortalQuestionnaire(token, answers, profile),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["portal", token] });
     },
