@@ -19,7 +19,7 @@ function isBlank(value: string): boolean {
   return value.trim() === "";
 }
 
-/** Blank is the normal case: nobody puts the tape round all nine spots. */
+/** Blank is the normal case: nobody puts the tape round all eleven spots. */
 const zoneField = z
   .string()
   .refine(
@@ -39,8 +39,8 @@ export const bodyMeasurementFormSchema = z
     notes: z.string(),
     ...zoneFields,
   })
-  // A date and nine blanks says nothing, and would still use up the one entry
-  // that day allows.
+  // A date and no reading at all says nothing, and would still use up the one
+  // entry that day allows.
   .refine((values) => BODY_ZONE_KEYS.some((key) => !isBlank(values[key])), {
     message: "Apunta al menos una medida",
     path: ["measured_on"],

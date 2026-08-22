@@ -8,8 +8,10 @@ export const BODY_ZONE_LABELS: Record<BodyZoneKey, string> = {
   forearm_cm: "Antebrazo",
   waist_cm: "Cintura",
   hip_cm: "Cadera",
-  thigh_cm: "Muslo",
-  calf_cm: "Gemelo",
+  thigh_right_cm: "Muslo derecho",
+  thigh_left_cm: "Muslo izquierdo",
+  calf_right_cm: "Gemelo derecho",
+  calf_left_cm: "Gemelo izquierdo",
 };
 
 export const BODY_ZONES = BODY_ZONE_KEYS.map((key) => ({

@@ -59,6 +59,6 @@ describe("summarizeZone", () => {
   });
 
   it("copes with a zone nobody ever measured", () => {
-    expect(summarizeZone(READINGS, "calf_cm").latest).toBeNull();
+    expect(summarizeZone(READINGS, "calf_left_cm").latest).toBeNull();
   });
 });

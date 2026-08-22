@@ -38,8 +38,10 @@ ZONE_LABELS_ES: dict[str, str] = {
     "forearm_cm": "Antebrazo",
     "waist_cm": "Cintura",
     "hip_cm": "Cadera",
-    "thigh_cm": "Muslo",
-    "calf_cm": "Gemelo",
+    "thigh_right_cm": "Muslo derecho",
+    "thigh_left_cm": "Muslo izquierdo",
+    "calf_right_cm": "Gemelo derecho",
+    "calf_left_cm": "Gemelo izquierdo",
 }
 
 

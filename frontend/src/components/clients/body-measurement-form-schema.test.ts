@@ -40,7 +40,7 @@ describe("formValuesToBodyMeasurementInput", () => {
     const input = formValuesToBodyMeasurementInput(form({ waist_cm: "86,5" }));
 
     expect(input.chest_cm).toBeNull();
-    expect(input.calf_cm).toBeNull();
+    expect(input.calf_left_cm).toBeNull();
   });
 
   it("defaults to today and drops an empty note", () => {

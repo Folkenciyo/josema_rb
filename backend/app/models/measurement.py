@@ -44,7 +44,7 @@ class ClientMeasurement(Base, TimestampMixin):
 
 
 # The tape-measure spots, in the order the forms and the documents show them:
-# top to bottom, and the right arm before the left one.
+# top to bottom, and the right side before the left one.
 BODY_ZONES = (
     "neck_cm",
     "chest_cm",
@@ -53,14 +53,16 @@ BODY_ZONES = (
     "forearm_cm",
     "waist_cm",
     "hip_cm",
-    "thigh_cm",
-    "calf_cm",
+    "thigh_right_cm",
+    "thigh_left_cm",
+    "calf_right_cm",
+    "calf_left_cm",
 )
 
 
 def _zone() -> Mapped[Decimal | None]:
     """One tape reading in centimetres, to one decimal. Blank is the normal case:
-    nobody measures all nine spots every time."""
+    nobody measures all eleven spots every time."""
     return mapped_column(Numeric(4, 1))
 
 
@@ -97,8 +99,10 @@ class ClientBodyMeasurement(Base, TimestampMixin):
     forearm_cm: Mapped[Decimal | None] = _zone()
     waist_cm: Mapped[Decimal | None] = _zone()
     hip_cm: Mapped[Decimal | None] = _zone()
-    thigh_cm: Mapped[Decimal | None] = _zone()
-    calf_cm: Mapped[Decimal | None] = _zone()
+    thigh_right_cm: Mapped[Decimal | None] = _zone()
+    thigh_left_cm: Mapped[Decimal | None] = _zone()
+    calf_right_cm: Mapped[Decimal | None] = _zone()
+    calf_left_cm: Mapped[Decimal | None] = _zone()
 
     # Same split as the weigh-in: `notes` is the trainer's and never travels to
     # the client's phone, `client_notes` is what the client wrote themselves.
