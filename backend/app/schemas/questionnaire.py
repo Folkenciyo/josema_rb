@@ -4,6 +4,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 
 from app.models.questionnaire import QuestionKind
+from app.schemas.profile import ClientProfileIn, ClientProfileOut
 
 
 class QuestionIn(BaseModel):
@@ -48,6 +49,9 @@ class AnswerIn(BaseModel):
 
 class SubmitAnswersRequest(BaseModel):
     answers: list[AnswerIn] = []
+    # The block above the questions, always sent whole: the client confirms
+    # their file every time they save, corrections included.
+    profile: ClientProfileIn = ClientProfileIn()
 
 
 class AnswerOut(BaseModel):
@@ -79,6 +83,9 @@ class PortalQuestionnaireOut(BaseModel):
     # Shown above the questions, every time: it is a welcome, not an instruction
     # that stops being true once answered.
     intro: str | None
+    # The file fields the client fills in themselves, as they stand now, so the
+    # form opens with whatever the trainer already knew.
+    profile: ClientProfileOut
     questions: list[PortalQuestionOut]
     # Null while the client has not answered a single question.
     completed_at: datetime | None

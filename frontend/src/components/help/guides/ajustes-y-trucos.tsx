@@ -34,6 +34,13 @@ export function AjustesYTrucos() {
           <strong>Las preguntas las escribes tú.</strong> No hay una lista
           cerrada: pones las que necesites, en el orden que quieras.
         </P>
+        <Note>
+          Encima de tus preguntas, el cliente encuentra siempre el bloque{" "}
+          <Term>Tus datos</Term>: email, teléfono, fecha de nacimiento, sexo y
+          altura. Son <strong>obligatorios</strong> y no se configuran aquí; al
+          guardar, se escriben solos en su ficha. Si ya habías apuntado alguno
+          tú, el cliente lo ve escrito y solo lo corrige si hace falta.
+        </Note>
         <Steps>
           <Step title="Escribe la introducción">
             Unos párrafos que el cliente lee <strong>encima</strong> de las

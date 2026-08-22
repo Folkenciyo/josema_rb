@@ -277,7 +277,7 @@ def submit_portal_questionnaire(
     weigh_in_limiter.record_attempt(token)
 
     return questionnaire_service.submit_answers(
-        db, _trainer_of(db, client), client, payload.answers
+        db, _trainer_of(db, client), client, payload.answers, payload.profile
     )
 
 

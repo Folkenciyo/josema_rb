@@ -78,8 +78,8 @@ export function PortalDelCliente() {
             la gráfica y el historial de cada uno.
           </li>
           <li>
-            <strong>Ficha</strong> — el cuestionario inicial y el permiso para
-            guardar sus fotos.
+            <strong>Ficha</strong> — sus datos, el cuestionario inicial y el
+            permiso para guardar sus fotos.
           </li>
         </Bullets>
         <P>
@@ -104,7 +104,7 @@ export function PortalDelCliente() {
             uno nuevo.
           </li>
           <li>
-            <strong>Sus medidas de hoy.</strong> Las nueve zonas, las que quiera
+            <strong>Sus medidas de hoy.</strong> Las once zonas, las que quiera
             de una vez. Misma regla que el peso: una toma por día y la fecha la
             pone el servidor. Guardar una zona suelta se suma a la toma del día,
             no borra las demás.
@@ -114,8 +114,9 @@ export function PortalDelCliente() {
             una, desde el modo guiado.
           </li>
           <li>
-            <strong>El cuestionario inicial</strong>, y el permiso sobre sus
-            fotos.
+            <strong>Sus datos y el cuestionario inicial.</strong> Email,
+            teléfono, nacimiento, sexo y altura son obligatorios y, al enviar,
+            rellenan su ficha sin que tú los teclees.
           </li>
         </Bullets>
         <Note>

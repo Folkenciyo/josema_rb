@@ -43,8 +43,28 @@ export interface PortalQuestion extends Question {
   answer: string | null;
 }
 
+/** The five file fields the client fills in themselves, as the file has them. */
+export interface ClientProfile {
+  email: string | null;
+  phone: string | null;
+  birth_date: string | null;
+  sex: string | null;
+  height_cm: number | null;
+}
+
+/** The same five on the way back, once the client has filled every one in. */
+export interface ClientProfileInput {
+  email: string;
+  phone: string;
+  birth_date: string;
+  sex: string;
+  height_cm: number | null;
+}
+
 export interface PortalQuestionnaire {
   intro: string | null;
+  /** Shown above the questions and required: the trainer works from these. */
+  profile: ClientProfile;
   questions: PortalQuestion[];
   completed_at: string | null;
 }
