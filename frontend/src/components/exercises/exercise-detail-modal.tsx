@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 
-import { useDeleteExercise } from "@/hooks/use-exercises";
+import { useDeleteExercise, useSetExerciseHidden } from "@/hooks/use-exercises";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
-import { isCustomExercise, type Exercise } from "@/types/exercise";
+import { canDeleteExercise, type Exercise } from "@/types/exercise";
 import { ExerciseImage } from "./exercise-image";
 
 interface ExerciseDetailModalProps {
@@ -46,12 +46,20 @@ export function ExerciseDetailModal({
   onClose,
 }: ExerciseDetailModalProps) {
   const deleteExercise = useDeleteExercise();
-  const isCustom = isCustomExercise(exercise);
+  const setHidden = useSetExerciseHidden();
+  const canDelete = canDeleteExercise(exercise);
 
   const handleDelete = () => {
     if (window.confirm(`¿Eliminar el ejercicio "${exercise.name_es}"?`)) {
       deleteExercise.mutate(exercise.id, { onSuccess: onClose });
     }
+  };
+
+  const handleHide = () => {
+    setHidden.mutate(
+      { exerciseId: exercise.id, hidden: !exercise.is_hidden },
+      { onSuccess: onClose },
+    );
   };
 
   return (
@@ -113,10 +121,10 @@ export function ExerciseDetailModal({
           </div>
         )}
 
-        <ErrorMessage error={deleteExercise.error} />
+        <ErrorMessage error={deleteExercise.error ?? setHidden.error} />
 
-        {isCustom ? (
-          <div className="flex justify-end gap-2 border-t border-slate-100 pt-4">
+        <div className="flex flex-wrap items-center justify-end gap-2 border-t border-slate-100 pt-4">
+          {canDelete ? (
             <Button
               variant="danger"
               onClick={handleDelete}
@@ -125,16 +133,43 @@ export function ExerciseDetailModal({
               <Trash2 className="size-4" />
               Eliminar
             </Button>
-            <Link href={`/exercises/${exercise.id}/edit`}>
-              <Button variant="secondary">
-                <Pencil className="size-4" />
-                Editar
-              </Button>
-            </Link>
-          </div>
-        ) : (
-          <p className="border-t border-slate-100 pt-4 text-xs text-slate-500">
-            Ejercicio de la librería importada: solo lectura.
+          ) : (
+            <Button
+              variant="secondary"
+              onClick={handleHide}
+              loading={setHidden.isPending}
+              title={
+                exercise.is_hidden
+                  ? "Vuelve al buscador y al selector de rutinas"
+                  : "Lo saca del buscador; las rutinas que ya lo usan no cambian"
+              }
+            >
+              {exercise.is_hidden ? (
+                <>
+                  <Eye className="size-4" />
+                  Mostrar
+                </>
+              ) : (
+                <>
+                  <EyeOff className="size-4" />
+                  Ocultar
+                </>
+              )}
+            </Button>
+          )}
+
+          <Link href={`/exercises/${exercise.id}/edit`}>
+            <Button variant="secondary">
+              <Pencil className="size-4" />
+              Editar
+            </Button>
+          </Link>
+        </div>
+
+        {exercise.created_by_trainer_id === null && (
+          <p className="text-xs text-slate-500">
+            Viene de la librería importada. Si lo editas pasa a ser tuyo y deja
+            de actualizarse con el catálogo.
           </p>
         )}
       </div>

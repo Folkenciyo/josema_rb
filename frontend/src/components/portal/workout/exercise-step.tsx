@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Plus, Trash2 } from "lucide-react";
+import { Check, Dumbbell, Plus, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -140,13 +140,18 @@ export function ExerciseStep({
     <Card className="overflow-hidden">
       <div className="flex gap-3 border-b border-slate-200 p-4">
         <div className="size-16 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
-          {exercise.imagePath && (
+          {exercise.imagePath ? (
             // eslint-disable-next-line @next/next/no-img-element -- static mount, no loader needed
             <img
               src={exerciseImageUrl(exercise.imagePath)}
               alt={exercise.name}
               className="size-full object-cover"
             />
+          ) : (
+            // Part of the catalogue has no photo; an empty box reads as broken.
+            <span className="flex size-full items-center justify-center text-slate-300">
+              <Dumbbell className="size-7" />
+            </span>
           )}
         </div>
         <div className="min-w-0">

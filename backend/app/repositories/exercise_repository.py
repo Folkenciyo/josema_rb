@@ -1,9 +1,11 @@
-from typing import Any
+from typing import Any, Literal
 
 from sqlalchemy import func, select, union
 from sqlalchemy.orm import Session
 
 from app.models import Exercise
+
+Visibility = Literal["visible", "hidden", "all"]
 
 
 def list_exercises(
@@ -14,8 +16,14 @@ def list_exercises(
     category: str | None = None,
     level: str | None = None,
     search: str | None = None,
+    visibility: Visibility = "visible",
 ) -> list[Exercise]:
     query = db.query(Exercise)
+    # Hidden exercises are a separate shelf, not a filter to combine: asking for
+    # them returns those and only those, which is how they get restored. "all"
+    # is for whoever needs to name an exercise a routine already uses.
+    if visibility != "all":
+        query = query.filter(Exercise.is_hidden.is_(visibility == "hidden"))
     if equipment:
         query = query.filter(Exercise.equipment_es == equipment)
     if category:
@@ -57,17 +65,24 @@ def delete(db: Session, exercise: Exercise) -> None:
 
 
 def _distinct_column(db: Session, column: Any) -> list[str]:
-    rows = db.query(column).filter(column.isnot(None)).distinct().order_by(column).all()
+    rows = (
+        db.query(column)
+        .filter(column.isnot(None), Exercise.is_hidden.is_(False))
+        .distinct()
+        .order_by(column)
+        .all()
+    )
     return [row[0] for row in rows]
 
 
 def distinct_filter_values(db: Session) -> dict[str, list[str]]:
+    visible = Exercise.is_hidden.is_(False)
     primary = select(
         func.jsonb_array_elements_text(Exercise.primary_muscles_es).label("muscle")
-    )
+    ).where(visible)
     secondary = select(
         func.jsonb_array_elements_text(Exercise.secondary_muscles_es).label("muscle")
-    )
+    ).where(visible)
     muscles_subquery = union(primary, secondary).subquery()
     muscles = [
         row[0]

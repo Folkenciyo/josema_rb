@@ -31,7 +31,12 @@ def seed_file(path: Path, source: str) -> int:
             stmt = insert(Exercise).values(**ex, source=source)
             update_columns = {col: stmt.excluded[col] for col in ex if col != "id"}
             stmt = stmt.on_conflict_do_update(
-                index_elements=[Exercise.id], set_=update_columns
+                index_elements=[Exercise.id],
+                set_=update_columns,
+                # An exercise the trainer has edited is his: he rewrote the
+                # wording, or photographed it at his own gym. Seeding again must
+                # not write the catalogue's version back over it.
+                where=Exercise.created_by_trainer_id.is_(None),
             )
             db.execute(stmt)
         db.commit()

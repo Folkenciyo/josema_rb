@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.models import Exercise, Trainer
 from app.repositories import exercise_repository
+from app.repositories.exercise_repository import Visibility
 
 STATIC_ROOT = Path(__file__).resolve().parent.parent / "static" / "exercise-images"
 CUSTOM_IMAGES_ROOT = STATIC_ROOT / "custom"
@@ -24,6 +25,7 @@ def list_exercises(
     category: str | None = None,
     level: str | None = None,
     search: str | None = None,
+    visibility: Visibility = "visible",
 ) -> list[Exercise]:
     return exercise_repository.list_exercises(
         db,
@@ -32,6 +34,7 @@ def list_exercises(
         category=category,
         level=level,
         search=search,
+        visibility=visibility,
     )
 
 
@@ -135,14 +138,16 @@ async def create_exercise(
     return exercise_repository.create(db, exercise)
 
 
-def _ensure_owned(exercise: Exercise, trainer: Trainer) -> None:
-    if (
-        exercise.created_by_trainer_id is None
-        or exercise.created_by_trainer_id != trainer.id
-    ):
+def _ensure_deletable(exercise: Exercise, trainer: Trainer) -> None:
+    """Only an exercise born here can be deleted.
+
+    An imported one would come back on the next seed run, so it is hidden
+    instead — including one the trainer has since taken over.
+    """
+    if exercise.source != "trainer" or exercise.created_by_trainer_id != trainer.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only trainer-created exercises can be modified",
+            detail="Imported exercises are hidden, not deleted",
         )
 
 
@@ -155,15 +160,21 @@ async def update_exercise(
     images: list[UploadFile] | None,
 ) -> Exercise:
     exercise = get_exercise(db, exercise_id)
-    _ensure_owned(exercise, trainer)
 
     if images:
         updates["images"] = await _save_images(exercise_id, images)
+
+    # Editing an imported exercise takes it over: from here on it is the
+    # trainer's copy, and the seed leaves it alone instead of writing his
+    # wording — or the photo he took at his own gym — back over it.
+    is_content_edit = any(field != "is_hidden" for field in updates)
+    if is_content_edit and exercise.created_by_trainer_id is None:
+        updates["created_by_trainer_id"] = trainer.id
 
     return exercise_repository.update(db, exercise, updates)
 
 
 def delete_exercise(db: Session, trainer: Trainer, exercise_id: str) -> None:
     exercise = get_exercise(db, exercise_id)
-    _ensure_owned(exercise, trainer)
+    _ensure_deletable(exercise, trainer)
     exercise_repository.delete(db, exercise)

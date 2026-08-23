@@ -85,6 +85,8 @@ describe("exerciseToFormValues", () => {
       instructions_es: ["Paso 1", "Paso 2"],
       images: [],
       created_by_trainer_id: "t1",
+      source: "trainer",
+      is_hidden: false,
     } satisfies Exercise;
 
     expect(exerciseToFormValues(exercise)).toMatchObject({

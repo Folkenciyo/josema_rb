@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Dumbbell } from "lucide-react";
 
 import { usePortalTrainingPlan } from "@/hooks/use-portal";
 import { Card } from "@/components/ui/card";
@@ -25,13 +26,18 @@ function ExerciseRow({ exercise }: { exercise: PortalExercise }) {
   return (
     <li className="flex gap-3 px-4 py-3">
       <div className="size-14 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
-        {exercise.image_path && (
+        {exercise.image_path ? (
           // eslint-disable-next-line @next/next/no-img-element -- static mount, no loader needed
           <img
             src={exerciseImageUrl(exercise.image_path)}
             alt={exercise.name_es}
             className="size-full object-cover"
           />
+        ) : (
+          // Part of the catalogue has no photo; an empty box reads as broken.
+          <span className="flex size-full items-center justify-center text-slate-300">
+            <Dumbbell className="size-6" />
+          </span>
         )}
       </div>
       <div className="min-w-0">

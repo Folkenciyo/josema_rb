@@ -27,11 +27,14 @@ export function useExercise(exerciseId: string | null) {
 /**
  * Plan rows only store `exercise_id`, so the builder needs the whole library indexed
  * by id to render names and images. One cached request beats one per row.
+ *
+ * Hidden exercises are in there too: hiding one takes it out of the search, not
+ * out of the routines already using it, which would otherwise show a raw id.
  */
 export function useExerciseMap() {
   const { data, isPending } = useQuery({
     queryKey: [EXERCISES_KEY, "all"],
-    queryFn: () => exercisesApi.listExercises(),
+    queryFn: () => exercisesApi.listExercises({ visibility: "all" }),
     staleTime: 10 * 60 * 1000,
   });
 
@@ -69,6 +72,23 @@ export function useUpdateExercise(exerciseId: string) {
   return useMutation({
     mutationFn: (input: Partial<ExerciseInput>) =>
       exercisesApi.updateExercise(exerciseId, input),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: [EXERCISES_KEY] });
+    },
+  });
+}
+
+export function useSetExerciseHidden() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      exerciseId,
+      hidden,
+    }: {
+      exerciseId: string;
+      hidden: boolean;
+    }) => exercisesApi.setExerciseHidden(exerciseId, hidden),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: [EXERCISES_KEY] });
     },

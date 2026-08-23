@@ -16,6 +16,9 @@ class ExerciseOut(BaseModel):
     instructions_es: list[str]
     images: list[str]
     created_by_trainer_id: uuid.UUID | None
+    # Where it came from: "trainer" is one written here, the rest are imported.
+    source: str
+    is_hidden: bool
 
     model_config = {"from_attributes": True}
 
