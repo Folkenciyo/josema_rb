@@ -4,6 +4,7 @@ import type {
   TrainingWeek,
   TrainingDayExercise,
 } from "@/types/training-plan";
+import { toSupersetBlocks, type SupersetBlock } from "./supersets";
 
 /** Local-only id: keeps React keys and drag-and-drop stable before the row is saved. */
 export interface ExerciseDraft {
@@ -107,6 +108,26 @@ function mapDay(
   );
 }
 
+function nextSupersetGroup(exercises: ExerciseDraft[]): number {
+  return (
+    exercises.reduce((max, exercise) => Math.max(max, exercise.superset_group ?? 0), 0) +
+    1
+  );
+}
+
+/** A block needs two exercises: whatever is left alone goes back to standing on its own. */
+function dropLoneGroups(exercises: ExerciseDraft[]): ExerciseDraft[] {
+  return toSupersetBlocks(exercises).flatMap((block) =>
+    block.letter === null
+      ? block.exercises.map((exercise) =>
+          exercise.superset_group === null
+            ? exercise
+            : { ...exercise, superset_group: null },
+        )
+      : block.exercises,
+  );
+}
+
 export function addExercises(
   draft: WeekDraft,
   day: DayOfWeek,
@@ -118,13 +139,47 @@ export function addExercises(
   ]);
 }
 
+/** A double exercise: the picked ones go in chained, each with its own numbers. */
+export function addSupersetExercises(
+  draft: WeekDraft,
+  day: DayOfWeek,
+  exerciseIds: string[],
+): WeekDraft {
+  return mapDay(draft, day, (exercises) => {
+    const group = nextSupersetGroup(exercises);
+
+    return [
+      ...exercises,
+      ...exerciseIds.map((exerciseId) => ({
+        ...createExerciseDraft(exerciseId),
+        superset_group: group,
+      })),
+    ];
+  });
+}
+
+/** Breaks the block up: its exercises stay, now each on its own. */
+export function ungroupSuperset(
+  draft: WeekDraft,
+  day: DayOfWeek,
+  group: number,
+): WeekDraft {
+  return mapDay(draft, day, (exercises) =>
+    exercises.map((exercise) =>
+      exercise.superset_group === group
+        ? { ...exercise, superset_group: null }
+        : exercise,
+    ),
+  );
+}
+
 export function removeExercise(
   draft: WeekDraft,
   day: DayOfWeek,
   key: string,
 ): WeekDraft {
   return mapDay(draft, day, (exercises) =>
-    exercises.filter((exercise) => exercise.key !== key),
+    dropLoneGroups(exercises.filter((exercise) => exercise.key !== key)),
   );
 }
 
@@ -141,27 +196,37 @@ export function updateExercise(
   );
 }
 
-export function moveExercise(
+/** The day as the editor draws it: lone exercises and superset blocks, in order. */
+export function dayBlocks(day: DayDraft): SupersetBlock<ExerciseDraft>[] {
+  return toSupersetBlocks(day.exercises);
+}
+
+/**
+ * Reordering moves whole blocks: dragging one half of a superset out of its
+ * block would leave the other half chained to nothing.
+ */
+export function moveBlock(
   draft: WeekDraft,
   day: DayOfWeek,
   fromIndex: number,
   toIndex: number,
 ): WeekDraft {
   return mapDay(draft, day, (exercises) => {
+    const blocks = toSupersetBlocks(exercises);
     if (
       fromIndex === toIndex ||
       fromIndex < 0 ||
       toIndex < 0 ||
-      fromIndex >= exercises.length ||
-      toIndex >= exercises.length
+      fromIndex >= blocks.length ||
+      toIndex >= blocks.length
     ) {
       return exercises;
     }
 
-    const reordered = exercises.slice();
+    const reordered = blocks.slice();
     const [moved] = reordered.splice(fromIndex, 1);
     reordered.splice(toIndex, 0, moved);
-    return reordered;
+    return reordered.flatMap((block) => block.exercises);
   });
 }
 

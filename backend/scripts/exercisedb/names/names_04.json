@@ -1,0 +1,602 @@
+[
+  {
+    "id": "1268",
+    "name_en": "cable press on exercise ball",
+    "equipment": "cable",
+    "target": "pectorals"
+  },
+  {
+    "id": "0196",
+    "name_en": "cable pull through (with rope)",
+    "equipment": "cable",
+    "target": "glutes"
+  },
+  {
+    "id": "0198",
+    "name_en": "cable pulldown",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "0197",
+    "name_en": "cable pulldown (pro lat bar)",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "1638",
+    "name_en": "cable pulldown bicep curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "0201",
+    "name_en": "cable pushdown",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "0199",
+    "name_en": "cable pushdown (straight arm)",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "0200",
+    "name_en": "cable pushdown (with rope attachment)",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "0202",
+    "name_en": "cable rear delt row (stirrups)",
+    "equipment": "cable",
+    "target": "delts"
+  },
+  {
+    "id": "0203",
+    "name_en": "cable rear delt row (with rope)",
+    "equipment": "cable",
+    "target": "delts"
+  },
+  {
+    "id": "0204",
+    "name_en": "cable rear drive",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "0205",
+    "name_en": "cable rear pulldown",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "0206",
+    "name_en": "cable reverse curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "2406",
+    "name_en": "cable reverse grip triceps pushdown (sz-bar) (with arm blaster)",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "1413",
+    "name_en": "cable reverse one arm curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "0209",
+    "name_en": "cable reverse preacher curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "0210",
+    "name_en": "cable reverse wrist curl",
+    "equipment": "cable",
+    "target": "forearms"
+  },
+  {
+    "id": "0207",
+    "name_en": "cable reverse-grip pushdown",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "0208",
+    "name_en": "cable reverse-grip straight back seated high row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "1320",
+    "name_en": "cable rope crossover seated row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "1321",
+    "name_en": "cable rope elevated seated row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "1322",
+    "name_en": "cable rope extension incline bench row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "1639",
+    "name_en": "cable rope hammer preacher curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "1724",
+    "name_en": "cable rope high pulley overhead tricep extension",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "1725",
+    "name_en": "cable rope incline tricep extension",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "1726",
+    "name_en": "cable rope lying on floor tricep extension",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "1640",
+    "name_en": "cable rope one arm hammer preacher curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "1323",
+    "name_en": "cable rope seated row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "0211",
+    "name_en": "cable russian twists (on stability ball)",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "2144",
+    "name_en": "cable seated chest press",
+    "equipment": "cable",
+    "target": "pectorals"
+  },
+  {
+    "id": "1641",
+    "name_en": "cable seated curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "0213",
+    "name_en": "cable seated high row (v-bar)",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "0214",
+    "name_en": "cable seated one arm alternate row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "1642",
+    "name_en": "cable seated one arm concentration curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "1643",
+    "name_en": "cable seated overhead curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "0215",
+    "name_en": "cable seated rear lateral raise",
+    "equipment": "cable",
+    "target": "delts"
+  },
+  {
+    "id": "0861",
+    "name_en": "cable seated row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "0216",
+    "name_en": "cable seated shoulder internal rotation",
+    "equipment": "cable",
+    "target": "delts"
+  },
+  {
+    "id": "2399",
+    "name_en": "cable seated twist",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "0218",
+    "name_en": "cable seated wide-grip row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "0220",
+    "name_en": "cable shrug",
+    "equipment": "cable",
+    "target": "traps"
+  },
+  {
+    "id": "0222",
+    "name_en": "cable side bend",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "0221",
+    "name_en": "cable side bend crunch (bosu ball)",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "0223",
+    "name_en": "cable side crunch",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "1717",
+    "name_en": "cable squat row (with rope attachment)",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "1644",
+    "name_en": "cable squatting curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "0224",
+    "name_en": "cable standing back wrist curl",
+    "equipment": "cable",
+    "target": "forearms"
+  },
+  {
+    "id": "1375",
+    "name_en": "cable standing calf raise",
+    "equipment": "cable",
+    "target": "calves"
+  },
+  {
+    "id": "0225",
+    "name_en": "cable standing cross-over high reverse fly",
+    "equipment": "cable",
+    "target": "delts"
+  },
+  {
+    "id": "0226",
+    "name_en": "cable standing crunch",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "0874",
+    "name_en": "cable standing crunch (with rope attachment)",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "0227",
+    "name_en": "cable standing fly",
+    "equipment": "cable",
+    "target": "pectorals"
+  },
+  {
+    "id": "0228",
+    "name_en": "cable standing hip extension",
+    "equipment": "cable",
+    "target": "glutes"
+  },
+  {
+    "id": "0229",
+    "name_en": "cable standing inner curl",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "0230",
+    "name_en": "cable standing lift",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "0231",
+    "name_en": "cable standing one arm triceps extension",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "1376",
+    "name_en": "cable standing one leg calf raise",
+    "equipment": "cable",
+    "target": "calves"
+  },
+  {
+    "id": "0232",
+    "name_en": "cable standing pulldown (with rope)",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "0233",
+    "name_en": "cable standing rear delt row (with rope)",
+    "equipment": "cable",
+    "target": "delts"
+  },
+  {
+    "id": "1727",
+    "name_en": "cable standing reverse grip one arm overhead tricep extension",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "0234",
+    "name_en": "cable standing row (v-bar)",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "0235",
+    "name_en": "cable standing shoulder external rotation",
+    "equipment": "cable",
+    "target": "delts"
+  },
+  {
+    "id": "0236",
+    "name_en": "cable standing twist row (v-bar)",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "1269",
+    "name_en": "cable standing up straight crossovers",
+    "equipment": "cable",
+    "target": "pectorals"
+  },
+  {
+    "id": "0238",
+    "name_en": "cable straight arm pulldown",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "0237",
+    "name_en": "cable straight arm pulldown (with rope)",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "0239",
+    "name_en": "cable straight back seated row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "0240",
+    "name_en": "cable supine reverse fly",
+    "equipment": "cable",
+    "target": "delts"
+  },
+  {
+    "id": "2464",
+    "name_en": "cable thibaudeau kayak row",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "0241",
+    "name_en": "cable triceps pushdown (v-bar)",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "2405",
+    "name_en": "cable triceps pushdown (v-bar) (with arm blaster)",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "0242",
+    "name_en": "cable tuck reverse crunch",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "0243",
+    "name_en": "cable twist",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "0862",
+    "name_en": "cable twist (up-down)",
+    "equipment": "cable",
+    "target": "abs"
+  },
+  {
+    "id": "0244",
+    "name_en": "cable twisting pull",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "1645",
+    "name_en": "cable two arm curl on incline bench",
+    "equipment": "cable",
+    "target": "biceps"
+  },
+  {
+    "id": "1728",
+    "name_en": "cable two arm tricep kickback",
+    "equipment": "cable",
+    "target": "triceps"
+  },
+  {
+    "id": "0245",
+    "name_en": "cable underhand pulldown",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "1270",
+    "name_en": "cable upper chest crossovers",
+    "equipment": "cable",
+    "target": "pectorals"
+  },
+  {
+    "id": "1324",
+    "name_en": "cable upper row",
+    "equipment": "cable",
+    "target": "upper back"
+  },
+  {
+    "id": "0246",
+    "name_en": "cable upright row",
+    "equipment": "cable",
+    "target": "delts"
+  },
+  {
+    "id": "1325",
+    "name_en": "cable wide grip rear pulldown behind neck",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "1407",
+    "name_en": "calf push stretch with hands against wall",
+    "equipment": "body weight",
+    "target": "calves"
+  },
+  {
+    "id": "1377",
+    "name_en": "calf stretch with hands against wall",
+    "equipment": "body weight",
+    "target": "calves"
+  },
+  {
+    "id": "1378",
+    "name_en": "calf stretch with rope",
+    "equipment": "rope",
+    "target": "calves"
+  },
+  {
+    "id": "0248",
+    "name_en": "cambered bar lying row",
+    "equipment": "barbell",
+    "target": "upper back"
+  },
+  {
+    "id": "2963",
+    "name_en": "captains chair straight leg raise",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0251",
+    "name_en": "chest dip",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "1430",
+    "name_en": "chest dip (on dip-pull-up cage)",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "2462",
+    "name_en": "chest dip on straight bar",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "1272",
+    "name_en": "chest stretch with exercise ball",
+    "equipment": "stability ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "3216",
+    "name_en": "chest tap push-up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "0253",
+    "name_en": "chin-ups (narrow parallel grip)",
+    "equipment": "body weight",
+    "target": "upper back"
+  },
+  {
+    "id": "0257",
+    "name_en": "circles knee stretch",
+    "equipment": "body weight",
+    "target": "calves"
+  },
+  {
+    "id": "1273",
+    "name_en": "clap push up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "1327",
+    "name_en": "close grip chin-up",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "0259",
+    "name_en": "close-grip push-up",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "2398",
+    "name_en": "close-grip push-up (on knees)",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "1468",
+    "name_en": "crab twist toe touch",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0271",
+    "name_en": "crunch (on stability ball)",
+    "equipment": "stability ball",
+    "target": "abs"
+  }
+]

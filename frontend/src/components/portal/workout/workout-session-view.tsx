@@ -253,7 +253,8 @@ export function WorkoutSessionView({
     const done = !set?.done;
     setDraft(draftUpdateSet(current, step, setNumber, { done }));
     // Ticking a set off is what starts the rest; unticking a mistake does not.
-    if (done && exercise.restSeconds) {
+    // Nor does the first half of a superset: the rest comes after the second.
+    if (done && exercise.restSeconds && !exercise.chainedTo) {
       setRest({ seconds: exercise.restSeconds, id: Date.now() });
     }
   };

@@ -1,0 +1,602 @@
+[
+  {
+    "id": "3239",
+    "name_en": "kneeling plank tap shoulder",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3211",
+    "name_en": "kneeling push-up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "3288",
+    "name_en": "korean dips",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "3418",
+    "name_en": "l-pull-up",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "3419",
+    "name_en": "l-sit on floor",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0562",
+    "name_en": "landmine 180",
+    "equipment": "barbell",
+    "target": "abs"
+  },
+  {
+    "id": "3237",
+    "name_en": "landmine lateral raise",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "3300",
+    "name_en": "lean planche",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "2271",
+    "name_en": "left hook. boxing",
+    "equipment": "body weight",
+    "target": "delts"
+  },
+  {
+    "id": "0570",
+    "name_en": "leg pull in flat bench",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "2287",
+    "name_en": "lever alternate leg press",
+    "equipment": "leverage machine",
+    "target": "quads"
+  },
+  {
+    "id": "0571",
+    "name_en": "lever alternating narrow grip seated row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "0572",
+    "name_en": "lever assisted chin-up",
+    "equipment": "leverage machine",
+    "target": "lats"
+  },
+  {
+    "id": "0573",
+    "name_en": "lever back extension",
+    "equipment": "leverage machine",
+    "target": "spine"
+  },
+  {
+    "id": "0574",
+    "name_en": "lever bent over row",
+    "equipment": "barbell",
+    "target": "upper back"
+  },
+  {
+    "id": "3200",
+    "name_en": "lever bent-over row with v-bar",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "0575",
+    "name_en": "lever bicep curl",
+    "equipment": "leverage machine",
+    "target": "biceps"
+  },
+  {
+    "id": "2289",
+    "name_en": "lever calf press",
+    "equipment": "leverage machine",
+    "target": "calves"
+  },
+  {
+    "id": "0577",
+    "name_en": "lever chest press",
+    "equipment": "leverage machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "0578",
+    "name_en": "lever deadlift",
+    "equipment": "leverage machine",
+    "target": "glutes"
+  },
+  {
+    "id": "1300",
+    "name_en": "lever decline chest press",
+    "equipment": "leverage machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "1253",
+    "name_en": "lever donkey calf raise",
+    "equipment": "leverage machine",
+    "target": "calves"
+  },
+  {
+    "id": "0579",
+    "name_en": "lever front pulldown",
+    "equipment": "leverage machine",
+    "target": "lats"
+  },
+  {
+    "id": "0580",
+    "name_en": "lever gripless shrug",
+    "equipment": "leverage machine",
+    "target": "traps"
+  },
+  {
+    "id": "2288",
+    "name_en": "lever gripper hands",
+    "equipment": "leverage machine",
+    "target": "forearms"
+  },
+  {
+    "id": "1615",
+    "name_en": "lever hammer grip preacher curl",
+    "equipment": "leverage machine",
+    "target": "biceps"
+  },
+  {
+    "id": "0581",
+    "name_en": "lever high row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "2286",
+    "name_en": "lever hip extension",
+    "equipment": "leverage machine",
+    "target": "glutes"
+  },
+  {
+    "id": "2611",
+    "name_en": "lever horizontal one leg press",
+    "equipment": "leverage machine",
+    "target": "glutes"
+  },
+  {
+    "id": "1299",
+    "name_en": "lever incline chest press",
+    "equipment": "leverage machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "0582",
+    "name_en": "lever kneeling leg curl",
+    "equipment": "leverage machine",
+    "target": "hamstrings"
+  },
+  {
+    "id": "0583",
+    "name_en": "lever kneeling twist",
+    "equipment": "leverage machine",
+    "target": "abs"
+  },
+  {
+    "id": "0584",
+    "name_en": "lever lateral raise",
+    "equipment": "leverage machine",
+    "target": "delts"
+  },
+  {
+    "id": "0585",
+    "name_en": "lever leg extension",
+    "equipment": "leverage machine",
+    "target": "quads"
+  },
+  {
+    "id": "0586",
+    "name_en": "lever lying leg curl",
+    "equipment": "leverage machine",
+    "target": "hamstrings"
+  },
+  {
+    "id": "3195",
+    "name_en": "lever lying two-one leg curl",
+    "equipment": "leverage machine",
+    "target": "hamstrings"
+  },
+  {
+    "id": "0587",
+    "name_en": "lever military press",
+    "equipment": "leverage machine",
+    "target": "delts"
+  },
+  {
+    "id": "0588",
+    "name_en": "lever narrow grip seated row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "0589",
+    "name_en": "lever one arm bent over row",
+    "equipment": "barbell",
+    "target": "upper back"
+  },
+  {
+    "id": "1356",
+    "name_en": "lever one arm lateral high row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "1347",
+    "name_en": "lever one arm lateral wide pulldown",
+    "equipment": "leverage machine",
+    "target": "lats"
+  },
+  {
+    "id": "0590",
+    "name_en": "lever one arm shoulder press",
+    "equipment": "leverage machine",
+    "target": "delts"
+  },
+  {
+    "id": "0591",
+    "name_en": "lever overhand triceps dip",
+    "equipment": "leverage machine",
+    "target": "triceps"
+  },
+  {
+    "id": "0592",
+    "name_en": "lever preacher curl",
+    "equipment": "leverage machine",
+    "target": "biceps"
+  },
+  {
+    "id": "2285",
+    "name_en": "lever pullover",
+    "equipment": "leverage machine",
+    "target": "lats"
+  },
+  {
+    "id": "2736",
+    "name_en": "lever reverse grip lateral pulldown",
+    "equipment": "leverage machine",
+    "target": "lats"
+  },
+  {
+    "id": "1616",
+    "name_en": "lever reverse grip preacher curl",
+    "equipment": "leverage machine",
+    "target": "biceps"
+  },
+  {
+    "id": "1348",
+    "name_en": "lever reverse grip vertical row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "0593",
+    "name_en": "lever reverse hyperextension",
+    "equipment": "leverage machine",
+    "target": "glutes"
+  },
+  {
+    "id": "1349",
+    "name_en": "lever reverse t-bar row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "2315",
+    "name_en": "lever rotary calf",
+    "equipment": "leverage machine",
+    "target": "calves"
+  },
+  {
+    "id": "2335",
+    "name_en": "lever seated calf press",
+    "equipment": "leverage machine",
+    "target": "calves"
+  },
+  {
+    "id": "0594",
+    "name_en": "lever seated calf raise",
+    "equipment": "leverage machine",
+    "target": "calves"
+  },
+  {
+    "id": "1452",
+    "name_en": "lever seated crunch",
+    "equipment": "leverage machine",
+    "target": "abs"
+  },
+  {
+    "id": "0595",
+    "name_en": "lever seated crunch (chest pad)",
+    "equipment": "leverage machine",
+    "target": "abs"
+  },
+  {
+    "id": "1451",
+    "name_en": "lever seated dip",
+    "equipment": "leverage machine",
+    "target": "triceps"
+  },
+  {
+    "id": "0596",
+    "name_en": "lever seated fly",
+    "equipment": "leverage machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "3759",
+    "name_en": "lever seated good morning",
+    "equipment": "leverage machine",
+    "target": "glutes"
+  },
+  {
+    "id": "0597",
+    "name_en": "lever seated hip abduction",
+    "equipment": "leverage machine",
+    "target": "abductors"
+  },
+  {
+    "id": "0598",
+    "name_en": "lever seated hip adduction",
+    "equipment": "leverage machine",
+    "target": "adductors"
+  },
+  {
+    "id": "0599",
+    "name_en": "lever seated leg curl",
+    "equipment": "leverage machine",
+    "target": "hamstrings"
+  },
+  {
+    "id": "0600",
+    "name_en": "lever seated leg raise crunch",
+    "equipment": "leverage machine",
+    "target": "abs"
+  },
+  {
+    "id": "0602",
+    "name_en": "lever seated reverse fly",
+    "equipment": "leverage machine",
+    "target": "delts"
+  },
+  {
+    "id": "0601",
+    "name_en": "lever seated reverse fly (parallel grip)",
+    "equipment": "leverage machine",
+    "target": "delts"
+  },
+  {
+    "id": "1350",
+    "name_en": "lever seated row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "1385",
+    "name_en": "lever seated squat calf raise on leg press machine",
+    "equipment": "leverage machine",
+    "target": "calves"
+  },
+  {
+    "id": "0603",
+    "name_en": "lever shoulder press",
+    "equipment": "leverage machine",
+    "target": "delts"
+  },
+  {
+    "id": "0604",
+    "name_en": "lever shrug",
+    "equipment": "leverage machine",
+    "target": "traps"
+  },
+  {
+    "id": "0605",
+    "name_en": "lever standing calf raise",
+    "equipment": "leverage machine",
+    "target": "calves"
+  },
+  {
+    "id": "3758",
+    "name_en": "lever standing chest press",
+    "equipment": "leverage machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "0606",
+    "name_en": "lever t bar row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "1351",
+    "name_en": "lever t-bar reverse grip row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "0607",
+    "name_en": "lever triceps extension",
+    "equipment": "leverage machine",
+    "target": "triceps"
+  },
+  {
+    "id": "1313",
+    "name_en": "lever unilateral row",
+    "equipment": "leverage machine",
+    "target": "upper back"
+  },
+  {
+    "id": "0609",
+    "name_en": "london bridge",
+    "equipment": "rope",
+    "target": "upper back"
+  },
+  {
+    "id": "3013",
+    "name_en": "low glute bridge on floor",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "3582",
+    "name_en": "lunge with jump",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "1688",
+    "name_en": "lunge with twist",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0613",
+    "name_en": "lying (side) quads stretch",
+    "equipment": "body weight",
+    "target": "quads"
+  },
+  {
+    "id": "2312",
+    "name_en": "lying elbow to knee",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0620",
+    "name_en": "lying leg raise flat bench",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0865",
+    "name_en": "lying leg-hip raise",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1301",
+    "name_en": "machine inner chest press",
+    "equipment": "leverage machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "0624",
+    "name_en": "march sit (wall)",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "1353",
+    "name_en": "medicine ball catch and overhead throw",
+    "equipment": "medicine ball",
+    "target": "lats"
+  },
+  {
+    "id": "1303",
+    "name_en": "medicine ball chest push from 3 point stance",
+    "equipment": "medicine ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "1304",
+    "name_en": "medicine ball chest push multiple response",
+    "equipment": "medicine ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "1305",
+    "name_en": "medicine ball chest push single response",
+    "equipment": "medicine ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "1312",
+    "name_en": "medicine ball chest push with run release",
+    "equipment": "medicine ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "1701",
+    "name_en": "medicine ball close grip push up",
+    "equipment": "medicine ball",
+    "target": "triceps"
+  },
+  {
+    "id": "1354",
+    "name_en": "medicine ball overhead slam",
+    "equipment": "medicine ball",
+    "target": "upper back"
+  },
+  {
+    "id": "1750",
+    "name_en": "medicine ball supine chest throw",
+    "equipment": "medicine ball",
+    "target": "triceps"
+  },
+  {
+    "id": "0627",
+    "name_en": "mixed grip chin-up",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "3217",
+    "name_en": "modified hindu push-up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "1421",
+    "name_en": "modified push up to lower arms",
+    "equipment": "body weight",
+    "target": "forearms"
+  },
+  {
+    "id": "0630",
+    "name_en": "mountain climber",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "1401",
+    "name_en": "muscle-up (on vertical bar)",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "2328",
+    "name_en": "narrow push-up on exercise ball",
+    "equipment": "stability ball",
+    "target": "triceps"
+  },
+  {
+    "id": "1403",
+    "name_en": "neck side stretch",
+    "equipment": "body weight",
+    "target": "levator scapulae"
+  },
+  {
+    "id": "0634",
+    "name_en": "negative crunch",
+    "equipment": "body weight",
+    "target": "abs"
+  }
+]

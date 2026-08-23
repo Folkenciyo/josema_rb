@@ -15,36 +15,42 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Plus } from "lucide-react";
+import { Link2, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ExercisePickerDrawer } from "@/components/exercises/exercise-picker-drawer";
-import type { DayDraft, ExerciseDraft } from "@/lib/training/week-draft";
+import { dayBlocks, type DayDraft, type ExerciseDraft } from "@/lib/training/week-draft";
 import { DAY_LABELS } from "@/types/common";
 import type { Exercise } from "@/types/exercise";
-import { TrainingExerciseRow } from "./training-exercise-row";
+import { TrainingBlock } from "./training-block";
+
+type PickerMode = "single" | "superset";
 
 interface TrainingDayEditorProps {
   day: DayDraft;
   exerciseMap: Map<string, Exercise>;
   onAddExercises: (exerciseIds: string[]) => void;
+  onAddSuperset: (exerciseIds: string[]) => void;
   onRemoveExercise: (key: string) => void;
+  onUngroupSuperset: (group: number) => void;
   onUpdateExercise: (
     key: string,
     changes: Partial<Omit<ExerciseDraft, "key">>,
   ) => void;
-  onMoveExercise: (fromIndex: number, toIndex: number) => void;
+  onMoveBlock: (fromIndex: number, toIndex: number) => void;
 }
 
 export function TrainingDayEditor({
   day,
   exerciseMap,
   onAddExercises,
+  onAddSuperset,
   onRemoveExercise,
+  onUngroupSuperset,
   onUpdateExercise,
-  onMoveExercise,
+  onMoveBlock,
 }: TrainingDayEditorProps) {
-  const [isPickerOpen, setPickerOpen] = useState(false);
+  const [pickerMode, setPickerMode] = useState<PickerMode | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -53,15 +59,21 @@ export function TrainingDayEditor({
     }),
   );
 
+  const blocks = dayBlocks(day);
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over || active.id === over.id) {
       return;
     }
 
-    const fromIndex = day.exercises.findIndex((item) => item.key === active.id);
-    const toIndex = day.exercises.findIndex((item) => item.key === over.id);
-    onMoveExercise(fromIndex, toIndex);
+    const fromIndex = blocks.findIndex(
+      (block) => block.exercises[0].key === active.id,
+    );
+    const toIndex = blocks.findIndex(
+      (block) => block.exercises[0].key === over.id,
+    );
+    onMoveBlock(fromIndex, toIndex);
   };
 
   const dayLabel = DAY_LABELS[day.day_of_week];
@@ -77,34 +89,46 @@ export function TrainingDayEditor({
             </span>
           )}
         </h3>
-        <Button
-          size="sm"
-          variant="secondary"
-          onClick={() => setPickerOpen(true)}
-        >
-          <Plus className="size-4" />
-          Añadir
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => setPickerMode("superset")}
+            title="Dos ejercicios encadenados, sin descanso entre ellos"
+          >
+            <Link2 className="size-4" />
+            Superserie
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => setPickerMode("single")}
+          >
+            <Plus className="size-4" />
+            Añadir
+          </Button>
+        </div>
       </div>
 
-      {day.exercises.length > 0 && (
+      {blocks.length > 0 && (
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={day.exercises.map((item) => item.key)}
+            items={blocks.map((block) => block.exercises[0].key)}
             strategy={verticalListSortingStrategy}
           >
             <ul className="flex flex-col gap-2">
-              {day.exercises.map((draft) => (
-                <TrainingExerciseRow
-                  key={draft.key}
-                  draft={draft}
-                  exercise={exerciseMap.get(draft.exercise_id)}
-                  onChange={(changes) => onUpdateExercise(draft.key, changes)}
-                  onRemove={() => onRemoveExercise(draft.key)}
+              {blocks.map((block) => (
+                <TrainingBlock
+                  key={block.exercises[0].key}
+                  block={block}
+                  exerciseMap={exerciseMap}
+                  onChangeExercise={onUpdateExercise}
+                  onRemoveExercise={onRemoveExercise}
+                  onUngroup={onUngroupSuperset}
                 />
               ))}
             </ul>
@@ -112,11 +136,21 @@ export function TrainingDayEditor({
         </DndContext>
       )}
 
-      {isPickerOpen && (
+      {pickerMode !== null && (
         <ExercisePickerDrawer
-          title={`Añadir ejercicios · ${dayLabel}`}
-          onClose={() => setPickerOpen(false)}
-          onConfirm={onAddExercises}
+          title={
+            pickerMode === "superset"
+              ? `Nueva superserie · ${dayLabel}`
+              : `Añadir ejercicios · ${dayLabel}`
+          }
+          hint={
+            pickerMode === "superset"
+              ? "Elige los ejercicios que se harán encadenados, en el orden en que se hacen."
+              : undefined
+          }
+          minSelection={pickerMode === "superset" ? 2 : 1}
+          onClose={() => setPickerMode(null)}
+          onConfirm={pickerMode === "superset" ? onAddSuperset : onAddExercises}
         />
       )}
     </section>

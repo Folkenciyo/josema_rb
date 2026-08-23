@@ -1,0 +1,602 @@
+[
+  {
+    "id": "0272",
+    "name_en": "crunch (on stability ball, arms straight)",
+    "equipment": "stability ball",
+    "target": "abs"
+  },
+  {
+    "id": "0274",
+    "name_en": "crunch floor",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3016",
+    "name_en": "curl-up",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3769",
+    "name_en": "curtsey squat",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "2331",
+    "name_en": "cycle cross trainer",
+    "equipment": "leverage machine",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "0282",
+    "name_en": "decline sit-up",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1274",
+    "name_en": "deep push up",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0283",
+    "name_en": "diamond push-up",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0284",
+    "name_en": "donkey calf raise",
+    "equipment": "body weight",
+    "target": "calves"
+  },
+  {
+    "id": "1275",
+    "name_en": "drop push up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "0285",
+    "name_en": "dumbbell alternate biceps curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "2403",
+    "name_en": "dumbbell alternate biceps curl (with arm blaster)",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1646",
+    "name_en": "dumbbell alternate hammer preacher curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1647",
+    "name_en": "dumbbell alternate preacher curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1648",
+    "name_en": "dumbbell alternate seated hammer curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0286",
+    "name_en": "dumbbell alternate side press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "1649",
+    "name_en": "dumbbell alternating bicep curl with leg raised on exercise ball",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1650",
+    "name_en": "dumbbell alternating seated bicep curl on exercise ball",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "2137",
+    "name_en": "dumbbell arnold press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0288",
+    "name_en": "dumbbell around pullover",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0290",
+    "name_en": "dumbbell bench seated press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0291",
+    "name_en": "dumbbell bench squat",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0293",
+    "name_en": "dumbbell bent over row",
+    "equipment": "dumbbell",
+    "target": "upper back"
+  },
+  {
+    "id": "1651",
+    "name_en": "dumbbell bicep curl lunge with bowling motion",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1652",
+    "name_en": "dumbbell bicep curl on exercise ball with leg raised",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1653",
+    "name_en": "dumbbell bicep curl with stork stance",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0294",
+    "name_en": "dumbbell biceps curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "2401",
+    "name_en": "dumbbell biceps curl (with arm blaster)",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1654",
+    "name_en": "dumbbell biceps curl reverse",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1655",
+    "name_en": "dumbbell biceps curl squat",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1656",
+    "name_en": "dumbbell biceps curl v sit on bosu ball",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1201",
+    "name_en": "dumbbell burpee",
+    "equipment": "dumbbell",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "1731",
+    "name_en": "dumbbell close grip press",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0297",
+    "name_en": "dumbbell concentration curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "3635",
+    "name_en": "dumbbell contralateral forward lunge",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0298",
+    "name_en": "dumbbell cross body hammer curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0299",
+    "name_en": "dumbbell cuban press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0300",
+    "name_en": "dumbbell deadlift",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0301",
+    "name_en": "dumbbell decline bench press",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0302",
+    "name_en": "dumbbell decline fly",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0303",
+    "name_en": "dumbbell decline hammer press",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1276",
+    "name_en": "dumbbell decline one arm fly",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1617",
+    "name_en": "dumbbell decline one arm hammer press",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0305",
+    "name_en": "dumbbell decline shrug",
+    "equipment": "dumbbell",
+    "target": "traps"
+  },
+  {
+    "id": "0306",
+    "name_en": "dumbbell decline triceps extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0307",
+    "name_en": "dumbbell decline twist fly",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1437",
+    "name_en": "dumbbell finger curls",
+    "equipment": "dumbbell",
+    "target": "forearms"
+  },
+  {
+    "id": "0308",
+    "name_en": "dumbbell fly",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1277",
+    "name_en": "dumbbell fly on exercise ball",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1732",
+    "name_en": "dumbbell forward lunge triceps extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0310",
+    "name_en": "dumbbell front raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0311",
+    "name_en": "dumbbell full can lateral raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "1760",
+    "name_en": "dumbbell goblet squat",
+    "equipment": "dumbbell",
+    "target": "quads"
+  },
+  {
+    "id": "0313",
+    "name_en": "dumbbell hammer curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1659",
+    "name_en": "dumbbell hammer curl on exercise ball",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "2402",
+    "name_en": "dumbbell hammer curls (with arm blaster)",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1664",
+    "name_en": "dumbbell high curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "3545",
+    "name_en": "dumbbell incline alternate press",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0314",
+    "name_en": "dumbbell incline bench press",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0315",
+    "name_en": "dumbbell incline biceps curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0316",
+    "name_en": "dumbbell incline breeding",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0318",
+    "name_en": "dumbbell incline curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0319",
+    "name_en": "dumbbell incline fly",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1278",
+    "name_en": "dumbbell incline fly on exercise ball",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0320",
+    "name_en": "dumbbell incline hammer curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0321",
+    "name_en": "dumbbell incline hammer press",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1618",
+    "name_en": "dumbbell incline hammer press on exercise ball",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0322",
+    "name_en": "dumbbell incline inner biceps curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1279",
+    "name_en": "dumbbell incline one arm fly",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1280",
+    "name_en": "dumbbell incline one arm fly on exercise ball",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1619",
+    "name_en": "dumbbell incline one arm hammer press",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1620",
+    "name_en": "dumbbell incline one arm hammer press on exercise ball",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0323",
+    "name_en": "dumbbell incline one arm lateral raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "1281",
+    "name_en": "dumbbell incline one arm press",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1282",
+    "name_en": "dumbbell incline one arm press on exercise ball",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0324",
+    "name_en": "dumbbell incline palm-in press",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1283",
+    "name_en": "dumbbell incline press on exercise ball",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0325",
+    "name_en": "dumbbell incline raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0326",
+    "name_en": "dumbbell incline rear lateral raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0329",
+    "name_en": "dumbbell incline shrug",
+    "equipment": "dumbbell",
+    "target": "traps"
+  },
+  {
+    "id": "3542",
+    "name_en": "dumbbell incline t-raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0330",
+    "name_en": "dumbbell incline triceps extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0331",
+    "name_en": "dumbbell incline twisted flyes",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1733",
+    "name_en": "dumbbell incline two arm extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "3541",
+    "name_en": "dumbbell incline y-raise",
+    "equipment": "dumbbell",
+    "target": "upper back"
+  },
+  {
+    "id": "0332",
+    "name_en": "dumbbell iron cross",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0333",
+    "name_en": "dumbbell kickback",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1734",
+    "name_en": "dumbbell kickbacks on exercise ball",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1660",
+    "name_en": "dumbbell kneeling bicep curl exercise ball",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0334",
+    "name_en": "dumbbell lateral raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0335",
+    "name_en": "dumbbell lateral to front raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0336",
+    "name_en": "dumbbell lunge",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "1658",
+    "name_en": "dumbbell lunge with bicep curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0337",
+    "name_en": "dumbbell lying extension (across face)",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1729",
+    "name_en": "dumbbell lying alternate extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0338",
+    "name_en": "dumbbell lying elbow press",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0863",
+    "name_en": "dumbbell lying external shoulder rotation",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0339",
+    "name_en": "dumbbell lying femoral",
+    "equipment": "dumbbell",
+    "target": "hamstrings"
+  },
+  {
+    "id": "0340",
+    "name_en": "dumbbell lying hammer press",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "2470",
+    "name_en": "dumbbell lying on floor rear delt raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  }
+]

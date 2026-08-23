@@ -1,0 +1,602 @@
+[
+  {
+    "id": "0033",
+    "name_en": "barbell decline bench press",
+    "equipment": "barbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0034",
+    "name_en": "barbell decline bent arm pullover",
+    "equipment": "barbell",
+    "target": "lats"
+  },
+  {
+    "id": "0035",
+    "name_en": "barbell decline close grip to skull press",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1255",
+    "name_en": "barbell decline pullover",
+    "equipment": "barbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0036",
+    "name_en": "barbell decline wide-grip press",
+    "equipment": "barbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0037",
+    "name_en": "barbell decline wide-grip pullover",
+    "equipment": "barbell",
+    "target": "lats"
+  },
+  {
+    "id": "0038",
+    "name_en": "barbell drag curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1370",
+    "name_en": "barbell floor calf raise",
+    "equipment": "barbell",
+    "target": "calves"
+  },
+  {
+    "id": "0039",
+    "name_en": "barbell front chest squat",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0041",
+    "name_en": "barbell front raise",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "0040",
+    "name_en": "barbell front raise and pullover",
+    "equipment": "barbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0042",
+    "name_en": "barbell front squat",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "1545",
+    "name_en": "barbell full zercher squat",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "3562",
+    "name_en": "barbell glute bridge two legs on bench",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0044",
+    "name_en": "barbell good morning",
+    "equipment": "barbell",
+    "target": "hamstrings"
+  },
+  {
+    "id": "1436",
+    "name_en": "barbell high bar squat",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0047",
+    "name_en": "barbell incline bench press",
+    "equipment": "barbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1719",
+    "name_en": "barbell incline close grip bench press",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0048",
+    "name_en": "barbell incline reverse-grip press",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0049",
+    "name_en": "barbell incline row",
+    "equipment": "barbell",
+    "target": "upper back"
+  },
+  {
+    "id": "0051",
+    "name_en": "barbell jefferson squat",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0052",
+    "name_en": "barbell jm bench press",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0053",
+    "name_en": "barbell jump squat",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "1410",
+    "name_en": "barbell lateral lunge",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "1435",
+    "name_en": "barbell low bar squat",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "1720",
+    "name_en": "barbell lying back of the head tricep extension",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0055",
+    "name_en": "barbell lying close-grip press",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0056",
+    "name_en": "barbell lying close-grip triceps extension",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0057",
+    "name_en": "barbell lying extension",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0058",
+    "name_en": "barbell lying lifting (on hip)",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0059",
+    "name_en": "barbell lying preacher curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0061",
+    "name_en": "barbell lying triceps extension",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0060",
+    "name_en": "barbell lying triceps extension skull crusher",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0063",
+    "name_en": "barbell narrow stance squat",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0064",
+    "name_en": "barbell one arm bent over row",
+    "equipment": "barbell",
+    "target": "upper back"
+  },
+  {
+    "id": "0065",
+    "name_en": "barbell one arm floor press",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0066",
+    "name_en": "barbell one arm side deadlift",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0067",
+    "name_en": "barbell one arm snatch",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "0068",
+    "name_en": "barbell one leg squat",
+    "equipment": "barbell",
+    "target": "quads"
+  },
+  {
+    "id": "0069",
+    "name_en": "barbell overhead squat",
+    "equipment": "barbell",
+    "target": "quads"
+  },
+  {
+    "id": "1411",
+    "name_en": "barbell palms down wrist curl over a bench",
+    "equipment": "barbell",
+    "target": "forearms"
+  },
+  {
+    "id": "1412",
+    "name_en": "barbell palms up wrist curl over a bench",
+    "equipment": "barbell",
+    "target": "forearms"
+  },
+  {
+    "id": "3017",
+    "name_en": "barbell pendlay row",
+    "equipment": "barbell",
+    "target": "upper back"
+  },
+  {
+    "id": "1751",
+    "name_en": "barbell pin presses",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0070",
+    "name_en": "barbell preacher curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0071",
+    "name_en": "barbell press sit-up",
+    "equipment": "barbell",
+    "target": "abs"
+  },
+  {
+    "id": "0072",
+    "name_en": "barbell prone incline curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0073",
+    "name_en": "barbell pullover",
+    "equipment": "barbell",
+    "target": "lats"
+  },
+  {
+    "id": "0022",
+    "name_en": "barbell pullover to press",
+    "equipment": "barbell",
+    "target": "lats"
+  },
+  {
+    "id": "0074",
+    "name_en": "barbell rack pull",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0075",
+    "name_en": "barbell rear delt raise",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "0078",
+    "name_en": "barbell rear lunge",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0079",
+    "name_en": "barbell revers wrist curl",
+    "equipment": "barbell",
+    "target": "forearms"
+  },
+  {
+    "id": "2187",
+    "name_en": "barbell reverse close-grip bench press",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0080",
+    "name_en": "barbell reverse curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0118",
+    "name_en": "barbell reverse grip bent over row",
+    "equipment": "barbell",
+    "target": "upper back"
+  },
+  {
+    "id": "1256",
+    "name_en": "barbell reverse grip decline bench press",
+    "equipment": "barbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1257",
+    "name_en": "barbell reverse grip incline bench press",
+    "equipment": "barbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1317",
+    "name_en": "barbell reverse grip incline bench row",
+    "equipment": "barbell",
+    "target": "upper back"
+  },
+  {
+    "id": "1721",
+    "name_en": "barbell reverse grip skullcrusher",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0081",
+    "name_en": "barbell reverse preacher curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0082",
+    "name_en": "barbell reverse wrist curl",
+    "equipment": "barbell",
+    "target": "forearms"
+  },
+  {
+    "id": "0084",
+    "name_en": "barbell rollerout",
+    "equipment": "barbell",
+    "target": "abs"
+  },
+  {
+    "id": "0083",
+    "name_en": "barbell rollerout from bench",
+    "equipment": "barbell",
+    "target": "abs"
+  },
+  {
+    "id": "0085",
+    "name_en": "barbell romanian deadlift",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0086",
+    "name_en": "barbell seated behind head military press",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "0087",
+    "name_en": "barbell seated bradford rocky press",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "1718",
+    "name_en": "barbell seated close grip behind neck triceps extension",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0089",
+    "name_en": "barbell seated close-grip concentration curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0090",
+    "name_en": "barbell seated good morning",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0091",
+    "name_en": "barbell seated overhead press",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "0092",
+    "name_en": "barbell seated overhead triceps extension",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0094",
+    "name_en": "barbell seated twist",
+    "equipment": "barbell",
+    "target": "abs"
+  },
+  {
+    "id": "0096",
+    "name_en": "barbell side bent",
+    "equipment": "barbell",
+    "target": "abs"
+  },
+  {
+    "id": "1756",
+    "name_en": "barbell single leg deadlift",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0099",
+    "name_en": "barbell single leg split squat",
+    "equipment": "barbell",
+    "target": "quads"
+  },
+  {
+    "id": "2799",
+    "name_en": "barbell sitted alternate leg raise",
+    "equipment": "barbell",
+    "target": "abs"
+  },
+  {
+    "id": "0100",
+    "name_en": "barbell skier",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "0101",
+    "name_en": "barbell speed squat",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "2810",
+    "name_en": "barbell split squat",
+    "equipment": "barbell",
+    "target": "quads"
+  },
+  {
+    "id": "0102",
+    "name_en": "barbell squat (on knees)",
+    "equipment": "barbell",
+    "target": "quads"
+  },
+  {
+    "id": "2798",
+    "name_en": "barbell squat jump step rear lunge",
+    "equipment": "barbell",
+    "target": "quads"
+  },
+  {
+    "id": "0103",
+    "name_en": "barbell standing ab rollerout",
+    "equipment": "barbell",
+    "target": "abs"
+  },
+  {
+    "id": "0104",
+    "name_en": "barbell standing back wrist curl",
+    "equipment": "barbell",
+    "target": "forearms"
+  },
+  {
+    "id": "0105",
+    "name_en": "barbell standing bradford press",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "1372",
+    "name_en": "barbell standing calf raise",
+    "equipment": "barbell",
+    "target": "calves"
+  },
+  {
+    "id": "0106",
+    "name_en": "barbell standing close grip curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1456",
+    "name_en": "barbell standing close grip military press",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "2414",
+    "name_en": "barbell standing concentration curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0107",
+    "name_en": "barbell standing front raise over head",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "0108",
+    "name_en": "barbell standing leg calf raise",
+    "equipment": "barbell",
+    "target": "calves"
+  },
+  {
+    "id": "0109",
+    "name_en": "barbell standing overhead triceps extension",
+    "equipment": "barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0110",
+    "name_en": "barbell standing reverse grip curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0111",
+    "name_en": "barbell standing rocking leg calf raise",
+    "equipment": "barbell",
+    "target": "calves"
+  },
+  {
+    "id": "0112",
+    "name_en": "barbell standing twist",
+    "equipment": "barbell",
+    "target": "abs"
+  },
+  {
+    "id": "1629",
+    "name_en": "barbell standing wide grip biceps curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1457",
+    "name_en": "barbell standing wide military press",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "0113",
+    "name_en": "barbell standing wide-grip curl",
+    "equipment": "barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0114",
+    "name_en": "barbell step-up",
+    "equipment": "barbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0115",
+    "name_en": "barbell stiff leg good morning",
+    "equipment": "barbell",
+    "target": "glutes"
+  }
+]

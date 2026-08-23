@@ -1,0 +1,266 @@
+[
+  {
+    "id": "0826",
+    "name_en": "vertical leg raise (on parallel bars)",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "2141",
+    "name_en": "walk elliptical cross trainer",
+    "equipment": "elliptical machine",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "3655",
+    "name_en": "walking high knees lunge",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "1460",
+    "name_en": "walking lunge",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "3666",
+    "name_en": "walking on incline treadmill",
+    "equipment": "leverage machine",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "2311",
+    "name_en": "walking on stepmill",
+    "equipment": "stepmill machine",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "2987",
+    "name_en": "weighted close grip chin-up on dip cage",
+    "equipment": "weighted",
+    "target": "lats"
+  },
+  {
+    "id": "3643",
+    "name_en": "weighted cossack squats",
+    "equipment": "weighted",
+    "target": "glutes"
+  },
+  {
+    "id": "0832",
+    "name_en": "weighted crunch",
+    "equipment": "weighted",
+    "target": "abs"
+  },
+  {
+    "id": "3670",
+    "name_en": "weighted decline sit-up",
+    "equipment": "weighted",
+    "target": "abs"
+  },
+  {
+    "id": "0833",
+    "name_en": "weighted donkey calf raise",
+    "equipment": "weighted",
+    "target": "calves"
+  },
+  {
+    "id": "1310",
+    "name_en": "weighted drop push up",
+    "equipment": "weighted",
+    "target": "pectorals"
+  },
+  {
+    "id": "2135",
+    "name_en": "weighted front plank",
+    "equipment": "weighted",
+    "target": "abs"
+  },
+  {
+    "id": "0834",
+    "name_en": "weighted front raise",
+    "equipment": "weighted",
+    "target": "delts"
+  },
+  {
+    "id": "0866",
+    "name_en": "weighted hanging leg-hip raise",
+    "equipment": "weighted",
+    "target": "abs"
+  },
+  {
+    "id": "0835",
+    "name_en": "weighted hyperextension (on stability ball)",
+    "equipment": "weighted",
+    "target": "spine"
+  },
+  {
+    "id": "3641",
+    "name_en": "weighted kneeling step with swing",
+    "equipment": "weighted",
+    "target": "delts"
+  },
+  {
+    "id": "3644",
+    "name_en": "weighted lunge with swing",
+    "equipment": "weighted",
+    "target": "glutes"
+  },
+  {
+    "id": "3286",
+    "name_en": "weighted muscle up",
+    "equipment": "weighted",
+    "target": "lats"
+  },
+  {
+    "id": "3312",
+    "name_en": "weighted muscle up (on bar)",
+    "equipment": "weighted",
+    "target": "lats"
+  },
+  {
+    "id": "3290",
+    "name_en": "weighted one hand pull up",
+    "equipment": "weighted",
+    "target": "lats"
+  },
+  {
+    "id": "0840",
+    "name_en": "weighted overhead crunch (on stability ball)",
+    "equipment": "weighted",
+    "target": "abs"
+  },
+  {
+    "id": "0841",
+    "name_en": "weighted pull-up",
+    "equipment": "weighted",
+    "target": "lats"
+  },
+  {
+    "id": "0844",
+    "name_en": "weighted round arm",
+    "equipment": "weighted",
+    "target": "delts"
+  },
+  {
+    "id": "0846",
+    "name_en": "weighted russian twist",
+    "equipment": "weighted",
+    "target": "abs"
+  },
+  {
+    "id": "0845",
+    "name_en": "weighted russian twist (legs up)",
+    "equipment": "weighted",
+    "target": "abs"
+  },
+  {
+    "id": "0847",
+    "name_en": "weighted seated bicep curl (on stability ball)",
+    "equipment": "medicine ball",
+    "target": "biceps"
+  },
+  {
+    "id": "0849",
+    "name_en": "weighted seated twist (on stability ball)",
+    "equipment": "weighted",
+    "target": "abs"
+  },
+  {
+    "id": "0850",
+    "name_en": "weighted side bend (on stability ball)",
+    "equipment": "weighted",
+    "target": "abs"
+  },
+  {
+    "id": "0853",
+    "name_en": "weighted standing curl",
+    "equipment": "weighted",
+    "target": "biceps"
+  },
+  {
+    "id": "0854",
+    "name_en": "weighted standing hand squeeze",
+    "equipment": "weighted",
+    "target": "forearms"
+  },
+  {
+    "id": "3313",
+    "name_en": "weighted straight bar dip",
+    "equipment": "weighted",
+    "target": "pectorals"
+  },
+  {
+    "id": "3642",
+    "name_en": "weighted stretch lunge",
+    "equipment": "weighted",
+    "target": "glutes"
+  },
+  {
+    "id": "0856",
+    "name_en": "weighted svend press",
+    "equipment": "weighted",
+    "target": "pectorals"
+  },
+  {
+    "id": "1754",
+    "name_en": "weighted three bench dips",
+    "equipment": "weighted",
+    "target": "triceps"
+  },
+  {
+    "id": "1755",
+    "name_en": "weighted tricep dips",
+    "equipment": "weighted",
+    "target": "triceps"
+  },
+  {
+    "id": "1767",
+    "name_en": "weighted triceps dip on high parallel bars",
+    "equipment": "weighted",
+    "target": "triceps"
+  },
+  {
+    "id": "0857",
+    "name_en": "wheel rollerout",
+    "equipment": "wheel roller",
+    "target": "abs"
+  },
+  {
+    "id": "3637",
+    "name_en": "wheel run",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "1429",
+    "name_en": "wide grip pull-up",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "1311",
+    "name_en": "wide hand push up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "2363",
+    "name_en": "wide-grip chest dip on high parallel bars",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "1604",
+    "name_en": "world greatest stretch",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  {
+    "id": "0859",
+    "name_en": "wrist rollerer",
+    "equipment": "weighted",
+    "target": "forearms"
+  }
+]

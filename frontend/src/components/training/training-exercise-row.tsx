@@ -1,19 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { ChevronDown, GripVertical, Trash2 } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { ChevronDown, Trash2 } from "lucide-react";
 
-import { cn } from "@/lib/cn";
 import { Input } from "@/components/ui/input";
 import type { ExerciseDraft } from "@/lib/training/week-draft";
 import type { Exercise } from "@/types/exercise";
 import { ExerciseImage } from "@/components/exercises/exercise-image";
+import { cn } from "@/lib/cn";
 
 interface TrainingExerciseRowProps {
   draft: ExerciseDraft;
   exercise: Exercise | undefined;
+  /** "A1"/"A2" when the exercise is half of a superset. */
+  label?: string;
+  /** Only a lone exercise carries the handle: a superset is dragged as a block. */
+  dragHandle?: ReactNode;
   onChange: (changes: Partial<Omit<ExerciseDraft, "key">>) => void;
   onRemove: () => void;
 }
@@ -29,38 +31,23 @@ function textOrNull(value: string): string | null {
 export function TrainingExerciseRow({
   draft,
   exercise,
+  label,
+  dragHandle,
   onChange,
   onRemove,
 }: TrainingExerciseRowProps) {
   const [showDetails, setShowDetails] = useState(false);
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: draft.key });
 
   return (
-    <li
-      ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={cn(
-        "bg-surface rounded-lg border border-slate-200 p-2",
-        isDragging && "z-10 shadow-lg",
-      )}
-    >
+    <div className={cn(label && "border-l border-slate-200 pl-2")}>
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          aria-label="Reordenar ejercicio"
-          className="cursor-grab touch-none p-1 text-slate-400 hover:text-slate-600"
-          {...attributes}
-          {...listeners}
-        >
-          <GripVertical className="size-4" />
-        </button>
+        {dragHandle}
+
+        {label && (
+          <span className="bg-brand-50 text-brand-700 rounded px-1.5 py-0.5 text-xs font-bold">
+            {label}
+          </span>
+        )}
 
         <ExerciseImage
           path={exercise?.images[0]}
@@ -134,7 +121,7 @@ export function TrainingExerciseRow({
       </div>
 
       {showDetails && (
-        <div className="mt-2 grid gap-2 border-t border-slate-100 pt-2 sm:grid-cols-4">
+        <div className="mt-2 grid gap-2 border-t border-slate-100 pt-2 sm:grid-cols-3">
           <label className="flex flex-col gap-1 text-xs text-slate-500 sm:hidden">
             Descanso (s)
             <Input
@@ -159,19 +146,6 @@ export function TrainingExerciseRow({
               className="h-8"
             />
           </label>
-          <label className="flex flex-col gap-1 text-xs text-slate-500">
-            Superserie
-            <Input
-              type="number"
-              min={1}
-              value={draft.superset_group ?? ""}
-              onChange={(event) =>
-                onChange({ superset_group: numberOrNull(event.target.value) })
-              }
-              placeholder="nº"
-              className="h-8"
-            />
-          </label>
           <label className="flex flex-col gap-1 text-xs text-slate-500 sm:col-span-2">
             Notas
             <Input
@@ -184,6 +158,6 @@ export function TrainingExerciseRow({
           </label>
         </div>
       )}
-    </li>
+    </div>
   );
 }
