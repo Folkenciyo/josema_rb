@@ -85,6 +85,16 @@ export function updateExercise(
   );
 }
 
+/** Hiding is not editing: it goes on its own so a save never carries it along. */
+export function setExerciseHidden(
+  exerciseId: string,
+  hidden: boolean,
+): Promise<Exercise> {
+  const formData = new FormData();
+  formData.append("is_hidden", String(hidden));
+  return api.patchForm<Exercise>(`/exercises/${exerciseId}`, formData);
+}
+
 export function deleteExercise(exerciseId: string): Promise<void> {
   return api.delete(`/exercises/${exerciseId}`);
 }

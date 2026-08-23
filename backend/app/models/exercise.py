@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import Boolean, ForeignKey, String, false
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -49,4 +49,11 @@ class Exercise(Base, TimestampMixin):
 
     source: Mapped[str] = mapped_column(
         String(50), default="free-exercise-db", nullable=False
+    )
+
+    # An imported exercise cannot be deleted — the seed would bring it back and
+    # it may already be written into someone's routine — but the trainer can
+    # take it out of the search this way.
+    is_hidden: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default=false()
     )

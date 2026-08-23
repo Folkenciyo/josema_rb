@@ -10,8 +10,12 @@ export interface Exercise {
   secondary_muscles_es: string[];
   instructions_es: string[];
   images: string[];
-  /** `null` marks an exercise imported from free-exercise-db: read-only. */
+  /** Set once the trainer edits it: from then on the seed leaves it alone. */
   created_by_trainer_id: string | null;
+  /** Where it came from: "trainer" is one written here, the rest are imported. */
+  source: string;
+  /** Out of the search and the picker, but still fine in the routines using it. */
+  is_hidden: boolean;
 }
 
 export interface ExerciseFilters {
@@ -29,6 +33,12 @@ export interface ExerciseQuery {
   equipment?: string;
   category?: string;
   level?: string;
+  /**
+   * "visible" (the default) is the catalogue, "hidden" the shelf of what the
+   * trainer put away, and "all" both — needed to name an exercise a routine
+   * already uses, hidden or not.
+   */
+  visibility?: "visible" | "hidden" | "all";
 }
 
 export interface ExerciseInput {
@@ -48,6 +58,15 @@ export const MAX_EXERCISE_IMAGES = 2;
 export const MAX_EXERCISE_IMAGE_BYTES = 5 * 1024 * 1024;
 export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png"];
 
-export function isCustomExercise(exercise: Exercise): boolean {
-  return exercise.created_by_trainer_id !== null;
+/**
+ * Only an exercise written here can be deleted: an imported one would come back
+ * on the next seed run, so it is hidden instead.
+ */
+export function canDeleteExercise(exercise: Exercise): boolean {
+  return exercise.source === "trainer";
+}
+
+/** True once the trainer has edited it — the catalogue no longer overwrites it. */
+export function isTakenOver(exercise: Exercise): boolean {
+  return exercise.source !== "trainer" && exercise.created_by_trainer_id !== null;
 }

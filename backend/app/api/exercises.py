@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.db import get_db
 from app.core.security import get_current_trainer
 from app.models import Exercise, Trainer
+from app.repositories.exercise_repository import Visibility
 from app.schemas.exercise import ExerciseFiltersOut, ExerciseOut
 from app.services import exercise_service
 
@@ -21,6 +22,7 @@ def list_exercises(
     category: str | None = None,
     level: str | None = None,
     search: str | None = None,
+    visibility: Visibility = "visible",
     db: Session = Depends(get_db),
 ) -> list[Exercise]:
     return exercise_service.list_exercises(
@@ -30,6 +32,7 @@ def list_exercises(
         category=category,
         level=level,
         search=search,
+        visibility=visibility,
     )
 
 
@@ -92,11 +95,14 @@ async def update_exercise(
     equipment_es: str | None = Form(None),
     primary_muscles_es: str | None = Form(None, description="JSON array of strings"),
     secondary_muscles_es: str | None = Form(None, description="JSON array of strings"),
+    is_hidden: bool | None = Form(None),
     images: list[UploadFile] | None = File(default=None),
     trainer: Trainer = Depends(get_current_trainer),
     db: Session = Depends(get_db),
 ) -> Exercise:
     updates: dict = {}
+    if is_hidden is not None:
+        updates["is_hidden"] = is_hidden
     if name_es is not None:
         updates["name_es"] = name_es
     if instructions_es is not None:

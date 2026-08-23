@@ -8,7 +8,6 @@ import { useExercise, useUpdateExercise } from "@/hooks/use-exercises";
 import { Card } from "@/components/ui/card";
 import { ErrorMessage, LoadingState } from "@/components/ui/feedback";
 import { PageHeader } from "@/components/ui/page-header";
-import { isCustomExercise } from "@/types/exercise";
 import { ExerciseForm } from "./exercise-form";
 
 export function EditExerciseView({ exerciseId }: { exerciseId: string }) {
@@ -24,17 +23,7 @@ export function EditExerciseView({ exerciseId }: { exerciseId: string }) {
     return <ErrorMessage error={error ?? new Error("Ejercicio no encontrado.")} />;
   }
 
-  if (!isCustomExercise(exercise)) {
-    return (
-      <ErrorMessage
-        error={
-          new Error(
-            "Este ejercicio viene de la librería importada y no se puede editar.",
-          )
-        }
-      />
-    );
-  }
+  const isImported = exercise.created_by_trainer_id === null;
 
   return (
     <>
@@ -47,6 +36,14 @@ export function EditExerciseView({ exerciseId }: { exerciseId: string }) {
       </Link>
 
       <PageHeader title={`Editar: ${exercise.name_es}`} />
+
+      {isImported && (
+        <p className="mb-4 max-w-3xl rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          Este ejercicio viene de la librería importada. Al guardar pasa a ser
+          tuyo: podrás cambiarlo cuando quieras y las actualizaciones del
+          catálogo dejarán de tocarlo.
+        </p>
+      )}
 
       <Card className="max-w-3xl p-6">
         <ExerciseForm
