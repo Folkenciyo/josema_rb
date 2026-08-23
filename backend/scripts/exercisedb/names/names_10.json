@@ -1,0 +1,602 @@
+[
+  {
+    "id": "1495",
+    "name_en": "oblique crunch",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0635",
+    "name_en": "oblique crunches floor",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0636",
+    "name_en": "olympic barbell hammer curl",
+    "equipment": "olympic barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0637",
+    "name_en": "olympic barbell triceps extension",
+    "equipment": "olympic barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0639",
+    "name_en": "one arm dip",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0640",
+    "name_en": "one arm slam (with medicine ball)",
+    "equipment": "medicine ball",
+    "target": "abs"
+  },
+  {
+    "id": "1773",
+    "name_en": "one arm towel row",
+    "equipment": "body weight",
+    "target": "upper back"
+  },
+  {
+    "id": "1386",
+    "name_en": "one leg donkey calf raise",
+    "equipment": "body weight",
+    "target": "calves"
+  },
+  {
+    "id": "1387",
+    "name_en": "one leg floor calf raise",
+    "equipment": "body weight",
+    "target": "calves"
+  },
+  {
+    "id": "1476",
+    "name_en": "one leg squat",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0642",
+    "name_en": "outside leg kick push-up",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0643",
+    "name_en": "overhead triceps stretch",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "3147",
+    "name_en": "pelvic tilt",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3662",
+    "name_en": "pike-to-cobra push-up",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "1687",
+    "name_en": "posterior step to overhead reach",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3119",
+    "name_en": "potty squat",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3132",
+    "name_en": "potty squat with support",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "3665",
+    "name_en": "power point plank",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3203",
+    "name_en": "prisoner half sit-up",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1707",
+    "name_en": "prone twist on stability ball",
+    "equipment": "stability ball",
+    "target": "abs"
+  },
+  {
+    "id": "0651",
+    "name_en": "pull up (neutral grip)",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "0650",
+    "name_en": "pull-in (on stability ball)",
+    "equipment": "stability ball",
+    "target": "abs"
+  },
+  {
+    "id": "0652",
+    "name_en": "pull-up",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "1689",
+    "name_en": "push and pull bodyweight",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "3638",
+    "name_en": "push to run",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "1307",
+    "name_en": "push up on bosu ball",
+    "equipment": "bosu ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "0662",
+    "name_en": "push-up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "0653",
+    "name_en": "push-up (bosu ball)",
+    "equipment": "bosu ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "0655",
+    "name_en": "push-up (on stability ball)",
+    "equipment": "stability ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "0659",
+    "name_en": "push-up (wall)",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "0660",
+    "name_en": "push-up close-grip off dumbbell",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0661",
+    "name_en": "push-up inside leg kick",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0663",
+    "name_en": "push-up medicine ball",
+    "equipment": "medicine ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "1467",
+    "name_en": "push-up on lower arms",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "3145",
+    "name_en": "push-up plus",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "3533",
+    "name_en": "quads",
+    "equipment": "body weight",
+    "target": "quads"
+  },
+  {
+    "id": "3201",
+    "name_en": "quarter sit-up",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3552",
+    "name_en": "quick feet",
+    "equipment": "body weight",
+    "target": "quads"
+  },
+  {
+    "id": "0666",
+    "name_en": "raise single arm push-up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "0668",
+    "name_en": "rear decline bridge",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0669",
+    "name_en": "rear deltoid stretch",
+    "equipment": "body weight",
+    "target": "delts"
+  },
+  {
+    "id": "0670",
+    "name_en": "rear pull-up",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "1582",
+    "name_en": "reclining big toe pose with rope",
+    "equipment": "rope",
+    "target": "hamstrings"
+  },
+  {
+    "id": "3236",
+    "name_en": "resistance band hip thrusts on knees",
+    "equipment": "resistance band",
+    "target": "glutes"
+  },
+  {
+    "id": "3007",
+    "name_en": "resistance band leg extension",
+    "equipment": "resistance band",
+    "target": "quads"
+  },
+  {
+    "id": "3123",
+    "name_en": "resistance band seated biceps curl",
+    "equipment": "resistance band",
+    "target": "biceps"
+  },
+  {
+    "id": "3124",
+    "name_en": "resistance band seated chest press",
+    "equipment": "resistance band",
+    "target": "pectorals"
+  },
+  {
+    "id": "3006",
+    "name_en": "resistance band seated hip abduction",
+    "equipment": "resistance band",
+    "target": "abductors"
+  },
+  {
+    "id": "3122",
+    "name_en": "resistance band seated shoulder press",
+    "equipment": "resistance band",
+    "target": "delts"
+  },
+  {
+    "id": "3144",
+    "name_en": "resistance band seated straight back row",
+    "equipment": "resistance band",
+    "target": "upper back"
+  },
+  {
+    "id": "0672",
+    "name_en": "reverse dip",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0673",
+    "name_en": "reverse grip machine lat pulldown",
+    "equipment": "leverage machine",
+    "target": "lats"
+  },
+  {
+    "id": "0674",
+    "name_en": "reverse grip pull-up",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "0675",
+    "name_en": "reverse hyper extension (on stability ball)",
+    "equipment": "stability ball",
+    "target": "glutes"
+  },
+  {
+    "id": "1423",
+    "name_en": "reverse hyper on flat bench",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "3663",
+    "name_en": "reverse plank with leg lift",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "2571",
+    "name_en": "rocking frog stretch",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0678",
+    "name_en": "rocky pull-up pulldown",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "2208",
+    "name_en": "roller back stretch",
+    "equipment": "roller",
+    "target": "spine"
+  },
+  {
+    "id": "2204",
+    "name_en": "roller body saw",
+    "equipment": "roller",
+    "target": "abs"
+  },
+  {
+    "id": "2205",
+    "name_en": "roller hip lat stretch",
+    "equipment": "roller",
+    "target": "glutes"
+  },
+  {
+    "id": "2202",
+    "name_en": "roller hip stretch",
+    "equipment": "roller",
+    "target": "glutes"
+  },
+  {
+    "id": "2206",
+    "name_en": "roller reverse crunch",
+    "equipment": "roller",
+    "target": "abs"
+  },
+  {
+    "id": "2203",
+    "name_en": "roller seated shoulder flexor depresor retractor",
+    "equipment": "roller",
+    "target": "pectorals"
+  },
+  {
+    "id": "2209",
+    "name_en": "roller seated single leg shoulder flexor depresor retractor",
+    "equipment": "roller",
+    "target": "pectorals"
+  },
+  {
+    "id": "2207",
+    "name_en": "roller side lat stretch",
+    "equipment": "roller",
+    "target": "lats"
+  },
+  {
+    "id": "0685",
+    "name_en": "run",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "0684",
+    "name_en": "run (equipment)",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "3012",
+    "name_en": "scapula dips",
+    "equipment": "body weight",
+    "target": "traps"
+  },
+  {
+    "id": "3021",
+    "name_en": "scapula push-up",
+    "equipment": "body weight",
+    "target": "serratus anterior"
+  },
+  {
+    "id": "3219",
+    "name_en": "scissor jumps",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "1424",
+    "name_en": "seated glute stretch",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0689",
+    "name_en": "seated leg raise",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0690",
+    "name_en": "seated lower back stretch",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "2567",
+    "name_en": "seated piriformis stretch",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0691",
+    "name_en": "seated side crunch (wall)",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1587",
+    "name_en": "seated wide angle pose sequence",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  {
+    "id": "0697",
+    "name_en": "self assisted inverse leg curl",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  {
+    "id": "0696",
+    "name_en": "self assisted inverse leg curl (on floor)",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  {
+    "id": "3222",
+    "name_en": "semi squat jump",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "3656",
+    "name_en": "short stride run",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "1763",
+    "name_en": "shoulder grip pull-up",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "3699",
+    "name_en": "shoulder tap",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0699",
+    "name_en": "shoulder tap push-up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "1774",
+    "name_en": "side bridge hip abduction",
+    "equipment": "body weight",
+    "target": "abductors"
+  },
+  {
+    "id": "0709",
+    "name_en": "side hip (on parallel bars)",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0710",
+    "name_en": "side hip abduction",
+    "equipment": "body weight",
+    "target": "abductors"
+  },
+  {
+    "id": "3667",
+    "name_en": "side lying hip adduction",
+    "equipment": "body weight",
+    "target": "adductors"
+  },
+  {
+    "id": "1775",
+    "name_en": "side plank hip adduction",
+    "equipment": "body weight",
+    "target": "adductors"
+  },
+  {
+    "id": "0716",
+    "name_en": "side push neck stretch",
+    "equipment": "body weight",
+    "target": "levator scapulae"
+  },
+  {
+    "id": "0717",
+    "name_en": "side push-up",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0721",
+    "name_en": "side wrist pull stretch",
+    "equipment": "body weight",
+    "target": "forearms"
+  },
+  {
+    "id": "0720",
+    "name_en": "side-to-side chin",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "3213",
+    "name_en": "side-to-side toe touch",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3645",
+    "name_en": "single leg bridge with outstretched leg",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0727",
+    "name_en": "single leg calf raise (on a dumbbell)",
+    "equipment": "dumbbell",
+    "target": "calves"
+  },
+  {
+    "id": "0730",
+    "name_en": "single leg platform slide",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  {
+    "id": "1759",
+    "name_en": "single leg squat (pistol) male",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "1489",
+    "name_en": "sissy squat",
+    "equipment": "body weight",
+    "target": "quads"
+  },
+  {
+    "id": "3679",
+    "name_en": "sit-up with arms on chest",
+    "equipment": "body weight",
+    "target": "abs"
+  }
+]

@@ -1,4 +1,7 @@
-"""Idempotent upsert of app/data/exercises_es_seed.json into the exercises table.
+"""Idempotent upsert of the exercise seed files into the exercises table.
+
+Two catalogues are seeded: free-exercise-db (public domain, with photos) and
+ExerciseDB (MIT data, no photos — the media belongs to Gym visual).
 
 Run with: uv run python scripts/seed_exercises.py
 """
@@ -12,15 +15,20 @@ from app.core.db import SessionLocal
 from app.models import Exercise
 
 BACKEND_ROOT = Path(__file__).resolve().parent.parent
-SEED_PATH = BACKEND_ROOT / "app" / "data" / "exercises_es_seed.json"
+DATA_DIR = BACKEND_ROOT / "app" / "data"
+
+SEEDS = (
+    (DATA_DIR / "exercises_es_seed.json", "free-exercise-db"),
+    (DATA_DIR / "exercises_exercisedb_seed.json", "exercisedb"),
+)
 
 
-def main() -> None:
-    exercises = json.loads(SEED_PATH.read_text(encoding="utf-8"))
+def seed_file(path: Path, source: str) -> int:
+    exercises = json.loads(path.read_text(encoding="utf-8"))
 
     with SessionLocal() as db:
         for ex in exercises:
-            stmt = insert(Exercise).values(**ex, source="free-exercise-db")
+            stmt = insert(Exercise).values(**ex, source=source)
             update_columns = {col: stmt.excluded[col] for col in ex if col != "id"}
             stmt = stmt.on_conflict_do_update(
                 index_elements=[Exercise.id], set_=update_columns
@@ -28,7 +36,16 @@ def main() -> None:
             db.execute(stmt)
         db.commit()
 
-    print(f"Seeded {len(exercises)} exercises from {SEED_PATH}")
+    return len(exercises)
+
+
+def main() -> None:
+    for path, source in SEEDS:
+        if not path.exists():
+            print(f"Skipped {path.name}: not found")
+            continue
+        count = seed_file(path, source)
+        print(f"Seeded {count} exercises from {path.name} (source={source})")
 
 
 if __name__ == "__main__":

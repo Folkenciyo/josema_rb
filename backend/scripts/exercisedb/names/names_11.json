@@ -1,0 +1,602 @@
+[
+  {
+    "id": "3361",
+    "name_en": "skater hops",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "2142",
+    "name_en": "ski ergometer",
+    "equipment": "skierg machine",
+    "target": "triceps"
+  },
+  {
+    "id": "3671",
+    "name_en": "ski step",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "3304",
+    "name_en": "skin the cat",
+    "equipment": "body weight",
+    "target": "upper back"
+  },
+  {
+    "id": "1425",
+    "name_en": "sled 45 degrees one leg press",
+    "equipment": "sled machine",
+    "target": "glutes"
+  },
+  {
+    "id": "0738",
+    "name_en": "sled 45в° calf press",
+    "equipment": "sled machine",
+    "target": "calves"
+  },
+  {
+    "id": "0739",
+    "name_en": "sled 45в° leg press",
+    "equipment": "sled machine",
+    "target": "glutes"
+  },
+  {
+    "id": "0740",
+    "name_en": "sled 45в° leg wide press",
+    "equipment": "sled machine",
+    "target": "glutes"
+  },
+  {
+    "id": "1391",
+    "name_en": "sled calf press on leg press",
+    "equipment": "sled machine",
+    "target": "calves"
+  },
+  {
+    "id": "0741",
+    "name_en": "sled closer hack squat",
+    "equipment": "sled machine",
+    "target": "glutes"
+  },
+  {
+    "id": "0742",
+    "name_en": "sled forward angled calf raise",
+    "equipment": "sled machine",
+    "target": "calves"
+  },
+  {
+    "id": "0743",
+    "name_en": "sled hack squat",
+    "equipment": "sled machine",
+    "target": "glutes"
+  },
+  {
+    "id": "2334",
+    "name_en": "sled lying calf press",
+    "equipment": "sled machine",
+    "target": "calves"
+  },
+  {
+    "id": "0744",
+    "name_en": "sled lying squat",
+    "equipment": "sled machine",
+    "target": "glutes"
+  },
+  {
+    "id": "1392",
+    "name_en": "sled one leg calf press on leg press",
+    "equipment": "sled machine",
+    "target": "calves"
+  },
+  {
+    "id": "1496",
+    "name_en": "sledge hammer",
+    "equipment": "hammer",
+    "target": "abs"
+  },
+  {
+    "id": "0746",
+    "name_en": "smith back shrug",
+    "equipment": "smith machine",
+    "target": "traps"
+  },
+  {
+    "id": "0747",
+    "name_en": "smith behind neck press",
+    "equipment": "smith machine",
+    "target": "delts"
+  },
+  {
+    "id": "0748",
+    "name_en": "smith bench press",
+    "equipment": "smith machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "0749",
+    "name_en": "smith bent knee good morning",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "1359",
+    "name_en": "smith bent over row",
+    "equipment": "smith machine",
+    "target": "upper back"
+  },
+  {
+    "id": "0750",
+    "name_en": "smith chair squat",
+    "equipment": "smith machine",
+    "target": "quads"
+  },
+  {
+    "id": "0751",
+    "name_en": "smith close-grip bench press",
+    "equipment": "smith machine",
+    "target": "triceps"
+  },
+  {
+    "id": "0752",
+    "name_en": "smith deadlift",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "0753",
+    "name_en": "smith decline bench press",
+    "equipment": "smith machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "0754",
+    "name_en": "smith decline reverse-grip press",
+    "equipment": "smith machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "1433",
+    "name_en": "smith front squat (clean grip)",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "3281",
+    "name_en": "smith full squat",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "0755",
+    "name_en": "smith hack squat",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "0756",
+    "name_en": "smith hip raise",
+    "equipment": "smith machine",
+    "target": "abs"
+  },
+  {
+    "id": "0757",
+    "name_en": "smith incline bench press",
+    "equipment": "smith machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "0758",
+    "name_en": "smith incline reverse-grip press",
+    "equipment": "smith machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "0759",
+    "name_en": "smith incline shoulder raises",
+    "equipment": "smith machine",
+    "target": "serratus anterior"
+  },
+  {
+    "id": "0760",
+    "name_en": "smith leg press",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "1434",
+    "name_en": "smith low bar squat",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "1683",
+    "name_en": "smith machine bicep curl",
+    "equipment": "smith machine",
+    "target": "biceps"
+  },
+  {
+    "id": "1625",
+    "name_en": "smith machine decline close grip bench press",
+    "equipment": "smith machine",
+    "target": "triceps"
+  },
+  {
+    "id": "1752",
+    "name_en": "smith machine incline tricep extension",
+    "equipment": "smith machine",
+    "target": "triceps"
+  },
+  {
+    "id": "1626",
+    "name_en": "smith machine reverse decline close grip bench press",
+    "equipment": "smith machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "0761",
+    "name_en": "smith narrow row",
+    "equipment": "smith machine",
+    "target": "upper back"
+  },
+  {
+    "id": "1360",
+    "name_en": "smith one arm row",
+    "equipment": "smith machine",
+    "target": "upper back"
+  },
+  {
+    "id": "1393",
+    "name_en": "smith one leg floor calf raise",
+    "equipment": "smith machine",
+    "target": "calves"
+  },
+  {
+    "id": "0762",
+    "name_en": "smith rear delt row",
+    "equipment": "smith machine",
+    "target": "delts"
+  },
+  {
+    "id": "0763",
+    "name_en": "smith reverse calf raises",
+    "equipment": "smith machine",
+    "target": "calves"
+  },
+  {
+    "id": "1361",
+    "name_en": "smith reverse grip bent over row",
+    "equipment": "smith machine",
+    "target": "upper back"
+  },
+  {
+    "id": "0764",
+    "name_en": "smith reverse-grip press",
+    "equipment": "smith machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "1395",
+    "name_en": "smith seated one leg calf raise",
+    "equipment": "smith machine",
+    "target": "calves"
+  },
+  {
+    "id": "0765",
+    "name_en": "smith seated shoulder press",
+    "equipment": "smith machine",
+    "target": "delts"
+  },
+  {
+    "id": "1426",
+    "name_en": "smith seated wrist curl",
+    "equipment": "smith machine",
+    "target": "forearms"
+  },
+  {
+    "id": "0766",
+    "name_en": "smith shoulder press",
+    "equipment": "smith machine",
+    "target": "delts"
+  },
+  {
+    "id": "0767",
+    "name_en": "smith shrug",
+    "equipment": "smith machine",
+    "target": "traps"
+  },
+  {
+    "id": "0769",
+    "name_en": "smith sprint lunge",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "0770",
+    "name_en": "smith squat",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "0771",
+    "name_en": "smith standing back wrist curl",
+    "equipment": "smith machine",
+    "target": "forearms"
+  },
+  {
+    "id": "0772",
+    "name_en": "smith standing behind head military press",
+    "equipment": "smith machine",
+    "target": "delts"
+  },
+  {
+    "id": "0773",
+    "name_en": "smith standing leg calf raise",
+    "equipment": "smith machine",
+    "target": "calves"
+  },
+  {
+    "id": "0774",
+    "name_en": "smith standing military press",
+    "equipment": "smith machine",
+    "target": "delts"
+  },
+  {
+    "id": "3142",
+    "name_en": "smith sumo squat",
+    "equipment": "smith machine",
+    "target": "glutes"
+  },
+  {
+    "id": "1396",
+    "name_en": "smith toe raise",
+    "equipment": "smith machine",
+    "target": "calves"
+  },
+  {
+    "id": "0775",
+    "name_en": "smith upright row",
+    "equipment": "smith machine",
+    "target": "delts"
+  },
+  {
+    "id": "1308",
+    "name_en": "smith wide grip bench press",
+    "equipment": "smith machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "1309",
+    "name_en": "smith wide grip decline bench press",
+    "equipment": "smith machine",
+    "target": "pectorals"
+  },
+  {
+    "id": "1362",
+    "name_en": "sphinx",
+    "equipment": "body weight",
+    "target": "spine"
+  },
+  {
+    "id": "0778",
+    "name_en": "spider crawl push up",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "1363",
+    "name_en": "spine stretch",
+    "equipment": "body weight",
+    "target": "spine"
+  },
+  {
+    "id": "2329",
+    "name_en": "spine twist",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1705",
+    "name_en": "squat on bosu ball",
+    "equipment": "bosu ball",
+    "target": "quads"
+  },
+  {
+    "id": "1685",
+    "name_en": "squat to overhead reach",
+    "equipment": "body weight",
+    "target": "quads"
+  },
+  {
+    "id": "1686",
+    "name_en": "squat to overhead reach with twist",
+    "equipment": "body weight",
+    "target": "quads"
+  },
+  {
+    "id": "2297",
+    "name_en": "stability ball crunch (full range hands behind head)",
+    "equipment": "stability ball",
+    "target": "abs"
+  },
+  {
+    "id": "3291",
+    "name_en": "stalder press",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "3669",
+    "name_en": "standing archer",
+    "equipment": "body weight",
+    "target": "upper back"
+  },
+  {
+    "id": "0788",
+    "name_en": "standing behind neck press",
+    "equipment": "barbell",
+    "target": "delts"
+  },
+  {
+    "id": "1490",
+    "name_en": "standing calf raise (on a staircase)",
+    "equipment": "body weight",
+    "target": "calves"
+  },
+  {
+    "id": "1397",
+    "name_en": "standing calves",
+    "equipment": "body weight",
+    "target": "calves"
+  },
+  {
+    "id": "1398",
+    "name_en": "standing calves calf stretch",
+    "equipment": "body weight",
+    "target": "calves"
+  },
+  {
+    "id": "1599",
+    "name_en": "standing hamstring and calf stretch with strap",
+    "equipment": "rope",
+    "target": "hamstrings"
+  },
+  {
+    "id": "0795",
+    "name_en": "standing single leg curl",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  {
+    "id": "0796",
+    "name_en": "standing wheel rollerout",
+    "equipment": "wheel roller",
+    "target": "abs"
+  },
+  {
+    "id": "2138",
+    "name_en": "stationary bike run",
+    "equipment": "stationary bike",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "0798",
+    "name_en": "stationary bike walk",
+    "equipment": "leverage machine",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "3314",
+    "name_en": "straddle maltese",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3298",
+    "name_en": "straddle planche",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1427",
+    "name_en": "straight leg outer hip abductor",
+    "equipment": "body weight",
+    "target": "abductors"
+  },
+  {
+    "id": "0803",
+    "name_en": "superman push-up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "0805",
+    "name_en": "suspended abdominal fallout",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3433",
+    "name_en": "swimmer kicks",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "3318",
+    "name_en": "swing 360",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "1753",
+    "name_en": "three bench dip",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0814",
+    "name_en": "triceps dip",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0812",
+    "name_en": "triceps dip (bench leg)",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0813",
+    "name_en": "triceps dip (between benches)",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0815",
+    "name_en": "triceps dips floor",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0816",
+    "name_en": "triceps press",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0818",
+    "name_en": "twin handle parallel grip lat pulldown",
+    "equipment": "cable",
+    "target": "lats"
+  },
+  {
+    "id": "1466",
+    "name_en": "twist hip lift",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "2802",
+    "name_en": "twisted leg raise",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3231",
+    "name_en": "two toe touch",
+    "equipment": "body weight",
+    "target": "spine"
+  },
+  {
+    "id": "1366",
+    "name_en": "upward facing dog",
+    "equipment": "body weight",
+    "target": "spine"
+  },
+  {
+    "id": "3420",
+    "name_en": "v-sit on floor",
+    "equipment": "body weight",
+    "target": "abs"
+  }
+]

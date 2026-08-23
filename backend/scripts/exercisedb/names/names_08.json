@@ -1,0 +1,602 @@
+[
+  {
+    "id": "0449",
+    "name_en": "ez barbell incline triceps extension",
+    "equipment": "ez barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0450",
+    "name_en": "ez barbell jm bench press",
+    "equipment": "ez barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0451",
+    "name_en": "ez barbell reverse grip curl",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0452",
+    "name_en": "ez barbell reverse grip preacher curl",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1458",
+    "name_en": "ez barbell seated curls",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0453",
+    "name_en": "ez barbell seated triceps extension",
+    "equipment": "ez barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0454",
+    "name_en": "ez barbell spider curl",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "2404",
+    "name_en": "ez-bar biceps curl (with arm blaster)",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "2432",
+    "name_en": "ez-bar close-grip bench press",
+    "equipment": "ez barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "2741",
+    "name_en": "ez-barbell standing wide grip biceps curl",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "3303",
+    "name_en": "flag",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0456",
+    "name_en": "flexion leg sit up (bent knee)",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0457",
+    "name_en": "flexion leg sit up (straight arm)",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0458",
+    "name_en": "floor fly (with barbell)",
+    "equipment": "barbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1472",
+    "name_en": "forward jump",
+    "equipment": "body weight",
+    "target": "quads"
+  },
+  {
+    "id": "3470",
+    "name_en": "forward lunge",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "2429",
+    "name_en": "frog crunch",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3301",
+    "name_en": "frog planche",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3296",
+    "name_en": "front lever",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3295",
+    "name_en": "front lever reps",
+    "equipment": "body weight",
+    "target": "upper back"
+  },
+  {
+    "id": "0464",
+    "name_en": "front plank with twist",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3315",
+    "name_en": "full maltese",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3299",
+    "name_en": "full planche",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3327",
+    "name_en": "full planche push-up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "0466",
+    "name_en": "gironda sternum chin",
+    "equipment": "body weight",
+    "target": "lats"
+  },
+  {
+    "id": "3561",
+    "name_en": "glute bridge march",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "3523",
+    "name_en": "glute bridge two legs on bench",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0467",
+    "name_en": "gorilla chin",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0469",
+    "name_en": "groin crunch",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1383",
+    "name_en": "hack calf raise",
+    "equipment": "sled machine",
+    "target": "calves"
+  },
+  {
+    "id": "1384",
+    "name_en": "hack one leg calf raise",
+    "equipment": "sled machine",
+    "target": "calves"
+  },
+  {
+    "id": "3221",
+    "name_en": "half knee bends",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "3202",
+    "name_en": "half sit-up",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "2139",
+    "name_en": "hands bike",
+    "equipment": "upper body ergometer",
+    "target": "pectorals"
+  },
+  {
+    "id": "3218",
+    "name_en": "hands clasped circular toe touch",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "3215",
+    "name_en": "hands reversed clasped circular toe touch",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "3302",
+    "name_en": "handstand",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0471",
+    "name_en": "handstand push-up",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "1764",
+    "name_en": "hanging leg hip raise",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1761",
+    "name_en": "hanging oblique knee raise",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0474",
+    "name_en": "hanging straight leg hip raise",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0475",
+    "name_en": "hanging straight leg raise",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0476",
+    "name_en": "hanging straight twisting leg hip raise",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3636",
+    "name_en": "high knee against wall",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "0484",
+    "name_en": "hip raise (bent knee)",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1418",
+    "name_en": "hug keens to chest",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "3234",
+    "name_en": "hyght dumbbell fly",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0489",
+    "name_en": "hyperextension",
+    "equipment": "body weight",
+    "target": "spine"
+  },
+  {
+    "id": "0488",
+    "name_en": "hyperextension (on bench)",
+    "equipment": "body weight",
+    "target": "spine"
+  },
+  {
+    "id": "3289",
+    "name_en": "impossible dips",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0490",
+    "name_en": "incline close-grip push-up",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "0491",
+    "name_en": "incline leg hip raise (leg straight)",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "3785",
+    "name_en": "incline push-up (on box)",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "0494",
+    "name_en": "incline reverse grip push-up",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "3011",
+    "name_en": "incline scapula push up",
+    "equipment": "body weight",
+    "target": "serratus anterior"
+  },
+  {
+    "id": "0495",
+    "name_en": "incline twisting sit-up",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "0496",
+    "name_en": "inverse leg curl (bench support)",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  {
+    "id": "2400",
+    "name_en": "inverse leg curl (on pull-up cable machine)",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  {
+    "id": "2300",
+    "name_en": "inverted row bent knees",
+    "equipment": "body weight",
+    "target": "upper back"
+  },
+  {
+    "id": "2298",
+    "name_en": "inverted row on bench",
+    "equipment": "body weight",
+    "target": "upper back"
+  },
+  {
+    "id": "1419",
+    "name_en": "iron cross stretch",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "1297",
+    "name_en": "isometric chest squeeze",
+    "equipment": "body weight",
+    "target": "pectorals"
+  },
+  {
+    "id": "0501",
+    "name_en": "jack burpee",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "3224",
+    "name_en": "jack jump",
+    "equipment": "body weight",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "2612",
+    "name_en": "jump rope",
+    "equipment": "rope",
+    "target": "cardiovascular system"
+  },
+  {
+    "id": "0514",
+    "name_en": "jump squat",
+    "equipment": "body weight",
+    "target": "glutes"
+  },
+  {
+    "id": "0517",
+    "name_en": "kettlebell advanced windmill",
+    "equipment": "kettlebell",
+    "target": "abs"
+  },
+  {
+    "id": "0518",
+    "name_en": "kettlebell alternating hang clean",
+    "equipment": "kettlebell",
+    "target": "forearms"
+  },
+  {
+    "id": "0520",
+    "name_en": "kettlebell alternating press",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0519",
+    "name_en": "kettlebell alternating press on floor",
+    "equipment": "kettlebell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0521",
+    "name_en": "kettlebell alternating renegade row",
+    "equipment": "kettlebell",
+    "target": "upper back"
+  },
+  {
+    "id": "0522",
+    "name_en": "kettlebell alternating row",
+    "equipment": "kettlebell",
+    "target": "upper back"
+  },
+  {
+    "id": "0524",
+    "name_en": "kettlebell bent press",
+    "equipment": "kettlebell",
+    "target": "abs"
+  },
+  {
+    "id": "0525",
+    "name_en": "kettlebell bottoms up clean from the hang position",
+    "equipment": "kettlebell",
+    "target": "biceps"
+  },
+  {
+    "id": "0526",
+    "name_en": "kettlebell double alternating hang clean",
+    "equipment": "kettlebell",
+    "target": "biceps"
+  },
+  {
+    "id": "0527",
+    "name_en": "kettlebell double jerk",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0528",
+    "name_en": "kettlebell double push press",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0529",
+    "name_en": "kettlebell double snatch",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0530",
+    "name_en": "kettlebell double windmill",
+    "equipment": "kettlebell",
+    "target": "abs"
+  },
+  {
+    "id": "0531",
+    "name_en": "kettlebell extended range one arm press on floor",
+    "equipment": "kettlebell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0533",
+    "name_en": "kettlebell front squat",
+    "equipment": "kettlebell",
+    "target": "glutes"
+  },
+  {
+    "id": "0534",
+    "name_en": "kettlebell goblet squat",
+    "equipment": "kettlebell",
+    "target": "glutes"
+  },
+  {
+    "id": "0536",
+    "name_en": "kettlebell lunge pass through",
+    "equipment": "kettlebell",
+    "target": "glutes"
+  },
+  {
+    "id": "0537",
+    "name_en": "kettlebell one arm clean and jerk",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "1298",
+    "name_en": "kettlebell one arm floor press",
+    "equipment": "kettlebell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0538",
+    "name_en": "kettlebell one arm jerk",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0539",
+    "name_en": "kettlebell one arm military press to the side",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0540",
+    "name_en": "kettlebell one arm push press",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0541",
+    "name_en": "kettlebell one arm row",
+    "equipment": "kettlebell",
+    "target": "upper back"
+  },
+  {
+    "id": "0542",
+    "name_en": "kettlebell one arm snatch",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0543",
+    "name_en": "kettlebell pirate supper legs",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0545",
+    "name_en": "kettlebell plyo push-up",
+    "equipment": "kettlebell",
+    "target": "pectorals"
+  },
+  {
+    "id": "1438",
+    "name_en": "kettlebell seated two arm military press",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0549",
+    "name_en": "kettlebell swing",
+    "equipment": "kettlebell",
+    "target": "glutes"
+  },
+  {
+    "id": "0552",
+    "name_en": "kettlebell two arm clean",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "0553",
+    "name_en": "kettlebell two arm military press",
+    "equipment": "kettlebell",
+    "target": "delts"
+  },
+  {
+    "id": "1345",
+    "name_en": "kettlebell two arm row",
+    "equipment": "kettlebell",
+    "target": "upper back"
+  },
+  {
+    "id": "0555",
+    "name_en": "kick out sit",
+    "equipment": "body weight",
+    "target": "hamstrings"
+  },
+  {
+    "id": "3640",
+    "name_en": "knee touch crunch",
+    "equipment": "body weight",
+    "target": "abs"
+  },
+  {
+    "id": "1346",
+    "name_en": "kneeling lat stretch",
+    "equipment": "body weight",
+    "target": "lats"
+  }
+]

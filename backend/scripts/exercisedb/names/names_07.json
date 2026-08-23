@@ -1,0 +1,602 @@
+[
+  {
+    "id": "0397",
+    "name_en": "dumbbell seated neutral wrist curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1679",
+    "name_en": "dumbbell seated one arm bicep curl on exercise ball with leg raised",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0398",
+    "name_en": "dumbbell seated one arm kickback",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0399",
+    "name_en": "dumbbell seated one arm rotate",
+    "equipment": "dumbbell",
+    "target": "forearms"
+  },
+  {
+    "id": "1380",
+    "name_en": "dumbbell seated one leg calf raise - hammer grip",
+    "equipment": "dumbbell",
+    "target": "calves"
+  },
+  {
+    "id": "1381",
+    "name_en": "dumbbell seated one leg calf raise - palm up",
+    "equipment": "dumbbell",
+    "target": "calves"
+  },
+  {
+    "id": "0401",
+    "name_en": "dumbbell seated palms up wrist curl",
+    "equipment": "dumbbell",
+    "target": "forearms"
+  },
+  {
+    "id": "0402",
+    "name_en": "dumbbell seated preacher curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0403",
+    "name_en": "dumbbell seated revers grip concentration curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1738",
+    "name_en": "dumbbell seated reverse grip one arm overhead tricep extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0405",
+    "name_en": "dumbbell seated shoulder press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0404",
+    "name_en": "dumbbell seated shoulder press (parallel grip)",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "2188",
+    "name_en": "dumbbell seated triceps extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0408",
+    "name_en": "dumbbell side lying one hand raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "3664",
+    "name_en": "dumbbell side plank with rear fly",
+    "equipment": "dumbbell",
+    "target": "upper back"
+  },
+  {
+    "id": "3548",
+    "name_en": "dumbbell single arm overhead carry",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0409",
+    "name_en": "dumbbell single leg calf raise",
+    "equipment": "dumbbell",
+    "target": "calves"
+  },
+  {
+    "id": "1757",
+    "name_en": "dumbbell single leg deadlift",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "2805",
+    "name_en": "dumbbell single leg deadlift with stepbox support",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0410",
+    "name_en": "dumbbell single leg split squat",
+    "equipment": "dumbbell",
+    "target": "quads"
+  },
+  {
+    "id": "0411",
+    "name_en": "dumbbell single leg squat",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "3560",
+    "name_en": "dumbbell standing alternate hammer curl and press",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0414",
+    "name_en": "dumbbell standing alternate overhead press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0415",
+    "name_en": "dumbbell standing alternate raise",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "1739",
+    "name_en": "dumbbell standing alternating tricep kickback",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "2143",
+    "name_en": "dumbbell standing around world",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "1740",
+    "name_en": "dumbbell standing bent over one arm triceps extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1741",
+    "name_en": "dumbbell standing bent over two arm triceps extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0416",
+    "name_en": "dumbbell standing biceps curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0417",
+    "name_en": "dumbbell standing calf raise",
+    "equipment": "dumbbell",
+    "target": "calves"
+  },
+  {
+    "id": "0418",
+    "name_en": "dumbbell standing concentration curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0419",
+    "name_en": "dumbbell standing front raise above head",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "2321",
+    "name_en": "dumbbell standing inner biceps curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0420",
+    "name_en": "dumbbell standing kickback",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0421",
+    "name_en": "dumbbell standing one arm concentration curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0422",
+    "name_en": "dumbbell standing one arm curl (over incline bench)",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0423",
+    "name_en": "dumbbell standing one arm extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0424",
+    "name_en": "dumbbell standing one arm palm in press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0425",
+    "name_en": "dumbbell standing one arm reverse curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0426",
+    "name_en": "dumbbell standing overhead press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0427",
+    "name_en": "dumbbell standing palms in press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0428",
+    "name_en": "dumbbell standing preacher curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0429",
+    "name_en": "dumbbell standing reverse curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0430",
+    "name_en": "dumbbell standing triceps extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "2293",
+    "name_en": "dumbbell standing zottman preacher curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1684",
+    "name_en": "dumbbell step up single leg balance with bicep curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0431",
+    "name_en": "dumbbell step-up",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "2796",
+    "name_en": "dumbbell step-up lunge",
+    "equipment": "dumbbell",
+    "target": "quads"
+  },
+  {
+    "id": "2812",
+    "name_en": "dumbbell step-up split squat",
+    "equipment": "dumbbell",
+    "target": "quads"
+  },
+  {
+    "id": "0432",
+    "name_en": "dumbbell stiff leg deadlift",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "0433",
+    "name_en": "dumbbell straight arm pullover",
+    "equipment": "dumbbell",
+    "target": "pectorals"
+  },
+  {
+    "id": "0434",
+    "name_en": "dumbbell straight leg deadlift",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "2808",
+    "name_en": "dumbbell sumo pull through",
+    "equipment": "dumbbell",
+    "target": "glutes"
+  },
+  {
+    "id": "2803",
+    "name_en": "dumbbell supported squat",
+    "equipment": "dumbbell",
+    "target": "quads"
+  },
+  {
+    "id": "0436",
+    "name_en": "dumbbell tate press",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1742",
+    "name_en": "dumbbell tricep kickback with stork stance",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1743",
+    "name_en": "dumbbell twisting bench press",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0437",
+    "name_en": "dumbbell upright row",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0864",
+    "name_en": "dumbbell upright shoulder external rotation",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "5201",
+    "name_en": "dumbbell waiter biceps curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0438",
+    "name_en": "dumbbell w-press",
+    "equipment": "dumbbell",
+    "target": "delts"
+  },
+  {
+    "id": "0439",
+    "name_en": "dumbbell zottman curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "2294",
+    "name_en": "dumbbell zottman preacher curl",
+    "equipment": "dumbbell",
+    "target": "biceps"
+  },
+  {
+    "id": "2189",
+    "name_en": "dumbbells seated triceps extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "3287",
+    "name_en": "elbow dips",
+    "equipment": "body weight",
+    "target": "triceps"
+  },
+  {
+    "id": "1772",
+    "name_en": "elbow lift - reverse push-up",
+    "equipment": "body weight",
+    "target": "upper back"
+  },
+  {
+    "id": "3292",
+    "name_en": "elevator",
+    "equipment": "body weight",
+    "target": "upper back"
+  },
+  {
+    "id": "1332",
+    "name_en": "exercise ball alternating arm ups",
+    "equipment": "stability ball",
+    "target": "lats"
+  },
+  {
+    "id": "1333",
+    "name_en": "exercise ball back extension with arms extended",
+    "equipment": "stability ball",
+    "target": "spine"
+  },
+  {
+    "id": "1334",
+    "name_en": "exercise ball back extension with hands behind head",
+    "equipment": "stability ball",
+    "target": "spine"
+  },
+  {
+    "id": "1335",
+    "name_en": "exercise ball back extension with knees off ground",
+    "equipment": "stability ball",
+    "target": "spine"
+  },
+  {
+    "id": "1336",
+    "name_en": "exercise ball back extension with rotation",
+    "equipment": "stability ball",
+    "target": "spine"
+  },
+  {
+    "id": "1744",
+    "name_en": "exercise ball dip",
+    "equipment": "stability ball",
+    "target": "triceps"
+  },
+  {
+    "id": "1559",
+    "name_en": "exercise ball hip flexor stretch",
+    "equipment": "stability ball",
+    "target": "glutes"
+  },
+  {
+    "id": "1338",
+    "name_en": "exercise ball hug",
+    "equipment": "stability ball",
+    "target": "spine"
+  },
+  {
+    "id": "1339",
+    "name_en": "exercise ball lat stretch",
+    "equipment": "stability ball",
+    "target": "lats"
+  },
+  {
+    "id": "1341",
+    "name_en": "exercise ball lower back stretch (pyramid)",
+    "equipment": "stability ball",
+    "target": "lats"
+  },
+  {
+    "id": "1342",
+    "name_en": "exercise ball lying side lat stretch",
+    "equipment": "stability ball",
+    "target": "lats"
+  },
+  {
+    "id": "1382",
+    "name_en": "exercise ball on the wall calf raise",
+    "equipment": "dumbbell",
+    "target": "calves"
+  },
+  {
+    "id": "3241",
+    "name_en": "exercise ball on the wall calf raise (tennis ball between ankles)",
+    "equipment": "dumbbell",
+    "target": "calves"
+  },
+  {
+    "id": "3240",
+    "name_en": "exercise ball on the wall calf raise (tennis ball between knees)",
+    "equipment": "dumbbell",
+    "target": "calves"
+  },
+  {
+    "id": "1416",
+    "name_en": "exercise ball one leg prone lower body rotation",
+    "equipment": "stability ball",
+    "target": "glutes"
+  },
+  {
+    "id": "1417",
+    "name_en": "exercise ball one legged diagonal kick hamstring curl",
+    "equipment": "stability ball",
+    "target": "glutes"
+  },
+  {
+    "id": "1296",
+    "name_en": "exercise ball pike push up",
+    "equipment": "stability ball",
+    "target": "pectorals"
+  },
+  {
+    "id": "1343",
+    "name_en": "exercise ball prone leg raise",
+    "equipment": "stability ball",
+    "target": "spine"
+  },
+  {
+    "id": "1560",
+    "name_en": "exercise ball seated hamstring stretch",
+    "equipment": "stability ball",
+    "target": "hamstrings"
+  },
+  {
+    "id": "1745",
+    "name_en": "exercise ball seated triceps stretch",
+    "equipment": "stability ball",
+    "target": "triceps"
+  },
+  {
+    "id": "1746",
+    "name_en": "exercise ball supine triceps extension",
+    "equipment": "dumbbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1747",
+    "name_en": "ez bar french press on exercise ball",
+    "equipment": "ez barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "3010",
+    "name_en": "ez bar lying bent arms pullover",
+    "equipment": "ez barbell",
+    "target": "lats"
+  },
+  {
+    "id": "1748",
+    "name_en": "ez bar lying close grip triceps extension behind head",
+    "equipment": "ez barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "1344",
+    "name_en": "ez bar reverse grip bent over row",
+    "equipment": "ez barbell",
+    "target": "upper back"
+  },
+  {
+    "id": "1682",
+    "name_en": "ez bar seated close grip concentration curl",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "1749",
+    "name_en": "ez bar standing french press",
+    "equipment": "ez barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "0445",
+    "name_en": "ez barbell anti gravity press",
+    "equipment": "ez barbell",
+    "target": "delts"
+  },
+  {
+    "id": "1627",
+    "name_en": "ez barbell close grip preacher curl",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0446",
+    "name_en": "ez barbell close-grip curl",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0447",
+    "name_en": "ez barbell curl",
+    "equipment": "ez barbell",
+    "target": "biceps"
+  },
+  {
+    "id": "0448",
+    "name_en": "ez barbell decline close grip face press",
+    "equipment": "ez barbell",
+    "target": "triceps"
+  },
+  {
+    "id": "2186",
+    "name_en": "ez barbell decline triceps extension",
+    "equipment": "ez barbell",
+    "target": "triceps"
+  }
+]
