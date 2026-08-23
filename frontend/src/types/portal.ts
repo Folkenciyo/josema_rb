@@ -54,6 +54,8 @@ export interface PortalExercise {
   tempo: string | null;
   notes: string | null;
   image_path: string | null;
+  /** "A1"/"A2" when it is chained to the next one, with no rest in between. */
+  superset_label: string | null;
 }
 
 export interface PortalTrainingDay {

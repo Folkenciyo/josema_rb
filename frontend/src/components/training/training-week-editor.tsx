@@ -9,10 +9,12 @@ import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "@/components/ui/feedback";
 import {
   addExercises,
+  addSupersetExercises,
   buildWeekDraft,
   countExercises,
-  moveExercise,
+  moveBlock,
   removeExercise,
+  ungroupSuperset,
   updateExercise,
   weekDraftToPayload,
   type ExerciseDraft,
@@ -79,9 +81,19 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
                 addExercises(current, day.day_of_week, exerciseIds),
               )
             }
+            onAddSuperset={(exerciseIds) =>
+              setDraft((current) =>
+                addSupersetExercises(current, day.day_of_week, exerciseIds),
+              )
+            }
             onRemoveExercise={(key) =>
               setDraft((current) =>
                 removeExercise(current, day.day_of_week, key),
+              )
+            }
+            onUngroupSuperset={(group) =>
+              setDraft((current) =>
+                ungroupSuperset(current, day.day_of_week, group),
               )
             }
             onUpdateExercise={(
@@ -92,9 +104,9 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
                 updateExercise(current, day.day_of_week, key, changes),
               )
             }
-            onMoveExercise={(fromIndex, toIndex) =>
+            onMoveBlock={(fromIndex, toIndex) =>
               setDraft((current) =>
-                moveExercise(current, day.day_of_week, fromIndex, toIndex),
+                moveBlock(current, day.day_of_week, fromIndex, toIndex),
               )
             }
           />

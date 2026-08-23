@@ -150,14 +150,29 @@ export function ExerciseStep({
           )}
         </div>
         <div className="min-w-0">
-          <h2 className="font-semibold text-slate-900">{exercise.name}</h2>
+          <h2 className="font-semibold text-slate-900">
+            {exercise.supersetLabel && (
+              <span className="bg-brand-50 text-brand-700 mr-2 rounded px-1.5 py-0.5 text-xs font-bold">
+                {exercise.supersetLabel}
+              </span>
+            )}
+            {exercise.name}
+          </h2>
           <p className="text-sm text-slate-500">
             {exercise.targetSets} × {exercise.targetReps}
-            {exercise.restSeconds ? ` · ${exercise.restSeconds}s descanso` : ""}
+            {exercise.restSeconds && !exercise.chainedTo
+              ? ` · ${exercise.restSeconds}s descanso`
+              : ""}
           </p>
           <LastTime exercise={exercise} />
         </div>
       </div>
+
+      {exercise.chainedTo && (
+        <p className="border-brand-600 border-b border-slate-100 border-l-4 bg-slate-50 px-4 py-2 text-sm text-slate-600">
+          Sin descanso: encadena con <strong>{exercise.chainedTo}</strong>.
+        </p>
+      )}
 
       {exercise.notes && (
         <p className="border-b border-slate-100 bg-slate-50 px-4 py-2 text-sm text-slate-600">

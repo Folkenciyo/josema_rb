@@ -13,6 +13,9 @@ class ExportTrainingExercise(BaseModel):
     tempo: str | None
     notes: str | None
     image_path: str | None
+    # "A1"/"A2" when the exercise is chained to another one; None when it stands
+    # alone. Computed for the document, not stored.
+    superset_label: str | None = None
 
 
 class ExportTrainingDay(BaseModel):

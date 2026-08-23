@@ -1,9 +1,11 @@
 import {
   addExercises,
+  addSupersetExercises,
   buildWeekDraft,
   countExercises,
-  moveExercise,
+  moveBlock,
   removeExercise,
+  ungroupSuperset,
   updateExercise,
   weekDraftToPayload,
 } from "./week-draft";
@@ -118,7 +120,7 @@ describe("draft mutations", () => {
   });
 
   it("reorders exercises within a day", () => {
-    const next = moveExercise(draft, "wednesday", 0, 1);
+    const next = moveBlock(draft, "wednesday", 0, 1);
 
     expect(next[2].exercises.map((item) => item.exercise_id)).toEqual([
       "Squat",
@@ -127,7 +129,67 @@ describe("draft mutations", () => {
   });
 
   it("ignores out-of-range moves", () => {
-    expect(moveExercise(draft, "wednesday", 0, 9)).toEqual(draft);
-    expect(moveExercise(draft, "wednesday", 1, 1)).toEqual(draft);
+    expect(moveBlock(draft, "wednesday", 0, 9)).toEqual(draft);
+    expect(moveBlock(draft, "wednesday", 1, 1)).toEqual(draft);
+  });
+});
+
+describe("supersets", () => {
+  const draft = buildWeekDraft(week);
+
+  it("adds the picked exercises chained under one group", () => {
+    const next = addSupersetExercises(draft, "monday", ["Dip", "Pushdown"]);
+    const groups = next[0].exercises.map((item) => item.superset_group);
+
+    expect(groups[0]).not.toBeNull();
+    expect(groups[0]).toBe(groups[1]);
+  });
+
+  it("gives every superset of a day its own group", () => {
+    const first = addSupersetExercises(draft, "monday", ["Dip", "Pushdown"]);
+    const second = addSupersetExercises(first, "monday", ["Curl", "Hammer"]);
+    const groups = second[0].exercises.map((item) => item.superset_group);
+
+    expect(new Set(groups).size).toBe(2);
+  });
+
+  it("keeps each exercise's own sets and reps", () => {
+    const next = addSupersetExercises(draft, "monday", ["Dip", "Pushdown"]);
+    const [first] = next[0].exercises;
+    const updated = updateExercise(next, "monday", first.key, { reps: "12" });
+
+    expect(updated[0].exercises[0].reps).toBe("12");
+    expect(updated[0].exercises[1].reps).toBe("10");
+  });
+
+  it("breaks the block up on ungroup, keeping the exercises", () => {
+    const next = addSupersetExercises(draft, "monday", ["Dip", "Pushdown"]);
+    const group = next[0].exercises[0].superset_group as number;
+    const ungrouped = ungroupSuperset(next, "monday", group);
+
+    expect(ungrouped[0].exercises).toHaveLength(2);
+    expect(
+      ungrouped[0].exercises.every((item) => item.superset_group === null),
+    ).toBe(true);
+  });
+
+  it("unchains the half left alone when the other one is removed", () => {
+    const next = addSupersetExercises(draft, "monday", ["Dip", "Pushdown"]);
+    const removed = removeExercise(next, "monday", next[0].exercises[0].key);
+
+    expect(removed[0].exercises).toHaveLength(1);
+    expect(removed[0].exercises[0].superset_group).toBeNull();
+  });
+
+  it("moves a superset as a whole", () => {
+    const withBlock = addSupersetExercises(draft, "wednesday", ["Dip", "Push"]);
+    const moved = moveBlock(withBlock, "wednesday", 2, 0);
+
+    expect(moved[2].exercises.map((item) => item.exercise_id)).toEqual([
+      "Dip",
+      "Push",
+      "Bench_Press",
+      "Squat",
+    ]);
   });
 });

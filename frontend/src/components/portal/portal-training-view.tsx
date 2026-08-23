@@ -35,7 +35,14 @@ function ExerciseRow({ exercise }: { exercise: PortalExercise }) {
         )}
       </div>
       <div className="min-w-0">
-        <p className="font-medium text-slate-800">{exercise.name_es}</p>
+        <p className="font-medium text-slate-800">
+          {exercise.superset_label && (
+            <span className="bg-brand-50 text-brand-700 mr-2 rounded px-1.5 py-0.5 text-xs font-bold">
+              {exercise.superset_label}
+            </span>
+          )}
+          {exercise.name_es}
+        </p>
         <p className="text-sm text-slate-500">{details.join(" · ")}</p>
         {exercise.notes && (
           <p className="mt-1 text-sm text-slate-400">{exercise.notes}</p>

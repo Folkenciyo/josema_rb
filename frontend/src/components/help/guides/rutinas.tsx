@@ -1,4 +1,4 @@
-import { ClipboardList, Copy, FileDown, Plus, Save } from "lucide-react";
+import { ClipboardList, Copy, FileDown, Link2, Plus, Save } from "lucide-react";
 
 import {
   Btn,
@@ -79,14 +79,39 @@ export function Rutinas() {
           </li>
           <li>
             En <strong>Más opciones</strong>: <Term>Tempo</Term> (por ejemplo
-            «3-1-1»), <Term>Superserie</Term> — el mismo número agrupa los
-            ejercicios que van seguidos sin descanso — y <Term>Notas</Term> para
-            lo que quieras decirle.
+            «3-1-1») y <Term>Notas</Term> para lo que quieras decirle.
           </li>
         </Bullets>
         <P>
           Los ejercicios se reordenan arrastrándolos por el asa de la izquierda.
         </P>
+      </Section>
+
+      <Section id="superseries" title="Ejercicios dobles (superseries)">
+        <P>
+          Cuando dos ejercicios se hacen encadenados —una serie de fondos en
+          máquina, otra de tríceps en polea y ahí el descanso—, se meten juntos
+          con <Btn icon={Link2} variant="secondary">Superserie</Btn>, el botón
+          que hay junto a <Btn icon={Plus} variant="secondary">Añadir</Btn> en
+          cada día. Elige los dos ejercicios <strong>en el orden en que se
+          hacen</strong> y entran ya emparejados.
+        </P>
+        <Bullets>
+          <li>
+            Cada ejercicio conserva <strong>sus propias series y reps</strong>:
+            puedes poner 12 en los fondos y 15 en la polea.
+          </li>
+          <li>
+            El bloque se arrastra entero, y con <Term>Separar</Term> se deshace
+            dejando los ejercicios sueltos.
+          </li>
+          <li>
+            El cliente lo ve marcado como <Term>A1</Term> y <Term>A2</Term> en
+            su portal, en el PDF y en el Word. En el modo guiado el temporizador
+            de descanso <strong>no salta entre A1 y A2</strong>: espera al final
+            del bloque.
+          </li>
+        </Bullets>
       </Section>
 
       <Section id="plantillas" title="Reutilizar rutinas">

@@ -92,7 +92,11 @@ def render_training_plan_docx(document: TrainingPlanDocument) -> bytes:
                 add_row(
                     table,
                     [
-                        exercise.name_es,
+                        (
+                            f"{exercise.superset_label} · {exercise.name_es}"
+                            if exercise.superset_label
+                            else exercise.name_es
+                        ),
                         str(exercise.sets),
                         exercise.reps,
                         f"{exercise.rest_seconds}s" if exercise.rest_seconds else "",

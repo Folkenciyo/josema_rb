@@ -21,6 +21,7 @@ from app.services import (
     menu_service,
     training_plan_service,
 )
+from app.services.superset_labels import superset_labels
 
 DAY_LABELS_ES = {
     "monday": "Lunes",
@@ -52,6 +53,7 @@ def build_training_plan_document(
     for week in plan.weeks:
         days = []
         for day in week.days:
+            labels = superset_labels([item.superset_group for item in day.exercises])
             exercises = [
                 ExportTrainingExercise(
                     name_es=training_day_exercise.exercise.name_es,
@@ -65,8 +67,11 @@ def build_training_plan_document(
                         if training_day_exercise.exercise.images
                         else None
                     ),
+                    superset_label=label,
                 )
-                for training_day_exercise in day.exercises
+                for training_day_exercise, label in zip(
+                    day.exercises, labels, strict=True
+                )
             ]
             days.append(
                 ExportTrainingDay(

@@ -30,7 +30,10 @@
                     {% endif %}
                   </td>
                 {% endif %}
-                <td><strong>{{ exercise.name_es }}</strong></td>
+                <td>
+                  {% if exercise.superset_label %}<span class="superset">{{ exercise.superset_label }}</span>{% endif %}
+                  <strong>{{ exercise.name_es }}</strong>
+                </td>
                 <td class="num">{{ exercise.sets }}</td>
                 <td>{{ exercise.reps }}</td>
                 <td>{% if exercise.rest_seconds %}{{ exercise.rest_seconds }}s{% endif %}</td>

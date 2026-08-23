@@ -1,3 +1,4 @@
+import { supersetLabels } from "@/lib/training/supersets";
 import type {
   LoggedSet,
   WorkoutDayDetail,
@@ -29,6 +30,10 @@ export interface DraftExercise {
   lastPerformedOn: string | null;
   lastSets: LoggedSet[];
   sets: DraftSet[];
+  /** "A1"/"A2" when the exercise is half of a superset; null when it stands alone. */
+  supersetLabel: string | null;
+  /** The exercise that follows with no rest in between, if any. */
+  chainedTo: string | null;
 }
 
 export interface SessionDraft {
@@ -72,6 +77,8 @@ export function createDraft(
   deviceSessionId: string,
   startedAt: string,
 ): SessionDraft {
+  const labels = supersetLabels(day.exercises);
+
   return {
     deviceSessionId,
     dayId: day.id,
@@ -79,18 +86,28 @@ export function createDraft(
     planTitle: day.plan_title,
     startedAt,
     notes: "",
-    exercises: day.exercises.map((exercise) => ({
-      planExerciseId: exercise.id,
-      name: exercise.name_es,
-      imagePath: exercise.image_path,
-      targetSets: exercise.sets,
-      targetReps: exercise.reps,
-      restSeconds: exercise.rest_seconds,
-      notes: exercise.notes,
-      lastPerformedOn: exercise.last_performed_on,
-      lastSets: exercise.last_sets,
-      sets: blankSets(exercise),
-    })),
+    exercises: day.exercises.map((exercise, index) => {
+      const next = day.exercises[index + 1];
+      const isChained =
+        labels[index] !== null &&
+        next !== undefined &&
+        next.superset_group === exercise.superset_group;
+
+      return {
+        planExerciseId: exercise.id,
+        name: exercise.name_es,
+        imagePath: exercise.image_path,
+        targetSets: exercise.sets,
+        targetReps: exercise.reps,
+        restSeconds: exercise.rest_seconds,
+        notes: exercise.notes,
+        lastPerformedOn: exercise.last_performed_on,
+        lastSets: exercise.last_sets,
+        sets: blankSets(exercise),
+        supersetLabel: labels[index],
+        chainedTo: isChained ? next.name_es : null,
+      };
+    }),
   };
 }
 

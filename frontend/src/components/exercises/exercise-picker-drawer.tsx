@@ -15,12 +15,18 @@ const MAX_RESULTS = 60;
 
 interface ExercisePickerDrawerProps {
   title: string;
+  /** Shown above the results when the picker is opened for something specific. */
+  hint?: string;
+  /** A superset needs two: one exercise chained to nothing is not a superset. */
+  minSelection?: number;
   onClose: () => void;
   onConfirm: (exerciseIds: string[]) => void;
 }
 
 export function ExercisePickerDrawer({
   title,
+  hint,
+  minSelection = 1,
   onClose,
   onConfirm,
 }: ExercisePickerDrawerProps) {
@@ -72,6 +78,12 @@ export function ExercisePickerDrawer({
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 pt-4">
+          {hint && (
+            <p className="mb-3 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-500">
+              {hint}
+            </p>
+          )}
+
           <ExerciseFilters
             search={search}
             onSearchChange={setSearch}
@@ -106,6 +118,7 @@ export function ExercisePickerDrawer({
                     <ExerciseImage
                       path={exercise.images[0]}
                       alt={exercise.name_es}
+                      fallbackLabel={exercise.primary_muscles_es[0]}
                       className="h-24 w-full"
                     />
                     {isSelected && (
@@ -126,13 +139,18 @@ export function ExercisePickerDrawer({
         <div className="flex items-center justify-between gap-3 border-t border-slate-200 px-5 py-3">
           <p className="text-sm text-slate-500">
             {selectedIds.length} seleccionados
+            {minSelection > 1 && selectedIds.length < minSelection && (
+              <span className="ml-1 text-slate-400">
+                (elige al menos {minSelection})
+              </span>
+            )}
           </p>
           <div className="flex gap-2">
             <Button variant="secondary" onClick={onClose}>
               Cancelar
             </Button>
             <Button
-              disabled={selectedIds.length === 0}
+              disabled={selectedIds.length < minSelection}
               onClick={() => {
                 onConfirm(selectedIds);
                 onClose();
