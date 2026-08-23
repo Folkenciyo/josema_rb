@@ -1,4 +1,4 @@
-import { Plus, X } from "lucide-react";
+import { EyeOff, Plus, X } from "lucide-react";
 
 import {
   Btn,
@@ -17,9 +17,11 @@ export function Ejercicios() {
   return (
     <>
       <P>
-        La librería viene cargada con unos 870 ejercicios traducidos al español,
-        cada uno con sus imágenes y sus instrucciones. Encima de eso puedes
-        añadir los tuyos. Todo lo que montes en una rutina sale de aquí.
+        La librería viene cargada con cerca de 2.000 ejercicios en español, cada
+        uno con sus instrucciones. Los primeros 870 traen fotos; el resto —el
+        grueso de máquina, polea y multipower— entra sin imagen y puedes ponerle
+        la tuya. Encima de eso puedes añadir los que quieras. Todo lo que montes
+        en una rutina sale de aquí.
       </P>
 
       <OpenScreen
@@ -79,10 +81,36 @@ export function Ejercicios() {
         </Steps>
 
         <Note>
-          Los ejercicios que creas tú se pueden editar y borrar; los de la
-          librería original, no. Aparecen mezclados en el buscador para que no
-          tengas que acordarte de cuál es cuál.
+          Los ejercicios que creas tú llevan la etiqueta <Term>Propio</Term> y
+          aparecen mezclados con los de la librería para que no tengas que
+          acordarte de cuál es cuál.
         </Note>
+      </Section>
+
+      <Section id="editar-importados" title="Retocar un ejercicio de la librería">
+        <P>
+          Cualquier ejercicio se puede editar, también los que vienen de la
+          librería: cambiarle el nombre por el que usas tú en el gimnasio,
+          reescribir las instrucciones, corregir la categoría o{" "}
+          <strong>subirle una foto</strong> —parte del catálogo viene sin
+          imagen, y lo suyo es la foto de tu propia máquina—.
+        </P>
+        <Note>
+          La primera vez que guardas, ese ejercicio <strong>pasa a ser tuyo</strong>{" "}
+          y se marca como <Term>Editado</Term>. A partir de ahí las
+          actualizaciones de la librería dejan de tocarlo: lo que escribas tú se
+          queda como está.
+        </Note>
+        <P>
+          Lo que no se puede es <strong>borrar</strong> uno de la librería —
+          volvería a aparecer la próxima vez que se actualice el catálogo, y
+          puede estar en la rutina de alguien—. Para quitarlo de en medio está{" "}
+          <Btn icon={EyeOff} variant="secondary">Ocultar</Btn>: desaparece del
+          buscador y del selector de rutinas, y las rutinas que ya lo usaban
+          siguen igual. Los ocultos se recuperan con{" "}
+          <Btn icon={EyeOff} variant="secondary">Ver ocultos</Btn>, arriba a la
+          derecha.
+        </P>
       </Section>
 
       <Section id="donde-se-usan" title="Dónde se usan">

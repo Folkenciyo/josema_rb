@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import type { Exercise } from "@/types/exercise";
-import { isCustomExercise } from "@/types/exercise";
+import { canDeleteExercise, isTakenOver } from "@/types/exercise";
 import { ExerciseImage } from "./exercise-image";
 
 interface ExerciseCardProps {
@@ -33,8 +33,14 @@ export function ExerciseCard({ exercise, onSelect }: ExerciseCardProps) {
               {exercise.equipment_es}
             </Badge>
           )}
-          {isCustomExercise(exercise) && (
+          {canDeleteExercise(exercise) && (
             <Badge className="bg-brand-100 text-brand-700">Propio</Badge>
+          )}
+          {isTakenOver(exercise) && (
+            <Badge className="bg-brand-50 text-brand-700">Editado</Badge>
+          )}
+          {exercise.is_hidden && (
+            <Badge className="bg-slate-200 text-slate-600">Oculto</Badge>
           )}
         </div>
       </div>
