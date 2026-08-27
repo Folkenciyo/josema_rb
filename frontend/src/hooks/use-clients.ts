@@ -55,6 +55,22 @@ export function useDeactivateClient() {
   });
 }
 
+/**
+ * The client and everything of theirs, gone for good. The whole cache is
+ * dropped rather than picked at: their plans, weigh-ins, photos and sessions
+ * all live under their own keys, and none of them mean anything now.
+ */
+export function useDeleteClient() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (clientId: string) => clientsApi.deleteClient(clientId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["clients"] });
+    },
+  });
+}
+
 export function useReactivateClient() {
   const queryClient = useQueryClient();
 

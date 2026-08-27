@@ -25,6 +25,15 @@ export function deactivateClient(clientId: string): Promise<Client> {
   return api.delete<Client>(`/clients/${clientId}`);
 }
 
+/**
+ * Erases the client and everything of theirs — plans, weigh-ins, measurements,
+ * photos, logged sessions and answers. Its own path, not a flag on the soft
+ * delete, so nothing reaches it by leaving an argument out.
+ */
+export function deleteClient(clientId: string): Promise<void> {
+  return api.delete(`/clients/${clientId}/permanent`);
+}
+
 /** Undo of the soft delete: the client goes back to the default listing. */
 export function reactivateClient(clientId: string): Promise<Client> {
   return api.post<Client>(`/clients/${clientId}/reactivate`, {});

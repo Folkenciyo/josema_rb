@@ -54,8 +54,16 @@ class Client(Base, TimestampMixin):
         ForeignKey("motivational_quotes.id", ondelete="SET NULL"),
     )
 
-    training_plans: Mapped[list["TrainingPlan"]] = relationship(back_populates="client")
-    diet_plans: Mapped[list["DietPlan"]] = relationship(back_populates="client")
+    # The plans cascade through the ORM rather than through the database: their
+    # own weeks and days have no ON DELETE of their own, so letting Postgres do
+    # it would trip over those. Deleting a client is rare enough for the extra
+    # round trips not to matter.
+    training_plans: Mapped[list["TrainingPlan"]] = relationship(
+        back_populates="client", cascade="all, delete-orphan"
+    )
+    diet_plans: Mapped[list["DietPlan"]] = relationship(
+        back_populates="client", cascade="all, delete-orphan"
+    )
     measurements: Mapped[list["ClientMeasurement"]] = relationship(
         back_populates="client",
         cascade="all, delete-orphan",

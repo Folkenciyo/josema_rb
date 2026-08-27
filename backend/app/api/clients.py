@@ -48,6 +48,13 @@ def deactivate_client(client_id: uuid.UUID, db: Session = Depends(get_db)) -> Cl
     return client_service.deactivate_client(db, client_id)
 
 
+@router.delete("/{client_id}/permanent", status_code=status.HTTP_204_NO_CONTENT)
+def delete_client(client_id: uuid.UUID, db: Session = Depends(get_db)) -> None:
+    """Erase the client and everything of theirs. Its own path, not a flag on the
+    soft delete: nothing should reach this by leaving a query parameter out."""
+    client_service.delete_client(db, client_id)
+
+
 @router.post("/{client_id}/reactivate", response_model=ClientOut)
 def reactivate_client(client_id: uuid.UUID, db: Session = Depends(get_db)) -> Client:
     return client_service.reactivate_client(db, client_id)
