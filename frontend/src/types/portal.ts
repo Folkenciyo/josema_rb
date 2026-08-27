@@ -43,10 +43,13 @@ export interface PortalPhoto {
 
 /**
  * The plans arrive already flattened by the backend — the very same document the
- * PDF is rendered from — so the portal shows exercise names and pictures without
- * ever touching the trainer's catalogue.
+ * PDF is rendered from — so the portal shows exercise names and pictures with no
+ * lookup of its own. The catalogue id rides along only so that tapping a row can
+ * ask for its sheet, through the same token.
  */
 export interface PortalExercise {
+  /** The catalogue id, only good for opening the sheet through the same token. */
+  exercise_id: string;
   name_es: string;
   sets: number;
   reps: string;
@@ -56,6 +59,23 @@ export interface PortalExercise {
   image_path: string | null;
   /** "A1"/"A2" when it is chained to the next one, with no rest in between. */
   superset_label: string | null;
+  /** The note about the block, carried by the exercise that opens it. */
+  superset_note: string | null;
+}
+
+/** An exercise sheet as the client reads it: how it is done, and nothing else. */
+export interface PortalExerciseDetail {
+  id: string;
+  name_es: string;
+  category_es: string | null;
+  level_es: string | null;
+  force_es: string | null;
+  mechanic_es: string | null;
+  equipment_es: string | null;
+  primary_muscles_es: string[];
+  secondary_muscles_es: string[];
+  instructions_es: string[];
+  images: string[];
 }
 
 export interface PortalTrainingDay {

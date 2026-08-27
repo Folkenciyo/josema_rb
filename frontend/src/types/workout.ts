@@ -8,6 +8,8 @@ export interface LoggedSet {
 export interface WorkoutExercise {
   /** Id of the exercise within the plan — what a recorded set points back to. */
   id: string;
+  /** The catalogue id, so the training screen can open the exercise sheet. */
+  exercise_id: string;
   name_es: string;
   image_path: string | null;
   sets: number;
@@ -15,6 +17,8 @@ export interface WorkoutExercise {
   rest_seconds: number | null;
   tempo: string | null;
   notes: string | null;
+  /** Set only on the exercise that opens a superset: it describes the block. */
+  superset_note: string | null;
   superset_group: number | null;
   last_performed_on: string | null;
   last_sets: LoggedSet[];

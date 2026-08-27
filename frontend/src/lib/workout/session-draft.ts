@@ -21,12 +21,19 @@ export interface DraftSet {
 
 export interface DraftExercise {
   planExerciseId: string;
+  /**
+   * The catalogue id, for opening the exercise sheet. Null on a draft parked by
+   * an older version of the app, which is why the screen has to cope without it.
+   */
+  exerciseId: string | null;
   name: string;
   imagePath: string | null;
   targetSets: number;
   targetReps: string;
   restSeconds: number | null;
   notes: string | null;
+  /** The note about the block, on the exercise that opens it. Null elsewhere. */
+  supersetNote: string | null;
   lastPerformedOn: string | null;
   lastSets: LoggedSet[];
   sets: DraftSet[];
@@ -95,12 +102,14 @@ export function createDraft(
 
       return {
         planExerciseId: exercise.id,
+        exerciseId: exercise.exercise_id ?? null,
         name: exercise.name_es,
         imagePath: exercise.image_path,
         targetSets: exercise.sets,
         targetReps: exercise.reps,
         restSeconds: exercise.rest_seconds,
         notes: exercise.notes,
+        supersetNote: exercise.superset_note ?? null,
         lastPerformedOn: exercise.last_performed_on,
         lastSets: exercise.last_sets,
         sets: blankSets(exercise),

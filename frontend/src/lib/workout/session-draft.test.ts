@@ -19,6 +19,7 @@ function day(overrides: Partial<WorkoutDayDetail> = {}): WorkoutDayDetail {
     exercises: [
       {
         id: "plan-ex-1",
+        exercise_id: "Bench_Press",
         name_es: "Press banca",
         image_path: null,
         sets: 3,
@@ -26,6 +27,7 @@ function day(overrides: Partial<WorkoutDayDetail> = {}): WorkoutDayDetail {
         rest_seconds: 90,
         tempo: null,
         notes: null,
+        superset_note: null,
         superset_group: null,
         last_performed_on: null,
         last_sets: [],

@@ -87,6 +87,13 @@ export function PortalDelCliente() {
           <strong>Mis fotos</strong> (si ha dado permiso y tiene fotos) y{" "}
           <strong>Mi progreso</strong> (si ha registrado alguna sesión).
         </P>
+        <P>
+          En <strong>Rutina</strong> y en <strong>Entreno</strong>, tocar un
+          ejercicio abre su <strong>ficha</strong>: la foto, el material, los
+          músculos que trabaja y los pasos de cómo se hace. Es la misma
+          explicación que tú ves en <Where href="/exercises">Ejercicios</Where>,
+          así que si la reescribes ahí, el cliente lee la tuya.
+        </P>
         <Note>
           La rutina y la dieta que ve son las que están en estado{" "}
           <Term>Activo</Term>. Mientras trabajas un plan en{" "}

@@ -229,9 +229,10 @@ def test_the_portal_serves_the_active_training_plan(
     assert body["plan_title"] == "Plan En Curso"
     exercise = body["weeks"][0]["days"][0]["exercises"][0]
     assert exercise["sets"] == 4
-    # The client gets the exercise by name and picture, never by catalogue id.
+    # The routine reads on its own — name and picture, no lookup needed. The
+    # catalogue id rides along only so tapping a row can ask for its sheet.
     assert exercise["name_es"]
-    assert "exercise_id" not in exercise
+    assert exercise["exercise_id"] == imported_exercise.id
 
 
 def test_a_token_never_reaches_another_clients_plan(
@@ -506,3 +507,36 @@ def test_managing_the_token_requires_the_trainer_session(
     client.cookies.clear()
     assert client.post(f"/api/clients/{client_id}/portal-token").status_code == 401
     assert client.delete(f"/api/clients/{client_id}/portal-token").status_code == 401
+
+
+def test_the_client_can_open_the_sheet_of_an_exercise_in_their_routine(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    """What the routine screen opens when a client taps an exercise."""
+    client_id = authenticated_client.post(
+        "/api/clients", json={"full_name": "Cliente Ficha"}
+    ).json()["id"]
+    token = authenticated_client.post(f"/api/clients/{client_id}/portal-token").json()[
+        "portal_token"
+    ]
+
+    response = authenticated_client.get(
+        f"/api/portal/{token}/exercises/{imported_exercise.id}"
+    )
+    assert response.status_code == 200
+
+    sheet = response.json()
+    assert sheet["name_es"] == imported_exercise.name_es
+    assert "instructions_es" in sheet
+    # None of the trainer's housekeeping travels with it.
+    assert "created_by_trainer_id" not in sheet
+    assert "is_hidden" not in sheet
+
+
+def test_an_exercise_sheet_needs_a_valid_token(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    response = authenticated_client.get(
+        f"/api/portal/no-such-token/exercises/{imported_exercise.id}"
+    )
+    assert response.status_code == 404
