@@ -14,6 +14,7 @@ import {
   countExercises,
   moveBlock,
   removeExercise,
+  setSupersetNote,
   ungroupSuperset,
   updateExercise,
   weekDraftToPayload,
@@ -94,6 +95,11 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
             onUngroupSuperset={(group) =>
               setDraft((current) =>
                 ungroupSuperset(current, day.day_of_week, group),
+              )
+            }
+            onChangeSupersetNote={(group, note) =>
+              setDraft((current) =>
+                setSupersetNote(current, day.day_of_week, group, note),
               )
             }
             onUpdateExercise={(

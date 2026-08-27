@@ -6,6 +6,9 @@ from app.schemas.meal_template import MacroTotals
 
 
 class ExportTrainingExercise(BaseModel):
+    # Only the portal uses it, to open the exercise sheet without ever reaching
+    # the trainer's catalogue. The printed documents ignore it.
+    exercise_id: str
     name_es: str
     sets: int
     reps: str
@@ -16,6 +19,8 @@ class ExportTrainingExercise(BaseModel):
     # "A1"/"A2" when the exercise is chained to another one; None when it stands
     # alone. Computed for the document, not stored.
     superset_label: str | None = None
+    # The note about the whole block, carried by the exercise that opens it.
+    superset_note: str | None = None
 
 
 class ExportTrainingDay(BaseModel):

@@ -22,6 +22,8 @@ export interface TrainingDayExercise {
   tempo: string | null;
   superset_group: number | null;
   notes: string | null;
+  /** The note about the whole block — only the exercise that opens it has one. */
+  superset_note: string | null;
 }
 
 export interface TrainingDay {
@@ -61,6 +63,8 @@ export interface TrainingDayExerciseInput {
   tempo: string | null;
   superset_group: number | null;
   notes: string | null;
+  /** Kept by the backend only on the exercise that opens a superset. */
+  superset_note: string | null;
 }
 
 export interface TrainingDayInput {

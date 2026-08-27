@@ -67,6 +67,9 @@ class TrainingDayExerciseIn(BaseModel):
     tempo: str | None = None
     superset_group: int | None = None
     notes: str | None = None
+    # Only kept on the exercise that opens the block; anywhere else it is
+    # dropped, so a day can never hold two notes for the same superset.
+    superset_note: str | None = None
 
 
 class TrainingDayIn(BaseModel):
@@ -85,6 +88,7 @@ class TrainingDayExerciseOut(BaseModel):
     tempo: str | None
     superset_group: int | None
     notes: str | None
+    superset_note: str | None
 
     model_config = {"from_attributes": True}
 

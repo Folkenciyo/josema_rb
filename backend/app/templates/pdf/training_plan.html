@@ -37,7 +37,13 @@
                 <td class="num">{{ exercise.sets }}</td>
                 <td>{{ exercise.reps }}</td>
                 <td>{% if exercise.rest_seconds %}{{ exercise.rest_seconds }}s{% endif %}</td>
-                <td>{{ exercise.notes or "" }}</td>
+                <td>
+                  {# Only the exercise that opens a superset carries the block note. #}
+                  {% if exercise.superset_note %}
+                    <div class="superset-note"><strong>Superserie:</strong> {{ exercise.superset_note }}</div>
+                  {% endif %}
+                  {{ exercise.notes or "" }}
+                </td>
               </tr>
             {% endfor %}
           </tbody>

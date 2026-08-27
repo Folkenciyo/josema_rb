@@ -2,10 +2,11 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Unlink } from "lucide-react";
+import { GripVertical, StickyNote, Unlink } from "lucide-react";
 
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/cn";
-import type { ExerciseDraft } from "@/lib/training/week-draft";
+import { supersetNoteOf, type ExerciseDraft } from "@/lib/training/week-draft";
 import type { SupersetBlock } from "@/lib/training/supersets";
 import type { Exercise } from "@/types/exercise";
 import { TrainingExerciseRow } from "./training-exercise-row";
@@ -19,6 +20,7 @@ interface TrainingBlockProps {
   ) => void;
   onRemoveExercise: (key: string) => void;
   onUngroup: (group: number) => void;
+  onChangeSupersetNote: (group: number, note: string | null) => void;
 }
 
 /**
@@ -32,6 +34,7 @@ export function TrainingBlock({
   onChangeExercise,
   onRemoveExercise,
   onUngroup,
+  onChangeSupersetNote,
 }: TrainingBlockProps) {
   const {
     attributes,
@@ -88,7 +91,7 @@ export function TrainingBlock({
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn(
-        "border-brand-600 bg-surface rounded-lg border border-slate-200 border-l-4 p-2",
+        "border-brand-600 bg-surface rounded-lg border border-l-4 border-slate-200 p-2",
         isDragging && "z-10 shadow-lg",
       )}
     >
@@ -109,6 +112,23 @@ export function TrainingBlock({
           Separar
         </button>
       </div>
+
+      {/* The note about the pair, not about either half of it. */}
+      <label className="mb-2 flex items-center gap-2 text-xs text-slate-500">
+        <StickyNote className="size-3.5 shrink-0 text-slate-400" />
+        <span className="sr-only">Nota de la superserie {block.letter}</span>
+        <Input
+          value={supersetNoteOf(block.exercises) ?? ""}
+          onChange={(event) =>
+            onChangeSupersetNote(
+              block.group as number,
+              event.target.value.trim() === "" ? null : event.target.value,
+            )
+          }
+          placeholder="Nota de la superserie: cómo encadenarlas, qué cuidar…"
+          className="h-8 flex-1"
+        />
+      </label>
 
       <div className="flex flex-col gap-2">
         {block.exercises.map((draft, index) => (

@@ -21,6 +21,7 @@ from app.schemas.training_plan import (
     TrainingPlanUpdate,
     TrainingWeekCreate,
 )
+from app.services.superset_labels import opens_superset
 
 
 def list_plans_for_client(db: Session, client_id: uuid.UUID) -> list[TrainingPlan]:
@@ -53,6 +54,7 @@ def _copy_day(source: TrainingDay) -> TrainingDay:
             tempo=exercise.tempo,
             superset_group=exercise.superset_group,
             notes=exercise.notes,
+            superset_note=exercise.superset_note,
         )
         for exercise in source.exercises
     ]
@@ -144,7 +146,7 @@ def _get_week(db: Session, week_id: uuid.UUID) -> TrainingWeek:
 
 
 def _build_day_exercise(
-    db: Session, ex_in: TrainingDayExerciseIn
+    db: Session, ex_in: TrainingDayExerciseIn, *, opens_block: bool
 ) -> TrainingDayExercise:
     exercise = exercise_repository.get_by_id(db, ex_in.exercise_id)
     if exercise is None:
@@ -161,12 +163,19 @@ def _build_day_exercise(
         tempo=ex_in.tempo,
         superset_group=ex_in.superset_group,
         notes=ex_in.notes,
+        # The block's note lives on the row that opens it. Ungrouping an
+        # exercise therefore drops the note with the block it described.
+        superset_note=ex_in.superset_note if opens_block else None,
     )
 
 
 def _build_day(db: Session, day_in: TrainingDayIn) -> TrainingDay:
     day = TrainingDay(day_of_week=day_in.day_of_week, order_index=day_in.order_index)
-    day.exercises = [_build_day_exercise(db, ex) for ex in day_in.exercises]
+    openers = opens_superset([ex.superset_group for ex in day_in.exercises])
+    day.exercises = [
+        _build_day_exercise(db, ex, opens_block=opens_block)
+        for ex, opens_block in zip(day_in.exercises, openers, strict=True)
+    ]
     return day
 
 

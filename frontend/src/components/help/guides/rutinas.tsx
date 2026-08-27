@@ -78,8 +78,14 @@ export function Rutinas() {
             del modo guiado del cliente.
           </li>
           <li>
+            <Term>Nota</Term> — la línea de debajo de cada ejercicio, siempre a
+            la vista. Es para el cliente: técnica, sensaciones, avisos. La ve en
+            su rutina, en el modo guiado mientras entrena y en el PDF y el Word
+            que se descarga.
+          </li>
+          <li>
             En <strong>Más opciones</strong>: <Term>Tempo</Term> (por ejemplo
-            «3-1-1») y <Term>Notas</Term> para lo que quieras decirle.
+            «3-1-1»).
           </li>
         </Bullets>
         <P>
@@ -104,6 +110,12 @@ export function Rutinas() {
           <li>
             El bloque se arrastra entero, y con <Term>Separar</Term> se deshace
             dejando los ejercicios sueltos.
+          </li>
+          <li>
+            El bloque tiene <strong>su propia nota</strong>, encima de los dos
+            ejercicios, para lo que va de la pareja entera: cómo encadenarlas,
+            qué cuidar al pasar de una a otra. Cada ejercicio sigue pudiendo
+            llevar la suya. Si separas el bloque, esa nota se va con él.
           </li>
           <li>
             El cliente lo ve marcado como <Term>A1</Term> y <Term>A2</Term> en
