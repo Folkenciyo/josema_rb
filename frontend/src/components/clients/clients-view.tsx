@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { ChevronRight, Plus, Search } from "lucide-react";
 
@@ -16,6 +16,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
+import { ParticleBurst } from "@/components/ui/particle-burst";
+import {
+  clearBurst,
+  isBurstPending,
+  noBurstOnServer,
+  subscribeToBurst,
+} from "@/lib/particles/pending-burst";
 import type { Client } from "@/types/client";
 import { ClientForm } from "./client-form";
 
@@ -35,6 +42,13 @@ export function ClientsView() {
   const [search, setSearch] = useState("");
   const [includeInactive, setIncludeInactive] = useState(false);
   const [isCreateOpen, setCreateOpen] = useState(false);
+  // True when this screen was reached by deleting a client, so the burst plays
+  // over the listing the client has just disappeared from.
+  const isBursting = useSyncExternalStore(
+    subscribeToBurst,
+    isBurstPending,
+    noBurstOnServer,
+  );
 
   const { data: clients, isPending, error } = useClients(includeInactive);
   const createClient = useCreateClient();
@@ -131,6 +145,8 @@ export function ClientsView() {
           </ul>
         )}
       </Card>
+
+      {isBursting && <ParticleBurst onDone={clearBurst} />}
 
       {isCreateOpen && (
         <Modal title="Nuevo cliente" onClose={() => setCreateOpen(false)}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { ChevronDown, Trash2 } from "lucide-react";
+import { ChevronDown, StickyNote, Trash2 } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import type { ExerciseDraft } from "@/lib/training/week-draft";
@@ -120,8 +120,23 @@ export function TrainingExerciseRow({
         </button>
       </div>
 
+      <label className="mt-1.5 flex items-center gap-2 text-xs text-slate-500">
+        <StickyNote className="size-3.5 shrink-0 text-slate-400" />
+        <span className="sr-only">
+          Nota para {exercise?.name_es ?? "el ejercicio"}
+        </span>
+        <Input
+          value={draft.notes ?? ""}
+          onChange={(event) =>
+            onChange({ notes: textOrNull(event.target.value) })
+          }
+          placeholder="Nota para el cliente: técnica, sensaciones, avisos…"
+          className="h-8 flex-1"
+        />
+      </label>
+
       {showDetails && (
-        <div className="mt-2 grid gap-2 border-t border-slate-100 pt-2 sm:grid-cols-3">
+        <div className="mt-2 grid gap-2 border-t border-slate-100 pt-2 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-xs text-slate-500 sm:hidden">
             Descanso (s)
             <Input
@@ -143,16 +158,6 @@ export function TrainingExerciseRow({
                 onChange({ tempo: textOrNull(event.target.value) })
               }
               placeholder="3-1-1"
-              className="h-8"
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-xs text-slate-500 sm:col-span-2">
-            Notas
-            <Input
-              value={draft.notes ?? ""}
-              onChange={(event) =>
-                onChange({ notes: textOrNull(event.target.value) })
-              }
               className="h-8"
             />
           </label>

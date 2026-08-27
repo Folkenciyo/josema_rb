@@ -49,6 +49,14 @@ def soft_delete(db: Session, client: Client) -> Client:
     return client
 
 
+def hard_delete(db: Session, client: Client) -> None:
+    """Wipe the client out. Everything hanging off them goes with it: the plans
+    through the ORM, the weigh-ins, photos rows, answers and logged sessions
+    through the ON DELETE CASCADE of their own tables."""
+    db.delete(client)
+    db.commit()
+
+
 def restore(db: Session, client: Client) -> Client:
     client.active = True
     db.commit()

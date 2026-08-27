@@ -276,6 +276,7 @@ export function WorkoutSessionView({
       </div>
 
       <ExerciseStep
+        token={token}
         exercise={exercise}
         onChangeSet={(setNumber, patch: Partial<DraftSet>) =>
           setDraft(draftUpdateSet(current, step, setNumber, patch))

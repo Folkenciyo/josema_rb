@@ -57,6 +57,19 @@ export function usePortalTrainedExercises(token: string) {
   });
 }
 
+/**
+ * The sheet of one exercise, fetched only once the client asks for it. The
+ * catalogue never changes under them mid-session, so it is worth keeping.
+ */
+export function usePortalExercise(token: string, exerciseId: string) {
+  return useQuery({
+    queryKey: queryKeys.portalExercise(token, exerciseId),
+    queryFn: () => portalApi.getPortalExercise(token, exerciseId),
+    staleTime: Infinity,
+    retry: false,
+  });
+}
+
 export function usePortalExerciseHistory(token: string, exerciseId: string) {
   return useQuery({
     queryKey: queryKeys.portalExerciseHistory(token, exerciseId),

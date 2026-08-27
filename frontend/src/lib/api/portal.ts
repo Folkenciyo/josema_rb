@@ -2,6 +2,7 @@ import { api } from "./http";
 import type { BodyReading, BodyZones, WeighIn } from "@/types/measurement";
 import type {
   PortalDietPlan,
+  PortalExerciseDetail,
   PortalHome,
   PortalInvite,
   PortalPhoto,
@@ -104,6 +105,16 @@ export function portalPhotoUrl(
   { thumbnail = false } = {},
 ): string {
   return `/api/portal/${token}/photos/${photoId}/file${thumbnail ? "?thumbnail=true" : ""}`;
+}
+
+/** The sheet behind a row of the routine: how the exercise is done. */
+export function getPortalExercise(
+  token: string,
+  exerciseId: string,
+): Promise<PortalExerciseDetail> {
+  return api.get<PortalExerciseDetail>(
+    `/portal/${token}/exercises/${exerciseId}`,
+  );
 }
 
 export function getPortalTrainedExercises(

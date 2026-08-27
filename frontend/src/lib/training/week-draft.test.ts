@@ -5,6 +5,8 @@ import {
   countExercises,
   moveBlock,
   removeExercise,
+  setSupersetNote,
+  supersetNoteOf,
   ungroupSuperset,
   updateExercise,
   weekDraftToPayload,
@@ -31,6 +33,7 @@ const week: TrainingWeek = {
           tempo: null,
           superset_group: null,
           notes: null,
+          superset_note: null,
         },
         {
           id: "e1",
@@ -42,6 +45,7 @@ const week: TrainingWeek = {
           tempo: null,
           superset_group: null,
           notes: "Suave",
+          superset_note: null,
         },
       ],
     },
@@ -179,6 +183,51 @@ describe("supersets", () => {
 
     expect(removed[0].exercises).toHaveLength(1);
     expect(removed[0].exercises[0].superset_group).toBeNull();
+  });
+
+  it("writes the block's note on the exercise that opens it", () => {
+    const next = addSupersetExercises(draft, "monday", ["Dip", "Pushdown"]);
+    const group = next[0].exercises[0].superset_group as number;
+    const noted = setSupersetNote(next, "monday", group, "Sin soltar la barra");
+
+    expect(noted[0].exercises[0].superset_note).toBe("Sin soltar la barra");
+    expect(noted[0].exercises[1].superset_note).toBeNull();
+    expect(supersetNoteOf(noted[0].exercises)).toBe("Sin soltar la barra");
+  });
+
+  it("keeps one note per block when two are written on the same day", () => {
+    const first = addSupersetExercises(draft, "monday", ["Dip", "Pushdown"]);
+    const second = addSupersetExercises(first, "monday", ["Curl", "Hammer"]);
+    const groups = second[0].exercises.map((item) => item.superset_group);
+    const noted = setSupersetNote(
+      setSupersetNote(second, "monday", groups[0] as number, "Primera"),
+      "monday",
+      groups[2] as number,
+      "Segunda",
+    );
+
+    expect(
+      noted[0].exercises.map((item) => item.superset_note),
+    ).toEqual(["Primera", null, "Segunda", null]);
+  });
+
+  it("drops the note when the block it described is broken up", () => {
+    const next = addSupersetExercises(draft, "monday", ["Dip", "Pushdown"]);
+    const group = next[0].exercises[0].superset_group as number;
+    const noted = setSupersetNote(next, "monday", group, "Sin soltar la barra");
+    const ungrouped = ungroupSuperset(noted, "monday", group);
+
+    expect(supersetNoteOf(ungrouped[0].exercises)).toBeNull();
+  });
+
+  it("carries the block's note into the payload", () => {
+    const next = addSupersetExercises(draft, "monday", ["Dip", "Pushdown"]);
+    const group = next[0].exercises[0].superset_group as number;
+    const noted = setSupersetNote(next, "monday", group, "Sin soltar la barra");
+    const [monday] = weekDraftToPayload(noted);
+
+    expect(monday.exercises[0].superset_note).toBe("Sin soltar la barra");
+    expect(monday.exercises[1].superset_note).toBeNull();
   });
 
   it("moves a superset as a whole", () => {

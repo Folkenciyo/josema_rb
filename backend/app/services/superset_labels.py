@@ -37,3 +37,20 @@ def superset_labels(groups: Sequence[int | None]) -> list[str | None]:
         start = end
 
     return labels
+
+
+def opens_superset(groups: Sequence[int | None]) -> list[bool]:
+    """True on the first exercise of each block, False everywhere else.
+
+    Which row of a day owns the block's note: the one that opens it. A lone
+    exercise opens nothing, so it never carries one.
+    """
+    labels = superset_labels(groups)
+    # Two blocks can sit back to back, so "the row before me is not in a block"
+    # is not enough: what opens a block is being labelled and not continuing the
+    # group of the row above.
+    return [
+        label is not None
+        and (index == 0 or labels[index - 1] is None or groups[index - 1] != group)
+        for index, (group, label) in enumerate(zip(groups, labels, strict=True))
+    ]

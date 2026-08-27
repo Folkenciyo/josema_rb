@@ -21,6 +21,8 @@ class WorkoutExerciseOut(BaseModel):
     """An exercise as the training screen needs it: target and last time's numbers."""
 
     id: uuid.UUID
+    # The catalogue id, so the training screen can open the exercise sheet.
+    exercise_id: str
     name_es: str
     image_path: str | None
     sets: int
@@ -28,6 +30,8 @@ class WorkoutExerciseOut(BaseModel):
     rest_seconds: int | None
     tempo: str | None
     notes: str | None
+    # Set only on the exercise that opens a superset: it describes the block.
+    superset_note: str | None
     superset_group: int | None
     last_performed_on: date | None
     last_sets: list[LoggedSetOut]

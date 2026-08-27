@@ -108,6 +108,29 @@ class PortalPhotoOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class PortalExerciseDetailOut(BaseModel):
+    """An exercise sheet as the client reads it, opened from their routine.
+
+    The catalogue is reference material, not anybody's data, so this carries the
+    same description the trainer sees minus the housekeeping fields — who wrote
+    it, where it was imported from and whether it is hidden from the search.
+    """
+
+    id: str
+    name_es: str
+    category_es: str | None
+    level_es: str | None
+    force_es: str | None
+    mechanic_es: str | None
+    equipment_es: str | None
+    primary_muscles_es: list[str]
+    secondary_muscles_es: list[str]
+    instructions_es: list[str]
+    images: list[str]
+
+    model_config = {"from_attributes": True}
+
+
 class PortalClientOut(BaseModel):
     """What the client sees. Never carries the client id: the token is the key."""
 

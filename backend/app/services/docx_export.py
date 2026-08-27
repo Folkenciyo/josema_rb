@@ -6,6 +6,7 @@ from docx.shared import Inches, Pt
 
 from app.schemas.export import (
     DietPlanDocument,
+    ExportTrainingExercise,
     ProgressDocument,
     TrainingPlanDocument,
 )
@@ -63,6 +64,21 @@ def _new_document(
     return doc
 
 
+def _training_notes(exercise: ExportTrainingExercise) -> str:
+    """The one Notes cell, which may hold the block's note and the exercise's.
+
+    The block note only ever comes on the exercise that opens the superset, and
+    it is labelled because on paper the two would otherwise read as one note
+    about that single exercise.
+    """
+    parts = []
+    if exercise.superset_note:
+        parts.append(f"Superserie: {exercise.superset_note}")
+    if exercise.notes:
+        parts.append(exercise.notes)
+    return " · ".join(parts)
+
+
 def _muted(doc: Document, text: str) -> None:
     paragraph = doc.add_paragraph()
     run = paragraph.add_run(text)
@@ -100,7 +116,7 @@ def render_training_plan_docx(document: TrainingPlanDocument) -> bytes:
                         str(exercise.sets),
                         exercise.reps,
                         f"{exercise.rest_seconds}s" if exercise.rest_seconds else "",
-                        exercise.notes or "",
+                        _training_notes(exercise),
                     ],
                 )
 

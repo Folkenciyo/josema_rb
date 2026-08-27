@@ -33,6 +33,7 @@ interface TrainingDayEditorProps {
   onAddSuperset: (exerciseIds: string[]) => void;
   onRemoveExercise: (key: string) => void;
   onUngroupSuperset: (group: number) => void;
+  onChangeSupersetNote: (group: number, note: string | null) => void;
   onUpdateExercise: (
     key: string,
     changes: Partial<Omit<ExerciseDraft, "key">>,
@@ -47,6 +48,7 @@ export function TrainingDayEditor({
   onAddSuperset,
   onRemoveExercise,
   onUngroupSuperset,
+  onChangeSupersetNote,
   onUpdateExercise,
   onMoveBlock,
 }: TrainingDayEditorProps) {
@@ -129,6 +131,7 @@ export function TrainingDayEditor({
                   onChangeExercise={onUpdateExercise}
                   onRemoveExercise={onRemoveExercise}
                   onUngroup={onUngroupSuperset}
+                  onChangeSupersetNote={onChangeSupersetNote}
                 />
               ))}
             </ul>

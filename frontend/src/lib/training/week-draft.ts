@@ -16,6 +16,11 @@ export interface ExerciseDraft {
   tempo: string | null;
   superset_group: number | null;
   notes: string | null;
+  /**
+   * The note about the whole block. Only the exercise that opens a superset
+   * carries one; the backend drops it anywhere else, and so does this draft.
+   */
+  superset_note: string | null;
 }
 
 export interface DayDraft {
@@ -45,6 +50,7 @@ function toExerciseDraft(exercise: TrainingDayExercise): ExerciseDraft {
     tempo: exercise.tempo,
     superset_group: exercise.superset_group,
     notes: exercise.notes,
+    superset_note: exercise.superset_note,
   };
 }
 
@@ -58,6 +64,7 @@ export function createExerciseDraft(exerciseId: string): ExerciseDraft {
     tempo: null,
     superset_group: null,
     notes: null,
+    superset_note: null,
   };
 }
 
@@ -92,6 +99,7 @@ export function weekDraftToPayload(draft: WeekDraft): TrainingDayInput[] {
         tempo: exercise.tempo,
         superset_group: exercise.superset_group,
         notes: exercise.notes,
+        superset_note: exercise.superset_note,
       })),
     }));
 }
@@ -167,9 +175,44 @@ export function ungroupSuperset(
   return mapDay(draft, day, (exercises) =>
     exercises.map((exercise) =>
       exercise.superset_group === group
-        ? { ...exercise, superset_group: null }
+        ? // The note described the pair, so it goes with the pair.
+          { ...exercise, superset_group: null, superset_note: null }
         : exercise,
     ),
+  );
+}
+
+/**
+ * The note of a whole block, written on the exercise that opens it. Anywhere
+ * else it would be a second note for the same superset, which is why the rest
+ * of the group is cleared as it is written.
+ */
+export function setSupersetNote(
+  draft: WeekDraft,
+  day: DayOfWeek,
+  group: number,
+  note: string | null,
+): WeekDraft {
+  return mapDay(draft, day, (exercises) => {
+    const opener = exercises.findIndex(
+      (exercise) => exercise.superset_group === group,
+    );
+    if (opener === -1) {
+      return exercises;
+    }
+
+    return exercises.map((exercise, index) =>
+      exercise.superset_group === group
+        ? { ...exercise, superset_note: index === opener ? note : null }
+        : exercise,
+    );
+  });
+}
+
+/** The block's note, wherever in the group it happens to sit. */
+export function supersetNoteOf(exercises: ExerciseDraft[]): string | null {
+  return (
+    exercises.find((exercise) => exercise.superset_note)?.superset_note ?? null
   );
 }
 

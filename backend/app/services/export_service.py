@@ -56,6 +56,7 @@ def build_training_plan_document(
             labels = superset_labels([item.superset_group for item in day.exercises])
             exercises = [
                 ExportTrainingExercise(
+                    exercise_id=training_day_exercise.exercise_id,
                     name_es=training_day_exercise.exercise.name_es,
                     sets=training_day_exercise.sets,
                     reps=training_day_exercise.reps,
@@ -68,6 +69,7 @@ def build_training_plan_document(
                         else None
                     ),
                     superset_label=label,
+                    superset_note=training_day_exercise.superset_note,
                 )
                 for training_day_exercise, label in zip(
                     day.exercises, labels, strict=True

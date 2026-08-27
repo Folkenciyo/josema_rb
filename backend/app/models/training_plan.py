@@ -149,6 +149,10 @@ class TrainingDayExercise(Base, TimestampMixin):
     tempo: Mapped[str | None] = mapped_column(String(50))
     superset_group: Mapped[int | None] = mapped_column(Integer)
     notes: Mapped[str | None] = mapped_column(Text)
+    # A note about the whole block — "las dos seguidas, sin soltar la barra" —
+    # rather than about this exercise. Only the first row of a superset group
+    # carries it; every other row keeps it null so there is one copy of it.
+    superset_note: Mapped[str | None] = mapped_column(Text)
 
     training_day: Mapped["TrainingDay"] = relationship(back_populates="exercises")
     exercise: Mapped["Exercise"] = relationship()

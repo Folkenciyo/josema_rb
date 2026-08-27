@@ -98,6 +98,7 @@ def get_training_day(
         exercises.append(
             WorkoutExerciseOut(
                 id=planned.id,
+                exercise_id=planned.exercise_id,
                 name_es=planned.exercise.name_es,
                 image_path=_image_of(planned),
                 sets=planned.sets,
@@ -105,6 +106,7 @@ def get_training_day(
                 rest_seconds=planned.rest_seconds,
                 tempo=planned.tempo,
                 notes=planned.notes,
+                superset_note=planned.superset_note,
                 superset_group=planned.superset_group,
                 last_performed_on=performed_on,
                 last_sets=[

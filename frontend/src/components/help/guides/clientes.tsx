@@ -1,4 +1,4 @@
-import { Plus, RotateCcw } from "lucide-react";
+import { Plus, RotateCcw, Trash2 } from "lucide-react";
 
 import {
   Btn,
@@ -143,6 +143,25 @@ export function Clientes() {
           su enlace deja de resolver mientras esté inactivo. Al reactivarlo
           vuelve a funcionar el mismo enlace.
         </Note>
+      </Section>
+
+      <Section id="eliminar" title="Eliminar a un cliente del todo">
+        <P>
+          <Btn icon={Trash2} variant="danger">Eliminar</Btn> borra al cliente y
+          todo lo suyo: rutinas, dietas, pesos, medidas, fotos (también los
+          archivos del servidor), entrenos registrados y respuestas del
+          cuestionario. Su enlace del portal deja de funcionar.
+        </P>
+        <Note kind="warn">
+          <strong>No se puede deshacer</strong> y no aparece en ninguna papelera.
+          Para dar de baja a alguien que quizá vuelva, usa Desactivar: conserva
+          todo. Eliminar es para quien pide que borres sus datos, o para una
+          ficha creada por error.
+        </Note>
+        <P>
+          Lo que no se borra son tus plantillas de rutina: pertenecen a ti, no al
+          cliente del que las guardaste.
+        </P>
       </Section>
 
       <Section id="buscar" title="Encontrar a alguien rápido">

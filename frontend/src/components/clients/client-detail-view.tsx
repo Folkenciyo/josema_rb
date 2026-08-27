@@ -8,12 +8,14 @@ import {
   MessageCircle,
   Pencil,
   RotateCcw,
+  Trash2,
   UserMinus,
 } from "lucide-react";
 
 import {
   useClient,
   useDeactivateClient,
+  useDeleteClient,
   useReactivateClient,
   useUpdateClient,
 } from "@/hooks/use-clients";
@@ -27,6 +29,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { ErrorMessage, LoadingState } from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
+import { requestBurst } from "@/lib/particles/pending-burst";
 import { toMailtoHref, toTelHref, toWhatsAppHref } from "@/lib/contact";
 import { calculateAge, formatDate } from "@/lib/format";
 import { SEX_LABELS, type ClientDetail, type Sex } from "@/types/client";
@@ -174,9 +177,17 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
   const { data: client, isPending, error } = useClient(clientId);
   const updateClient = useUpdateClient(clientId);
   const deactivateClient = useDeactivateClient();
+  const deleteClient = useDeleteClient();
   const reactivateClient = useReactivateClient();
   const createTrainingPlan = useCreateTrainingPlan(clientId);
   const createDietPlan = useCreateDietPlan(clientId);
+
+  // Checked before the error below: deleting invalidates this very file, so the
+  // refetch that follows answers 404 while the browser is still on this screen.
+  // That 404 is the expected end of a delete, not something to show the trainer.
+  if (deleteClient.isSuccess) {
+    return null;
+  }
 
   if (isPending) {
     return <LoadingState />;
@@ -200,6 +211,29 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
     }
   };
 
+  const handleDelete = () => {
+    if (
+      !window.confirm(
+        `¿Eliminar a ${client.full_name} para siempre?
+
+Se borran sus rutinas, dietas, pesos, medidas, fotos, entrenos y respuestas del cuestionario. Su enlace del portal deja de funcionar. Esto no se puede deshacer.
+
+Si solo quieres darle de baja, usa Desactivar.`,
+      )
+    ) {
+      return;
+    }
+
+    deleteClient.mutate(clientId, {
+      onSuccess: () => {
+        // The listing plays it: this screen is about to stop existing, and the
+        // client gone from the list is what the burst is about.
+        requestBurst();
+        router.push("/clients");
+      },
+    });
+  };
+
   return (
     <>
       <Link
@@ -221,7 +255,7 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
             </Button>
             {client.active ? (
               <Button
-                variant="danger"
+                variant="secondary"
                 onClick={handleDeactivate}
                 loading={deactivateClient.isPending}
               >
@@ -237,6 +271,15 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
                 Reactivar
               </Button>
             )}
+            <Button
+              variant="danger"
+              onClick={handleDelete}
+              loading={deleteClient.isPending}
+              title="Borra al cliente y todo su historial. No tiene vuelta atrás."
+            >
+              <Trash2 className="size-4" />
+              Eliminar
+            </Button>
           </div>
         }
       />
@@ -247,7 +290,11 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
         </div>
       )}
 
-      <ErrorMessage error={deactivateClient.error ?? reactivateClient.error} />
+      <ErrorMessage
+        error={
+          deactivateClient.error ?? deleteClient.error ?? reactivateClient.error
+        }
+      />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="flex flex-col gap-4 lg:col-span-1">

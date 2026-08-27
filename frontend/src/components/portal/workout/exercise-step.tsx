@@ -1,6 +1,7 @@
 "use client";
 
-import { Check, Dumbbell, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Check, Dumbbell, Info, Plus, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,6 +14,7 @@ import {
   parseWhole,
 } from "@/lib/workout/parse-number";
 import type { DraftExercise, DraftSet } from "@/lib/workout/session-draft";
+import { PortalExerciseModal } from "../portal-exercise-modal";
 
 const FIELD_CLASSES =
   "h-11 w-full rounded-lg border border-slate-300 bg-surface text-center text-lg font-semibold text-slate-900 focus:border-brand-600";
@@ -124,57 +126,87 @@ function LastTime({ exercise }: { exercise: DraftExercise }) {
 }
 
 export function ExerciseStep({
+  token,
   exercise,
   onChangeSet,
   onToggleSet,
   onRemoveSet,
   onAddSet,
 }: {
+  token: string;
   exercise: DraftExercise;
   onChangeSet: (setNumber: number, patch: Partial<DraftSet>) => void;
   onToggleSet: (setNumber: number) => void;
   onRemoveSet: (setNumber: number) => void;
   onAddSet: () => void;
 }) {
-  return (
-    <Card className="overflow-hidden">
-      <div className="flex gap-3 border-b border-slate-200 p-4">
-        <div className="size-16 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
-          {exercise.imagePath ? (
-            // eslint-disable-next-line @next/next/no-img-element -- static mount, no loader needed
-            <img
-              src={exerciseImageUrl(exercise.imagePath)}
-              alt={exercise.name}
-              className="size-full object-cover"
-            />
-          ) : (
-            // Part of the catalogue has no photo; an empty box reads as broken.
-            <span className="flex size-full items-center justify-center text-slate-300">
-              <Dumbbell className="size-7" />
+  const [isSheetOpen, setSheetOpen] = useState(false);
+  // A session parked by an older version of the app has no catalogue id, and
+  // there is nothing to look the sheet up by.
+  const canOpenSheet = exercise.exerciseId !== null;
+
+  const heading = (
+    <>
+      <div className="size-16 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+        {exercise.imagePath ? (
+          // eslint-disable-next-line @next/next/no-img-element -- static mount, no loader needed
+          <img
+            src={exerciseImageUrl(exercise.imagePath)}
+            alt={exercise.name}
+            className="size-full object-cover"
+          />
+        ) : (
+          // Part of the catalogue has no photo; an empty box reads as broken.
+          <span className="flex size-full items-center justify-center text-slate-300">
+            <Dumbbell className="size-7" />
+          </span>
+        )}
+      </div>
+      <div className="min-w-0">
+        <h2 className="flex items-center gap-1.5 font-semibold text-slate-900">
+          {exercise.supersetLabel && (
+            <span className="bg-brand-50 text-brand-700 rounded px-1.5 py-0.5 text-xs font-bold">
+              {exercise.supersetLabel}
             </span>
           )}
-        </div>
-        <div className="min-w-0">
-          <h2 className="font-semibold text-slate-900">
-            {exercise.supersetLabel && (
-              <span className="bg-brand-50 text-brand-700 mr-2 rounded px-1.5 py-0.5 text-xs font-bold">
-                {exercise.supersetLabel}
-              </span>
-            )}
-            {exercise.name}
-          </h2>
-          <p className="text-sm text-slate-500">
-            {exercise.targetSets} × {exercise.targetReps}
-            {exercise.restSeconds && !exercise.chainedTo
-              ? ` · ${exercise.restSeconds}s descanso`
-              : ""}
-          </p>
-          <LastTime exercise={exercise} />
-        </div>
+          <span className="min-w-0">{exercise.name}</span>
+          {canOpenSheet && <Info className="text-brand-600 size-4 shrink-0" />}
+        </h2>
+        <p className="text-sm text-slate-500">
+          {exercise.targetSets} × {exercise.targetReps}
+          {exercise.restSeconds && !exercise.chainedTo
+            ? ` · ${exercise.restSeconds}s descanso`
+            : ""}
+        </p>
+        <LastTime exercise={exercise} />
       </div>
+    </>
+  );
+
+  return (
+    <Card className="overflow-hidden">
+      {canOpenSheet ? (
+        <button
+          type="button"
+          onClick={() => setSheetOpen(true)}
+          className="flex w-full gap-3 border-b border-slate-200 p-4 text-left hover:bg-slate-50"
+        >
+          {heading}
+        </button>
+      ) : (
+        <div className="flex gap-3 border-b border-slate-200 p-4">
+          {heading}
+        </div>
+      )}
+
+      {exercise.supersetNote && (
+        <p className="border-brand-600 border-b border-l-4 border-slate-100 bg-slate-50 px-4 py-2 text-sm text-slate-600">
+          {exercise.supersetNote}
+        </p>
+      )}
 
       {exercise.chainedTo && (
-        <p className="border-brand-600 border-b border-slate-100 border-l-4 bg-slate-50 px-4 py-2 text-sm text-slate-600">
+        <p className="border-brand-600 border-b border-l-4 border-slate-100 bg-slate-50 px-4 py-2 text-sm text-slate-600">
           Sin descanso: encadena con <strong>{exercise.chainedTo}</strong>.
         </p>
       )}
@@ -203,6 +235,15 @@ export function ExerciseStep({
           Añadir serie
         </Button>
       </div>
+
+      {isSheetOpen && exercise.exerciseId && (
+        <PortalExerciseModal
+          token={token}
+          exerciseId={exercise.exerciseId}
+          name={exercise.name}
+          onClose={() => setSheetOpen(false)}
+        />
+      )}
     </Card>
   );
 }

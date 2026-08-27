@@ -7,12 +7,13 @@ from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.core.rate_limit import SlidingWindowLimiter
-from app.models import Client, Trainer
+from app.models import Client, Exercise, Trainer
 from app.schemas.export import DietPlanDocument, TrainingPlanDocument
 from app.schemas.portal import (
     PortalBodyMeasurementCreate,
     PortalBodyMeasurementOut,
     PortalClientOut,
+    PortalExerciseDetailOut,
     PortalPhotoOut,
     PortalWeighInCreate,
     PortalWeighInOut,
@@ -29,6 +30,7 @@ from app.schemas.workout import (
 )
 from app.services import (
     docx_export,
+    exercise_service,
     export_service,
     pdf_export,
     photo_service,
@@ -111,7 +113,8 @@ def get_portal_training_plan(
     client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
 ) -> TrainingPlanDocument:
     """The same document the PDF is built from: exercise names and images included,
-    no internal ids, and no need for the client to reach the exercise catalogue."""
+    so the routine reads on its own. The catalogue id travels with each row only
+    so the client can open its sheet through their own token."""
     plan = portal_service.get_active_training_plan(db, client)
     return export_service.build_training_plan_document(db, plan.id)
 
@@ -232,6 +235,21 @@ def get_own_photo_file(
         media_type="image/jpeg",
         headers={"Cache-Control": "private, max-age=3600"},
     )
+
+
+@router.get("/{token}/exercises/{exercise_id}", response_model=PortalExerciseDetailOut)
+def get_portal_exercise(
+    exercise_id: str,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
+) -> Exercise:
+    """The exercise sheet behind a row of the routine — how it is done.
+
+    Reached with the client's own token so the portal never needs a login, and
+    it gives away nothing about the client: the catalogue is the same reference
+    material for everyone.
+    """
+    return exercise_service.get_exercise(db, exercise_id)
 
 
 @router.get("/{token}/trained-exercises", response_model=list[TrainedExerciseOut])
