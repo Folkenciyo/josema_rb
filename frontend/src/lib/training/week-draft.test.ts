@@ -5,6 +5,7 @@ import {
   countExercises,
   moveBlock,
   removeExercise,
+  setDayNotes,
   setSupersetNote,
   supersetNoteOf,
   ungroupSuperset,
@@ -22,6 +23,7 @@ const week: TrainingWeek = {
       id: "d1",
       day_of_week: "wednesday",
       order_index: 0,
+      notes: null,
       exercises: [
         {
           id: "e2",
@@ -89,6 +91,42 @@ describe("weekDraftToPayload", () => {
     const emptyWeek: TrainingWeek = { ...week, days: [] };
 
     expect(weekDraftToPayload(buildWeekDraft(emptyWeek))).toEqual([]);
+  });
+
+  it("keeps a rest day that carries a note of its own", () => {
+    const draft = setDayNotes(buildWeekDraft(week), "sunday", "Descansa y estira");
+
+    const payload = weekDraftToPayload(draft);
+
+    expect(payload.map((day) => day.day_of_week)).toEqual([
+      "wednesday",
+      "sunday",
+    ]);
+    expect(payload[1]).toMatchObject({ notes: "Descansa y estira" });
+  });
+});
+
+describe("setDayNotes", () => {
+  it("reads the stored note back into the day it belongs to", () => {
+    const noted: TrainingWeek = {
+      ...week,
+      days: [{ ...week.days[0], notes: "Concentración de hombro" }],
+    };
+
+    expect(buildWeekDraft(noted)[2].notes).toBe("Concentración de hombro");
+  });
+
+  it("clearing the field leaves no note rather than an empty one", () => {
+    const draft = setDayNotes(buildWeekDraft(week), "wednesday", "  ");
+
+    expect(draft[2].notes).toBeNull();
+  });
+
+  it("touches only the day it is given", () => {
+    const draft = setDayNotes(buildWeekDraft(week), "monday", "Piernas");
+
+    expect(draft[0].notes).toBe("Piernas");
+    expect(draft[2].notes).toBeNull();
   });
 });
 

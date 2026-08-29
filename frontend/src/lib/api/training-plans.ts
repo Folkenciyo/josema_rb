@@ -52,6 +52,11 @@ export function setTrainingWeekDays(
   return api.put<TrainingWeek>(`/training-weeks/${weekId}/days`, { days });
 }
 
+/** Drops a week; the backend renumbers the ones after it. */
+export function deleteTrainingWeek(weekId: string): Promise<void> {
+  return api.delete(`/training-weeks/${weekId}`);
+}
+
 export function duplicateTrainingWeek(
   weekId: string,
   weekNumber: number,
@@ -80,6 +85,17 @@ export function copyTrainingPlanToClient(
     `/clients/${clientId}/training-plans/from/${sourcePlanId}`,
     { title: title ?? null },
   );
+}
+
+/**
+ * A second copy of a routine in the library, to be edited apart. Duplicating a
+ * template is saving it as a template again, which is the same copy either way.
+ */
+export function duplicateTrainingTemplate(
+  templateId: string,
+  title: string,
+): Promise<TrainingPlan> {
+  return saveTrainingPlanAsTemplate(templateId, title);
 }
 
 export function saveTrainingPlanAsTemplate(

@@ -148,6 +148,11 @@ def set_training_week_days(
     return training_plan_service.set_week_days(db, week_id, payload)
 
 
+@router.delete("/api/training-weeks/{week_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_training_week(week_id: uuid.UUID, db: Session = Depends(get_db)) -> None:
+    training_plan_service.delete_week(db, week_id)
+
+
 @router.post(
     "/api/training-weeks/{week_id}/duplicate",
     response_model=TrainingWeekDetailOut,

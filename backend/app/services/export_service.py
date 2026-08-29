@@ -78,6 +78,7 @@ def build_training_plan_document(
             days.append(
                 ExportTrainingDay(
                     day_of_week_es=DAY_LABELS_ES[day.day_of_week],
+                    notes=day.notes,
                     exercises=exercises,
                 )
             )

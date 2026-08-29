@@ -67,6 +67,13 @@ function StartScreen({
         </p>
       </Card>
 
+      {/* The trainer's note for the day, read before the first set is logged. */}
+      {day.notes && (
+        <Card className="border-brand-600 border-l-4 px-4 py-3 text-sm text-slate-600">
+          {day.notes}
+        </Card>
+      )}
+
       <ul className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-surface">
         {day.exercises.map((exercise) => (
           <li key={exercise.id} className="px-4 py-3">

@@ -1,6 +1,6 @@
 "use client";
 
-import { Copy, Plus } from "lucide-react";
+import { Copy, Plus, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
@@ -11,6 +11,8 @@ interface WeekTabsProps {
   onSelect: (weekId: string) => void;
   onAddWeek: () => void;
   onDuplicateWeek: () => void;
+  /** Left out where a week cannot be removed; the button is then not drawn. */
+  onDeleteWeek?: () => void;
   isBusy: boolean;
 }
 
@@ -20,6 +22,7 @@ export function WeekTabs({
   onSelect,
   onAddWeek,
   onDuplicateWeek,
+  onDeleteWeek,
   isBusy,
 }: WeekTabsProps) {
   return (
@@ -60,6 +63,17 @@ export function WeekTabs({
           <Plus className="size-4" />
           Añadir semana
         </Button>
+        {activeWeekId && onDeleteWeek && (
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={onDeleteWeek}
+            loading={isBusy}
+            title="Eliminar esta semana del plan"
+          >
+            <Trash2 className="size-4" />
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -80,6 +80,8 @@ export interface PortalExerciseDetail {
 
 export interface PortalTrainingDay {
   day_of_week_es: string;
+  /** The trainer's note for the day, above its exercises. */
+  notes: string | null;
   exercises: PortalExercise[];
 }
 

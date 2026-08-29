@@ -121,6 +121,10 @@ class TrainingDay(Base, TimestampMixin):
         Enum(DayOfWeek, name="day_of_week"), nullable=False
     )
     order_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    # What the trainer wants done that day beyond the list of exercises —
+    # "hoy céntrate en la concentración de hombro". It belongs to the day, so it
+    # travels with the routine into the PDF, the portal and the guided workout.
+    notes: Mapped[str | None] = mapped_column(Text)
 
     training_week: Mapped["TrainingWeek"] = relationship(back_populates="days")
     exercises: Mapped[list["TrainingDayExercise"]] = relationship(

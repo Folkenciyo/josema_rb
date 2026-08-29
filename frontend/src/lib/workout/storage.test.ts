@@ -30,6 +30,7 @@ const DAY: WorkoutDayDetail = {
   week_number: 1,
   day_of_week_es: "Lunes",
   plan_title: "Plan",
+  notes: null,
   exercises: [],
 };
 

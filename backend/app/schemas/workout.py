@@ -52,6 +52,8 @@ class WorkoutDayDetailOut(BaseModel):
     week_number: int
     day_of_week_es: str
     plan_title: str
+    # The trainer's note for the day, read before the first set is logged.
+    notes: str | None
     exercises: list[WorkoutExerciseOut]
 
 

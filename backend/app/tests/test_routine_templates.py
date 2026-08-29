@@ -195,3 +195,32 @@ def test_a_template_still_exports(
     )
 
     assert response.status_code == 200
+
+
+def test_a_template_is_duplicated_to_be_edited_apart(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    """The usual way to write a variation: copy what works, then change it."""
+    _, source_plan_id = _client_with_routine(
+        authenticated_client, imported_exercise.id, "Laura", "Fuerza fase 1"
+    )
+    template_id = authenticated_client.post(
+        f"/api/training-plans/{source_plan_id}/save-as-template",
+        json={"title": "Full body"},
+    ).json()["id"]
+
+    duplicate = authenticated_client.post(
+        f"/api/training-plans/{template_id}/save-as-template",
+        json={"title": "Full body (copia)"},
+    )
+
+    assert duplicate.status_code == 201
+    titles = [
+        item["title"]
+        for item in authenticated_client.get("/api/training-templates").json()
+    ]
+    assert sorted(titles) == ["Full body", "Full body (copia)"]
+    detail = authenticated_client.get(
+        f"/api/training-plans/{duplicate.json()['id']}"
+    ).json()
+    assert len(detail["weeks"][0]["days"][0]["exercises"]) == 1
