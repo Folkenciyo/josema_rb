@@ -85,6 +85,12 @@ function DayCard({
       <h2 className="border-b border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700">
         {day.day_of_week_es}
       </h2>
+      {/* What the trainer asks of the day, before its first exercise. */}
+      {day.notes && (
+        <p className="border-brand-600 border-l-4 bg-slate-50 px-4 py-2 text-sm text-slate-600">
+          {day.notes}
+        </p>
+      )}
       {day.exercises.length === 0 ? (
         <p className="px-4 py-3 text-sm text-slate-500">Descanso</p>
       ) : (

@@ -80,6 +80,19 @@ export function useAddTrainingWeek(planId: string) {
   });
 }
 
+export function useDeleteTrainingWeek(planId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (weekId: string) => plansApi.deleteTrainingWeek(weekId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: [TRAINING_PLANS_KEY, planId],
+      });
+    },
+  });
+}
+
 export function useDuplicateTrainingWeek(planId: string) {
   const queryClient = useQueryClient();
 
@@ -153,6 +166,18 @@ export function useCopyTrainingPlan(clientId: string) {
         queryKey: clientId ? ["clients", clientId] : TEMPLATES_KEY,
       });
     },
+  });
+}
+
+/** A copy of a routine in the library, ready to be edited apart. */
+export function useDuplicateTrainingTemplate() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ templateId, title }: { templateId: string; title: string }) =>
+      plansApi.duplicateTrainingTemplate(templateId, title),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: TEMPLATES_KEY }),
   });
 }
 

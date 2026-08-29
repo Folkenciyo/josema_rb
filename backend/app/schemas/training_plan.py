@@ -75,6 +75,8 @@ class TrainingDayExerciseIn(BaseModel):
 class TrainingDayIn(BaseModel):
     day_of_week: DayOfWeek
     order_index: int
+    # What the trainer wants done that day as a whole, beyond the exercises.
+    notes: str | None = None
     exercises: list[TrainingDayExerciseIn] = []
 
 
@@ -97,6 +99,7 @@ class TrainingDayOut(BaseModel):
     id: uuid.UUID
     day_of_week: DayOfWeek
     order_index: int
+    notes: str | None
     exercises: list[TrainingDayExerciseOut]
 
     model_config = {"from_attributes": True}

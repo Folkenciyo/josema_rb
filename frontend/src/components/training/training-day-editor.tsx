@@ -32,6 +32,7 @@ interface TrainingDayEditorProps {
   onAddExercises: (exerciseIds: string[]) => void;
   onAddSuperset: (exerciseIds: string[]) => void;
   onRemoveExercise: (key: string) => void;
+  onChangeNotes: (notes: string) => void;
   onUngroupSuperset: (group: number) => void;
   onChangeSupersetNote: (group: number, note: string | null) => void;
   onUpdateExercise: (
@@ -47,6 +48,7 @@ export function TrainingDayEditor({
   onAddExercises,
   onAddSuperset,
   onRemoveExercise,
+  onChangeNotes,
   onUngroupSuperset,
   onChangeSupersetNote,
   onUpdateExercise,
@@ -111,6 +113,15 @@ export function TrainingDayEditor({
           </Button>
         </div>
       </div>
+
+      {/* The instruction for the day as a whole, above the exercises it frames. */}
+      <textarea
+        value={day.notes ?? ""}
+        onChange={(event) => onChangeNotes(event.target.value)}
+        rows={2}
+        placeholder={`Nota del ${dayLabel.toLowerCase()} — lo que quieres que haga ese día`}
+        className="focus:border-brand-400 mb-2 w-full resize-y rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none"
+      />
 
       {blocks.length > 0 && (
         <DndContext

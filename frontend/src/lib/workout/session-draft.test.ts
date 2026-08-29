@@ -16,6 +16,7 @@ function day(overrides: Partial<WorkoutDayDetail> = {}): WorkoutDayDetail {
     week_number: 1,
     day_of_week_es: "Lunes",
     plan_title: "Plan de fuerza",
+    notes: null,
     exercises: [
       {
         id: "plan-ex-1",

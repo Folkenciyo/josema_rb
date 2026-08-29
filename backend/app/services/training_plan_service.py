@@ -43,7 +43,11 @@ def create_plan(db: Session, client: Client, data: TrainingPlanCreate) -> Traini
 
 
 def _copy_day(source: TrainingDay) -> TrainingDay:
-    day = TrainingDay(day_of_week=source.day_of_week, order_index=source.order_index)
+    day = TrainingDay(
+        day_of_week=source.day_of_week,
+        order_index=source.order_index,
+        notes=source.notes,
+    )
     day.exercises = [
         TrainingDayExercise(
             exercise_id=exercise.exercise_id,
@@ -170,7 +174,11 @@ def _build_day_exercise(
 
 
 def _build_day(db: Session, day_in: TrainingDayIn) -> TrainingDay:
-    day = TrainingDay(day_of_week=day_in.day_of_week, order_index=day_in.order_index)
+    day = TrainingDay(
+        day_of_week=day_in.day_of_week,
+        order_index=day_in.order_index,
+        notes=day_in.notes,
+    )
     openers = opens_superset([ex.superset_group for ex in day_in.exercises])
     day.exercises = [
         _build_day_exercise(db, ex, opens_block=opens_block)
@@ -185,6 +193,16 @@ def set_week_days(
     week = _get_week(db, week_id)
     days = [_build_day(db, day_in) for day_in in data.days]
     return training_plan_repository.replace_days(db, week, days)
+
+
+def delete_week(db: Session, week_id: uuid.UUID) -> None:
+    """Drop a week and close the gap it leaves in the numbering.
+
+    A week added by mistake is the usual reason to be here, so the ones after it
+    move up: leaving "semana 1, semana 3" would read as a week gone missing.
+    """
+    week = _get_week(db, week_id)
+    training_plan_repository.delete_week(db, week)
 
 
 def duplicate_week(

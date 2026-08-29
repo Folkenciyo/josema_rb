@@ -25,6 +25,8 @@ export interface ExerciseDraft {
 
 export interface DayDraft {
   day_of_week: DayOfWeek;
+  /** What the trainer asks of the day as a whole, beyond its exercises. */
+  notes: string | null;
   exercises: ExerciseDraft[];
 }
 
@@ -75,6 +77,7 @@ export function buildWeekDraft(week: TrainingWeek): WeekDraft {
 
     return {
       day_of_week: day,
+      notes: existing?.notes ?? null,
       exercises: (existing?.exercises ?? [])
         .slice()
         .sort((a, b) => a.order_index - b.order_index)
@@ -83,13 +86,18 @@ export function buildWeekDraft(week: TrainingWeek): WeekDraft {
   });
 }
 
-/** Days without exercises are dropped: the backend stores only training days. */
+/**
+ * Empty days are dropped: the backend stores only the days that say something.
+ * A rest day with a note — "descansa y estira" — is one of them, so it is the
+ * note and not just the exercises that keeps a day alive.
+ */
 export function weekDraftToPayload(draft: WeekDraft): TrainingDayInput[] {
   return draft
-    .filter((day) => day.exercises.length > 0)
+    .filter((day) => day.exercises.length > 0 || day.notes !== null)
     .map((day, dayIndex) => ({
       day_of_week: day.day_of_week,
       order_index: dayIndex,
+      notes: day.notes,
       exercises: day.exercises.map((exercise, exerciseIndex) => ({
         exercise_id: exercise.exercise_id,
         order_index: exerciseIndex,
@@ -133,6 +141,17 @@ function dropLoneGroups(exercises: ExerciseDraft[]): ExerciseDraft[] {
             : { ...exercise, superset_group: null },
         )
       : block.exercises,
+  );
+}
+
+/** The note of the day. Blank is no note at all, not an empty one. */
+export function setDayNotes(
+  draft: WeekDraft,
+  day: DayOfWeek,
+  notes: string,
+): WeekDraft {
+  return draft.map((item) =>
+    item.day_of_week === day ? { ...item, notes: notes.trim() || null } : item,
   );
 }
 

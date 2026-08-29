@@ -25,6 +25,8 @@ class ExportTrainingExercise(BaseModel):
 
 class ExportTrainingDay(BaseModel):
     day_of_week_es: str
+    # The trainer's note for the day as a whole, above the list of exercises.
+    notes: str | None = None
     exercises: list[ExportTrainingExercise]
 
 

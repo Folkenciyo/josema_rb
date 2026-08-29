@@ -66,6 +66,9 @@ def list_training_days(db: Session, client: Client) -> list[WorkoutDayOut]:
         )
         for week in plan.weeks
         for day in week.days
+        # A day kept only for its note — "descansa y estira" — is not a session
+        # to be logged, so the guided workout does not offer it.
+        if day.exercises
     ]
 
 
@@ -125,6 +128,7 @@ def get_training_day(
         week_number=week_number,
         day_of_week_es=DAY_LABELS_ES[day.day_of_week],
         plan_title=plan_title,
+        notes=day.notes,
         exercises=exercises,
     )
 

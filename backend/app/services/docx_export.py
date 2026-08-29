@@ -95,6 +95,8 @@ def render_training_plan_docx(document: TrainingPlanDocument) -> bytes:
             doc.add_paragraph(week.notes)
         for day in week.days:
             doc.add_heading(day.day_of_week_es, level=2)
+            if day.notes:
+                doc.add_paragraph(day.notes)
             if not day.exercises:
                 _muted(doc, "Descanso")
                 continue

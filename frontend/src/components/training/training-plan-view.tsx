@@ -8,6 +8,7 @@ import { ArrowLeft, ClipboardList, Pencil, Trash2 } from "lucide-react";
 import {
   useAddTrainingWeek,
   useDeleteTrainingPlan,
+  useDeleteTrainingWeek,
   useDuplicateTrainingWeek,
   useSaveAsTemplate,
   useTrainingPlan,
@@ -46,6 +47,7 @@ export function TrainingPlanView({ clientId, planId }: TrainingPlanViewProps) {
   const deletePlan = useDeleteTrainingPlan(clientId);
   const addWeek = useAddTrainingWeek(planId);
   const duplicateWeek = useDuplicateTrainingWeek(planId);
+  const deleteWeek = useDeleteTrainingWeek(planId);
   const saveAsTemplate = useSaveAsTemplate();
 
   if (isPending) {
@@ -69,6 +71,18 @@ export function TrainingPlanView({ clientId, planId }: TrainingPlanViewProps) {
       deletePlan.mutate(planId, {
         onSuccess: () => router.push(backHref),
       });
+    }
+  };
+
+  const handleDeleteWeek = () => {
+    if (
+      activeWeek &&
+      window.confirm(
+        `¿Eliminar la semana ${activeWeek.week_number} con todos sus ejercicios? No se puede deshacer.`,
+      )
+    ) {
+      // The week that took its place, so the editor does not land on nothing.
+      deleteWeek.mutate(activeWeek.id, { onSuccess: () => setSelectedWeekId(null) });
     }
   };
 
@@ -120,7 +134,12 @@ export function TrainingPlanView({ clientId, planId }: TrainingPlanViewProps) {
       </div>
 
       <ErrorMessage
-        error={deletePlan.error ?? addWeek.error ?? duplicateWeek.error}
+        error={
+          deletePlan.error ??
+          addWeek.error ??
+          duplicateWeek.error ??
+          deleteWeek.error
+        }
       />
 
       <Card className="p-4">
@@ -128,7 +147,9 @@ export function TrainingPlanView({ clientId, planId }: TrainingPlanViewProps) {
           weeks={weeks}
           activeWeekId={activeWeek?.id ?? null}
           onSelect={setSelectedWeekId}
-          isBusy={addWeek.isPending || duplicateWeek.isPending}
+          isBusy={
+            addWeek.isPending || duplicateWeek.isPending || deleteWeek.isPending
+          }
           onAddWeek={() =>
             addWeek.mutate(nextWeekNumber, {
               onSuccess: (week) => setSelectedWeekId(week.id),
@@ -143,6 +164,7 @@ export function TrainingPlanView({ clientId, planId }: TrainingPlanViewProps) {
               { onSuccess: (week) => setSelectedWeekId(week.id) },
             );
           }}
+          onDeleteWeek={handleDeleteWeek}
         />
 
         {activeWeek ? (

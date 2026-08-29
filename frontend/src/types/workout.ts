@@ -37,6 +37,8 @@ export interface WorkoutDayDetail {
   week_number: number;
   day_of_week_es: string;
   plan_title: string;
+  /** The trainer's note for the day, read before the first set is logged. */
+  notes: string | null;
   exercises: WorkoutExercise[];
 }
 

@@ -1,4 +1,12 @@
-import { ClipboardList, Copy, FileDown, Link2, Plus, Save } from "lucide-react";
+import {
+  ClipboardList,
+  Copy,
+  FileDown,
+  Link2,
+  Plus,
+  Save,
+  Trash2,
+} from "lucide-react";
 
 import {
   Btn,
@@ -61,10 +69,30 @@ export function Rutinas() {
           añades ejercicios desde el buscador con sus filtros. Al terminar,{" "}
           <Btn icon={Save}>Guardar semana</Btn>.
         </P>
+        <P>
+          Si añades una semana sin querer, la{" "}
+          <Btn icon={Trash2} variant="danger">papelera</Btn> de la derecha de las
+          pestañas la borra con todo lo que tenga dentro, y las siguientes se
+          renumeran para no dejar hueco.
+        </P>
         <Note kind="warn">
           Los cambios de una semana <strong>no se guardan solos</strong>. Si
           cambias de pestaña sin guardar, se pierden.
         </Note>
+      </Section>
+
+      <Section id="nota-del-dia" title="La nota del día">
+        <P>
+          Encima de los ejercicios de cada día hay un recuadro para lo que le
+          pides a ese día entero: «necesito que hagas concentración de hombro»,
+          «hoy vas suave, vienes de la lesión». Se guarda con la semana, como
+          todo lo demás.
+        </P>
+        <P>
+          El cliente la lee en su rutina del portal, al empezar el entrenamiento
+          guiado y en el PDF y el Word que se descarga. Un día de descanso puede
+          llevar solo la nota, sin ningún ejercicio.
+        </P>
       </Section>
 
       <Section id="ejercicios" title="Lo que puedes ajustar de cada ejercicio">
@@ -143,6 +171,13 @@ export function Rutinas() {
             <strong>Crear una plantilla desde cero</strong> — en{" "}
             <Where href="/routines">Rutinas</Where>, que se edita igual que el
             plan de un cliente pero no es de nadie.
+          </li>
+          <li>
+            <strong>Duplicar una rutina que ya tienes</strong> — con{" "}
+            <Btn icon={Copy} variant="secondary">Duplicar</Btn> en su tarjeta de{" "}
+            <Where href="/routines">Rutinas</Where>. Te pide el nombre de la
+            copia y la deja lista para cambiarle lo que quieras sin tocar la
+            original.
           </li>
           <li>
             <strong>Usar una rutina con un cliente</strong> — en su ficha, con{" "}

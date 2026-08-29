@@ -74,3 +74,45 @@ def test_client_has_multiple_training_plans_as_history(
 
     list_resp = authenticated_client.get(f"/api/clients/{client_id}/training-plans")
     assert len(list_resp.json()) == 2
+
+
+def _plan_with_weeks(api: TestClient, count: int) -> tuple[str, list[dict]]:
+    client_id = api.post("/api/clients", json={"full_name": "Cliente Semanas"}).json()[
+        "id"
+    ]
+    plan = api.post(
+        f"/api/clients/{client_id}/training-plans", json={"title": "Mesociclo"}
+    ).json()
+    weeks = [
+        api.post(
+            f"/api/training-plans/{plan['id']}/weeks",
+            json={"week_number": number, "notes": f"Semana {number}"},
+        ).json()
+        for number in range(1, count + 1)
+    ]
+    return plan["id"], weeks
+
+
+def test_a_week_added_by_mistake_can_be_removed(
+    authenticated_client: TestClient,
+) -> None:
+    plan_id, weeks = _plan_with_weeks(authenticated_client, 2)
+
+    deleted = authenticated_client.delete(f"/api/training-weeks/{weeks[1]['id']}")
+
+    assert deleted.status_code == 204
+    detail = authenticated_client.get(f"/api/training-plans/{plan_id}").json()
+    assert [week["notes"] for week in detail["weeks"]] == ["Semana 1"]
+
+
+def test_removing_a_week_closes_the_gap_in_the_numbering(
+    authenticated_client: TestClient,
+) -> None:
+    """Leaving "semana 1, semana 3" would read as a week gone missing."""
+    plan_id, weeks = _plan_with_weeks(authenticated_client, 3)
+
+    authenticated_client.delete(f"/api/training-weeks/{weeks[1]['id']}")
+
+    detail = authenticated_client.get(f"/api/training-plans/{plan_id}").json()
+    assert [week["week_number"] for week in detail["weeks"]] == [1, 2]
+    assert [week["notes"] for week in detail["weeks"]] == ["Semana 1", "Semana 3"]

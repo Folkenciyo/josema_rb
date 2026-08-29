@@ -6,6 +6,7 @@
     {% if week.notes %}<p class="note">{{ week.notes }}</p>{% endif %}
     {% for day in week.days %}
       <h3>{{ day.day_of_week_es }}</h3>
+      {% if day.notes %}<p class="day-note">{{ day.notes }}</p>{% endif %}
       {% if day.exercises %}
         {# Without a single picture the image column is just dead space. #}
         {% set with_images = day.exercises | selectattr("image_path") | list %}

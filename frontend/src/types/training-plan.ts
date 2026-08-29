@@ -30,6 +30,8 @@ export interface TrainingDay {
   id: string;
   day_of_week: DayOfWeek;
   order_index: number;
+  /** What the trainer asks of the day as a whole, beyond its exercises. */
+  notes: string | null;
   exercises: TrainingDayExercise[];
 }
 
@@ -70,5 +72,6 @@ export interface TrainingDayExerciseInput {
 export interface TrainingDayInput {
   day_of_week: DayOfWeek;
   order_index: number;
+  notes: string | null;
   exercises: TrainingDayExerciseInput[];
 }

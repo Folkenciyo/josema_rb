@@ -113,6 +113,15 @@ def add_week(db: Session, plan: TrainingPlan, week: TrainingWeek) -> TrainingWee
     return week
 
 
+def delete_week(db: Session, week: TrainingWeek) -> None:
+    """Remove the week and renumber the rest of the plan from 1 upwards."""
+    plan = week.training_plan
+    plan.weeks.remove(week)
+    for position, remaining in enumerate(plan.weeks, start=1):
+        remaining.week_number = position
+    db.commit()
+
+
 def replace_days(
     db: Session, week: TrainingWeek, days: list[TrainingDay]
 ) -> TrainingWeek:
