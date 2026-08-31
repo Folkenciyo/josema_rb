@@ -4,7 +4,6 @@ import {
   FileDown,
   Link2,
   Plus,
-  Save,
   Trash2,
 } from "lucide-react";
 
@@ -66,8 +65,7 @@ export function Rutinas() {
         </P>
         <P>
           Dentro de una semana marcas los días de entrenamiento y, en cada uno,
-          añades ejercicios desde el buscador con sus filtros. Al terminar,{" "}
-          <Btn icon={Save}>Guardar semana</Btn>.
+          añades ejercicios desde el buscador con sus filtros.
         </P>
         <P>
           Si añades una semana sin querer, la{" "}
@@ -75,9 +73,11 @@ export function Rutinas() {
           pestañas la borra con todo lo que tenga dentro, y las siguientes se
           renumeran para no dejar hueco.
         </P>
-        <Note kind="warn">
-          Los cambios de una semana <strong>no se guardan solos</strong>. Si
-          cambias de pestaña sin guardar, se pierden.
+        <Note>
+          Cada cambio se guarda solo unos segundos después de hacerlo — añadir
+          o quitar un ejercicio, tocar series, repeticiones o descanso, escribir
+          una nota. No hace falta pulsar nada ni acordarte de guardar antes de
+          cambiar de pestaña.
         </Note>
       </Section>
 

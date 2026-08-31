@@ -1,11 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Save } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
+import { useDebounce } from "@/hooks/use-debounce";
 import { useExerciseMap } from "@/hooks/use-exercises";
 import { useSaveTrainingWeekDays } from "@/hooks/use-training-plans";
-import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "@/components/ui/feedback";
 import {
   addExercises,
@@ -41,33 +40,34 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
 
   const payload = useMemo(() => weekDraftToPayload(draft), [draft]);
   const isDirty = JSON.stringify(payload) !== savedSnapshot;
+  const debouncedPayload = useDebounce(payload, 800);
 
-  const handleSave = () => {
+  // Autosaves so the routine survives every change without a save click.
+  useEffect(() => {
+    const debouncedSnapshot = JSON.stringify(debouncedPayload);
+    if (debouncedSnapshot === savedSnapshot) {
+      return;
+    }
     saveDays.mutate(
-      { weekId: week.id, days: payload },
-      { onSuccess: () => setSavedSnapshot(JSON.stringify(payload)) },
+      { weekId: week.id, days: debouncedPayload },
+      { onSuccess: () => setSavedSnapshot(debouncedSnapshot) },
     );
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedPayload]);
 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-slate-500">
           {countExercises(draft)} ejercicios en la semana
-          {isDirty && (
+          {saveDays.isPending || isDirty ? (
             <span className="text-brand-600 ml-2 font-medium">
-              · cambios sin guardar
+              · guardando...
             </span>
+          ) : (
+            <span className="ml-2 text-slate-400">· guardado</span>
           )}
         </p>
-        <Button
-          onClick={handleSave}
-          disabled={!isDirty}
-          loading={saveDays.isPending}
-        >
-          <Save className="size-4" />
-          Guardar semana
-        </Button>
       </div>
 
       <ErrorMessage error={saveDays.error} />
