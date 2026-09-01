@@ -5,6 +5,8 @@ import { InstallCard } from "./install-card";
 
 const ANDROID = "Mozilla/5.0 (Linux; Android 14) Chrome/126";
 const IPHONE = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) Safari";
+const IPHONE_CHROME =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/126.0 Mobile/15E148 Safari/604.1";
 
 function setUserAgent(value: string) {
   Object.defineProperty(navigator, "userAgent", {
@@ -73,5 +75,17 @@ describe("InstallCard", () => {
 
     expect(screen.getByText("Instálala")).toBeInTheDocument();
     expect(screen.getByText(/Añadir a pantalla de inicio/)).toBeInTheDocument();
+  });
+
+  it("sends iPhone Chrome to Safari instead of the broken shortcut steps", () => {
+    setUserAgent(IPHONE_CHROME);
+
+    renderCard();
+
+    expect(screen.getByText("Instálala")).toBeInTheDocument();
+    expect(screen.getByText(/Abre este enlace con/)).toBeInTheDocument();
+    expect(
+      screen.queryByText(/Añadir a pantalla de inicio/),
+    ).not.toBeInTheDocument();
   });
 });
