@@ -26,6 +26,16 @@ function readIOS(): boolean {
   return /iPad|iPhone|iPod/.test(navigator.userAgent);
 }
 
+/**
+ * Chrome, Firefox, Edge and Opera on iOS all run on WebKit, but Apple only lets
+ * Safari's own "Add to Home Screen" create a real standalone app: these others
+ * add a shortcut that just reopens the page inside themselves, with no icon,
+ * offline cache or standalone window — indistinguishable from doing nothing.
+ */
+function readIOSNonSafari(): boolean {
+  return /CriOS|FxiOS|EdgiOS|OPiOS|OPT\/|GSA\//.test(navigator.userAgent);
+}
+
 const NEVER_CHANGES = () => () => {};
 
 export interface InstallPrompt {
@@ -33,6 +43,8 @@ export interface InstallPrompt {
   isStandalone: boolean;
   /** iOS never fires the install event: those users need the manual instructions. */
   isIOS: boolean;
+  /** iOS, but not Safari: no path to a real install exists, only a broken shortcut. */
+  isIOSNonSafari: boolean;
   canInstall: boolean;
   promptInstall: () => Promise<void>;
 }
@@ -50,6 +62,11 @@ export function useInstallPrompt(): InstallPrompt {
     () => true,
   );
   const isIOS = useSyncExternalStore(NEVER_CHANGES, readIOS, () => false);
+  const isIOSNonSafari = useSyncExternalStore(
+    NEVER_CHANGES,
+    readIOSNonSafari,
+    () => false,
+  );
 
   useEffect(() => {
     const onBeforeInstallPrompt = (event: Event) => {
@@ -82,6 +99,7 @@ export function useInstallPrompt(): InstallPrompt {
   return {
     isStandalone,
     isIOS,
+    isIOSNonSafari,
     canInstall: deferred !== null,
     promptInstall,
   };

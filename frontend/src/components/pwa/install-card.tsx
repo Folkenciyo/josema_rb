@@ -17,7 +17,8 @@ export function InstallCard({
   title: string;
   description: string;
 }) {
-  const { isStandalone, isIOS, canInstall, promptInstall } = useInstallPrompt();
+  const { isStandalone, isIOS, isIOSNonSafari, canInstall, promptInstall } =
+    useInstallPrompt();
 
   if (isStandalone || (!canInstall && !isIOS)) {
     return null;
@@ -33,6 +34,11 @@ export function InstallCard({
           <Download className="size-4" />
           Instalar
         </Button>
+      ) : isIOSNonSafari ? (
+        <p className="mt-3 text-sm text-slate-600">
+          Este navegador no puede instalarla. Abre este enlace con{" "}
+          <strong>Safari</strong> para añadirla a la pantalla de inicio.
+        </p>
       ) : (
         <p className="mt-3 flex items-center gap-1.5 text-sm text-slate-600">
           Toca
