@@ -6,6 +6,7 @@ import { ChevronDown, StickyNote, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import type { ExerciseDraft } from "@/lib/training/week-draft";
 import type { Exercise } from "@/types/exercise";
+import type { ExerciseMeasurement } from "@/types/common";
 import { ExerciseImage } from "@/components/exercises/exercise-image";
 import { cn } from "@/lib/cn";
 
@@ -17,6 +18,7 @@ interface TrainingExerciseRowProps {
   /** Only a lone exercise carries the handle: a superset is dragged as a block. */
   dragHandle?: ReactNode;
   onChange: (changes: Partial<Omit<ExerciseDraft, "key">>) => void;
+  onChangeMeasurement: (measurement: ExerciseMeasurement) => void;
   onRemove: () => void;
 }
 
@@ -34,6 +36,7 @@ export function TrainingExerciseRow({
   label,
   dragHandle,
   onChange,
+  onChangeMeasurement,
   onRemove,
 }: TrainingExerciseRowProps) {
   const [showDetails, setShowDetails] = useState(false);
@@ -70,15 +73,62 @@ export function TrainingExerciseRow({
           />
         </label>
 
-        <label className="flex items-center gap-1 text-xs text-slate-500">
-          Reps
-          <Input
-            value={draft.reps}
-            onChange={(event) => onChange({ reps: event.target.value })}
-            placeholder="8-12"
-            className="h-8 w-20 px-2"
-          />
-        </label>
+        <div className="flex items-center gap-1 text-xs text-slate-500">
+          <div className="flex overflow-hidden rounded border border-slate-300">
+            <button
+              type="button"
+              onClick={() => onChangeMeasurement("reps")}
+              aria-pressed={draft.measurement === "reps"}
+              className={cn(
+                "px-1.5 py-1.5",
+                draft.measurement === "reps"
+                  ? "bg-brand-600 text-white"
+                  : "bg-surface hover:bg-slate-50",
+              )}
+            >
+              Reps
+            </button>
+            <button
+              type="button"
+              onClick={() => onChangeMeasurement("time")}
+              aria-pressed={draft.measurement === "time"}
+              className={cn(
+                "border-l border-slate-300 px-1.5 py-1.5",
+                draft.measurement === "time"
+                  ? "bg-brand-600 text-white"
+                  : "bg-surface hover:bg-slate-50",
+              )}
+            >
+              Tiempo
+            </button>
+          </div>
+
+          {draft.measurement === "reps" ? (
+            <label>
+              <span className="sr-only">Repeticiones</span>
+              <Input
+                value={draft.reps ?? ""}
+                onChange={(event) => onChange({ reps: event.target.value })}
+                placeholder="8-12"
+                className="h-8 w-20 px-2"
+              />
+            </label>
+          ) : (
+            <label>
+              <span className="sr-only">Segundos</span>
+              <Input
+                type="number"
+                min={1}
+                value={draft.duration_seconds ?? ""}
+                onChange={(event) =>
+                  onChange({ duration_seconds: numberOrNull(event.target.value) })
+                }
+                placeholder="s"
+                className="h-8 w-16 px-2"
+              />
+            </label>
+          )}
+        </div>
 
         <label className="hidden items-center gap-1 text-xs text-slate-500 sm:flex">
           Descanso

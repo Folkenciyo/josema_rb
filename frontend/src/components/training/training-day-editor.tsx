@@ -15,12 +15,12 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Link2, Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, Link2, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ExercisePickerDrawer } from "@/components/exercises/exercise-picker-drawer";
 import { dayBlocks, type DayDraft, type ExerciseDraft } from "@/lib/training/week-draft";
-import { DAY_LABELS } from "@/types/common";
+import { DAY_LABELS, type ExerciseMeasurement } from "@/types/common";
 import type { Exercise } from "@/types/exercise";
 import { TrainingBlock } from "./training-block";
 
@@ -39,7 +39,11 @@ interface TrainingDayEditorProps {
     key: string,
     changes: Partial<Omit<ExerciseDraft, "key">>,
   ) => void;
+  onChangeMeasurement: (key: string, measurement: ExerciseMeasurement) => void;
   onMoveBlock: (fromIndex: number, toIndex: number) => void;
+  /** Swaps this day's whole content with the day above/below it in the week. */
+  onMoveDayUp?: () => void;
+  onMoveDayDown?: () => void;
 }
 
 export function TrainingDayEditor({
@@ -52,7 +56,10 @@ export function TrainingDayEditor({
   onUngroupSuperset,
   onChangeSupersetNote,
   onUpdateExercise,
+  onChangeMeasurement,
   onMoveBlock,
+  onMoveDayUp,
+  onMoveDayDown,
 }: TrainingDayEditorProps) {
   const [pickerMode, setPickerMode] = useState<PickerMode | null>(null);
 
@@ -85,14 +92,38 @@ export function TrainingDayEditor({
   return (
     <section className="rounded-xl border border-slate-200 bg-slate-50/60 p-3">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <h3 className="font-semibold text-slate-800">
-          {dayLabel}
-          {day.exercises.length === 0 && (
-            <span className="ml-2 text-xs font-normal text-slate-400">
-              Descanso
-            </span>
-          )}
-        </h3>
+        <div className="flex items-center gap-1">
+          <div className="flex flex-col">
+            <button
+              type="button"
+              onClick={onMoveDayUp}
+              disabled={!onMoveDayUp}
+              aria-label={`Cambiar ${dayLabel} por el día anterior`}
+              title="Cambiar por el día anterior"
+              className="text-slate-400 enabled:hover:text-brand-600 disabled:opacity-20"
+            >
+              <ChevronUp className="size-4" />
+            </button>
+            <button
+              type="button"
+              onClick={onMoveDayDown}
+              disabled={!onMoveDayDown}
+              aria-label={`Cambiar ${dayLabel} por el día siguiente`}
+              title="Cambiar por el día siguiente"
+              className="text-slate-400 enabled:hover:text-brand-600 disabled:opacity-20"
+            >
+              <ChevronDown className="size-4" />
+            </button>
+          </div>
+          <h3 className="font-semibold text-slate-800">
+            {dayLabel}
+            {day.exercises.length === 0 && (
+              <span className="ml-2 text-xs font-normal text-slate-400">
+                Descanso
+              </span>
+            )}
+          </h3>
+        </div>
         <div className="flex gap-2">
           <Button
             size="sm"
@@ -140,6 +171,7 @@ export function TrainingDayEditor({
                   block={block}
                   exerciseMap={exerciseMap}
                   onChangeExercise={onUpdateExercise}
+                  onChangeMeasurement={onChangeMeasurement}
                   onRemoveExercise={onRemoveExercise}
                   onUngroup={onUngroupSuperset}
                   onChangeSupersetNote={onChangeSupersetNote}

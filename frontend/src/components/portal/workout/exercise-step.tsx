@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Check, Dumbbell, Info, Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, Dumbbell, Info, Play, Plus, Square, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,19 +13,80 @@ import {
   parseDecimal,
   parseWhole,
 } from "@/lib/workout/parse-number";
+import type { ExerciseMeasurement } from "@/types/common";
 import type { DraftExercise, DraftSet } from "@/lib/workout/session-draft";
 import { PortalExerciseModal } from "../portal-exercise-modal";
 
 const FIELD_CLASSES =
   "h-11 w-full rounded-lg border border-slate-300 bg-surface text-center text-lg font-semibold text-slate-900 focus:border-brand-600";
 
+/** A play button that counts a held position down, then marks the set done on its own. */
+function DurationControl({
+  targetSeconds,
+  onComplete,
+}: {
+  targetSeconds: number;
+  onComplete: () => void;
+}) {
+  const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (secondsLeft === null) {
+      return;
+    }
+    if (secondsLeft === 0) {
+      // Deferred so the update lands outside the effect's own synchronous pass.
+      const finish = setTimeout(() => {
+        onComplete();
+        setSecondsLeft(null);
+      }, 0);
+      return () => clearTimeout(finish);
+    }
+    const tick = setInterval(() => {
+      setSecondsLeft((left) => (left === null ? null : Math.max(left - 1, 0)));
+    }, 1000);
+    return () => clearInterval(tick);
+  }, [secondsLeft, onComplete]);
+
+  if (secondsLeft !== null) {
+    return (
+      <div className="border-brand-600 bg-brand-50 text-brand-700 flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border">
+        <span className="font-mono text-lg font-semibold">{secondsLeft}s</span>
+        <button
+          type="button"
+          onClick={() => setSecondsLeft(null)}
+          aria-label="Detener el contador"
+          className="hover:text-brand-900 p-1"
+        >
+          <Square className="size-4" />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setSecondsLeft(targetSeconds)}
+      className="hover:border-brand-500 hover:text-brand-700 flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-surface font-semibold text-slate-700"
+    >
+      <Play className="size-4" />
+      {targetSeconds}s
+    </button>
+  );
+}
+
 function SetRow({
   set,
+  measurement,
+  targetDurationSeconds,
   onChange,
   onToggle,
   onRemove,
 }: {
   set: DraftSet;
+  measurement: ExerciseMeasurement;
+  targetDurationSeconds: number | null;
   onChange: (patch: Partial<DraftSet>) => void;
   onToggle: () => void;
   onRemove: () => void;
@@ -57,21 +118,32 @@ function SetRow({
 
       <span className="text-slate-400">×</span>
 
-      <label className="flex-1">
-        <span className="sr-only">
-          Repeticiones de la serie {set.setNumber}
-        </span>
-        <input
-          type="text"
-          inputMode="numeric"
-          value={formatNumber(set.reps)}
-          onChange={(event) =>
-            onChange({ reps: parseWhole(event.target.value) })
-          }
-          placeholder="reps"
-          className={FIELD_CLASSES}
+      {measurement === "time" && targetDurationSeconds !== null ? (
+        <DurationControl
+          targetSeconds={targetDurationSeconds}
+          onComplete={() => {
+            if (!set.done) {
+              onToggle();
+            }
+          }}
         />
-      </label>
+      ) : (
+        <label className="flex-1">
+          <span className="sr-only">
+            Repeticiones de la serie {set.setNumber}
+          </span>
+          <input
+            type="text"
+            inputMode="numeric"
+            value={formatNumber(set.reps)}
+            onChange={(event) =>
+              onChange({ reps: parseWhole(event.target.value) })
+            }
+            placeholder="reps"
+            className={FIELD_CLASSES}
+          />
+        </label>
+      )}
 
       <button
         type="button"
@@ -173,7 +245,10 @@ export function ExerciseStep({
           {canOpenSheet && <Info className="text-brand-600 size-4 shrink-0" />}
         </h2>
         <p className="text-sm text-slate-500">
-          {exercise.targetSets} × {exercise.targetReps}
+          {exercise.targetSets} ×{" "}
+          {exercise.targetMeasurement === "time"
+            ? `${exercise.targetDurationSeconds}s`
+            : exercise.targetReps}
           {exercise.restSeconds && !exercise.chainedTo
             ? ` · ${exercise.restSeconds}s descanso`
             : ""}
@@ -222,6 +297,8 @@ export function ExerciseStep({
           <SetRow
             key={set.setNumber}
             set={set}
+            measurement={exercise.targetMeasurement}
+            targetDurationSeconds={exercise.targetDurationSeconds}
             onChange={(patch) => onChangeSet(set.setNumber, patch)}
             onToggle={() => onToggleSet(set.setNumber)}
             onRemove={() => onRemoveSet(set.setNumber)}

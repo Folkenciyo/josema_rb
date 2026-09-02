@@ -1,4 +1,4 @@
-import type { DayOfWeek, PlanStatus } from "./common";
+import type { DayOfWeek, ExerciseMeasurement, PlanStatus } from "./common";
 
 export interface TrainingPlan {
   id: string;
@@ -17,7 +17,9 @@ export interface TrainingDayExercise {
   exercise_id: string;
   order_index: number;
   sets: number;
-  reps: string;
+  measurement: ExerciseMeasurement;
+  reps: string | null;
+  duration_seconds: number | null;
   rest_seconds: number | null;
   tempo: string | null;
   superset_group: number | null;
@@ -60,7 +62,9 @@ export interface TrainingDayExerciseInput {
   exercise_id: string;
   order_index: number;
   sets: number;
-  reps: string;
+  measurement: ExerciseMeasurement;
+  reps: string | null;
+  duration_seconds: number | null;
   rest_seconds: number | null;
   tempo: string | null;
   superset_group: number | null;

@@ -3,6 +3,7 @@ import uuid
 from sqlalchemy.orm import Session
 
 from app.models import DietPlan, TrainingPlan
+from app.models.training_plan import ExerciseMeasurement
 from app.schemas.export import (
     DietPlanDocument,
     ExportDietDay,
@@ -59,7 +60,11 @@ def build_training_plan_document(
                     exercise_id=training_day_exercise.exercise_id,
                     name_es=training_day_exercise.exercise.name_es,
                     sets=training_day_exercise.sets,
-                    reps=training_day_exercise.reps,
+                    reps=(
+                        training_day_exercise.reps
+                        if training_day_exercise.measurement == ExerciseMeasurement.REPS
+                        else f"{training_day_exercise.duration_seconds}s"
+                    ),
                     rest_seconds=training_day_exercise.rest_seconds,
                     tempo=training_day_exercise.tempo,
                     notes=training_day_exercise.notes,

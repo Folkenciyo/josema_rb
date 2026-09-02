@@ -1,9 +1,9 @@
 import uuid
 from datetime import date
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 
-from app.models.training_plan import DayOfWeek, PlanStatus
+from app.models.training_plan import DayOfWeek, ExerciseMeasurement, PlanStatus
 
 
 class TrainingPlanCreate(BaseModel):
@@ -62,7 +62,9 @@ class TrainingDayExerciseIn(BaseModel):
     exercise_id: str
     order_index: int
     sets: int
-    reps: str
+    measurement: ExerciseMeasurement = ExerciseMeasurement.REPS
+    reps: str | None = None
+    duration_seconds: int | None = None
     rest_seconds: int | None = None
     tempo: str | None = None
     superset_group: int | None = None
@@ -70,6 +72,20 @@ class TrainingDayExerciseIn(BaseModel):
     # Only kept on the exercise that opens the block; anywhere else it is
     # dropped, so a day can never hold two notes for the same superset.
     superset_note: str | None = None
+
+    @model_validator(mode="after")
+    def check_measurement_matches_value(self) -> "TrainingDayExerciseIn":
+        if self.measurement == ExerciseMeasurement.REPS:
+            if not self.reps:
+                raise ValueError("reps is required when measurement is reps")
+            self.duration_seconds = None
+        else:
+            if self.duration_seconds is None or self.duration_seconds <= 0:
+                raise ValueError(
+                    "duration_seconds is required when measurement is time"
+                )
+            self.reps = None
+        return self
 
 
 class TrainingDayIn(BaseModel):
@@ -85,7 +101,9 @@ class TrainingDayExerciseOut(BaseModel):
     exercise_id: str
     order_index: int
     sets: int
-    reps: str
+    measurement: ExerciseMeasurement
+    reps: str | None
+    duration_seconds: int | None
     rest_seconds: int | None
     tempo: str | None
     superset_group: int | None

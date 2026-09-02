@@ -56,6 +56,90 @@ def test_duplicate_training_week_copies_days_and_exercises(
     assert body["days"][0]["exercises"][0]["sets"] == 4
 
 
+def _create_week(authenticated_client: TestClient) -> tuple[str, str]:
+    client_id = authenticated_client.post(
+        "/api/clients", json={"full_name": "Cliente Entreno"}
+    ).json()["id"]
+    plan = authenticated_client.post(
+        f"/api/clients/{client_id}/training-plans", json={"title": "Plan Fuerza"}
+    ).json()
+    week = authenticated_client.post(
+        f"/api/training-plans/{plan['id']}/weeks", json={"week_number": 1}
+    ).json()
+    return plan["id"], week["id"]
+
+
+def test_a_time_based_exercise_stores_duration_instead_of_reps(
+    authenticated_client: TestClient, db_session: Session
+) -> None:
+    exercise = (
+        db_session.query(Exercise)
+        .filter(Exercise.created_by_trainer_id.is_(None))
+        .first()
+    )
+    assert exercise is not None
+    _, week_id = _create_week(authenticated_client)
+
+    days_payload = {
+        "days": [
+            {
+                "day_of_week": "monday",
+                "order_index": 0,
+                "exercises": [
+                    {
+                        "exercise_id": exercise.id,
+                        "order_index": 0,
+                        "sets": 3,
+                        "measurement": "time",
+                        "duration_seconds": 45,
+                    }
+                ],
+            }
+        ]
+    }
+    set_resp = authenticated_client.put(
+        f"/api/training-weeks/{week_id}/days", json=days_payload
+    )
+    assert set_resp.status_code == 200
+    saved = set_resp.json()["days"][0]["exercises"][0]
+    assert saved["measurement"] == "time"
+    assert saved["duration_seconds"] == 45
+    assert saved["reps"] is None
+
+
+def test_a_time_based_exercise_without_duration_is_rejected(
+    authenticated_client: TestClient, db_session: Session
+) -> None:
+    exercise = (
+        db_session.query(Exercise)
+        .filter(Exercise.created_by_trainer_id.is_(None))
+        .first()
+    )
+    assert exercise is not None
+    _, week_id = _create_week(authenticated_client)
+
+    days_payload = {
+        "days": [
+            {
+                "day_of_week": "monday",
+                "order_index": 0,
+                "exercises": [
+                    {
+                        "exercise_id": exercise.id,
+                        "order_index": 0,
+                        "sets": 3,
+                        "measurement": "time",
+                    }
+                ],
+            }
+        ]
+    }
+    set_resp = authenticated_client.put(
+        f"/api/training-weeks/{week_id}/days", json=days_payload
+    )
+    assert set_resp.status_code == 422
+
+
 def test_client_has_multiple_training_plans_as_history(
     authenticated_client: TestClient,
 ) -> None:

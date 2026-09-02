@@ -14,12 +14,15 @@ import {
   moveBlock,
   removeExercise,
   setDayNotes,
+  setMeasurement,
   setSupersetNote,
+  swapDays,
   ungroupSuperset,
   updateExercise,
   weekDraftToPayload,
   type ExerciseDraft,
 } from "@/lib/training/week-draft";
+import type { ExerciseMeasurement } from "@/types/common";
 import type { TrainingWeek } from "@/types/training-plan";
 import { TrainingDayEditor } from "./training-day-editor";
 
@@ -73,7 +76,7 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
       <ErrorMessage error={saveDays.error} />
 
       <div className="flex flex-col gap-3">
-        {draft.map((day) => (
+        {draft.map((day, index) => (
           <TrainingDayEditor
             key={day.day_of_week}
             day={day}
@@ -116,10 +119,39 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
                 updateExercise(current, day.day_of_week, key, changes),
               )
             }
+            onChangeMeasurement={(key, measurement: ExerciseMeasurement) =>
+              setDraft((current) =>
+                setMeasurement(current, day.day_of_week, key, measurement),
+              )
+            }
             onMoveBlock={(fromIndex, toIndex) =>
               setDraft((current) =>
                 moveBlock(current, day.day_of_week, fromIndex, toIndex),
               )
+            }
+            onMoveDayUp={
+              index > 0
+                ? () =>
+                    setDraft((current) =>
+                      swapDays(
+                        current,
+                        day.day_of_week,
+                        current[index - 1].day_of_week,
+                      ),
+                    )
+                : undefined
+            }
+            onMoveDayDown={
+              index < draft.length - 1
+                ? () =>
+                    setDraft((current) =>
+                      swapDays(
+                        current,
+                        day.day_of_week,
+                        current[index + 1].day_of_week,
+                      ),
+                    )
+                : undefined
             }
           />
         ))}

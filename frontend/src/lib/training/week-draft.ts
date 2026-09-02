@@ -1,4 +1,8 @@
-import { DAYS_OF_WEEK, type DayOfWeek } from "@/types/common";
+import {
+  DAYS_OF_WEEK,
+  type DayOfWeek,
+  type ExerciseMeasurement,
+} from "@/types/common";
 import type {
   TrainingDayInput,
   TrainingWeek,
@@ -11,7 +15,11 @@ export interface ExerciseDraft {
   key: string;
   exercise_id: string;
   sets: number;
-  reps: string;
+  measurement: ExerciseMeasurement;
+  /** Set when measurement is "reps"; null when it's "time". */
+  reps: string | null;
+  /** Set when measurement is "time"; null when it's "reps". */
+  duration_seconds: number | null;
   rest_seconds: number | null;
   tempo: string | null;
   superset_group: number | null;
@@ -47,7 +55,9 @@ function toExerciseDraft(exercise: TrainingDayExercise): ExerciseDraft {
     key: exercise.id,
     exercise_id: exercise.exercise_id,
     sets: exercise.sets,
+    measurement: exercise.measurement,
     reps: exercise.reps,
+    duration_seconds: exercise.duration_seconds,
     rest_seconds: exercise.rest_seconds,
     tempo: exercise.tempo,
     superset_group: exercise.superset_group,
@@ -61,13 +71,40 @@ export function createExerciseDraft(exerciseId: string): ExerciseDraft {
     key: nextKey(),
     exercise_id: exerciseId,
     sets: DEFAULT_SETS,
+    measurement: "reps",
     reps: DEFAULT_REPS,
+    duration_seconds: null,
     rest_seconds: null,
     tempo: null,
     superset_group: null,
     notes: null,
     superset_note: null,
   };
+}
+
+/**
+ * Switches an exercise between reps and time, filling in a sane default for
+ * whichever field the new mode uses so the row is never left with neither.
+ */
+export function setMeasurement(
+  draft: WeekDraft,
+  day: DayOfWeek,
+  key: string,
+  measurement: ExerciseMeasurement,
+): WeekDraft {
+  return mapDay(draft, day, (exercises) =>
+    exercises.map((exercise) =>
+      exercise.key === key
+        ? {
+            ...exercise,
+            measurement,
+            reps: measurement === "reps" ? (exercise.reps ?? DEFAULT_REPS) : null,
+            duration_seconds:
+              measurement === "time" ? (exercise.duration_seconds ?? 30) : null,
+          }
+        : exercise,
+    ),
+  );
 }
 
 /** Every weekday is always present in the draft; an empty one means a rest day. */
@@ -102,7 +139,9 @@ export function weekDraftToPayload(draft: WeekDraft): TrainingDayInput[] {
         exercise_id: exercise.exercise_id,
         order_index: exerciseIndex,
         sets: exercise.sets,
+        measurement: exercise.measurement,
         reps: exercise.reps,
+        duration_seconds: exercise.duration_seconds,
         rest_seconds: exercise.rest_seconds,
         tempo: exercise.tempo,
         superset_group: exercise.superset_group,
@@ -289,6 +328,33 @@ export function moveBlock(
     const [moved] = reordered.splice(fromIndex, 1);
     reordered.splice(toIndex, 0, moved);
     return reordered.flatMap((block) => block.exercises);
+  });
+}
+
+/**
+ * Swaps two days' content (exercises and notes) while each keeps its own
+ * weekday label and position — this is how "make Thursday's session run on
+ * Wednesday" actually works, since a slot's day_of_week is fixed.
+ */
+export function swapDays(
+  draft: WeekDraft,
+  dayA: DayOfWeek,
+  dayB: DayOfWeek,
+): WeekDraft {
+  const indexA = draft.findIndex((item) => item.day_of_week === dayA);
+  const indexB = draft.findIndex((item) => item.day_of_week === dayB);
+  if (indexA === -1 || indexB === -1 || indexA === indexB) {
+    return draft;
+  }
+
+  return draft.map((item, index) => {
+    if (index === indexA) {
+      return { ...item, notes: draft[indexB].notes, exercises: draft[indexB].exercises };
+    }
+    if (index === indexB) {
+      return { ...item, notes: draft[indexA].notes, exercises: draft[indexA].exercises };
+    }
+    return item;
   });
 }
 
