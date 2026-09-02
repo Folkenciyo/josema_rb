@@ -91,6 +91,11 @@ function SetRow({
   onToggle: () => void;
   onRemove: () => void;
 }) {
+  // Decoupled from `set.weightKg` while typing: re-deriving the text from the
+  // parsed number on every keystroke would erase a decimal separator the
+  // moment it's typed ("9." parses to 9, which formats right back to "9").
+  const [weightText, setWeightText] = useState(formatNumber(set.weightKg));
+
   return (
     <li
       className={cn(
@@ -107,10 +112,11 @@ function SetRow({
         <input
           type="text"
           inputMode="decimal"
-          value={formatNumber(set.weightKg)}
-          onChange={(event) =>
-            onChange({ weightKg: parseDecimal(event.target.value) })
-          }
+          value={weightText}
+          onChange={(event) => {
+            setWeightText(event.target.value);
+            onChange({ weightKg: parseDecimal(event.target.value) });
+          }}
           placeholder="kg"
           className={FIELD_CLASSES}
         />
