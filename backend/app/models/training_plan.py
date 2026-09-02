@@ -30,6 +30,11 @@ class PlanStatus(StrEnum):
     ARCHIVED = "archived"
 
 
+class ExerciseMeasurement(StrEnum):
+    REPS = "reps"
+    TIME = "time"
+
+
 class DayOfWeek(StrEnum):
     MONDAY = "monday"
     TUESDAY = "tuesday"
@@ -148,7 +153,16 @@ class TrainingDayExercise(Base, TimestampMixin):
     )
     order_index: Mapped[int] = mapped_column(Integer, nullable=False)
     sets: Mapped[int] = mapped_column(Integer, nullable=False)
-    reps: Mapped[str] = mapped_column(String(50), nullable=False)
+    measurement: Mapped[ExerciseMeasurement] = mapped_column(
+        Enum(ExerciseMeasurement, name="exercise_measurement"),
+        nullable=False,
+        default=ExerciseMeasurement.REPS,
+        server_default=ExerciseMeasurement.REPS.name,
+    )
+    # Exactly one of the two is set, matching `measurement` — enforced in the
+    # Pydantic schema rather than a DB constraint, since it is edited as a pair.
+    reps: Mapped[str | None] = mapped_column(String(50))
+    duration_seconds: Mapped[int | None] = mapped_column(Integer)
     rest_seconds: Mapped[int | None] = mapped_column(Integer)
     tempo: Mapped[str | None] = mapped_column(String(50))
     superset_group: Mapped[int | None] = mapped_column(Integer)

@@ -6,8 +6,10 @@ import {
   moveBlock,
   removeExercise,
   setDayNotes,
+  setMeasurement,
   setSupersetNote,
   supersetNoteOf,
+  swapDays,
   ungroupSuperset,
   updateExercise,
   weekDraftToPayload,
@@ -30,7 +32,9 @@ const week: TrainingWeek = {
           exercise_id: "Squat",
           order_index: 1,
           sets: 4,
+          measurement: "reps",
           reps: "8-10",
+          duration_seconds: null,
           rest_seconds: 90,
           tempo: null,
           superset_group: null,
@@ -42,7 +46,9 @@ const week: TrainingWeek = {
           exercise_id: "Bench_Press",
           order_index: 0,
           sets: 3,
+          measurement: "reps",
           reps: "10",
+          duration_seconds: null,
           rest_seconds: null,
           tempo: null,
           superset_group: null,
@@ -173,6 +179,69 @@ describe("draft mutations", () => {
   it("ignores out-of-range moves", () => {
     expect(moveBlock(draft, "wednesday", 0, 9)).toEqual(draft);
     expect(moveBlock(draft, "wednesday", 1, 1)).toEqual(draft);
+  });
+});
+
+describe("setMeasurement", () => {
+  const draft = buildWeekDraft(week);
+
+  it("switches to time, filling in a default duration and clearing reps", () => {
+    const key = draft[2].exercises[0].key;
+    const next = setMeasurement(draft, "wednesday", key, "time");
+
+    expect(next[2].exercises[0]).toMatchObject({
+      measurement: "time",
+      reps: null,
+      duration_seconds: 30,
+    });
+  });
+
+  it("switches back to reps, filling in a default and clearing duration", () => {
+    const key = draft[2].exercises[0].key;
+    const timed = setMeasurement(draft, "wednesday", key, "time");
+    const next = setMeasurement(timed, "wednesday", key, "reps");
+
+    expect(next[2].exercises[0]).toMatchObject({
+      measurement: "reps",
+      reps: "10",
+      duration_seconds: null,
+    });
+  });
+
+  it("touches only the targeted exercise", () => {
+    const key = draft[2].exercises[0].key;
+    const next = setMeasurement(draft, "wednesday", key, "time");
+
+    expect(next[2].exercises[1]).toMatchObject({ measurement: "reps", reps: "8-10" });
+  });
+});
+
+describe("swapDays", () => {
+  const draft = buildWeekDraft(week);
+
+  it("moves a day's exercises and notes into another day's slot", () => {
+    const noted = setDayNotes(draft, "monday", "Piernas");
+    const next = swapDays(noted, "monday", "wednesday");
+
+    expect(next[0].day_of_week).toBe("monday");
+    expect(next[0].notes).toBeNull();
+    expect(next[0].exercises.map((item) => item.exercise_id)).toEqual([
+      "Bench_Press",
+      "Squat",
+    ]);
+    expect(next[2].day_of_week).toBe("wednesday");
+    expect(next[2].notes).toBe("Piernas");
+    expect(next[2].exercises).toHaveLength(0);
+  });
+
+  it("leaves every other day untouched", () => {
+    const next = swapDays(draft, "monday", "wednesday");
+
+    expect(next[1]).toBe(draft[1]);
+  });
+
+  it("does nothing when swapping a day with itself", () => {
+    expect(swapDays(draft, "wednesday", "wednesday")).toEqual(draft);
   });
 });
 

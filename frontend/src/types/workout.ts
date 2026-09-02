@@ -1,3 +1,5 @@
+import type { ExerciseMeasurement } from "./common";
+
 /** A set that was actually performed. Sets the client skipped are simply absent. */
 export interface LoggedSet {
   set_number: number;
@@ -13,7 +15,9 @@ export interface WorkoutExercise {
   name_es: string;
   image_path: string | null;
   sets: number;
-  reps: string;
+  measurement: ExerciseMeasurement;
+  reps: string | null;
+  duration_seconds: number | null;
   rest_seconds: number | null;
   tempo: string | null;
   notes: string | null;

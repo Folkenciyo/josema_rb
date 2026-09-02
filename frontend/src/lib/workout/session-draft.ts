@@ -1,4 +1,5 @@
 import { supersetLabels } from "@/lib/training/supersets";
+import type { ExerciseMeasurement } from "@/types/common";
 import type {
   LoggedSet,
   WorkoutDayDetail,
@@ -29,7 +30,9 @@ export interface DraftExercise {
   name: string;
   imagePath: string | null;
   targetSets: number;
-  targetReps: string;
+  targetMeasurement: ExerciseMeasurement;
+  targetReps: string | null;
+  targetDurationSeconds: number | null;
   restSeconds: number | null;
   notes: string | null;
   /** The note about the block, on the exercise that opens it. Null elsewhere. */
@@ -54,8 +57,8 @@ export interface SessionDraft {
 }
 
 /** A plain "10" can be filled in; a range like "8-12" is the client's call. */
-function repsFromTarget(target: string): number | null {
-  const parsed = Number(target.trim());
+function repsFromTarget(target: string | null): number | null {
+  const parsed = Number((target ?? "").trim());
   return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
 }
 
@@ -73,7 +76,11 @@ function blankSets(exercise: WorkoutExercise): DraftSet[] {
       // Last time's weight is the honest starting point: the client confirms it
       // or types over it, instead of remembering it between machines.
       weightKg: last?.weight_kg ?? null,
-      reps: last?.reps ?? repsFromTarget(exercise.reps),
+      // A timed set has no rep count to suggest — the client just runs the clock.
+      reps:
+        exercise.measurement === "reps"
+          ? (last?.reps ?? repsFromTarget(exercise.reps))
+          : null,
       done: false,
     };
   });
@@ -106,7 +113,9 @@ export function createDraft(
         name: exercise.name_es,
         imagePath: exercise.image_path,
         targetSets: exercise.sets,
+        targetMeasurement: exercise.measurement,
         targetReps: exercise.reps,
+        targetDurationSeconds: exercise.duration_seconds,
         restSeconds: exercise.rest_seconds,
         notes: exercise.notes,
         supersetNote: exercise.superset_note ?? null,

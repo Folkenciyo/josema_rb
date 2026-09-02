@@ -3,6 +3,8 @@ from datetime import date
 
 from pydantic import BaseModel, Field
 
+from app.models.training_plan import ExerciseMeasurement
+
 # A session sent from the gym may take hours to reach us, and a phone clock can
 # be a day off in either direction. Anything older is someone filling in a diary.
 MAX_BACKDATED_DAYS = 60
@@ -26,7 +28,9 @@ class WorkoutExerciseOut(BaseModel):
     name_es: str
     image_path: str | None
     sets: int
-    reps: str
+    measurement: ExerciseMeasurement
+    reps: str | None
+    duration_seconds: int | None
     rest_seconds: int | None
     tempo: str | None
     notes: str | None

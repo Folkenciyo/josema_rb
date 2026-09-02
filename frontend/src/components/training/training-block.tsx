@@ -9,6 +9,7 @@ import { cn } from "@/lib/cn";
 import { supersetNoteOf, type ExerciseDraft } from "@/lib/training/week-draft";
 import type { SupersetBlock } from "@/lib/training/supersets";
 import type { Exercise } from "@/types/exercise";
+import type { ExerciseMeasurement } from "@/types/common";
 import { TrainingExerciseRow } from "./training-exercise-row";
 
 interface TrainingBlockProps {
@@ -18,6 +19,7 @@ interface TrainingBlockProps {
     key: string,
     changes: Partial<Omit<ExerciseDraft, "key">>,
   ) => void;
+  onChangeMeasurement: (key: string, measurement: ExerciseMeasurement) => void;
   onRemoveExercise: (key: string) => void;
   onUngroup: (group: number) => void;
   onChangeSupersetNote: (group: number, note: string | null) => void;
@@ -32,6 +34,7 @@ export function TrainingBlock({
   block,
   exerciseMap,
   onChangeExercise,
+  onChangeMeasurement,
   onRemoveExercise,
   onUngroup,
   onChangeSupersetNote,
@@ -79,6 +82,9 @@ export function TrainingBlock({
           dragHandle={dragHandle}
           onChange={(changes) =>
             onChangeExercise(block.exercises[0].key, changes)
+          }
+          onChangeMeasurement={(measurement) =>
+            onChangeMeasurement(block.exercises[0].key, measurement)
           }
           onRemove={() => onRemoveExercise(block.exercises[0].key)}
         />
@@ -138,6 +144,9 @@ export function TrainingBlock({
             exercise={exerciseMap.get(draft.exercise_id)}
             label={`${block.letter}${index + 1}`}
             onChange={(changes) => onChangeExercise(draft.key, changes)}
+            onChangeMeasurement={(measurement) =>
+              onChangeMeasurement(draft.key, measurement)
+            }
             onRemove={() => onRemoveExercise(draft.key)}
           />
         ))}

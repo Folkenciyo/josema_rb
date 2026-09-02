@@ -1,5 +1,7 @@
 export type PlanStatus = "draft" | "active" | "archived";
 
+export type ExerciseMeasurement = "reps" | "time";
+
 export type DayOfWeek =
   | "monday"
   | "tuesday"
