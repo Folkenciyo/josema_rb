@@ -112,14 +112,15 @@ def assign_menu_to_diet_week(
 
 @router.get("/api/diet-plans/{plan_id}/export/pdf")
 def export_diet_plan_pdf(
-    plan_id: uuid.UUID, db: Session = Depends(get_db)
+    plan_id: uuid.UUID, large_print: bool = False, db: Session = Depends(get_db)
 ) -> StreamingResponse:
     document = export_service.build_diet_plan_document(db, plan_id)
-    pdf_bytes = pdf_export.render_diet_plan_pdf(document)
+    pdf_bytes = pdf_export.render_diet_plan_pdf(document, large_print=large_print)
+    filename = "plan-dieta-letra-grande.pdf" if large_print else "plan-dieta.pdf"
     return StreamingResponse(
         io.BytesIO(pdf_bytes),
         media_type="application/pdf",
-        headers={"Content-Disposition": 'attachment; filename="plan-dieta.pdf"'},
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
 

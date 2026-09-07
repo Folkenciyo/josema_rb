@@ -26,7 +26,11 @@ _env = Environment(
 
 
 def _render(
-    template_name: str, document: object, *, base_url: Path = STATIC_IMAGES_DIR
+    template_name: str,
+    document: object,
+    *,
+    base_url: Path = STATIC_IMAGES_DIR,
+    large_print: bool = False,
 ) -> bytes:
     # Imported lazily: WeasyPrint binds to native Pango/Cairo/GDK-Pixbuf
     # libraries at import time, which aren't available on every dev machine
@@ -34,16 +38,20 @@ def _render(
     from weasyprint import HTML
 
     template = _env.get_template(template_name)
-    html = template.render(doc=document, brand=BRAND_URL)
+    html = template.render(doc=document, brand=BRAND_URL, large_print=large_print)
     return HTML(string=html, base_url=str(base_url)).write_pdf()
 
 
-def render_training_plan_pdf(document: TrainingPlanDocument) -> bytes:
-    return _render("training_plan.html", document)
+def render_training_plan_pdf(
+    document: TrainingPlanDocument, *, large_print: bool = False
+) -> bytes:
+    return _render("training_plan.html", document, large_print=large_print)
 
 
-def render_diet_plan_pdf(document: DietPlanDocument) -> bytes:
-    return _render("diet_plan.html", document)
+def render_diet_plan_pdf(
+    document: DietPlanDocument, *, large_print: bool = False
+) -> bytes:
+    return _render("diet_plan.html", document, large_print=large_print)
 
 
 def render_progress_pdf(document: ProgressDocument) -> bytes:

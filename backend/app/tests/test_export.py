@@ -194,3 +194,47 @@ def test_export_endpoints_return_files(
         pytest.skip(f"WeasyPrint native libraries not available: {exc}")
     assert pdf_response.status_code == 200
     assert pdf_response.content.startswith(b"%PDF")
+
+
+def test_render_training_plan_pdf_large_print(
+    authenticated_client: TestClient, db_session: Session, imported_exercise: Exercise
+) -> None:
+    plan_id = _build_training_plan(authenticated_client, imported_exercise)
+    document = export_service.build_training_plan_document(db_session, plan_id)
+
+    try:
+        pdf_bytes = pdf_export.render_training_plan_pdf(document, large_print=True)
+    except OSError as exc:
+        pytest.skip(f"WeasyPrint native libraries not available: {exc}")
+
+    assert pdf_bytes.startswith(b"%PDF")
+
+
+def test_render_diet_plan_pdf_large_print(
+    authenticated_client: TestClient, db_session: Session
+) -> None:
+    plan_id = _build_diet_plan(authenticated_client)
+    document = export_service.build_diet_plan_document(db_session, plan_id)
+
+    try:
+        pdf_bytes = pdf_export.render_diet_plan_pdf(document, large_print=True)
+    except OSError as exc:
+        pytest.skip(f"WeasyPrint native libraries not available: {exc}")
+
+    assert pdf_bytes.startswith(b"%PDF")
+
+
+def test_export_pdf_endpoint_large_print_flag(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    plan_id = _build_training_plan(authenticated_client, imported_exercise)
+
+    try:
+        pdf_response = authenticated_client.get(
+            f"/api/training-plans/{plan_id}/export/pdf", params={"large_print": "true"}
+        )
+    except OSError as exc:
+        pytest.skip(f"WeasyPrint native libraries not available: {exc}")
+    assert pdf_response.status_code == 200
+    assert pdf_response.content.startswith(b"%PDF")
+    assert "letra-grande" in pdf_response.headers["content-disposition"]
