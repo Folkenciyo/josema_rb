@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import { FileDown } from "lucide-react";
 
 interface ExportButtonsProps {
@@ -10,16 +14,32 @@ const LINK_CLASSES =
 
 /** Plain links: the export endpoints stream a file and the session cookie rides along. */
 export function ExportButtons({ basePath }: ExportButtonsProps) {
+  const [largePrint, setLargePrint] = useState(false);
+  const pdfHref = largePrint
+    ? `${basePath}/export/pdf?large_print=true`
+    : `${basePath}/export/pdf`;
+
   return (
-    <div className="flex gap-2">
-      <a href={`${basePath}/export/pdf`} download className={LINK_CLASSES}>
-        <FileDown className="size-4" />
-        PDF
-      </a>
-      <a href={`${basePath}/export/docx`} download className={LINK_CLASSES}>
-        <FileDown className="size-4" />
-        Word
-      </a>
+    <div className="flex flex-wrap items-center gap-3">
+      <div className="flex gap-2">
+        <a href={pdfHref} download className={LINK_CLASSES}>
+          <FileDown className="size-4" />
+          PDF
+        </a>
+        <a href={`${basePath}/export/docx`} download className={LINK_CLASSES}>
+          <FileDown className="size-4" />
+          Word
+        </a>
+      </div>
+      <label className="flex items-center gap-2 text-sm text-slate-600">
+        <input
+          type="checkbox"
+          checked={largePrint}
+          onChange={(event) => setLargePrint(event.target.checked)}
+          className="size-4 rounded border-slate-300"
+        />
+        PDF con letra grande (personas mayores)
+      </label>
     </div>
   );
 }

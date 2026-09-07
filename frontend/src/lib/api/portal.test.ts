@@ -24,4 +24,10 @@ describe("portalExportHref", () => {
       "/api/portal/abc123/training-plan/export/pdf",
     );
   });
+
+  it("appends the large_print flag when requested", () => {
+    expect(
+      portalExportHref("abc123", "diet-plan", "pdf", { largePrint: true }),
+    ).toBe("/api/portal/abc123/diet-plan/export/pdf?large_print=true");
+  });
 });

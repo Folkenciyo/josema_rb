@@ -140,6 +140,8 @@ export function portalExportHref(
   token: string,
   plan: PortalPlanKind,
   format: ExportFormat,
+  options?: { largePrint?: boolean },
 ): string {
-  return `/api/portal/${token}/${plan}/export/${format}`;
+  const base = `/api/portal/${token}/${plan}/export/${format}`;
+  return options?.largePrint ? `${base}?large_print=true` : base;
 }

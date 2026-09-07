@@ -166,16 +166,19 @@ def duplicate_training_week(
 
 @router.get("/api/training-plans/{plan_id}/export/pdf")
 def export_training_plan_pdf(
-    plan_id: uuid.UUID, db: Session = Depends(get_db)
+    plan_id: uuid.UUID, large_print: bool = False, db: Session = Depends(get_db)
 ) -> StreamingResponse:
     document = export_service.build_training_plan_document(db, plan_id)
-    pdf_bytes = pdf_export.render_training_plan_pdf(document)
+    pdf_bytes = pdf_export.render_training_plan_pdf(document, large_print=large_print)
+    filename = (
+        "plan-entrenamiento-letra-grande.pdf"
+        if large_print
+        else "plan-entrenamiento.pdf"
+    )
     return StreamingResponse(
         io.BytesIO(pdf_bytes),
         media_type="application/pdf",
-        headers={
-            "Content-Disposition": 'attachment; filename="plan-entrenamiento.pdf"'
-        },
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
 

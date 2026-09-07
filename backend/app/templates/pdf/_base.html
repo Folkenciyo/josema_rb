@@ -4,12 +4,20 @@
   <meta charset="utf-8" />
   <title>{% block doc_title %}{{ doc.plan_title }}{% endblock %}</title>
   <style>
+    {% set scale = 2 if large_print else 1 %}
     /* Montserrat is the guide's primary face and ships as a Debian package, so
        the container has it without bundling font files. Raleway, the secondary
        face, is not packaged; using the primary throughout keeps the documents
        on-brand without a fragile download in the image build. */
+    /* large_print doubles every reading-content font-size via `scale`; the
+       running header/footer stay at their normal size since they're chrome,
+       not the text elderly readers need enlarged, and scaling them risks
+       overflowing the fixed @page margin boxes. */
     @page {
-      size: A4;
+      /* Landscape buys the wide nutrition table the extra width doubled
+         numbers need to fit without columns overlapping (portrait A4 is too
+         narrow for 8 doubled numeric columns). */
+      size: A4 {{ "landscape" if large_print else "portrait" }};
       margin: 2.6cm 1.8cm 1.8cm;
       /* Without the width the margin box shrinks to fit and the header ends up
          centred instead of spanning the page. */
@@ -38,7 +46,7 @@
     body {
       font-family: "Montserrat", "Helvetica", sans-serif;
       color: #1c1c1e;
-      font-size: 9.5pt;
+      font-size: {{ 9.5 * scale }}pt;
       line-height: 1.45;
     }
 
@@ -61,7 +69,7 @@
       margin-bottom: 1.1cm;
     }
     .cover h1 {
-      font-size: 24pt;
+      font-size: {{ 24 * scale }}pt;
       font-weight: 700;
       letter-spacing: -0.01em;
       margin: 0 0 0.15cm;
@@ -75,13 +83,13 @@
     }
     .cover dl {
       margin: 0;
-      font-size: 9.5pt;
+      font-size: {{ 9.5 * scale }}pt;
     }
     .cover dt {
       float: left;
       clear: left;
       width: 3.7cm;
-      font-size: 7.5pt;
+      font-size: {{ 7.5 * scale }}pt;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -94,11 +102,11 @@
       padding: 0.4cm 0.5cm;
       background: #f7f7f8;
       border-left: 3pt solid #8b1e24;
-      font-size: 9pt;
+      font-size: {{ 9 * scale }}pt;
       color: #3f3f43;
     }
     h2 {
-      font-size: 13pt;
+      font-size: {{ 13 * scale }}pt;
       font-weight: 700;
       margin: 0.9cm 0 0.1cm;
       padding-bottom: 0.12cm;
@@ -108,7 +116,7 @@
       break-after: avoid;
     }
     h3 {
-      font-size: 10pt;
+      font-size: {{ 10 * scale }}pt;
       font-weight: 600;
       margin: 0.5cm 0 0.1cm;
       color: #8b1e24;
@@ -116,7 +124,7 @@
       break-after: avoid;
     }
     h4 {
-      font-size: 8.5pt;
+      font-size: {{ 8.5 * scale }}pt;
       font-weight: 600;
       margin: 0.35cm 0 0.08cm;
       text-transform: uppercase;
@@ -137,17 +145,21 @@
     th {
       background: #8b1e24;
       color: #ffffff;
-      font-size: 7.5pt;
+      font-size: {{ 7.5 * scale }}pt;
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       text-align: left;
       padding: 0.16cm 0.22cm;
+      /* Fixed table layout leaves some header columns narrower than a scaled
+         header word (e.g. "SERIES" in large_print); without this the word
+         overflows into the neighbouring column instead of wrapping. */
+      overflow-wrap: anywhere;
     }
     td {
       border-bottom: 0.5pt solid #e5e5e7;
       padding: 0.14cm 0.22cm;
-      font-size: 8.5pt;
+      font-size: {{ 8.5 * scale }}pt;
       vertical-align: middle;
     }
     tbody tr:nth-child(even) td { background: #fafafa; }
@@ -165,7 +177,7 @@
       padding: 0.18cm 0.25cm;
       background: #f7f7f8;
       border-left: 3pt solid #8b1e24;
-      font-size: 8.5pt;
+      font-size: {{ 8.5 * scale }}pt;
     }
     /* Marks the exercises done back to back: "A1" then "A2", no rest between. */
     .superset {
@@ -175,11 +187,11 @@
       border-radius: 0.08cm;
       background: #8b1e24;
       color: #ffffff;
-      font-size: 7.5pt;
+      font-size: {{ 7.5 * scale }}pt;
       font-weight: 700;
     }
-    .muted { color: #6b6b6f; font-style: italic; font-size: 9pt; }
-    .note { color: #6b6b6f; font-size: 9pt; margin: 0.1cm 0 0.3cm; }
+    .muted { color: #6b6b6f; font-style: italic; font-size: {{ 9 * scale }}pt; }
+    .note { color: #6b6b6f; font-size: {{ 9 * scale }}pt; margin: 0.1cm 0 0.3cm; }
     /* The note about a whole block, on the row that opens it. */
     .superset-note { color: #8b1e24; margin-bottom: 0.08cm; }
     /* What the trainer asks of the whole day, read before the table below it. */
@@ -188,7 +200,7 @@
       padding: 0.1cm 0.25cm;
       margin: 0.1cm 0 0.25cm;
       background: #f7f2f2;
-      font-size: 9.5pt;
+      font-size: {{ 9.5 * scale }}pt;
     }
 
     {% block extra_styles %}{% endblock %}

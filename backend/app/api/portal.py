@@ -349,14 +349,17 @@ def record_portal_workout(
 
 @router.get("/{token}/training-plan/export/pdf")
 def export_portal_training_plan_pdf(
-    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+    large_print: bool = False,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
 ) -> StreamingResponse:
     plan = portal_service.get_active_training_plan(db, client)
     document = export_service.build_training_plan_document(db, plan.id)
+    filename = "mi-rutina-letra-grande.pdf" if large_print else "mi-rutina.pdf"
     return _download(
-        pdf_export.render_training_plan_pdf(document),
+        pdf_export.render_training_plan_pdf(document, large_print=large_print),
         media_type="application/pdf",
-        filename="mi-rutina.pdf",
+        filename=filename,
     )
 
 
@@ -375,14 +378,17 @@ def export_portal_training_plan_docx(
 
 @router.get("/{token}/diet-plan/export/pdf")
 def export_portal_diet_plan_pdf(
-    client: Client = Depends(get_portal_client), db: Session = Depends(get_db)
+    large_print: bool = False,
+    client: Client = Depends(get_portal_client),
+    db: Session = Depends(get_db),
 ) -> StreamingResponse:
     plan = portal_service.get_active_diet_plan(db, client)
     document = export_service.build_diet_plan_document(db, plan.id)
+    filename = "mi-dieta-letra-grande.pdf" if large_print else "mi-dieta.pdf"
     return _download(
-        pdf_export.render_diet_plan_pdf(document),
+        pdf_export.render_diet_plan_pdf(document, large_print=large_print),
         media_type="application/pdf",
-        filename="mi-dieta.pdf",
+        filename=filename,
     )
 
 
