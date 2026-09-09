@@ -173,6 +173,9 @@ export function WorkoutSessionView({
   );
 
   const current = draft && draft.dayId === dayId ? draft : null;
+  // Saving clears the draft before the router finishes navigating away; until
+  // then the screen must not read that gap as a lost session.
+  const [isLeaving, setIsLeaving] = useState(false);
 
   const start = useCallback(() => {
     if (current) {
@@ -195,6 +198,7 @@ export function WorkoutSessionView({
     if (!current) {
       return;
     }
+    setIsLeaving(true);
     queueSession(
       toPayload(current, localDateISO(new Date())),
       new Date().toISOString(),
@@ -231,6 +235,13 @@ export function WorkoutSessionView({
   }
 
   if (!current) {
+    if (isLeaving) {
+      return (
+        <PortalPage>
+          <PortalLoading />
+        </PortalPage>
+      );
+    }
     return (
       <PortalPage>
         <ErrorMessage error={new Error("La sesión se ha perdido.")} />
