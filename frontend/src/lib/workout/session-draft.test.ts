@@ -32,6 +32,7 @@ function day(overrides: Partial<WorkoutDayDetail> = {}): WorkoutDayDetail {
         notes: null,
         superset_note: null,
         superset_group: null,
+        planned_sets: [],
         last_performed_on: null,
         last_sets: [],
       },
@@ -91,6 +92,39 @@ describe("createDraft", () => {
     expect(
       createDraft(day(), "device-1", START).exercises[0].sets[0].reps,
     ).toBeNull();
+  });
+
+  it("carries each set's own target modifier when the plan customized it", () => {
+    const customized = day({
+      exercises: [
+        {
+          ...day().exercises[0],
+          planned_sets: [
+            { set_number: 1, reps: "10", duration_seconds: null, modifier: "normal", rir_value: null },
+            { set_number: 2, reps: "10", duration_seconds: null, modifier: "rir", rir_value: 2 },
+            { set_number: 3, reps: "al fallo", duration_seconds: null, modifier: "to_failure", rir_value: null },
+          ],
+        },
+      ],
+    });
+
+    const draft = createDraft(customized, "device-1", START);
+
+    expect(draft.exercises[0].sets.map((set) => set.targetModifier)).toEqual([
+      "normal",
+      "rir",
+      "to_failure",
+    ]);
+    expect(draft.exercises[0].sets[1].targetRirValue).toBe(2);
+    expect(draft.exercises[0].sets[0].reps).toBe(10);
+  });
+
+  it("defaults every set's modifier to normal when the plan has no per-set targets", () => {
+    const draft = createDraft(day(), "device-1", START);
+
+    expect(draft.exercises[0].sets.every((set) => set.targetModifier === "normal")).toBe(
+      true,
+    );
   });
 });
 

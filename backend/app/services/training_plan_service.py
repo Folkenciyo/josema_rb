@@ -9,6 +9,7 @@ from app.models import (
     Trainer,
     TrainingDay,
     TrainingDayExercise,
+    TrainingDayExerciseSet,
     TrainingPlan,
     TrainingWeek,
 )
@@ -61,6 +62,16 @@ def _copy_day(source: TrainingDay) -> TrainingDay:
             superset_group=exercise.superset_group,
             notes=exercise.notes,
             superset_note=exercise.superset_note,
+            planned_sets=[
+                TrainingDayExerciseSet(
+                    set_number=planned.set_number,
+                    reps=planned.reps,
+                    duration_seconds=planned.duration_seconds,
+                    modifier=planned.modifier,
+                    rir_value=planned.rir_value,
+                )
+                for planned in exercise.planned_sets
+            ],
         )
         for exercise in source.exercises
     ]
@@ -174,6 +185,16 @@ def _build_day_exercise(
         # The block's note lives on the row that opens it. Ungrouping an
         # exercise therefore drops the note with the block it described.
         superset_note=ex_in.superset_note if opens_block else None,
+        planned_sets=[
+            TrainingDayExerciseSet(
+                set_number=planned.set_number,
+                reps=planned.reps,
+                duration_seconds=planned.duration_seconds,
+                modifier=planned.modifier,
+                rir_value=planned.rir_value,
+            )
+            for planned in (ex_in.planned_sets or [])
+        ],
     )
 
 

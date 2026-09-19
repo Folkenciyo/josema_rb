@@ -5,7 +5,6 @@ import { useState } from "react";
 import { usePortalDietPlan } from "@/hooks/use-portal";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/cn";
-import type { MacroTotals } from "@/types/diet";
 import type { PortalDietDay } from "@/types/portal";
 import { PortalDownloads } from "./portal-downloads";
 import {
@@ -15,13 +14,39 @@ import {
   PortalPage,
 } from "./portal-shell";
 
-function macroLine(totals: MacroTotals): string {
+function macroLine(totals: {
+  calories: number | null;
+  protein_g: number | null;
+  carbs_g: number | null;
+  fat_g: number | null;
+}): string {
   return [
-    `${Math.round(totals.calories)} kcal`,
-    `P ${Math.round(totals.protein_g)} g`,
-    `HC ${Math.round(totals.carbs_g)} g`,
-    `G ${Math.round(totals.fat_g)} g`,
+    `${Math.round(totals.calories ?? 0)} kcal`,
+    `P ${Math.round(totals.protein_g ?? 0)} g`,
+    `HC ${Math.round(totals.carbs_g ?? 0)} g`,
+    `G ${Math.round(totals.fat_g ?? 0)} g`,
   ].join(" · ");
+}
+
+/** Consecutive items sharing an alternative_group, kept together for display. */
+function groupMealItems(
+  items: PortalDietDay["meals"][number]["items"],
+): (typeof items)[number][][] {
+  const groups: (typeof items)[number][][] = [];
+  const indexByGroup = new Map<string, number>();
+
+  for (const item of items) {
+    if (item.alternative_group && indexByGroup.has(item.alternative_group)) {
+      groups[indexByGroup.get(item.alternative_group)!].push(item);
+      continue;
+    }
+    if (item.alternative_group) {
+      indexByGroup.set(item.alternative_group, groups.length);
+    }
+    groups.push([item]);
+  }
+
+  return groups;
 }
 
 function DayCard({ day }: { day: PortalDietDay }) {
@@ -51,17 +76,35 @@ function DayCard({ day }: { day: PortalDietDay }) {
                 )}
               </p>
               <ul className="mt-1 flex flex-col gap-0.5">
-                {meal.items.map((item, itemIndex) => (
-                  <li
-                    key={`${item.food_name}-${itemIndex}`}
-                    className="flex justify-between gap-3 text-sm text-slate-600"
-                  >
-                    <span>{item.food_name}</span>
-                    <span className="shrink-0 text-slate-400">
-                      {item.quantity_label ?? ""}
-                    </span>
-                  </li>
-                ))}
+                {groupMealItems(meal.items).map((group, groupIndex) => {
+                  const [primary, ...alternatives] = group;
+                  return (
+                    <li key={`${primary.food_name}-${groupIndex}`}>
+                      <div className="flex justify-between gap-3 text-sm text-slate-600">
+                        <span>{primary.food_name}</span>
+                        <span className="shrink-0 text-slate-400">
+                          {primary.quantity_label ?? ""}
+                        </span>
+                      </div>
+                      {alternatives.map((alternative, altIndex) => (
+                        <div
+                          key={`${alternative.food_name}-${altIndex}`}
+                          className="mt-0.5 pl-3 text-xs text-slate-400"
+                        >
+                          <span>
+                            o bien: {alternative.food_name}
+                            {alternative.quantity_label
+                              ? ` (${alternative.quantity_label})`
+                              : ""}
+                          </span>
+                          <span className="ml-2">
+                            {macroLine(alternative)}
+                          </span>
+                        </div>
+                      ))}
+                    </li>
+                  );
+                })}
               </ul>
               <p className="mt-1 text-xs text-slate-400">
                 {macroLine(meal.totals)}

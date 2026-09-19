@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Shuffle } from "lucide-react";
 
 import { useFoodMap } from "@/hooks/use-diet-catalog";
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,34 @@ import {
   createManualItem,
   mealDraftToPayload,
   mealDraftTotals,
+  nextAlternativeGroup,
   validateMealItems,
   type MealItemDraft,
 } from "@/lib/diet/meal-draft";
-import type { MealTemplate, MealTemplateInput } from "@/types/diet";
+import type { Food, MealTemplate, MealTemplateInput } from "@/types/diet";
+import { AlternativeComparison } from "./alternative-comparison";
 import { FoodPickerDrawer } from "./food-picker-drawer";
 import { MacroSummary } from "./macro-summary";
 import { MealItemRow } from "./meal-item-row";
+
+/** Consecutive items sharing an alternative_group, kept together for display. */
+function groupItems(items: MealItemDraft[]): MealItemDraft[][] {
+  const groups: MealItemDraft[][] = [];
+  const indexByGroup = new Map<string, number>();
+
+  for (const item of items) {
+    if (item.alternative_group && indexByGroup.has(item.alternative_group)) {
+      groups[indexByGroup.get(item.alternative_group)!].push(item);
+      continue;
+    }
+    if (item.alternative_group) {
+      indexByGroup.set(item.alternative_group, groups.length);
+    }
+    groups.push([item]);
+  }
+
+  return groups;
+}
 
 interface MealTemplateFormProps {
   mealTemplate?: MealTemplate;
@@ -46,6 +67,24 @@ export function MealTemplateForm({
   );
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isPickerOpen, setPickerOpen] = useState(false);
+  // "new-group" starts a fresh set of alternatives; a string is an existing
+  // group's id, when adding one more option to it.
+  const [alternativesTarget, setAlternativesTarget] = useState<
+    "new-group" | string | null
+  >(null);
+
+  const appendItems = (foods: Food[], alternativeGroup: string | null) =>
+    setItems((current) => [
+      ...current,
+      ...foods.map((food) => createCatalogItem(food, alternativeGroup)),
+    ]);
+
+  const removeFromGroup = (key: string) =>
+    setItems((current) =>
+      current.map((entry) =>
+        entry.key === key ? { ...entry, alternative_group: null } : entry,
+      ),
+    );
 
   const totals = mealDraftTotals(items, foodMap);
 
@@ -101,6 +140,15 @@ export function MealTemplateForm({
               type="button"
               size="sm"
               variant="secondary"
+              onClick={() => setAlternativesTarget("new-group")}
+            >
+              <Shuffle className="size-4" />
+              Alternativas
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
               onClick={() => setItems((current) => [...current, createManualItem()])}
             >
               <Plus className="size-4" />
@@ -114,26 +162,71 @@ export function MealTemplateForm({
             Busca alimentos en el catálogo o escribe uno suelto con sus macros.
           </p>
         ) : (
-          <ul className="flex flex-col gap-2">
-            {items.map((item) => (
-              <MealItemRow
-                key={item.key}
-                item={item}
-                foodMap={foodMap}
-                onChange={(changes) =>
-                  setItems((current) =>
-                    current.map((entry) =>
-                      entry.key === item.key ? { ...entry, ...changes } : entry,
-                    ),
-                  )
-                }
-                onRemove={() =>
-                  setItems((current) =>
-                    current.filter((entry) => entry.key !== item.key),
-                  )
-                }
-              />
-            ))}
+          <ul className="flex flex-col gap-3">
+            {groupItems(items).map((group) => {
+              const isAlternativeGroup = group.length > 1;
+              const rows = group.map((item) => (
+                <MealItemRow
+                  key={item.key}
+                  item={item}
+                  foodMap={foodMap}
+                  onChange={(changes) =>
+                    setItems((current) =>
+                      current.map((entry) =>
+                        entry.key === item.key ? { ...entry, ...changes } : entry,
+                      ),
+                    )
+                  }
+                  onRemove={() =>
+                    setItems((current) =>
+                      current.filter((entry) => entry.key !== item.key),
+                    )
+                  }
+                />
+              ));
+
+              if (!isAlternativeGroup) {
+                return <li key={group[0].key}>{rows}</li>;
+              }
+
+              const groupId = group[0].alternative_group!;
+              return (
+                <li
+                  key={groupId}
+                  className="flex flex-col gap-2 rounded-lg border border-dashed border-brand-300 bg-brand-50/40 p-2"
+                >
+                  <div className="flex items-center justify-between gap-2 px-1">
+                    <p className="flex items-center gap-1 text-xs font-medium text-brand-700">
+                      <Shuffle className="size-3.5" />
+                      Alternativas entre sí — solo la primera cuenta en el total
+                    </p>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => setAlternativesTarget(groupId)}
+                    >
+                      <Plus className="size-3.5" />
+                      Añadir opción
+                    </Button>
+                  </div>
+                  <ul className="flex flex-col gap-2">{rows}</ul>
+                  <div className="flex flex-wrap gap-2 px-1">
+                    {group.map((item) => (
+                      <button
+                        key={item.key}
+                        type="button"
+                        onClick={() => removeFromGroup(item.key)}
+                        className="text-[11px] text-slate-400 underline-offset-2 hover:text-slate-600 hover:underline"
+                      >
+                        Separar &quot;{item.food_name || "sin nombre"}&quot; del grupo
+                      </button>
+                    ))}
+                  </div>
+                  <AlternativeComparison items={group} foodMap={foodMap} />
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
@@ -171,9 +264,24 @@ export function MealTemplateForm({
         <FoodPickerDrawer
           title="Añadir alimentos"
           onClose={() => setPickerOpen(false)}
-          onConfirm={(foods) =>
-            setItems((current) => [...current, ...foods.map(createCatalogItem)])
-          }
+          onConfirm={(foods) => appendItems(foods, null)}
+        />
+      )}
+
+      {alternativesTarget === "new-group" && (
+        <FoodPickerDrawer
+          title="Añadir alternativas (elige 2 o más)"
+          minSelection={2}
+          onClose={() => setAlternativesTarget(null)}
+          onConfirm={(foods) => appendItems(foods, nextAlternativeGroup())}
+        />
+      )}
+
+      {alternativesTarget && alternativesTarget !== "new-group" && (
+        <FoodPickerDrawer
+          title="Añadir otra alternativa"
+          onClose={() => setAlternativesTarget(null)}
+          onConfirm={(foods) => appendItems(foods, alternativesTarget)}
         />
       )}
     </form>

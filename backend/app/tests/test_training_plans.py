@@ -140,6 +140,182 @@ def test_a_time_based_exercise_without_duration_is_rejected(
     assert set_resp.status_code == 422
 
 
+def test_planned_sets_customize_reps_and_modifier_per_set(
+    authenticated_client: TestClient, db_session: Session
+) -> None:
+    exercise = (
+        db_session.query(Exercise)
+        .filter(Exercise.created_by_trainer_id.is_(None))
+        .first()
+    )
+    assert exercise is not None
+    _, week_id = _create_week(authenticated_client)
+
+    days_payload = {
+        "days": [
+            {
+                "day_of_week": "monday",
+                "order_index": 0,
+                "exercises": [
+                    {
+                        "exercise_id": exercise.id,
+                        "order_index": 0,
+                        "sets": 3,
+                        "reps": "10",
+                        "planned_sets": [
+                            {"set_number": 1, "reps": "12", "modifier": "normal"},
+                            {
+                                "set_number": 2,
+                                "reps": "10",
+                                "modifier": "rir",
+                                "rir_value": 2,
+                            },
+                            {
+                                "set_number": 3,
+                                "reps": "al fallo",
+                                "modifier": "to_failure",
+                            },
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+    set_resp = authenticated_client.put(
+        f"/api/training-weeks/{week_id}/days", json=days_payload
+    )
+    assert set_resp.status_code == 200
+    saved = set_resp.json()["days"][0]["exercises"][0]["planned_sets"]
+    assert [s["reps"] for s in saved] == ["12", "10", "al fallo"]
+    assert saved[1] == {
+        "set_number": 2,
+        "reps": "10",
+        "duration_seconds": None,
+        "modifier": "rir",
+        "rir_value": 2,
+    }
+    assert saved[2]["modifier"] == "to_failure"
+    assert saved[2]["rir_value"] is None
+
+
+def test_planned_sets_must_match_the_sets_count(
+    authenticated_client: TestClient, db_session: Session
+) -> None:
+    exercise = (
+        db_session.query(Exercise)
+        .filter(Exercise.created_by_trainer_id.is_(None))
+        .first()
+    )
+    assert exercise is not None
+    _, week_id = _create_week(authenticated_client)
+
+    days_payload = {
+        "days": [
+            {
+                "day_of_week": "monday",
+                "order_index": 0,
+                "exercises": [
+                    {
+                        "exercise_id": exercise.id,
+                        "order_index": 0,
+                        "sets": 3,
+                        "reps": "10",
+                        "planned_sets": [
+                            {"set_number": 1, "reps": "10"},
+                            {"set_number": 2, "reps": "10"},
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+    set_resp = authenticated_client.put(
+        f"/api/training-weeks/{week_id}/days", json=days_payload
+    )
+    assert set_resp.status_code == 422
+
+
+def test_rir_modifier_requires_a_rir_value(
+    authenticated_client: TestClient, db_session: Session
+) -> None:
+    exercise = (
+        db_session.query(Exercise)
+        .filter(Exercise.created_by_trainer_id.is_(None))
+        .first()
+    )
+    assert exercise is not None
+    _, week_id = _create_week(authenticated_client)
+
+    days_payload = {
+        "days": [
+            {
+                "day_of_week": "monday",
+                "order_index": 0,
+                "exercises": [
+                    {
+                        "exercise_id": exercise.id,
+                        "order_index": 0,
+                        "sets": 1,
+                        "reps": "10",
+                        "planned_sets": [
+                            {"set_number": 1, "reps": "10", "modifier": "rir"}
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+    set_resp = authenticated_client.put(
+        f"/api/training-weeks/{week_id}/days", json=days_payload
+    )
+    assert set_resp.status_code == 422
+
+
+def test_duplicate_week_copies_planned_sets(
+    authenticated_client: TestClient, db_session: Session
+) -> None:
+    exercise = (
+        db_session.query(Exercise)
+        .filter(Exercise.created_by_trainer_id.is_(None))
+        .first()
+    )
+    assert exercise is not None
+    _, week_id = _create_week(authenticated_client)
+
+    days_payload = {
+        "days": [
+            {
+                "day_of_week": "monday",
+                "order_index": 0,
+                "exercises": [
+                    {
+                        "exercise_id": exercise.id,
+                        "order_index": 0,
+                        "sets": 2,
+                        "reps": "10",
+                        "planned_sets": [
+                            {
+                                "set_number": 1,
+                                "reps": "al fallo",
+                                "modifier": "to_failure",
+                            },
+                            {"set_number": 2, "reps": "10", "modifier": "normal"},
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+    authenticated_client.put(f"/api/training-weeks/{week_id}/days", json=days_payload)
+
+    dup_resp = authenticated_client.post(
+        f"/api/training-weeks/{week_id}/duplicate", json={"week_number": 2}
+    )
+    assert dup_resp.status_code == 201
+    copied = dup_resp.json()["days"][0]["exercises"][0]["planned_sets"]
+    assert [s["modifier"] for s in copied] == ["to_failure", "normal"]
+
+
 def test_client_has_multiple_training_plans_as_history(
     authenticated_client: TestClient,
 ) -> None:

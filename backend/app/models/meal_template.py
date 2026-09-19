@@ -61,5 +61,9 @@ class MealTemplateItem(Base, TimestampMixin):
     fiber_g: Mapped[float | None] = mapped_column(Numeric(6, 1))
     salt_g: Mapped[float | None] = mapped_column(Numeric(6, 2))
     order_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    # Items sharing this value are interchangeable ("Lubina 150g o Salmón
+    # 200g"). Only the first one (by order_index) counts toward the meal's
+    # totals; the rest are shown for macro comparison only.
+    alternative_group: Mapped[str | None] = mapped_column(String(64))
 
     meal_template: Mapped["MealTemplate"] = relationship(back_populates="items")

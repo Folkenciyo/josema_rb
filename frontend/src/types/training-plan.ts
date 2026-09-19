@@ -1,4 +1,18 @@
-import type { DayOfWeek, ExerciseMeasurement, PlanStatus } from "./common";
+import type {
+  DayOfWeek,
+  ExerciseMeasurement,
+  PlanStatus,
+  SetModifier,
+} from "./common";
+
+export interface PlannedSet {
+  set_number: number;
+  reps: string | null;
+  duration_seconds: number | null;
+  modifier: SetModifier;
+  /** Only set when modifier is "rir". */
+  rir_value: number | null;
+}
 
 export interface TrainingPlan {
   id: string;
@@ -26,6 +40,8 @@ export interface TrainingDayExercise {
   notes: string | null;
   /** The note about the whole block — only the exercise that opens it has one. */
   superset_note: string | null;
+  /** Empty unless individual sets were customized; `sets` × `reps` otherwise. */
+  planned_sets: PlannedSet[];
 }
 
 export interface TrainingDay {
@@ -71,6 +87,16 @@ export interface TrainingDayExerciseInput {
   notes: string | null;
   /** Kept by the backend only on the exercise that opens a superset. */
   superset_note: string | null;
+  /** When provided, must have exactly `sets` entries and becomes the target. */
+  planned_sets?: PlannedSetInput[] | null;
+}
+
+export interface PlannedSetInput {
+  set_number: number;
+  reps?: string | null;
+  duration_seconds?: number | null;
+  modifier: SetModifier;
+  rir_value?: number | null;
 }
 
 export interface TrainingDayInput {

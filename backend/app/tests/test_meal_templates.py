@@ -138,6 +138,99 @@ def test_meal_template_item_requires_manual_macros_without_food(
     assert response.status_code == 422
 
 
+def test_alternative_items_share_a_group_and_keep_their_own_macros(
+    authenticated_client: TestClient,
+) -> None:
+    """Lubina 150g o Salmón 200g: interchangeable, each with its own macros."""
+    sea_bass_id = authenticated_client.post(
+        "/api/foods",
+        json={
+            "name": "Lubina",
+            "category": "Proteína animal",
+            "subcategory": "Pescado",
+            "unit_amount": 100,
+            "unit_type": "g",
+            "calories": 97,
+            "protein_g": 18.4,
+            "carbs_g": 0,
+            "sugars_g": 0,
+            "fat_g": 2.5,
+            "saturated_fat_g": 0.5,
+            "fiber_g": 0,
+            "salt_g": 0.1,
+        },
+    ).json()["id"]
+    salmon_id = authenticated_client.post(
+        "/api/foods",
+        json={
+            "name": "Salmón",
+            "category": "Proteína animal",
+            "subcategory": "Pescado",
+            "unit_amount": 100,
+            "unit_type": "g",
+            "calories": 208,
+            "protein_g": 20.4,
+            "carbs_g": 0,
+            "sugars_g": 0,
+            "fat_g": 13.4,
+            "saturated_fat_g": 2.6,
+            "fiber_g": 0,
+            "salt_g": 0.1,
+        },
+    ).json()["id"]
+
+    response = authenticated_client.post(
+        "/api/meal-templates",
+        json={
+            "name": "Comida con alternativa",
+            "items": [
+                {
+                    "food_id": sea_bass_id,
+                    "quantity_amount": 150,
+                    "alternative_group": "grupo-1",
+                },
+                {
+                    "food_id": salmon_id,
+                    "quantity_amount": 200,
+                    "alternative_group": "grupo-1",
+                },
+            ],
+        },
+    )
+
+    assert response.status_code == 201
+    body = response.json()
+    sea_bass_item, salmon_item = body["items"]
+    assert sea_bass_item["alternative_group"] == "grupo-1"
+    assert salmon_item["alternative_group"] == "grupo-1"
+    # Each alternative keeps its own macros, so the trainer can compare them.
+    assert sea_bass_item["calories"] == pytest.approx(145.5)
+    assert salmon_item["calories"] == pytest.approx(416)
+    # Only the first item of the group counts toward the meal's totals — the
+    # alternative is not eaten in addition to it.
+    assert body["totals"]["calories"] == pytest.approx(145.5)
+
+
+def test_ungrouped_items_still_all_count_toward_totals(
+    authenticated_client: TestClient,
+) -> None:
+    chicken_id = authenticated_client.post("/api/foods", json=CHICKEN).json()["id"]
+    egg_id = authenticated_client.post("/api/foods", json=EGG).json()["id"]
+
+    response = authenticated_client.post(
+        "/api/meal-templates",
+        json={
+            "name": "Pollo con huevo",
+            "items": [
+                {"food_id": chicken_id, "quantity_amount": 200},
+                {"food_id": egg_id, "quantity_amount": 1},
+            ],
+        },
+    )
+
+    assert response.json()["totals"]["calories"] == pytest.approx(408)
+
+
 def test_cannot_delete_meal_template_used_by_menu(
     authenticated_client: TestClient,
 ) -> None:

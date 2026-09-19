@@ -64,6 +64,8 @@ export interface MealTemplateItem {
   fiber_g: number | null;
   salt_g: number | null;
   order_index: number;
+  /** Items sharing this value are interchangeable alternatives of each other. */
+  alternative_group: string | null;
 }
 
 export interface MealTemplate {
@@ -93,6 +95,7 @@ export interface MealTemplateItemInput {
   saturated_fat_g?: number | null;
   fiber_g?: number | null;
   salt_g?: number | null;
+  alternative_group?: string | null;
 }
 
 export interface MealTemplateInput {

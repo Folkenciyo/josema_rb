@@ -35,6 +35,8 @@ export interface MealItemDraft {
   saturated_fat_g: number;
   fiber_g: number;
   salt_g: number;
+  /** Items sharing this value are interchangeable alternatives of each other. */
+  alternative_group: string | null;
 }
 
 export const EMPTY_TOTALS: MacroTotals = {
@@ -55,7 +57,10 @@ function nextKey(): string {
   return `meal-item-${keyCounter}`;
 }
 
-export function createCatalogItem(food: Food): MealItemDraft {
+export function createCatalogItem(
+  food: Food,
+  alternativeGroup: string | null = null,
+): MealItemDraft {
   return {
     key: nextKey(),
     mode: "catalog",
@@ -63,6 +68,7 @@ export function createCatalogItem(food: Food): MealItemDraft {
     food_name: food.name,
     quantity_amount: food.unit_amount,
     quantity_unit: food.unit_type,
+    alternative_group: alternativeGroup,
     ...pickNutrients(food),
   };
 }
@@ -75,8 +81,14 @@ export function createManualItem(): MealItemDraft {
     food_name: "",
     quantity_amount: 1,
     quantity_unit: "",
+    alternative_group: null,
     ...EMPTY_TOTALS,
   };
+}
+
+/** A fresh id to link a new batch of alternatives together. */
+export function nextAlternativeGroup(): string {
+  return nextKey();
 }
 
 function pickNutrients(source: MacroTotals): MacroTotals {
@@ -96,6 +108,7 @@ export function buildMealDraft(template: MealTemplate): MealItemDraft[] {
       food_name: item.food_name,
       quantity_amount: item.quantity_amount ?? 1,
       quantity_unit: item.quantity_unit ?? "",
+      alternative_group: item.alternative_group,
       ...NUTRIENT_KEYS.reduce<MacroTotals>(
         (accumulator, key) => ({ ...accumulator, [key]: item[key] ?? 0 }),
         EMPTY_TOTALS,
@@ -134,6 +147,24 @@ export function itemMacros(
   );
 }
 
+/**
+ * Items that count toward the meal's totals: alternatives are not eaten in
+ * addition to one another, so only the first item of each group counts.
+ */
+export function countedItems(items: MealItemDraft[]): MealItemDraft[] {
+  const seenGroups = new Set<string>();
+  return items.filter((item) => {
+    if (item.alternative_group === null) {
+      return true;
+    }
+    if (seenGroups.has(item.alternative_group)) {
+      return false;
+    }
+    seenGroups.add(item.alternative_group);
+    return true;
+  });
+}
+
 export function sumMacros(totals: MacroTotals[]): MacroTotals {
   return totals.reduce<MacroTotals>(
     (accumulator, current) =>
@@ -152,24 +183,29 @@ export function mealDraftTotals(
   items: MealItemDraft[],
   foods: Map<string, Food>,
 ): MacroTotals {
-  return sumMacros(items.map((item) => itemMacros(item, foods)));
+  return sumMacros(countedItems(items).map((item) => itemMacros(item, foods)));
 }
 
 export function mealDraftToPayload(
   items: MealItemDraft[],
 ): MealTemplateItemInput[] {
-  return items.map((item) =>
-    item.mode === "catalog"
+  return items.map((item) => {
+    const group = item.alternative_group
+      ? { alternative_group: item.alternative_group }
+      : {};
+    return item.mode === "catalog"
       ? {
           food_id: item.food_id,
           quantity_amount: item.quantity_amount,
+          ...group,
         }
       : {
           food_name: item.food_name.trim(),
           quantity_label: item.quantity_unit.trim() || null,
           ...pickNutrients(item),
-        },
-  );
+          ...group,
+        };
+  });
 }
 
 /** Mirrors the backend rules so the trainer sees the problem before submitting. */

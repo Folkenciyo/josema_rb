@@ -1,17 +1,21 @@
 import {
   addExercises,
   addSupersetExercises,
+  applyToAllSets,
   buildWeekDraft,
   countExercises,
   moveBlock,
   removeExercise,
   setDayNotes,
   setMeasurement,
+  setSetsCount,
   setSupersetNote,
   supersetNoteOf,
   swapDays,
+  togglePlannedSets,
   ungroupSuperset,
   updateExercise,
+  updatePlannedSet,
   weekDraftToPayload,
 } from "./week-draft";
 import type { TrainingWeek } from "@/types/training-plan";
@@ -40,6 +44,7 @@ const week: TrainingWeek = {
           superset_group: null,
           notes: null,
           superset_note: null,
+          planned_sets: [],
         },
         {
           id: "e1",
@@ -54,6 +59,7 @@ const week: TrainingWeek = {
           superset_group: null,
           notes: "Suave",
           superset_note: null,
+          planned_sets: [],
         },
       ],
     },
@@ -213,6 +219,89 @@ describe("setMeasurement", () => {
     const next = setMeasurement(draft, "wednesday", key, "time");
 
     expect(next[2].exercises[1]).toMatchObject({ measurement: "reps", reps: "8-10" });
+  });
+});
+
+describe("per-set targets", () => {
+  const draft = buildWeekDraft(week);
+  const key = draft[2].exercises[0].key; // Bench_Press: sets 3, reps "10"
+
+  it("seeds one row per set from the shared target when turned on", () => {
+    const next = togglePlannedSets(draft, "wednesday", key);
+
+    expect(next[2].exercises[0].planned_sets).toEqual([
+      { set_number: 1, reps: "10", duration_seconds: null, modifier: "normal", rir_value: null },
+      { set_number: 2, reps: "10", duration_seconds: null, modifier: "normal", rir_value: null },
+      { set_number: 3, reps: "10", duration_seconds: null, modifier: "normal", rir_value: null },
+    ]);
+  });
+
+  it("clears customization when turned off again", () => {
+    const on = togglePlannedSets(draft, "wednesday", key);
+    const off = togglePlannedSets(on, "wednesday", key);
+
+    expect(off[2].exercises[0].planned_sets).toBeNull();
+  });
+
+  it("updates a single set without touching the others", () => {
+    const on = togglePlannedSets(draft, "wednesday", key);
+    const next = updatePlannedSet(on, "wednesday", key, 3, {
+      modifier: "to_failure",
+      reps: "al fallo",
+    });
+
+    expect(next[2].exercises[0].planned_sets).toEqual([
+      { set_number: 1, reps: "10", duration_seconds: null, modifier: "normal", rir_value: null },
+      { set_number: 2, reps: "10", duration_seconds: null, modifier: "normal", rir_value: null },
+      { set_number: 3, reps: "al fallo", duration_seconds: null, modifier: "to_failure", rir_value: null },
+    ]);
+  });
+
+  it("quick-fills every set from one, via applyToAllSets", () => {
+    const on = togglePlannedSets(draft, "wednesday", key);
+    const customized = updatePlannedSet(on, "wednesday", key, 1, {
+      reps: "12",
+      modifier: "rir",
+      rir_value: 2,
+    });
+    const next = applyToAllSets(customized, "wednesday", key, 1);
+
+    expect(next[2].exercises[0].planned_sets).toEqual([
+      { set_number: 1, reps: "12", duration_seconds: null, modifier: "rir", rir_value: 2 },
+      { set_number: 2, reps: "12", duration_seconds: null, modifier: "rir", rir_value: 2 },
+      { set_number: 3, reps: "12", duration_seconds: null, modifier: "rir", rir_value: 2 },
+    ]);
+  });
+
+  it("grows planned_sets when the set count increases, repeating the last one", () => {
+    const on = togglePlannedSets(draft, "wednesday", key);
+    const customized = updatePlannedSet(on, "wednesday", key, 3, {
+      modifier: "to_failure",
+      reps: "al fallo",
+    });
+    const grown = setSetsCount(customized, "wednesday", key, 4);
+
+    expect(grown[2].exercises[0].sets).toBe(4);
+    expect(grown[2].exercises[0].planned_sets).toEqual([
+      { set_number: 1, reps: "10", duration_seconds: null, modifier: "normal", rir_value: null },
+      { set_number: 2, reps: "10", duration_seconds: null, modifier: "normal", rir_value: null },
+      { set_number: 3, reps: "al fallo", duration_seconds: null, modifier: "to_failure", rir_value: null },
+      { set_number: 4, reps: "al fallo", duration_seconds: null, modifier: "to_failure", rir_value: null },
+    ]);
+  });
+
+  it("shrinks planned_sets when the set count decreases", () => {
+    const on = togglePlannedSets(draft, "wednesday", key);
+    const shrunk = setSetsCount(on, "wednesday", key, 2);
+
+    expect(shrunk[2].exercises[0].sets).toBe(2);
+    expect(shrunk[2].exercises[0].planned_sets).toHaveLength(2);
+  });
+
+  it("leaves planned_sets null when the set count changes without customization", () => {
+    const next = setSetsCount(draft, "wednesday", key, 5);
+
+    expect(next[2].exercises[0].planned_sets).toBeNull();
   });
 });
 

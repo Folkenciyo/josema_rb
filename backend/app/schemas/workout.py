@@ -4,6 +4,7 @@ from datetime import date
 from pydantic import BaseModel, Field
 
 from app.models.training_plan import ExerciseMeasurement
+from app.schemas.training_plan import PlannedSetOut
 
 # A session sent from the gym may take hours to reach us, and a phone clock can
 # be a day off in either direction. Anything older is someone filling in a diary.
@@ -37,6 +38,9 @@ class WorkoutExerciseOut(BaseModel):
     # Set only on the exercise that opens a superset: it describes the block.
     superset_note: str | None
     superset_group: int | None
+    # Empty unless the trainer customized individual sets; when empty, the
+    # screen expands `sets` × `reps` the same way it always has.
+    planned_sets: list[PlannedSetOut]
     last_performed_on: date | None
     last_sets: list[LoggedSetOut]
 

@@ -22,6 +22,7 @@ import { ExercisePickerDrawer } from "@/components/exercises/exercise-picker-dra
 import { dayBlocks, type DayDraft, type ExerciseDraft } from "@/lib/training/week-draft";
 import { DAY_LABELS, type ExerciseMeasurement } from "@/types/common";
 import type { Exercise } from "@/types/exercise";
+import type { PlannedSet } from "@/types/training-plan";
 import { TrainingBlock } from "./training-block";
 
 type PickerMode = "single" | "superset";
@@ -40,6 +41,14 @@ interface TrainingDayEditorProps {
     changes: Partial<Omit<ExerciseDraft, "key">>,
   ) => void;
   onChangeMeasurement: (key: string, measurement: ExerciseMeasurement) => void;
+  onSetSetsCount: (key: string, sets: number) => void;
+  onTogglePlannedSets: (key: string) => void;
+  onUpdatePlannedSet: (
+    key: string,
+    setNumber: number,
+    changes: Partial<Omit<PlannedSet, "set_number">>,
+  ) => void;
+  onApplyToAllSets: (key: string, setNumber: number) => void;
   onMoveBlock: (fromIndex: number, toIndex: number) => void;
   /** Swaps this day's whole content with the day above/below it in the week. */
   onMoveDayUp?: () => void;
@@ -57,6 +66,10 @@ export function TrainingDayEditor({
   onChangeSupersetNote,
   onUpdateExercise,
   onChangeMeasurement,
+  onSetSetsCount,
+  onTogglePlannedSets,
+  onUpdatePlannedSet,
+  onApplyToAllSets,
   onMoveBlock,
   onMoveDayUp,
   onMoveDayDown,
@@ -172,6 +185,10 @@ export function TrainingDayEditor({
                   exerciseMap={exerciseMap}
                   onChangeExercise={onUpdateExercise}
                   onChangeMeasurement={onChangeMeasurement}
+                  onSetSetsCount={onSetSetsCount}
+                  onTogglePlannedSets={onTogglePlannedSets}
+                  onUpdatePlannedSet={onUpdatePlannedSet}
+                  onApplyToAllSets={onApplyToAllSets}
                   onRemoveExercise={onRemoveExercise}
                   onUngroup={onUngroupSuperset}
                   onChangeSupersetNote={onChangeSupersetNote}

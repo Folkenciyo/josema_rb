@@ -9,21 +9,25 @@ import { ErrorMessage } from "@/components/ui/feedback";
 import {
   addExercises,
   addSupersetExercises,
+  applyToAllSets,
   buildWeekDraft,
   countExercises,
   moveBlock,
   removeExercise,
   setDayNotes,
   setMeasurement,
+  setSetsCount,
   setSupersetNote,
   swapDays,
+  togglePlannedSets,
   ungroupSuperset,
   updateExercise,
+  updatePlannedSet,
   weekDraftToPayload,
   type ExerciseDraft,
 } from "@/lib/training/week-draft";
 import type { ExerciseMeasurement } from "@/types/common";
-import type { TrainingWeek } from "@/types/training-plan";
+import type { PlannedSet, TrainingWeek } from "@/types/training-plan";
 import { TrainingDayEditor } from "./training-day-editor";
 
 interface TrainingWeekEditorProps {
@@ -122,6 +126,30 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
             onChangeMeasurement={(key, measurement: ExerciseMeasurement) =>
               setDraft((current) =>
                 setMeasurement(current, day.day_of_week, key, measurement),
+              )
+            }
+            onSetSetsCount={(key, sets) =>
+              setDraft((current) =>
+                setSetsCount(current, day.day_of_week, key, sets),
+              )
+            }
+            onTogglePlannedSets={(key) =>
+              setDraft((current) =>
+                togglePlannedSets(current, day.day_of_week, key),
+              )
+            }
+            onUpdatePlannedSet={(
+              key,
+              setNumber,
+              changes: Partial<Omit<PlannedSet, "set_number">>,
+            ) =>
+              setDraft((current) =>
+                updatePlannedSet(current, day.day_of_week, key, setNumber, changes),
+              )
+            }
+            onApplyToAllSets={(key, setNumber) =>
+              setDraft((current) =>
+                applyToAllSets(current, day.day_of_week, key, setNumber),
               )
             }
             onMoveBlock={(fromIndex, toIndex) =>

@@ -119,6 +119,7 @@ def _scale_item(item: MealTemplateItem, factor: float) -> MealTemplateItem:
             item.quantity_multiplier, applied
         ),
         order_index=item.order_index,
+        alternative_group=item.alternative_group,
         **{
             field: menu_scaling.scale_nutrient(getattr(item, field), applied)
             for field in meal_template_service.NUTRIENT_FIELDS

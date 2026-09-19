@@ -2,6 +2,14 @@ export type PlanStatus = "draft" | "active" | "archived";
 
 export type ExerciseMeasurement = "reps" | "time";
 
+export type SetModifier = "normal" | "to_failure" | "rir";
+
+export const SET_MODIFIER_LABELS: Record<SetModifier, string> = {
+  normal: "Normal",
+  to_failure: "Al fallo",
+  rir: "RIR",
+};
+
 export type DayOfWeek =
   | "monday"
   | "tuesday"

@@ -18,6 +18,8 @@ interface FoodPickerDrawerProps {
   title: string;
   onClose: () => void;
   onConfirm: (foods: Food[]) => void;
+  /** Alternatives only make sense as a group of two or more. */
+  minSelection?: number;
 }
 
 /** Same shape as the exercise picker: search, multi-select, add in one go. */
@@ -25,6 +27,7 @@ export function FoodPickerDrawer({
   title,
   onClose,
   onConfirm,
+  minSelection = 1,
 }: FoodPickerDrawerProps) {
   const {
     search,
@@ -136,13 +139,14 @@ export function FoodPickerDrawer({
         <div className="flex items-center justify-between gap-3 border-t border-slate-200 px-5 py-3">
           <p className="text-sm text-slate-500">
             {selected.length} seleccionados
+            {minSelection > 1 && ` (mínimo ${minSelection})`}
           </p>
           <div className="flex gap-2">
             <Button variant="secondary" onClick={onClose}>
               Cancelar
             </Button>
             <Button
-              disabled={selected.length === 0}
+              disabled={selected.length < minSelection}
               onClick={() => {
                 onConfirm(selected);
                 onClose();

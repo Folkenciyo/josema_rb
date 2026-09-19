@@ -4,6 +4,7 @@ import {
   type ExerciseMeasurement,
 } from "@/types/common";
 import type {
+  PlannedSet,
   TrainingDayInput,
   TrainingWeek,
   TrainingDayExercise,
@@ -29,6 +30,12 @@ export interface ExerciseDraft {
    * carries one; the backend drops it anywhere else, and so does this draft.
    */
   superset_note: string | null;
+  /**
+   * Null (the default) means every set shares sets/reps above. An array —
+   * always exactly `sets` long — means the trainer customized individual
+   * sets, e.g. the last one "al fallo".
+   */
+  planned_sets: PlannedSet[] | null;
 }
 
 export interface DayDraft {
@@ -63,6 +70,7 @@ function toExerciseDraft(exercise: TrainingDayExercise): ExerciseDraft {
     superset_group: exercise.superset_group,
     notes: exercise.notes,
     superset_note: exercise.superset_note,
+    planned_sets: exercise.planned_sets.length > 0 ? exercise.planned_sets : null,
   };
 }
 
@@ -79,6 +87,7 @@ export function createExerciseDraft(exerciseId: string): ExerciseDraft {
     superset_group: null,
     notes: null,
     superset_note: null,
+    planned_sets: null,
   };
 }
 
@@ -101,6 +110,9 @@ export function setMeasurement(
             reps: measurement === "reps" ? (exercise.reps ?? DEFAULT_REPS) : null,
             duration_seconds:
               measurement === "time" ? (exercise.duration_seconds ?? 30) : null,
+            // Reps and duration mean different things; per-set customization
+            // does not carry over between the two modes.
+            planned_sets: null,
           }
         : exercise,
     ),
@@ -147,6 +159,7 @@ export function weekDraftToPayload(draft: WeekDraft): TrainingDayInput[] {
         superset_group: exercise.superset_group,
         notes: exercise.notes,
         superset_note: exercise.superset_note,
+        planned_sets: exercise.planned_sets,
       })),
     }));
 }
@@ -294,6 +307,130 @@ export function updateExercise(
     exercises.map((exercise) =>
       exercise.key === key ? { ...exercise, ...changes } : exercise,
     ),
+  );
+}
+
+function defaultPlannedSets(exercise: ExerciseDraft): PlannedSet[] {
+  return Array.from({ length: exercise.sets }, (_, index) => ({
+    set_number: index + 1,
+    reps: exercise.measurement === "reps" ? exercise.reps : null,
+    duration_seconds:
+      exercise.measurement === "time" ? exercise.duration_seconds : null,
+    modifier: "normal",
+    rir_value: null,
+  }));
+}
+
+/** Grows or shrinks the list to match `sets`, renumbering to stay 1..sets. */
+function resizePlannedSets(
+  current: PlannedSet[],
+  sets: number,
+): PlannedSet[] {
+  const last = current[current.length - 1];
+  const grown =
+    sets <= current.length
+      ? current.slice(0, sets)
+      : [
+          ...current,
+          ...Array.from({ length: sets - current.length }, () => ({ ...last })),
+        ];
+  return grown.map((set, index) => ({ ...set, set_number: index + 1 }));
+}
+
+/** Changes the number of sets, resizing any per-set customization to match. */
+export function setSetsCount(
+  draft: WeekDraft,
+  day: DayOfWeek,
+  key: string,
+  sets: number,
+): WeekDraft {
+  return mapDay(draft, day, (exercises) =>
+    exercises.map((exercise) =>
+      exercise.key === key
+        ? {
+            ...exercise,
+            sets,
+            planned_sets:
+              exercise.planned_sets === null
+                ? null
+                : resizePlannedSets(exercise.planned_sets, sets),
+          }
+        : exercise,
+    ),
+  );
+}
+
+/** Turns per-set customization on (seeded from the shared target) or off. */
+export function togglePlannedSets(
+  draft: WeekDraft,
+  day: DayOfWeek,
+  key: string,
+): WeekDraft {
+  return mapDay(draft, day, (exercises) =>
+    exercises.map((exercise) =>
+      exercise.key === key
+        ? {
+            ...exercise,
+            planned_sets:
+              exercise.planned_sets === null
+                ? defaultPlannedSets(exercise)
+                : null,
+          }
+        : exercise,
+    ),
+  );
+}
+
+export function updatePlannedSet(
+  draft: WeekDraft,
+  day: DayOfWeek,
+  key: string,
+  setNumber: number,
+  changes: Partial<Omit<PlannedSet, "set_number">>,
+): WeekDraft {
+  return mapDay(draft, day, (exercises) =>
+    exercises.map((exercise) =>
+      exercise.key === key && exercise.planned_sets !== null
+        ? {
+            ...exercise,
+            planned_sets: exercise.planned_sets.map((set) =>
+              set.set_number === setNumber ? { ...set, ...changes } : set,
+            ),
+          }
+        : exercise,
+    ),
+  );
+}
+
+/** Quick fill: copies one set's target onto every other set of the exercise. */
+export function applyToAllSets(
+  draft: WeekDraft,
+  day: DayOfWeek,
+  key: string,
+  setNumber: number,
+): WeekDraft {
+  return mapDay(draft, day, (exercises) =>
+    exercises.map((exercise) => {
+      if (exercise.key !== key || exercise.planned_sets === null) {
+        return exercise;
+      }
+      const source = exercise.planned_sets.find(
+        (set) => set.set_number === setNumber,
+      );
+      if (!source) {
+        return exercise;
+      }
+      return {
+        ...exercise,
+        planned_sets: exercise.planned_sets.map((set) => ({
+          ...set,
+          reps: source.reps,
+          duration_seconds: source.duration_seconds,
+          modifier: source.modifier,
+          rir_value: source.rir_value,
+        })),
+      };
+    }),
   );
 }
 

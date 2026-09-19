@@ -7,7 +7,20 @@ import { usePortalTrainingPlan } from "@/hooks/use-portal";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/cn";
 import { exerciseImageUrl } from "@/lib/exercise-image";
+import { SET_MODIFIER_LABELS } from "@/types/common";
+import type { PlannedSet } from "@/types/training-plan";
 import type { PortalExercise, PortalTrainingDay } from "@/types/portal";
+
+function plannedSetLabel(set: PlannedSet): string {
+  const value = set.reps ?? (set.duration_seconds ? `${set.duration_seconds}s` : "");
+  if (set.modifier === "rir") {
+    return `${value} (RIR ${set.rir_value})`;
+  }
+  if (set.modifier === "to_failure") {
+    return `${value} (${SET_MODIFIER_LABELS.to_failure.toLowerCase()})`;
+  }
+  return value;
+}
 import { PortalDownloads } from "./portal-downloads";
 import { PortalExerciseModal } from "./portal-exercise-modal";
 import {
@@ -25,7 +38,9 @@ function ExerciseRow({
   onOpen: () => void;
 }) {
   const details = [
-    `${exercise.sets} × ${exercise.reps}`,
+    exercise.planned_sets.length === 0
+      ? `${exercise.sets} × ${exercise.reps}`
+      : exercise.planned_sets.map(plannedSetLabel).join(" · "),
     exercise.rest_seconds ? `${exercise.rest_seconds}s descanso` : null,
     exercise.tempo ? `tempo ${exercise.tempo}` : null,
   ].filter(Boolean);

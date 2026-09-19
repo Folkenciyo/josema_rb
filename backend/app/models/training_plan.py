@@ -12,6 +12,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    UniqueConstraint,
     false,
 )
 from sqlalchemy.dialects.postgresql import UUID
@@ -33,6 +34,12 @@ class PlanStatus(StrEnum):
 class ExerciseMeasurement(StrEnum):
     REPS = "reps"
     TIME = "time"
+
+
+class SetModifier(StrEnum):
+    NORMAL = "normal"
+    TO_FAILURE = "to_failure"
+    RIR = "rir"
 
 
 class DayOfWeek(StrEnum):
@@ -174,3 +181,50 @@ class TrainingDayExercise(Base, TimestampMixin):
 
     training_day: Mapped["TrainingDay"] = relationship(back_populates="exercises")
     exercise: Mapped["Exercise"] = relationship()
+    # Empty unless the trainer customized individual sets — e.g. the last one
+    # "al fallo". When empty, `sets`/`reps` above are the shared target for
+    # every set, exactly as before this existed.
+    planned_sets: Mapped[list["TrainingDayExerciseSet"]] = relationship(
+        back_populates="training_day_exercise",
+        cascade="all, delete-orphan",
+        order_by="TrainingDayExerciseSet.set_number",
+    )
+
+
+class TrainingDayExerciseSet(Base, TimestampMixin):
+    """One customized set's target, when it differs from the exercise's shared one.
+
+    Only exists for exercises the trainer expanded via "Personalizar series" —
+    most exercises have none, and fall back to `sets` × `reps` on the parent row.
+    """
+
+    __tablename__ = "training_day_exercise_sets"
+    __table_args__ = (
+        UniqueConstraint(
+            "training_day_exercise_id", "set_number", name="uq_planned_set_position"
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+    training_day_exercise_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("training_day_exercises.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    set_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    reps: Mapped[str | None] = mapped_column(String(50))
+    duration_seconds: Mapped[int | None] = mapped_column(Integer)
+    modifier: Mapped[SetModifier] = mapped_column(
+        Enum(SetModifier, name="set_modifier"),
+        nullable=False,
+        default=SetModifier.NORMAL,
+        server_default=SetModifier.NORMAL.name,
+    )
+    # Only set when modifier is RIR — reps left "in the tank" on that set.
+    rir_value: Mapped[int | None] = mapped_column(Integer)
+
+    training_day_exercise: Mapped["TrainingDayExercise"] = relationship(
+        back_populates="planned_sets"
+    )

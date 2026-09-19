@@ -15,6 +15,7 @@ from app.schemas.export import (
     ExportTrainingWeek,
     TrainingPlanDocument,
 )
+from app.schemas.training_plan import PlannedSetOut
 from app.services import (
     client_service,
     diet_plan_service,
@@ -75,6 +76,10 @@ def build_training_plan_document(
                     ),
                     superset_label=label,
                     superset_note=training_day_exercise.superset_note,
+                    planned_sets=[
+                        PlannedSetOut.model_validate(set_target)
+                        for set_target in training_day_exercise.planned_sets
+                    ],
                 )
                 for training_day_exercise, label in zip(
                     day.exercises, labels, strict=True
@@ -119,6 +124,7 @@ def build_diet_plan_document(db: Session, plan_id: uuid.UUID) -> DietPlanDocumen
                         ExportMealItem(
                             food_name=item.food_name,
                             quantity_label=item.quantity_label,
+                            alternative_group=item.alternative_group,
                             **{
                                 field: _as_float(getattr(item, field))
                                 for field in meal_template_service.NUTRIENT_FIELDS

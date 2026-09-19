@@ -3,6 +3,7 @@ from datetime import date
 from pydantic import BaseModel
 
 from app.schemas.meal_template import MacroTotals
+from app.schemas.training_plan import PlannedSetOut
 
 
 class ExportTrainingExercise(BaseModel):
@@ -21,6 +22,9 @@ class ExportTrainingExercise(BaseModel):
     superset_label: str | None = None
     # The note about the whole block, carried by the exercise that opens it.
     superset_note: str | None = None
+    # Empty unless the trainer customized individual sets; the printed table
+    # falls back to the plain "Series | Reps" columns when this is empty.
+    planned_sets: list[PlannedSetOut] = []
 
 
 class ExportTrainingDay(BaseModel):
@@ -56,6 +60,8 @@ class ExportMealItem(BaseModel):
     saturated_fat_g: float | None
     fiber_g: float | None
     salt_g: float | None
+    # Items sharing this value are interchangeable alternatives of each other.
+    alternative_group: str | None = None
 
 
 class ExportMeal(BaseModel):

@@ -17,8 +17,10 @@ from app.models.trainer import Trainer
 from app.models.training_plan import (
     DayOfWeek,
     PlanStatus,
+    SetModifier,
     TrainingDay,
     TrainingDayExercise,
+    TrainingDayExerciseSet,
     TrainingPlan,
     TrainingWeek,
 )
@@ -48,9 +50,11 @@ __all__ = [
     "QuestionKind",
     "QuestionnaireQuestion",
     "QuoteMedia",
+    "SetModifier",
     "Trainer",
     "TrainingDay",
     "TrainingDayExercise",
+    "TrainingDayExerciseSet",
     "TrainingPlan",
     "TrainingWeek",
     "WorkoutSession",

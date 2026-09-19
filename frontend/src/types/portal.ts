@@ -1,6 +1,7 @@
 import type { MacroTotals } from "./diet";
 import type { PhotoPose } from "./photo";
 import type { Quote } from "./quote";
+import type { PlannedSet } from "./training-plan";
 
 export interface PortalToken {
   client_id: string;
@@ -61,6 +62,8 @@ export interface PortalExercise {
   superset_label: string | null;
   /** The note about the block, carried by the exercise that opens it. */
   superset_note: string | null;
+  /** Empty unless individual sets were customized; `sets` × `reps` otherwise. */
+  planned_sets: PlannedSet[];
 }
 
 /** An exercise sheet as the client reads it: how it is done, and nothing else. */
@@ -107,6 +110,8 @@ export interface PortalMealItem {
   protein_g: number | null;
   carbs_g: number | null;
   fat_g: number | null;
+  /** Items sharing this value are interchangeable alternatives of each other. */
+  alternative_group: string | null;
 }
 
 export interface PortalMeal {

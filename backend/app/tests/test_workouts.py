@@ -122,6 +122,58 @@ def test_the_training_screen_carries_the_target_of_each_exercise(
     assert exercise["last_sets"] == []
 
 
+def test_the_training_screen_carries_planned_sets_when_customized(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id = authenticated_client.post(
+        "/api/clients", json={"full_name": "Cliente Entreno"}
+    ).json()["id"]
+    token = authenticated_client.post(f"/api/clients/{client_id}/portal-token").json()[
+        "portal_token"
+    ]
+    plan = authenticated_client.post(
+        f"/api/clients/{client_id}/training-plans",
+        json={"title": "Plan", "status": "active"},
+    ).json()
+    week = authenticated_client.post(
+        f"/api/training-plans/{plan['id']}/weeks", json={"week_number": 1}
+    ).json()
+    authenticated_client.put(
+        f"/api/training-weeks/{week['id']}/days",
+        json={
+            "days": [
+                {
+                    "day_of_week": "monday",
+                    "order_index": 0,
+                    "exercises": [
+                        {
+                            "exercise_id": imported_exercise.id,
+                            "order_index": 0,
+                            "sets": 2,
+                            "reps": "10",
+                            "planned_sets": [
+                                {"set_number": 1, "reps": "12", "modifier": "normal"},
+                                {
+                                    "set_number": 2,
+                                    "reps": "al fallo",
+                                    "modifier": "to_failure",
+                                },
+                            ],
+                        }
+                    ],
+                }
+            ]
+        },
+    )
+    day_id = _day_of(authenticated_client, token)["id"]
+
+    body = authenticated_client.get(f"/api/portal/{token}/workout/days/{day_id}").json()
+
+    planned = body["exercises"][0]["planned_sets"]
+    assert [s["reps"] for s in planned] == ["12", "al fallo"]
+    assert planned[1]["modifier"] == "to_failure"
+
+
 def test_a_recorded_session_comes_back_set_by_set(
     authenticated_client: TestClient, imported_exercise: Exercise
 ) -> None:
