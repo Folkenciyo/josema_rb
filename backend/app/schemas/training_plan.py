@@ -3,7 +3,12 @@ from datetime import date
 
 from pydantic import BaseModel, model_validator
 
-from app.models.training_plan import DayOfWeek, ExerciseMeasurement, PlanStatus
+from app.models.training_plan import (
+    DayOfWeek,
+    ExerciseMeasurement,
+    PlanStatus,
+    SetModifier,
+)
 
 
 class TrainingPlanCreate(BaseModel):
@@ -58,6 +63,27 @@ class TrainingWeekOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class PlannedSetIn(BaseModel):
+    """One set's own target, when it differs from the exercise's shared one."""
+
+    set_number: int
+    reps: str | None = None
+    duration_seconds: int | None = None
+    modifier: SetModifier = SetModifier.NORMAL
+    # Reps left "in the tank" on this set — only meaningful, and only allowed,
+    # when modifier is rir.
+    rir_value: int | None = None
+
+    @model_validator(mode="after")
+    def check_rir_value_matches_modifier(self) -> "PlannedSetIn":
+        if self.modifier == SetModifier.RIR:
+            if self.rir_value is None or self.rir_value < 0:
+                raise ValueError("rir_value is required when modifier is rir")
+        else:
+            self.rir_value = None
+        return self
+
+
 class TrainingDayExerciseIn(BaseModel):
     exercise_id: str
     order_index: int
@@ -72,6 +98,11 @@ class TrainingDayExerciseIn(BaseModel):
     # Only kept on the exercise that opens the block; anywhere else it is
     # dropped, so a day can never hold two notes for the same superset.
     superset_note: str | None = None
+    # Empty (the default) means every set shares sets/reps above, exactly as
+    # before this existed. Non-empty means the trainer customized individual
+    # sets, and this — not `sets` — becomes the source of truth for how many
+    # there are and what each one targets.
+    planned_sets: list[PlannedSetIn] | None = None
 
     @model_validator(mode="after")
     def check_measurement_matches_value(self) -> "TrainingDayExerciseIn":
@@ -85,6 +116,28 @@ class TrainingDayExerciseIn(BaseModel):
                     "duration_seconds is required when measurement is time"
                 )
             self.reps = None
+
+        if self.planned_sets is not None:
+            if len(self.planned_sets) != self.sets:
+                raise ValueError("planned_sets must have exactly `sets` entries")
+            for planned in self.planned_sets:
+                if self.measurement == ExerciseMeasurement.REPS:
+                    if not planned.reps:
+                        raise ValueError(
+                            "each planned set needs reps when measurement is reps"
+                        )
+                    planned.duration_seconds = None
+                else:
+                    invalid_duration = (
+                        planned.duration_seconds is None
+                        or planned.duration_seconds <= 0
+                    )
+                    if invalid_duration:
+                        raise ValueError(
+                            "each planned set needs duration_seconds when "
+                            "measurement is time"
+                        )
+                    planned.reps = None
         return self
 
 
@@ -94,6 +147,16 @@ class TrainingDayIn(BaseModel):
     # What the trainer wants done that day as a whole, beyond the exercises.
     notes: str | None = None
     exercises: list[TrainingDayExerciseIn] = []
+
+
+class PlannedSetOut(BaseModel):
+    set_number: int
+    reps: str | None
+    duration_seconds: int | None
+    modifier: SetModifier
+    rir_value: int | None
+
+    model_config = {"from_attributes": True}
 
 
 class TrainingDayExerciseOut(BaseModel):
@@ -109,6 +172,7 @@ class TrainingDayExerciseOut(BaseModel):
     superset_group: int | None
     notes: str | None
     superset_note: str | None
+    planned_sets: list[PlannedSetOut]
 
     model_config = {"from_attributes": True}
 

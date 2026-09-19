@@ -1,5 +1,6 @@
 import {
   buildMealDraft,
+  countedItems,
   createCatalogItem,
   createManualItem,
   EMPTY_TOTALS,
@@ -148,6 +149,50 @@ describe("mealDraftTotals", () => {
   });
 });
 
+describe("alternatives", () => {
+  it("keeps each alternative's own macros but only counts the first in totals", () => {
+    const seaBass = {
+      ...createManualItem(),
+      food_name: "Lubina",
+      calories: 145.5,
+      protein_g: 27.6,
+      alternative_group: "grupo-1",
+    };
+    const salmon = {
+      ...createManualItem(),
+      food_name: "Salmón",
+      calories: 416,
+      protein_g: 40.8,
+      alternative_group: "grupo-1",
+    };
+
+    expect(countedItems([seaBass, salmon])).toEqual([seaBass]);
+    expect(mealDraftTotals([seaBass, salmon], foods)).toEqual(
+      totals({ calories: 145.5, protein_g: 27.6 }),
+    );
+  });
+
+  it("counts every group once, plus any ungrouped item", () => {
+    const veggies = { ...createManualItem(), food_name: "Verduras", calories: 60 };
+    const seaBass = {
+      ...createManualItem(),
+      food_name: "Lubina",
+      calories: 145.5,
+      alternative_group: "grupo-1",
+    };
+    const salmon = {
+      ...createManualItem(),
+      food_name: "Salmón",
+      calories: 416,
+      alternative_group: "grupo-1",
+    };
+
+    expect(mealDraftTotals([veggies, seaBass, salmon], foods)).toEqual(
+      totals({ calories: 205.5 }),
+    );
+  });
+});
+
 describe("mealDraftToPayload", () => {
   it("sends the amount served so the backend derives the multiplier", () => {
     const payload = mealDraftToPayload([
@@ -155,6 +200,14 @@ describe("mealDraftToPayload", () => {
     ]);
 
     expect(payload[0]).toEqual({ food_id: "f1", quantity_amount: 150 });
+  });
+
+  it("includes the alternative_group only when the item belongs to one", () => {
+    const payload = mealDraftToPayload([
+      { ...createCatalogItem(chicken), alternative_group: "grupo-1" },
+    ]);
+
+    expect(payload[0]).toMatchObject({ alternative_group: "grupo-1" });
   });
 
   it("sends name and the full label for manual items", () => {
@@ -235,6 +288,7 @@ describe("buildMealDraft", () => {
           fiber_g: 0,
           salt_g: 0,
           order_index: 1,
+          alternative_group: null,
         },
         {
           id: "i1",
@@ -253,6 +307,7 @@ describe("buildMealDraft", () => {
           fiber_g: 0,
           salt_g: 0.15,
           order_index: 0,
+          alternative_group: null,
         },
       ],
     };

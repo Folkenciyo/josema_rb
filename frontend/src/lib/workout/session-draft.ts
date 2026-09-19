@@ -1,5 +1,5 @@
 import { supersetLabels } from "@/lib/training/supersets";
-import type { ExerciseMeasurement } from "@/types/common";
+import type { ExerciseMeasurement, SetModifier } from "@/types/common";
 import type {
   LoggedSet,
   WorkoutDayDetail,
@@ -18,6 +18,10 @@ export interface DraftSet {
   reps: number | null;
   /** Only sets ticked off are sent — an untouched row means the set was skipped. */
   done: boolean;
+  /** What the plan asks for this specific set — purely informational. */
+  targetModifier: SetModifier;
+  /** Only meaningful when targetModifier is "rir". */
+  targetRirValue: number | null;
 }
 
 export interface DraftExercise {
@@ -66,10 +70,14 @@ function blankSets(exercise: WorkoutExercise): DraftSet[] {
   const lastBySetNumber = new Map(
     exercise.last_sets.map((set) => [set.set_number, set]),
   );
+  const targetBySetNumber = new Map(
+    exercise.planned_sets.map((set) => [set.set_number, set]),
+  );
 
   return Array.from({ length: Math.max(exercise.sets, 1) }, (_, index) => {
     const setNumber = index + 1;
     const last = lastBySetNumber.get(setNumber);
+    const target = targetBySetNumber.get(setNumber);
 
     return {
       setNumber,
@@ -79,9 +87,11 @@ function blankSets(exercise: WorkoutExercise): DraftSet[] {
       // A timed set has no rep count to suggest — the client just runs the clock.
       reps:
         exercise.measurement === "reps"
-          ? (last?.reps ?? repsFromTarget(exercise.reps))
+          ? (last?.reps ?? repsFromTarget(target?.reps ?? exercise.reps))
           : null,
       done: false,
+      targetModifier: target?.modifier ?? "normal",
+      targetRirValue: target?.rir_value ?? null,
     };
   });
 }
@@ -181,6 +191,8 @@ export function addSet(
         weightKg: last?.weightKg ?? null,
         reps: last?.reps ?? null,
         done: false,
+        targetModifier: "normal",
+        targetRirValue: null,
       },
     ],
   });

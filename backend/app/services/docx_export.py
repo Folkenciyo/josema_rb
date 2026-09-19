@@ -4,12 +4,14 @@ from pathlib import Path
 from docx import Document
 from docx.shared import Inches, Pt
 
+from app.models.training_plan import SetModifier
 from app.schemas.export import (
     DietPlanDocument,
     ExportTrainingExercise,
     ProgressDocument,
     TrainingPlanDocument,
 )
+from app.schemas.training_plan import PlannedSetOut
 from app.services.docx_brand import (
     add_cover,
     add_row,
@@ -79,6 +81,24 @@ def _training_notes(exercise: ExportTrainingExercise) -> str:
     return " · ".join(parts)
 
 
+def _set_target(set_target: PlannedSetOut) -> str:
+    value = set_target.reps or f"{set_target.duration_seconds}s"
+    if set_target.modifier == SetModifier.TO_FAILURE:
+        return f"{value} (al fallo)"
+    if set_target.modifier == SetModifier.RIR:
+        return f"{value} (RIR {set_target.rir_value})"
+    return value
+
+
+def _reps_cell(exercise: ExportTrainingExercise) -> str:
+    if not exercise.planned_sets:
+        return exercise.reps
+    return " · ".join(
+        f"{set_target.set_number}: {_set_target(set_target)}"
+        for set_target in exercise.planned_sets
+    )
+
+
 def _muted(doc: Document, text: str) -> None:
     paragraph = doc.add_paragraph()
     run = paragraph.add_run(text)
@@ -116,7 +136,7 @@ def render_training_plan_docx(document: TrainingPlanDocument) -> bytes:
                             else exercise.name_es
                         ),
                         str(exercise.sets),
-                        exercise.reps,
+                        _reps_cell(exercise),
                         f"{exercise.rest_seconds}s" if exercise.rest_seconds else "",
                         _training_notes(exercise),
                     ],
@@ -169,8 +189,22 @@ def render_diet_plan_docx(document: DietPlanDocument) -> bytes:
                 table = brand_table(
                     doc, ["Alimento", "Cantidad", *NUTRIENT_HEADERS], DIET_WIDTHS_CM
                 )
+                seen_groups: set[str] = set()
                 for item in meal.items:
-                    values = [item.food_name, item.quantity_label or ""]
+                    # Mirrors the PDF: the first item of a group counts toward
+                    # the totals, later ones are shown as alternatives.
+                    is_alternative = (
+                        item.alternative_group is not None
+                        and item.alternative_group in seen_groups
+                    )
+                    if item.alternative_group is not None:
+                        seen_groups.add(item.alternative_group)
+                    food_name = (
+                        f"o bien: {item.food_name}"
+                        if is_alternative
+                        else item.food_name
+                    )
+                    values = [food_name, item.quantity_label or ""]
                     for field in NUTRIENT_FIELDS:
                         value = getattr(item, field)
                         values.append(str(value) if value is not None else "")

@@ -22,6 +22,8 @@ class MealTemplateItemCreate(BaseModel):
     saturated_fat_g: float | None = Field(default=None, ge=0)
     fiber_g: float | None = Field(default=None, ge=0)
     salt_g: float | None = Field(default=None, ge=0)
+    # Items sharing this value are interchangeable alternatives of each other.
+    alternative_group: str | None = None
 
 
 class MealTemplateItemOut(BaseModel):
@@ -41,6 +43,7 @@ class MealTemplateItemOut(BaseModel):
     fiber_g: float | None
     salt_g: float | None
     order_index: int
+    alternative_group: str | None
 
     model_config = {"from_attributes": True}
 

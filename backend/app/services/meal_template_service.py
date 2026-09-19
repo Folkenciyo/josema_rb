@@ -65,6 +65,7 @@ def _build_catalog_item(
         or format_unit_label(float(amount), food.unit_type),
         quantity_multiplier=multiplier,
         order_index=order_index,
+        alternative_group=data.alternative_group,
         **_scaled_nutrients(food, multiplier),
     )
 
@@ -91,6 +92,7 @@ def _build_manual_item(
         quantity_label=data.quantity_label,
         quantity_multiplier=None,
         order_index=order_index,
+        alternative_group=data.alternative_group,
         **{field: getattr(data, field) or 0 for field in NUTRIENT_FIELDS},
     )
 
@@ -109,12 +111,29 @@ def _build_items(
     return [_build_item(db, item, index) for index, item in enumerate(items)]
 
 
+def _counted_items(meal_template: MealTemplate) -> list[MealTemplateItem]:
+    """Items that count toward the meal's totals.
+
+    Alternatives are not eaten in addition to one another, so only the first
+    item of each alternative_group (meal_template.items is already ordered by
+    order_index) is counted; the rest are shown for comparison only.
+    """
+    seen_groups: set[str] = set()
+    counted = []
+    for item in meal_template.items:
+        if item.alternative_group is not None:
+            if item.alternative_group in seen_groups:
+                continue
+            seen_groups.add(item.alternative_group)
+        counted.append(item)
+    return counted
+
+
 def compute_totals(meal_template: MealTemplate) -> MacroTotals:
+    counted = _counted_items(meal_template)
     return MacroTotals(
         **{
-            field: float(
-                sum((getattr(item, field) or 0) for item in meal_template.items)
-            )
+            field: float(sum((getattr(item, field) or 0) for item in counted))
             for field in NUTRIENT_FIELDS
         }
     )

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { ChevronDown, StickyNote, Trash2 } from "lucide-react";
+import { ChevronDown, ListChecks, StickyNote, Trash2 } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
+import { Input, Select } from "@/components/ui/input";
 import type { ExerciseDraft } from "@/lib/training/week-draft";
 import type { Exercise } from "@/types/exercise";
-import type { ExerciseMeasurement } from "@/types/common";
+import { SET_MODIFIER_LABELS, type ExerciseMeasurement, type SetModifier } from "@/types/common";
+import type { PlannedSet } from "@/types/training-plan";
 import { ExerciseImage } from "@/components/exercises/exercise-image";
 import { cn } from "@/lib/cn";
 
@@ -19,6 +20,13 @@ interface TrainingExerciseRowProps {
   dragHandle?: ReactNode;
   onChange: (changes: Partial<Omit<ExerciseDraft, "key">>) => void;
   onChangeMeasurement: (measurement: ExerciseMeasurement) => void;
+  onSetSetsCount: (sets: number) => void;
+  onTogglePlannedSets: () => void;
+  onUpdatePlannedSet: (
+    setNumber: number,
+    changes: Partial<Omit<PlannedSet, "set_number">>,
+  ) => void;
+  onApplyToAllSets: (setNumber: number) => void;
   onRemove: () => void;
 }
 
@@ -37,6 +45,10 @@ export function TrainingExerciseRow({
   dragHandle,
   onChange,
   onChangeMeasurement,
+  onSetSetsCount,
+  onTogglePlannedSets,
+  onUpdatePlannedSet,
+  onApplyToAllSets,
   onRemove,
 }: TrainingExerciseRowProps) {
   const [showDetails, setShowDetails] = useState(false);
@@ -68,7 +80,7 @@ export function TrainingExerciseRow({
             type="number"
             min={1}
             value={draft.sets}
-            onChange={(event) => onChange({ sets: Number(event.target.value) })}
+            onChange={(event) => onSetSetsCount(Number(event.target.value))}
             className="h-8 w-16 px-2"
           />
         </label>
@@ -147,6 +159,21 @@ export function TrainingExerciseRow({
 
         <button
           type="button"
+          onClick={onTogglePlannedSets}
+          aria-pressed={draft.planned_sets !== null}
+          title="Personalizar series: reps y al fallo/RIR de cada una"
+          className={cn(
+            "rounded p-1.5",
+            draft.planned_sets !== null
+              ? "text-brand-600 bg-brand-50"
+              : "text-slate-400 hover:bg-slate-100 hover:text-slate-600",
+          )}
+        >
+          <ListChecks className="size-4" />
+        </button>
+
+        <button
+          type="button"
           onClick={() => setShowDetails((current) => !current)}
           aria-expanded={showDetails}
           aria-label="Más opciones"
@@ -184,6 +211,89 @@ export function TrainingExerciseRow({
           className="h-8 flex-1"
         />
       </label>
+
+      {draft.planned_sets !== null && (
+        <ul className="mt-2 flex flex-col gap-1 border-t border-slate-100 pt-2">
+          {draft.planned_sets.map((set) => (
+            <li key={set.set_number} className="flex flex-wrap items-center gap-1.5">
+              <span className="w-12 shrink-0 text-xs text-slate-500">
+                Serie {set.set_number}
+              </span>
+
+              {draft.measurement === "reps" ? (
+                <Input
+                  value={set.reps ?? ""}
+                  onChange={(event) =>
+                    onUpdatePlannedSet(set.set_number, {
+                      reps: textOrNull(event.target.value),
+                    })
+                  }
+                  placeholder="8-12"
+                  className="h-8 w-20 px-2"
+                  aria-label={`Repeticiones de la serie ${set.set_number}`}
+                />
+              ) : (
+                <Input
+                  type="number"
+                  min={1}
+                  value={set.duration_seconds ?? ""}
+                  onChange={(event) =>
+                    onUpdatePlannedSet(set.set_number, {
+                      duration_seconds: numberOrNull(event.target.value),
+                    })
+                  }
+                  placeholder="s"
+                  className="h-8 w-16 px-2"
+                  aria-label={`Segundos de la serie ${set.set_number}`}
+                />
+              )}
+
+              <Select
+                value={set.modifier}
+                onChange={(event) =>
+                  onUpdatePlannedSet(set.set_number, {
+                    modifier: event.target.value as SetModifier,
+                    rir_value: event.target.value === "rir" ? (set.rir_value ?? 2) : null,
+                  })
+                }
+                className="h-8 w-28 px-2 text-xs"
+                aria-label={`Tipo de la serie ${set.set_number}`}
+              >
+                {Object.entries(SET_MODIFIER_LABELS).map(([value, text]) => (
+                  <option key={value} value={value}>
+                    {text}
+                  </option>
+                ))}
+              </Select>
+
+              {set.modifier === "rir" && (
+                <Input
+                  type="number"
+                  min={0}
+                  max={10}
+                  value={set.rir_value ?? ""}
+                  onChange={(event) =>
+                    onUpdatePlannedSet(set.set_number, {
+                      rir_value: numberOrNull(event.target.value),
+                    })
+                  }
+                  className="h-8 w-14 px-2"
+                  aria-label={`Repeticiones en reserva de la serie ${set.set_number}`}
+                />
+              )}
+
+              <button
+                type="button"
+                onClick={() => onApplyToAllSets(set.set_number)}
+                title="Aplicar esta serie a todas las demás"
+                className="text-[11px] text-slate-400 underline-offset-2 hover:text-slate-600 hover:underline"
+              >
+                Aplicar a todas
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
 
       {showDetails && (
         <div className="mt-2 grid gap-2 border-t border-slate-100 pt-2 sm:grid-cols-2">

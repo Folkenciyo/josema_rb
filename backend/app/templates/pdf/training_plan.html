@@ -1,5 +1,9 @@
 {% extends "_base.html" %}
 
+{% macro set_target(set) %}
+  {{ set.reps or (set.duration_seconds ~ "s") }}{% if set.modifier == "to_failure" %} (al fallo){% elif set.modifier == "rir" %} (RIR {{ set.rir_value }}){% endif %}
+{% endmacro %}
+
 {% block content %}
   {% for week in doc.weeks %}
     <h2>Semana {{ week.week_number }}</h2>
@@ -36,7 +40,15 @@
                   <strong>{{ exercise.name_es }}</strong>
                 </td>
                 <td class="num">{{ exercise.sets }}</td>
-                <td>{{ exercise.reps }}</td>
+                <td>
+                  {% if exercise.planned_sets %}
+                    {% for set in exercise.planned_sets %}
+                      <div>{{ set.set_number }}: {{ set_target(set) }}</div>
+                    {% endfor %}
+                  {% else %}
+                    {{ exercise.reps }}
+                  {% endif %}
+                </td>
                 <td>{% if exercise.rest_seconds %}{{ exercise.rest_seconds }}s{% endif %}</td>
                 <td>
                   {# Only the exercise that opens a superset carries the block note. #}

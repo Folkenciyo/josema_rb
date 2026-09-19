@@ -5,7 +5,15 @@ import { ExerciseStep } from "./exercise-step";
 import type { DraftExercise, DraftSet } from "@/lib/workout/session-draft";
 
 function draftSet(overrides: Partial<DraftSet> = {}): DraftSet {
-  return { setNumber: 1, weightKg: null, reps: 10, done: false, ...overrides };
+  return {
+    setNumber: 1,
+    weightKg: null,
+    reps: 10,
+    done: false,
+    targetModifier: "normal",
+    targetRirValue: null,
+    ...overrides,
+  };
 }
 
 function draftExercise(overrides: Partial<DraftExercise> = {}): DraftExercise {
@@ -15,7 +23,9 @@ function draftExercise(overrides: Partial<DraftExercise> = {}): DraftExercise {
     name: "Press banca",
     imagePath: null,
     targetSets: 3,
+    targetMeasurement: "reps",
     targetReps: "8-12",
+    targetDurationSeconds: null,
     restSeconds: 90,
     notes: null,
     supersetNote: null,

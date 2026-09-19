@@ -1,4 +1,5 @@
 import type { ExerciseMeasurement } from "./common";
+import type { PlannedSet } from "./training-plan";
 
 /** A set that was actually performed. Sets the client skipped are simply absent. */
 export interface LoggedSet {
@@ -24,6 +25,8 @@ export interface WorkoutExercise {
   /** Set only on the exercise that opens a superset: it describes the block. */
   superset_note: string | null;
   superset_group: number | null;
+  /** Empty unless individual sets were customized; `sets` × `reps` otherwise. */
+  planned_sets: PlannedSet[];
   last_performed_on: string | null;
   last_sets: LoggedSet[];
 }

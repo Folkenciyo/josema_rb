@@ -6,8 +6,9 @@ from sqlalchemy.orm import Session, selectinload
 from app.models import TrainingDay, TrainingDayExercise, TrainingPlan, TrainingWeek
 from app.models.training_plan import PlanStatus
 
-_DAY_LOADER = selectinload(TrainingDay.exercises).selectinload(
-    TrainingDayExercise.exercise
+_DAY_LOADER = selectinload(TrainingDay.exercises).options(
+    selectinload(TrainingDayExercise.exercise),
+    selectinload(TrainingDayExercise.planned_sets),
 )
 _DETAIL_LOADER = selectinload(TrainingPlan.weeks).options(
     selectinload(TrainingWeek.days).options(_DAY_LOADER)

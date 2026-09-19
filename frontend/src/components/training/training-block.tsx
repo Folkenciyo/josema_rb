@@ -10,6 +10,7 @@ import { supersetNoteOf, type ExerciseDraft } from "@/lib/training/week-draft";
 import type { SupersetBlock } from "@/lib/training/supersets";
 import type { Exercise } from "@/types/exercise";
 import type { ExerciseMeasurement } from "@/types/common";
+import type { PlannedSet } from "@/types/training-plan";
 import { TrainingExerciseRow } from "./training-exercise-row";
 
 interface TrainingBlockProps {
@@ -20,6 +21,14 @@ interface TrainingBlockProps {
     changes: Partial<Omit<ExerciseDraft, "key">>,
   ) => void;
   onChangeMeasurement: (key: string, measurement: ExerciseMeasurement) => void;
+  onSetSetsCount: (key: string, sets: number) => void;
+  onTogglePlannedSets: (key: string) => void;
+  onUpdatePlannedSet: (
+    key: string,
+    setNumber: number,
+    changes: Partial<Omit<PlannedSet, "set_number">>,
+  ) => void;
+  onApplyToAllSets: (key: string, setNumber: number) => void;
   onRemoveExercise: (key: string) => void;
   onUngroup: (group: number) => void;
   onChangeSupersetNote: (group: number, note: string | null) => void;
@@ -35,6 +44,10 @@ export function TrainingBlock({
   exerciseMap,
   onChangeExercise,
   onChangeMeasurement,
+  onSetSetsCount,
+  onTogglePlannedSets,
+  onUpdatePlannedSet,
+  onApplyToAllSets,
   onRemoveExercise,
   onUngroup,
   onChangeSupersetNote,
@@ -85,6 +98,14 @@ export function TrainingBlock({
           }
           onChangeMeasurement={(measurement) =>
             onChangeMeasurement(block.exercises[0].key, measurement)
+          }
+          onSetSetsCount={(sets) => onSetSetsCount(block.exercises[0].key, sets)}
+          onTogglePlannedSets={() => onTogglePlannedSets(block.exercises[0].key)}
+          onUpdatePlannedSet={(setNumber, changes) =>
+            onUpdatePlannedSet(block.exercises[0].key, setNumber, changes)
+          }
+          onApplyToAllSets={(setNumber) =>
+            onApplyToAllSets(block.exercises[0].key, setNumber)
           }
           onRemove={() => onRemoveExercise(block.exercises[0].key)}
         />
@@ -147,6 +168,12 @@ export function TrainingBlock({
             onChangeMeasurement={(measurement) =>
               onChangeMeasurement(draft.key, measurement)
             }
+            onSetSetsCount={(sets) => onSetSetsCount(draft.key, sets)}
+            onTogglePlannedSets={() => onTogglePlannedSets(draft.key)}
+            onUpdatePlannedSet={(setNumber, changes) =>
+              onUpdatePlannedSet(draft.key, setNumber, changes)
+            }
+            onApplyToAllSets={(setNumber) => onApplyToAllSets(draft.key, setNumber)}
             onRemove={() => onRemoveExercise(draft.key)}
           />
         ))}

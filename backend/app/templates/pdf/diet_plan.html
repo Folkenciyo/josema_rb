@@ -39,9 +39,16 @@
               </tr>
             </thead>
             <tbody>
+              {% set ns = namespace(seen_groups=[]) %}
               {% for item in meal.items %}
-                <tr>
-                  <td>{{ item.food_name }}</td>
+                {# The first item of a group counts toward the totals; later
+                   ones are shown as alternatives, for comparison only. #}
+                {% set is_alternative = item.alternative_group and item.alternative_group in ns.seen_groups %}
+                {% if item.alternative_group and not is_alternative %}
+                  {% set ns.seen_groups = ns.seen_groups + [item.alternative_group] %}
+                {% endif %}
+                <tr class="{{ 'muted' if is_alternative else '' }}">
+                  <td>{{ "o bien: " if is_alternative else "" }}{{ item.food_name }}</td>
                   <td>{{ item.quantity_label or "" }}</td>
                   <td class="num">{{ num(item.calories) }}</td>
                   <td class="num">{{ num(item.protein_g) }}</td>

@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.models import Client, TrainingDay, TrainingDayExercise, WorkoutSession
 from app.models.workout import WorkoutSet
 from app.repositories import training_plan_repository, workout_repository
+from app.schemas.training_plan import PlannedSetOut
 from app.schemas.workout import (
     MAX_BACKDATED_DAYS,
     ExerciseHistoryOut,
@@ -113,6 +114,10 @@ def get_training_day(
                 notes=planned.notes,
                 superset_note=planned.superset_note,
                 superset_group=planned.superset_group,
+                planned_sets=[
+                    PlannedSetOut.model_validate(set_target)
+                    for set_target in planned.planned_sets
+                ],
                 last_performed_on=performed_on,
                 last_sets=[
                     LoggedSetOut(

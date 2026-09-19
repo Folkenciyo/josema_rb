@@ -13,7 +13,7 @@ import {
   parseDecimal,
   parseWhole,
 } from "@/lib/workout/parse-number";
-import type { ExerciseMeasurement } from "@/types/common";
+import { SET_MODIFIER_LABELS, type ExerciseMeasurement } from "@/types/common";
 import type { DraftExercise, DraftSet } from "@/lib/workout/session-draft";
 import { PortalExerciseModal } from "../portal-exercise-modal";
 
@@ -103,8 +103,17 @@ function SetRow({
         set.done && "bg-brand-50",
       )}
     >
-      <span className="w-6 shrink-0 text-center text-sm font-semibold text-slate-400">
-        {set.setNumber}
+      <span className="flex w-9 shrink-0 flex-col items-center text-center">
+        <span className="text-sm font-semibold text-slate-400">
+          {set.setNumber}
+        </span>
+        {set.targetModifier !== "normal" && (
+          <span className="text-brand-600 text-[9px] leading-none font-semibold whitespace-nowrap">
+            {set.targetModifier === "rir"
+              ? `RIR ${set.targetRirValue}`
+              : SET_MODIFIER_LABELS[set.targetModifier]}
+          </span>
+        )}
       </span>
 
       <label className="flex-1">
