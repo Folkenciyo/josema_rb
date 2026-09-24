@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDebounce } from "@/hooks/use-debounce";
 import { useExerciseMap } from "@/hooks/use-exercises";
@@ -61,6 +61,43 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedPayload]);
+
+  // Kept in a ref so the unmount flush below always reads the latest values
+  // without depending on them — depending on them would re-run it, and its
+  // cleanup, on every edit instead of only on unmount.
+  const pendingRef = useRef({ weekId: week.id, payload, savedSnapshot });
+  useEffect(() => {
+    pendingRef.current = { weekId: week.id, payload, savedSnapshot };
+  });
+
+  useEffect(() => {
+    // Switching to another week (mounted with a fresh `key`) or leaving the
+    // plan page unmounts this component, which cancels the debounce above
+    // before it fires — silently dropping whatever was the last edit. Flush
+    // it straight to the mutation instead of waiting for the debounce.
+    return () => {
+      const { weekId, payload: latestPayload, savedSnapshot: latestSavedSnapshot } =
+        pendingRef.current;
+      if (JSON.stringify(latestPayload) !== latestSavedSnapshot) {
+        saveDays.mutate({ weekId, days: latestPayload });
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // A hard refresh or tab close skips React's unmount cleanup entirely, so
+  // the flush above can't help there — warn instead of losing the edit.
+  useEffect(() => {
+    if (!isDirty) {
+      return;
+    }
+    const handler = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [isDirty]);
 
   return (
     <div className="flex flex-col gap-3">
