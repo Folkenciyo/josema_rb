@@ -84,6 +84,7 @@ function loadWorker(fetchStub: jest.Mock) {
     },
     location: { origin: ORIGIN },
     clients: { claim: jest.fn() },
+    skipWaiting: jest.fn(),
   };
 
   const source = readFileSync(join(process.cwd(), "public", "sw.js"), "utf8");
