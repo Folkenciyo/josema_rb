@@ -6,7 +6,7 @@
  * the network, so the client is told plainly when a save could not be sent.
  */
 
-const VERSION = "v1";
+const VERSION = "v2";
 const SHELL_CACHE = `josema-shell-${VERSION}`;
 const ASSET_CACHE = `josema-assets-${VERSION}`;
 const DATA_CACHE = `josema-data-${VERSION}`;
@@ -17,6 +17,9 @@ const OFFLINE_URL = "/offline";
 const NETWORK_TIMEOUT_MS = 3500;
 
 self.addEventListener("install", (event) => {
+  // A phone that never closes the app (PWA left open in the background) would
+  // otherwise sit on the old worker until every tab happens to close.
+  self.skipWaiting();
   event.waitUntil(
     caches
       .open(SHELL_CACHE)
