@@ -63,7 +63,7 @@
   },
   {
     "name": "Almuerzo - Ensalada con carbohidrato y proteína a elegir",
-    "notes": "El almuerzo más repetido del lote (aparece casi idéntico en la mayoría de dietas, con solo el gramaje variando mes a mes).",
+    "notes": "El almuerzo más repetido del lote (aparece casi idéntico en la mayoría de dietas, con solo el gramaje variando mes a mes). Alternativas ampliadas con los 'sustitutos directos' que la versión más evolucionada de esta dieta listaba aparte.",
     "items": [
       { "food_slug": "lechuga", "quantity_amount": 80, "quantity_unit": "g" },
       { "food_slug": "esparragos", "quantity_amount": 60, "quantity_unit": "g" },
@@ -71,9 +71,17 @@
       { "food_slug": "arroz-integral-cocido", "quantity_amount": 150, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
       { "food_slug": "pasta-integral-cocida", "quantity_amount": 150, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
       { "food_slug": "patata-cocida", "quantity_amount": 220, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
+      { "food_slug": "boniato-cocido", "quantity_amount": 220, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
+      { "food_slug": "quinoa-cocida", "quantity_amount": 150, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
+      { "food_slug": "cuscus-cocido", "quantity_amount": 150, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
+      { "food_slug": "garbanzos-bote", "quantity_amount": 140, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
       { "food_slug": "pechuga-pollo-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" },
       { "food_slug": "solomillo-cerdo-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" },
-      { "food_slug": "solomillo-ternera-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" }
+      { "food_slug": "solomillo-ternera-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" },
+      { "food_slug": "muslo-pollo-sin-piel", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" },
+      { "food_slug": "pavo-plancha", "quantity_amount": 150, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" },
+      { "food_slug": "tofu-firme", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" },
+      { "food_slug": "merluza", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" }
     ]
   },
   {
@@ -94,9 +102,11 @@
   },
   {
     "name": "Merienda - Yogur proteico con frutos rojos",
-    "notes": null,
+    "notes": "Base con alternativas: la versión más evolucionada de esta dieta permitía cambiar el yogur proteico por queso fresco batido 0% o kéfir pastoso.",
     "items": [
-      { "food_slug": "yogur-proteinas", "quantity_amount": 1, "quantity_unit": "unidad" },
+      { "food_slug": "yogur-proteinas", "quantity_amount": 1, "quantity_unit": "unidad", "alternative_group": "merienda_base" },
+      { "food_slug": "queso-batido-0", "quantity_amount": 130, "quantity_unit": "g", "alternative_group": "merienda_base" },
+      { "food_slug": "queso-kefir", "quantity_amount": 130, "quantity_unit": "g", "alternative_group": "merienda_base" },
       { "food_slug": "frutos-rojos-congelados", "quantity_amount": 30, "quantity_unit": "g" },
       { "food_slug": "crema-cacahuete-polvo", "quantity_amount": 15, "quantity_unit": "g" }
     ]
@@ -223,6 +233,71 @@
     "items": [
       { "food_slug": "sup-bcaa-glutamina", "quantity_amount": 3, "quantity_unit": "cazo" },
       { "food_slug": "sup-ciclodextrina", "quantity_amount": 50, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Almuerzo - Ensalada grande con arroz basmati y proteína a elegir",
+    "notes": "De la dieta 'mitad de junio', la única de las 30 con una sección explícita de alternativas por comida. Antes solo había entrado el desayuno.",
+    "items": [
+      { "food_slug": "lechuga", "quantity_amount": 100, "quantity_unit": "g" },
+      { "food_slug": "pepino", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "esparragos", "quantity_amount": 60, "quantity_unit": "g" },
+      { "food_slug": "aceite-oliva-virgen-extra", "quantity_amount": 10, "quantity_unit": "ml" },
+      { "food_slug": "arroz-basmati-cocido", "quantity_amount": 100, "quantity_unit": "g", "alternative_group": "mitad_junio_almuerzo_carbo" },
+      { "food_slug": "pasta-integral-cocida", "quantity_amount": 100, "quantity_unit": "g", "alternative_group": "mitad_junio_almuerzo_carbo" },
+      { "food_slug": "pechuga-pollo-plancha", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "mitad_junio_almuerzo_proteina" },
+      { "food_slug": "pavo-plancha", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "mitad_junio_almuerzo_proteina" },
+      { "food_slug": "gelatina-0", "quantity_amount": 100, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Cena - Verduras con pescado blanco o solomillo a elegir",
+    "notes": "Cena de la dieta 'mitad de junio'; complementa el almuerzo de la misma dieta.",
+    "items": [
+      { "food_slug": "brocoli", "quantity_amount": 150, "quantity_unit": "g" },
+      { "food_slug": "guacamole", "quantity_amount": 60, "quantity_unit": "g" },
+      { "food_slug": "merluza", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "mitad_junio_cena_proteina" },
+      { "food_slug": "salmon-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "mitad_junio_cena_proteina" },
+      { "food_slug": "solomillo-cerdo-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "mitad_junio_cena_proteina" },
+      { "food_slug": "solomillo-ternera-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "mitad_junio_cena_proteina" },
+      { "food_slug": "sup-magnesio", "quantity_amount": 1, "quantity_unit": "cápsula" },
+      { "food_slug": "sup-ashwagandha", "quantity_amount": 1, "quantity_unit": "cápsula" }
+    ]
+  },
+  {
+    "name": "Pre-entreno - Papilla de arroz inflado con proteína",
+    "notes": "Receta suelta que se había quedado fuera de la primera importación (4ª comida de días de entreno de otra de las dietas).",
+    "items": [
+      { "food_slug": "arroz-inflado-chocolate", "quantity_amount": 80, "quantity_unit": "g" },
+      { "food_slug": "platano", "quantity_amount": 120, "quantity_unit": "g" },
+      { "food_slug": "crema-cacahuete", "quantity_amount": 30, "quantity_unit": "g" },
+      { "food_slug": "proteina-whey-concentrada", "quantity_amount": 30, "quantity_unit": "g" },
+      { "food_slug": "leche-desnatada", "quantity_amount": 200, "quantity_unit": "ml" }
+    ]
+  },
+  {
+    "name": "Desayuno - Avena con leche de almendras y piña",
+    "notes": "Receta suelta que se había quedado fuera de la primera importación (desayuno de otra de las dietas, con piña en vez de manzana).",
+    "items": [
+      { "food_slug": "avena-copos", "quantity_amount": 30, "quantity_unit": "g" },
+      { "food_slug": "bebida-almendra", "quantity_amount": 300, "quantity_unit": "ml" },
+      { "food_slug": "proteina-whey-concentrada", "quantity_amount": 30, "quantity_unit": "g" },
+      { "food_slug": "pina", "quantity_amount": 90, "quantity_unit": "g" },
+      { "food_slug": "cafe-con-leche", "quantity_amount": 1, "quantity_unit": "taza" },
+      { "food_slug": "sup-multivitaminico", "quantity_amount": 1, "quantity_unit": "cápsula" },
+      { "food_slug": "sup-omega-3", "quantity_amount": 1, "quantity_unit": "cápsula" }
+    ]
+  },
+  {
+    "name": "Cena - Wrap de atún y huevo al horno",
+    "notes": "Receta suelta que se había quedado fuera de la primera importación: opción aparte de la cena de otra de las dietas, para 2 días a la semana.",
+    "items": [
+      { "food_slug": "guacamole", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "queso-crema", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "huevo-cocido", "quantity_amount": 1, "quantity_unit": "unidad" },
+      { "food_slug": "atun-lata-natural", "quantity_amount": 80, "quantity_unit": "g" },
+      { "food_slug": "wrap-integral", "quantity_amount": 2, "quantity_unit": "unidad" },
+      { "food_slug": "tomate-cherry", "quantity_amount": 30, "quantity_unit": "g" }
     ]
   }
 ]
