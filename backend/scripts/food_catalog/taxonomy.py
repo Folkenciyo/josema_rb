@@ -26,4 +26,12 @@ TAXONOMY: dict[str, tuple[str, ...]] = {
         "Barritas y snacks",
         "Platos preparados",
     ),
+    # Zero-macro by design: dosed in capsules/scoops, not eaten as food. A few
+    # (ciclodextrina, mass gainer) do carry real calories in reality, but the
+    # trainer's own plans never count them toward a meal's totals either.
+    "Suplementos": (
+        "Vitaminas y minerales",
+        "Rendimiento deportivo",
+        "Digestivos",
+    ),
 }
