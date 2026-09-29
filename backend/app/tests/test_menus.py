@@ -46,6 +46,42 @@ def test_menu_totals_sum_its_meal_templates(authenticated_client: TestClient) ->
     assert totals["protein_g"] == pytest.approx(50)
 
 
+def test_alternative_meal_slots_only_count_the_first(
+    authenticated_client: TestClient,
+) -> None:
+    mt1 = _create_meal_template(authenticated_client, "Desayuno", 300, 10)
+    cena_a = _create_meal_template(authenticated_client, "Cena A", 400, 30)
+    cena_b = _create_meal_template(authenticated_client, "Cena B", 900, 90)
+
+    menu_resp = authenticated_client.post(
+        "/api/menus",
+        json={
+            "name": "Menu con alternativas",
+            "meals": [
+                {"meal_template_id": mt1["id"], "order_index": 0},
+                {
+                    "meal_template_id": cena_a["id"],
+                    "order_index": 1,
+                    "alternative_group": "cena",
+                },
+                {
+                    "meal_template_id": cena_b["id"],
+                    "order_index": 2,
+                    "alternative_group": "cena",
+                },
+            ],
+        },
+    )
+    assert menu_resp.status_code == 201
+    body = menu_resp.json()
+    totals = body["totals"]
+    # Only Desayuno + Cena A count; Cena B is shown as an alternative, not added.
+    assert totals["calories"] == pytest.approx(700)
+    assert totals["protein_g"] == pytest.approx(40)
+    assert body["meals"][1]["alternative_group"] == "cena"
+    assert body["meals"][2]["alternative_group"] == "cena"
+
+
 def test_cannot_delete_menu_assigned_to_diet_day(
     authenticated_client: TestClient,
 ) -> None:
@@ -142,6 +178,38 @@ def test_the_scaled_menu_says_what_it_is(authenticated_client: TestClient) -> No
         scaled["meals"][0]["meal_template"]["id"]
         != menu["meals"][0]["meal_template"]["id"]
     )
+
+
+def test_scaling_preserves_alternative_groups(
+    authenticated_client: TestClient,
+) -> None:
+    cena_a = _create_meal_template(authenticated_client, "Cena A", 400, 30)
+    cena_b = _create_meal_template(authenticated_client, "Cena B", 900, 90)
+    menu = authenticated_client.post(
+        "/api/menus",
+        json={
+            "name": "Menu con alternativas",
+            "meals": [
+                {
+                    "meal_template_id": cena_a["id"],
+                    "order_index": 0,
+                    "alternative_group": "cena",
+                },
+                {
+                    "meal_template_id": cena_b["id"],
+                    "order_index": 1,
+                    "alternative_group": "cena",
+                },
+            ],
+        },
+    ).json()
+
+    scaled = authenticated_client.post(
+        f"/api/menus/{menu['id']}/scale", json={"target_calories": 800}
+    ).json()
+
+    assert scaled["meals"][0]["alternative_group"] == "cena"
+    assert scaled["meals"][1]["alternative_group"] == "cena"
 
 
 def test_an_absurd_calorie_target_is_refused(

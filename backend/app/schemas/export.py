@@ -69,6 +69,8 @@ class ExportMeal(BaseModel):
     time_of_day: str | None
     items: list[ExportMealItem]
     totals: MacroTotals
+    # Meals sharing this value are alternative full meals for the same slot.
+    alternative_group: str | None = None
 
 
 class ExportDietDay(BaseModel):

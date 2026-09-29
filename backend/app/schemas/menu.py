@@ -10,6 +10,7 @@ class MenuMealCreate(BaseModel):
     meal_template_id: uuid.UUID
     order_index: int
     time_of_day: time | None = None
+    alternative_group: str | None = None
 
 
 class MenuMealOut(BaseModel):
@@ -17,6 +18,7 @@ class MenuMealOut(BaseModel):
     meal_template: MealTemplateOut
     order_index: int
     time_of_day: time | None
+    alternative_group: str | None
 
 
 class MenuCreate(BaseModel):

@@ -23,6 +23,11 @@ frontend/next-env.d.ts
 # Restored database dumps and client photos: never in the repo.
 backups/
 
+# Real client diet documents (source material for the meal template import,
+# already extracted into backend/scripts/data/meal_templates_dietas.json).
+/Dietas/
+/Dietas.zip
+
 # OS / editors
 .DS_Store
 Thumbs.db

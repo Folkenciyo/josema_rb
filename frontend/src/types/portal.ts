@@ -119,6 +119,8 @@ export interface PortalMeal {
   time_of_day: string | null;
   items: PortalMealItem[];
   totals: MacroTotals;
+  /** Meals sharing this value are alternative full meals for the same slot. */
+  alternative_group: string | null;
 }
 
 export interface PortalDietDay {

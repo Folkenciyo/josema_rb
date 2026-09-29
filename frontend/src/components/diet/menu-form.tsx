@@ -1,14 +1,18 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Plus, Shuffle, Trash2 } from "lucide-react";
 
 import { useMealTemplates } from "@/hooks/use-diet-catalog";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorMessage } from "@/components/ui/feedback";
 import { Input, Select, Textarea } from "@/components/ui/input";
-import { EMPTY_TOTALS, sumMacros } from "@/lib/diet/meal-draft";
+import {
+  EMPTY_TOTALS,
+  nextAlternativeGroup,
+  sumMacros,
+} from "@/lib/diet/meal-draft";
 import type { MacroTotals, Menu, MenuInput } from "@/types/diet";
 import { MacroSummary } from "./macro-summary";
 
@@ -17,6 +21,42 @@ interface MenuMealDraft {
   meal_template_id: string;
   /** `HH:MM` as typed in the input; the API stores a time. */
   time_of_day: string;
+  /** Slots sharing this value are alternative full meals for the same spot. */
+  alternative_group: string | null;
+}
+
+/** Consecutive slots sharing an alternative_group, kept together for display. */
+function groupMeals(meals: MenuMealDraft[]): MenuMealDraft[][] {
+  const groups: MenuMealDraft[][] = [];
+  const indexByGroup = new Map<string, number>();
+
+  for (const meal of meals) {
+    if (meal.alternative_group && indexByGroup.has(meal.alternative_group)) {
+      groups[indexByGroup.get(meal.alternative_group)!].push(meal);
+      continue;
+    }
+    if (meal.alternative_group) {
+      indexByGroup.set(meal.alternative_group, groups.length);
+    }
+    groups.push([meal]);
+  }
+
+  return groups;
+}
+
+/** Slots that count toward the day's totals: only the first of each group. */
+function countedMeals(meals: MenuMealDraft[]): MenuMealDraft[] {
+  const seenGroups = new Set<string>();
+  return meals.filter((meal) => {
+    if (meal.alternative_group === null) {
+      return true;
+    }
+    if (seenGroups.has(meal.alternative_group)) {
+      return false;
+    }
+    seenGroups.add(meal.alternative_group);
+    return true;
+  });
 }
 
 interface MenuFormProps {
@@ -57,12 +97,13 @@ export function MenuForm({
         key: meal.id,
         meal_template_id: meal.meal_template.id,
         time_of_day: meal.time_of_day?.slice(0, 5) ?? "",
+        alternative_group: meal.alternative_group,
       })),
   );
   const [validationError, setValidationError] = useState<string | null>(null);
 
   const totals: MacroTotals = sumMacros(
-    meals.map(
+    countedMeals(meals).map(
       (meal) => templateMap.get(meal.meal_template_id)?.totals ?? EMPTY_TOTALS,
     ),
   );
@@ -78,6 +119,34 @@ export function MenuForm({
       [reordered[index], reordered[target]] = [reordered[target], reordered[index]];
       return reordered;
     });
+
+  const addAlternative = (afterKey: string) =>
+    setMeals((current) => {
+      const index = current.findIndex((entry) => entry.key === afterKey);
+      if (index === -1) {
+        return current;
+      }
+      const target = current[index];
+      const group = target.alternative_group ?? nextAlternativeGroup();
+      const withGroup = current.map((entry) =>
+        entry.key === afterKey ? { ...entry, alternative_group: group } : entry,
+      );
+      const alternative: MenuMealDraft = {
+        key: nextKey(),
+        meal_template_id: "",
+        time_of_day: target.time_of_day,
+        alternative_group: group,
+      };
+      withGroup.splice(index + 1, 0, alternative);
+      return withGroup;
+    });
+
+  const separateFromGroup = (key: string) =>
+    setMeals((current) =>
+      current.map((entry) =>
+        entry.key === key ? { ...entry, alternative_group: null } : entry,
+      ),
+    );
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -103,6 +172,7 @@ export function MenuForm({
         meal_template_id: meal.meal_template_id,
         order_index: index,
         time_of_day: meal.time_of_day || null,
+        alternative_group: meal.alternative_group,
       })),
     });
   };
@@ -133,7 +203,12 @@ export function MenuForm({
             onClick={() =>
               setMeals((current) => [
                 ...current,
-                { key: nextKey(), meal_template_id: "", time_of_day: "" },
+                {
+                  key: nextKey(),
+                  meal_template_id: "",
+                  time_of_day: "",
+                  alternative_group: null,
+                },
               ])
             }
           >
@@ -148,92 +223,130 @@ export function MenuForm({
           </p>
         ) : (
           <ul className="flex flex-col gap-2">
-            {meals.map((meal, index) => {
-              const template = templateMap.get(meal.meal_template_id);
+            {groupMeals(meals).map((group) => {
+              const isAlternativeGroup = group.length > 1;
+              const rows = group.map((meal) => {
+                const index = meals.findIndex((entry) => entry.key === meal.key);
+                const template = templateMap.get(meal.meal_template_id);
+
+                return (
+                  <div
+                    key={meal.key}
+                    className="flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 bg-surface p-3"
+                  >
+                    <label className="flex min-w-48 flex-1 flex-col gap-1 text-xs text-slate-500">
+                      Comida
+                      <Select
+                        value={meal.meal_template_id}
+                        onChange={(event) =>
+                          setMeals((current) =>
+                            current.map((entry) =>
+                              entry.key === meal.key
+                                ? { ...entry, meal_template_id: event.target.value }
+                                : entry,
+                            ),
+                          )
+                        }
+                        className="h-9"
+                      >
+                        <option value="">Elige…</option>
+                        {templates.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </label>
+
+                    <label className="flex w-28 flex-col gap-1 text-xs text-slate-500">
+                      Hora
+                      <Input
+                        type="time"
+                        value={meal.time_of_day}
+                        onChange={(event) =>
+                          setMeals((current) =>
+                            current.map((entry) =>
+                              entry.key === meal.key
+                                ? { ...entry, time_of_day: event.target.value }
+                                : entry,
+                            ),
+                          )
+                        }
+                        className="h-9"
+                      />
+                    </label>
+
+                    {template && (
+                      <MacroSummary totals={template.totals} className="mb-2 w-full" />
+                    )}
+
+                    <div className="mb-1 ml-auto flex gap-1">
+                      <button
+                        type="button"
+                        onClick={() => addAlternative(meal.key)}
+                        aria-label="Añadir comida alternativa"
+                        className="rounded p-1.5 text-slate-400 hover:bg-brand-50 hover:text-brand-700"
+                      >
+                        <Shuffle className="size-4" />
+                      </button>
+                      {isAlternativeGroup && (
+                        <button
+                          type="button"
+                          onClick={() => separateFromGroup(meal.key)}
+                          className="rounded px-1.5 text-xs text-slate-400 hover:bg-slate-100"
+                        >
+                          Separar
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => move(index, -1)}
+                        disabled={index === 0}
+                        aria-label="Subir comida"
+                        className="rounded p-1.5 text-slate-400 hover:bg-slate-100 disabled:opacity-30"
+                      >
+                        <ArrowUp className="size-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => move(index, 1)}
+                        disabled={index === meals.length - 1}
+                        aria-label="Bajar comida"
+                        className="rounded p-1.5 text-slate-400 hover:bg-slate-100 disabled:opacity-30"
+                      >
+                        <ArrowDown className="size-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setMeals((current) =>
+                            current.filter((entry) => entry.key !== meal.key),
+                          )
+                        }
+                        aria-label="Quitar comida"
+                        className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              });
+
+              if (!isAlternativeGroup) {
+                return <li key={group[0].key}>{rows}</li>;
+              }
 
               return (
                 <li
-                  key={meal.key}
-                  className="flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 bg-surface p-3"
+                  key={group[0].alternative_group!}
+                  className="flex flex-col gap-2 rounded-lg border border-dashed border-brand-300 bg-brand-50/40 p-2"
                 >
-                  <label className="flex min-w-48 flex-1 flex-col gap-1 text-xs text-slate-500">
-                    Comida
-                    <Select
-                      value={meal.meal_template_id}
-                      onChange={(event) =>
-                        setMeals((current) =>
-                          current.map((entry) =>
-                            entry.key === meal.key
-                              ? { ...entry, meal_template_id: event.target.value }
-                              : entry,
-                          ),
-                        )
-                      }
-                      className="h-9"
-                    >
-                      <option value="">Elige…</option>
-                      {templates.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </Select>
-                  </label>
-
-                  <label className="flex w-28 flex-col gap-1 text-xs text-slate-500">
-                    Hora
-                    <Input
-                      type="time"
-                      value={meal.time_of_day}
-                      onChange={(event) =>
-                        setMeals((current) =>
-                          current.map((entry) =>
-                            entry.key === meal.key
-                              ? { ...entry, time_of_day: event.target.value }
-                              : entry,
-                          ),
-                        )
-                      }
-                      className="h-9"
-                    />
-                  </label>
-
-                  {template && (
-                    <MacroSummary totals={template.totals} className="mb-2 w-full" />
-                  )}
-
-                  <div className="mb-1 ml-auto flex gap-1">
-                    <button
-                      type="button"
-                      onClick={() => move(index, -1)}
-                      disabled={index === 0}
-                      aria-label="Subir comida"
-                      className="rounded p-1.5 text-slate-400 hover:bg-slate-100 disabled:opacity-30"
-                    >
-                      <ArrowUp className="size-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => move(index, 1)}
-                      disabled={index === meals.length - 1}
-                      aria-label="Bajar comida"
-                      className="rounded p-1.5 text-slate-400 hover:bg-slate-100 disabled:opacity-30"
-                    >
-                      <ArrowDown className="size-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setMeals((current) =>
-                          current.filter((entry) => entry.key !== meal.key),
-                        )
-                      }
-                      aria-label="Quitar comida"
-                      className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
-                    >
-                      <Trash2 className="size-4" />
-                    </button>
-                  </div>
+                  <p className="flex items-center gap-1 px-1 text-xs font-medium text-brand-700">
+                    <Shuffle className="size-3.5" />
+                    Alternativas entre sí — solo la primera cuenta en el total
+                  </p>
+                  {rows}
                 </li>
               );
             })}

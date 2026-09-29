@@ -142,6 +142,7 @@ def build_diet_plan_document(db: Session, plan_id: uuid.UUID) -> DietPlanDocumen
                             ),
                             items=items,
                             totals=meal_template_service.compute_totals(meal_template),
+                            alternative_group=menu_meal.alternative_group,
                         )
                     )
             days.append(

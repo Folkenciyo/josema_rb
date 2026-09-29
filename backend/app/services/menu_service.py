@@ -28,6 +28,7 @@ def _build_menu_meal(db: Session, data: MenuMealCreate) -> MenuMeal:
         meal_template_id=meal_template.id,
         order_index=data.order_index,
         time_of_day=data.time_of_day,
+        alternative_group=data.alternative_group,
     )
 
 
@@ -35,10 +36,29 @@ def _build_menu_meals(db: Session, meals: list[MenuMealCreate]) -> list[MenuMeal
     return [_build_menu_meal(db, meal) for meal in meals]
 
 
+def _counted_meals(menu: Menu) -> list[MenuMeal]:
+    """Slots that count toward the day's totals.
+
+    Alternative meals are not eaten in addition to one another, so only the
+    first slot (by order_index) of each alternative_group is counted; the
+    rest are shown for comparison only (menu.meals is already ordered by
+    order_index).
+    """
+    seen_groups: set[str] = set()
+    counted = []
+    for menu_meal in menu.meals:
+        if menu_meal.alternative_group is not None:
+            if menu_meal.alternative_group in seen_groups:
+                continue
+            seen_groups.add(menu_meal.alternative_group)
+        counted.append(menu_meal)
+    return counted
+
+
 def compute_totals(menu: Menu) -> MacroTotals:
     meal_totals = [
         meal_template_service.compute_totals(menu_meal.meal_template)
-        for menu_meal in menu.meals
+        for menu_meal in _counted_meals(menu)
     ]
     return MacroTotals(
         **{
@@ -59,6 +79,7 @@ def to_out(menu: Menu) -> MenuOut:
                 meal_template=meal_template_service.to_out(menu_meal.meal_template),
                 order_index=menu_meal.order_index,
                 time_of_day=menu_meal.time_of_day,
+                alternative_group=menu_meal.alternative_group,
             )
             for menu_meal in menu.meals
         ],
@@ -163,6 +184,7 @@ def scale_menu(
             ),
             order_index=menu_meal.order_index,
             time_of_day=menu_meal.time_of_day,
+            alternative_group=menu_meal.alternative_group,
         )
         for menu_meal in menu.meals
     ]

@@ -21,8 +21,16 @@
     {% for day in week.days %}
       <h3>{{ day.day_of_week_es }}{% if day.menu_name %} — {{ day.menu_name }}{% endif %}</h3>
       {% if day.meals %}
+        {% set day_ns = namespace(seen_meal_groups=[]) %}
         {% for meal in day.meals %}
-          <h4>{{ meal.name }}{% if meal.time_of_day %} ({{ meal.time_of_day }}){% endif %}</h4>
+          {# Same rule one level up: the first meal of an alternative_group
+             counts toward the day's totals, later ones are shown as
+             alternative full meals for the same slot. #}
+          {% set meal_is_alternative = meal.alternative_group and meal.alternative_group in day_ns.seen_meal_groups %}
+          {% if meal.alternative_group and not meal_is_alternative %}
+            {% set day_ns.seen_meal_groups = day_ns.seen_meal_groups + [meal.alternative_group] %}
+          {% endif %}
+          <h4>{{ "o bien: " if meal_is_alternative else "" }}{{ meal.name }}{% if meal.time_of_day %} ({{ meal.time_of_day }}){% endif %}</h4>
           <table>
             <thead>
               <tr>
