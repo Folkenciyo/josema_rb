@@ -1,0 +1,228 @@
+[
+  {
+    "name": "Desayuno - Avena con proteína y leche de almendras",
+    "notes": "Patrón repetido en varios meses de una de las dietas más completas del lote (avena/whey/manzana batido).",
+    "items": [
+      { "food_slug": "avena-copos", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "proteina-whey-concentrada", "quantity_amount": 30, "quantity_unit": "g" },
+      { "food_slug": "manzana", "quantity_amount": 150, "quantity_unit": "g" },
+      { "food_slug": "bebida-almendra", "quantity_amount": 200, "quantity_unit": "ml" },
+      { "food_slug": "cafe-con-leche", "quantity_amount": 1, "quantity_unit": "taza" },
+      { "food_slug": "sup-multivitaminico", "quantity_amount": 1, "quantity_unit": "cápsula" },
+      { "food_slug": "sup-omega-3", "quantity_amount": 1, "quantity_unit": "cápsula" }
+    ]
+  },
+  {
+    "name": "Desayuno - Tortilla de avena con crema de cacahuete",
+    "notes": "Desayuno con huevo entero, típico de las dietas con entreno matutino temprano.",
+    "items": [
+      { "food_slug": "avena-copos", "quantity_amount": 60, "quantity_unit": "g" },
+      { "food_slug": "platano", "quantity_amount": 120, "quantity_unit": "g" },
+      { "food_slug": "crema-cacahuete", "quantity_amount": 15, "quantity_unit": "g" },
+      { "food_slug": "huevo-l", "quantity_amount": 1, "quantity_unit": "unidad" },
+      { "food_slug": "clara-huevo", "quantity_amount": 4, "quantity_unit": "unidad" },
+      { "food_slug": "sup-multivitaminico", "quantity_amount": 1, "quantity_unit": "cápsula" },
+      { "food_slug": "sup-omega-3", "quantity_amount": 1, "quantity_unit": "cápsula" }
+    ]
+  },
+  {
+    "name": "Desayuno - Claras con avena y frutos secos",
+    "notes": "Desayuno más ligero en hidratos, con frutos secos en vez de crema de cacahuete.",
+    "items": [
+      { "food_slug": "huevo-l", "quantity_amount": 1, "quantity_unit": "unidad" },
+      { "food_slug": "clara-huevo", "quantity_amount": 4, "quantity_unit": "unidad" },
+      { "food_slug": "avena-copos", "quantity_amount": 40, "quantity_unit": "g" },
+      { "food_slug": "nueces", "quantity_amount": 15, "quantity_unit": "g" },
+      { "food_slug": "cafe-solo", "quantity_amount": 150, "quantity_unit": "ml" },
+      { "food_slug": "sup-multivitaminico", "quantity_amount": 1, "quantity_unit": "cápsula" },
+      { "food_slug": "sup-omega-3", "quantity_amount": 1, "quantity_unit": "cápsula" }
+    ]
+  },
+  {
+    "name": "Media mañana - Pan de centeno con proteína a elegir",
+    "notes": "'Sustitutos directos' tal cual los escribía el entrenador para este hueco.",
+    "items": [
+      { "food_slug": "pan-centeno", "quantity_amount": 60, "quantity_unit": "g" },
+      { "food_slug": "jamon-serrano", "quantity_amount": 60, "quantity_unit": "g", "alternative_group": "media_manana_proteina" },
+      { "food_slug": "lomo-embuchado", "quantity_amount": 60, "quantity_unit": "g", "alternative_group": "media_manana_proteina" },
+      { "food_slug": "salmon-ahumado", "quantity_amount": 60, "quantity_unit": "g", "alternative_group": "media_manana_proteina" },
+      { "food_slug": "pechuga-pavo-lonchas-alta", "quantity_amount": 80, "quantity_unit": "g", "alternative_group": "media_manana_proteina" },
+      { "food_slug": "atun-lata-natural", "quantity_amount": 80, "quantity_unit": "g", "alternative_group": "media_manana_proteina" },
+      { "food_slug": "tortas-de-arroz", "quantity_amount": 20, "quantity_unit": "g" },
+      { "food_slug": "mermelada-sin-azucar", "quantity_amount": 15, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Media mañana - Tortas de arroz con jamón serrano",
+    "notes": "Variante sin pan, con 'viena' de cereales o soja como base habitual.",
+    "items": [
+      { "food_slug": "tortas-de-arroz", "quantity_amount": 40, "quantity_unit": "g" },
+      { "food_slug": "jamon-serrano", "quantity_amount": 100, "quantity_unit": "g", "alternative_group": "media_manana2_proteina" },
+      { "food_slug": "lomo-embuchado", "quantity_amount": 100, "quantity_unit": "g", "alternative_group": "media_manana2_proteina" }
+    ]
+  },
+  {
+    "name": "Almuerzo - Ensalada con carbohidrato y proteína a elegir",
+    "notes": "El almuerzo más repetido del lote (aparece casi idéntico en la mayoría de dietas, con solo el gramaje variando mes a mes).",
+    "items": [
+      { "food_slug": "lechuga", "quantity_amount": 80, "quantity_unit": "g" },
+      { "food_slug": "esparragos", "quantity_amount": 60, "quantity_unit": "g" },
+      { "food_slug": "aceite-oliva-virgen-extra", "quantity_amount": 10, "quantity_unit": "ml" },
+      { "food_slug": "arroz-integral-cocido", "quantity_amount": 150, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
+      { "food_slug": "pasta-integral-cocida", "quantity_amount": 150, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
+      { "food_slug": "patata-cocida", "quantity_amount": 220, "quantity_unit": "g", "alternative_group": "almuerzo_carbo" },
+      { "food_slug": "pechuga-pollo-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" },
+      { "food_slug": "solomillo-cerdo-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" },
+      { "food_slug": "solomillo-ternera-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo_proteina" }
+    ]
+  },
+  {
+    "name": "Almuerzo - Ensalada con guacamole, carbohidrato y proteína a elegir",
+    "notes": "Variante con guacamole y cebolla en vez de solo aceite de aliño.",
+    "items": [
+      { "food_slug": "lechuga", "quantity_amount": 80, "quantity_unit": "g" },
+      { "food_slug": "esparragos", "quantity_amount": 60, "quantity_unit": "g" },
+      { "food_slug": "cebolla", "quantity_amount": 30, "quantity_unit": "g" },
+      { "food_slug": "guacamole", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "arroz-blanco-cocido", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "almuerzo2_carbo" },
+      { "food_slug": "pasta-integral-cocida", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "almuerzo2_carbo" },
+      { "food_slug": "patata-cocida", "quantity_amount": 300, "quantity_unit": "g", "alternative_group": "almuerzo2_carbo" },
+      { "food_slug": "pechuga-pollo-plancha", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "almuerzo2_proteina" },
+      { "food_slug": "solomillo-cerdo-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo2_proteina" },
+      { "food_slug": "solomillo-ternera-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "almuerzo2_proteina" }
+    ]
+  },
+  {
+    "name": "Merienda - Yogur proteico con frutos rojos",
+    "notes": null,
+    "items": [
+      { "food_slug": "yogur-proteinas", "quantity_amount": 1, "quantity_unit": "unidad" },
+      { "food_slug": "frutos-rojos-congelados", "quantity_amount": 30, "quantity_unit": "g" },
+      { "food_slug": "crema-cacahuete-polvo", "quantity_amount": 15, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Merienda - Queso kéfir con avena y plátano",
+    "notes": null,
+    "items": [
+      { "food_slug": "queso-kefir", "quantity_amount": 250, "quantity_unit": "g" },
+      { "food_slug": "avena-copos", "quantity_amount": 60, "quantity_unit": "g" },
+      { "food_slug": "platano", "quantity_amount": 120, "quantity_unit": "g" },
+      { "food_slug": "proteina-whey-concentrada", "quantity_amount": 30, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Cena - Brócoli con jamón serrano",
+    "notes": "Una de las 6 'opciones (elegir una sola)' de la cena más repetida del lote. Base + esta opción componen la cena completa; el resto de opciones son plantillas separadas para poder alternarlas como comidas completas (Tanda A).",
+    "items": [
+      { "food_slug": "guacamole", "quantity_amount": 40, "quantity_unit": "g" },
+      { "food_slug": "queso-cottage", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "noquis-cocidos", "quantity_amount": 70, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "calabaza", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "tortitas-maiz", "quantity_amount": 3, "quantity_unit": "unidad", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "brocoli", "quantity_amount": 120, "quantity_unit": "g" },
+      { "food_slug": "jamon-serrano", "quantity_amount": 50, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Cena - Tortilla con pavo picado",
+    "notes": "Misma base que 'Cena - Brócoli con jamón serrano'; opción alternativa de la rotación. El original dice 'pavo picado'; no existe en el catálogo, se usó la loncha de pavo 90% como aproximación macro más cercana.",
+    "items": [
+      { "food_slug": "guacamole", "quantity_amount": 40, "quantity_unit": "g" },
+      { "food_slug": "queso-cottage", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "noquis-cocidos", "quantity_amount": 70, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "calabaza", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "tortitas-maiz", "quantity_amount": 3, "quantity_unit": "unidad", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "huevo-l", "quantity_amount": 1, "quantity_unit": "unidad" },
+      { "food_slug": "clara-huevo", "quantity_amount": 2, "quantity_unit": "unidad" },
+      { "food_slug": "pechuga-pavo-lonchas-alta", "quantity_amount": 50, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Cena - Espinacas con queso feta y jamón",
+    "notes": "Misma base que 'Cena - Brócoli con jamón serrano'; opción alternativa de la rotación.",
+    "items": [
+      { "food_slug": "guacamole", "quantity_amount": 40, "quantity_unit": "g" },
+      { "food_slug": "queso-cottage", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "noquis-cocidos", "quantity_amount": 70, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "calabaza", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "tortitas-maiz", "quantity_amount": 3, "quantity_unit": "unidad", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "espinacas", "quantity_amount": 80, "quantity_unit": "g" },
+      { "food_slug": "feta", "quantity_amount": 30, "quantity_unit": "g" },
+      { "food_slug": "jamon-serrano", "quantity_amount": 50, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Cena - Pescado blanco o calamar a la plancha",
+    "notes": "Misma base que 'Cena - Brócoli con jamón serrano'; opción alternativa de la rotación, con alternancia interna pescado/calamar.",
+    "items": [
+      { "food_slug": "guacamole", "quantity_amount": 40, "quantity_unit": "g" },
+      { "food_slug": "queso-cottage", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "noquis-cocidos", "quantity_amount": 70, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "calabaza", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "tortitas-maiz", "quantity_amount": 3, "quantity_unit": "unidad", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "merluza", "quantity_amount": 150, "quantity_unit": "g", "alternative_group": "cena_opcion4_proteina" },
+      { "food_slug": "calamar", "quantity_amount": 150, "quantity_unit": "g", "alternative_group": "cena_opcion4_proteina" }
+    ]
+  },
+  {
+    "name": "Cena - Pinchitos de pollo con piña",
+    "notes": "Misma base que 'Cena - Brócoli con jamón serrano'; opción alternativa de la rotación.",
+    "items": [
+      { "food_slug": "guacamole", "quantity_amount": 40, "quantity_unit": "g" },
+      { "food_slug": "queso-cottage", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "noquis-cocidos", "quantity_amount": 70, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "calabaza", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "tortitas-maiz", "quantity_amount": 3, "quantity_unit": "unidad", "alternative_group": "cena_base_carbo" },
+      { "food_slug": "pechuga-pollo-plancha", "quantity_amount": 140, "quantity_unit": "g" },
+      { "food_slug": "pina", "quantity_amount": 60, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Cena - Salmón con espárragos",
+    "notes": "Opción añadida en la versión más evolucionada de esta dieta (variante 'pescado azul').",
+    "items": [
+      { "food_slug": "guacamole", "quantity_amount": 40, "quantity_unit": "g" },
+      { "food_slug": "queso-cottage", "quantity_amount": 50, "quantity_unit": "g" },
+      { "food_slug": "salmon-plancha", "quantity_amount": 120, "quantity_unit": "g" },
+      { "food_slug": "esparragos-trigueros", "quantity_amount": 120, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Cena - Verduras con proteína a elegir",
+    "notes": "Cena de otra dieta distinta a la anterior (sin queso cottage/guacamole de base); combina varios días de entreno y descanso en una sola alternancia.",
+    "items": [
+      { "food_slug": "brocoli", "quantity_amount": 150, "quantity_unit": "g" },
+      { "food_slug": "aguacate-medio", "quantity_amount": 1, "quantity_unit": "unidad" },
+      { "food_slug": "arroz-blanco-cocido", "quantity_amount": 60, "quantity_unit": "g" },
+      { "food_slug": "salmon-plancha", "quantity_amount": 220, "quantity_unit": "g", "alternative_group": "cena_verduras_proteina" },
+      { "food_slug": "atun-plancha", "quantity_amount": 220, "quantity_unit": "g", "alternative_group": "cena_verduras_proteina" },
+      { "food_slug": "solomillo-ternera-plancha", "quantity_amount": 180, "quantity_unit": "g", "alternative_group": "cena_verduras_proteina" },
+      { "food_slug": "pechuga-pollo-plancha", "quantity_amount": 200, "quantity_unit": "g", "alternative_group": "cena_verduras_proteina" }
+    ]
+  },
+  {
+    "name": "Pre-cama - Queso batido con crema de cacahuete",
+    "notes": null,
+    "items": [
+      { "food_slug": "queso-batido-0", "quantity_amount": 100, "quantity_unit": "g" },
+      { "food_slug": "crema-cacahuete-cucharada", "quantity_amount": 1, "quantity_unit": "cucharada" }
+    ]
+  },
+  {
+    "name": "Post-entreno - Arroz con leche y dátiles",
+    "notes": null,
+    "items": [
+      { "food_slug": "arroz-con-leche", "quantity_amount": 250, "quantity_unit": "g" },
+      { "food_slug": "datil", "quantity_amount": 40, "quantity_unit": "g" }
+    ]
+  },
+  {
+    "name": "Intra-entreno - BCAA con ciclodextrina",
+    "notes": "Ciclodextrina va a macros=0 siguiendo tu regla general para suplementos, aunque en la realidad aporta hidratos (aviso, no lo apliqué por mi cuenta).",
+    "items": [
+      { "food_slug": "sup-bcaa-glutamina", "quantity_amount": 3, "quantity_unit": "cazo" },
+      { "food_slug": "sup-ciclodextrina", "quantity_amount": 50, "quantity_unit": "g" }
+    ]
+  }
+]
