@@ -109,6 +109,8 @@ export interface MenuMeal {
   meal_template: MealTemplate;
   order_index: number;
   time_of_day: string | null;
+  /** Slots sharing this value are alternative full meals for the same spot. */
+  alternative_group: string | null;
 }
 
 export interface Menu {
@@ -123,6 +125,7 @@ export interface MenuMealInput {
   meal_template_id: string;
   order_index: number;
   time_of_day?: string | null;
+  alternative_group?: string | null;
 }
 
 export interface MenuInput {

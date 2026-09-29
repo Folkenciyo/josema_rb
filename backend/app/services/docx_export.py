@@ -180,8 +180,21 @@ def render_diet_plan_docx(document: DietPlanDocument) -> bytes:
                 _muted(doc, "Sin menú asignado")
                 continue
 
+            seen_meal_groups: set[str] = set()
             for meal in day.meals:
-                meal_heading = meal.name
+                # Mirrors the item-level grouping below: the first meal of an
+                # alternative_group counts toward the day's totals, the rest
+                # are shown as alternative full meals for the same slot.
+                meal_is_alternative = (
+                    meal.alternative_group is not None
+                    and meal.alternative_group in seen_meal_groups
+                )
+                if meal.alternative_group is not None:
+                    seen_meal_groups.add(meal.alternative_group)
+
+                meal_heading = (
+                    f"o bien: {meal.name}" if meal_is_alternative else meal.name
+                )
                 if meal.time_of_day:
                     meal_heading += f" ({meal.time_of_day})"
                 doc.add_heading(meal_heading, level=3)

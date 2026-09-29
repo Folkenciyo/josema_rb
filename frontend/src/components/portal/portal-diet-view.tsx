@@ -49,6 +49,28 @@ function groupMealItems(
   return groups;
 }
 
+/** Same rule one level up: meals sharing an alternative_group are alternative
+ * full meals for the same slot, kept together for display. */
+function groupDayMeals(
+  meals: PortalDietDay["meals"],
+): (typeof meals)[number][][] {
+  const groups: (typeof meals)[number][][] = [];
+  const indexByGroup = new Map<string, number>();
+
+  for (const meal of meals) {
+    if (meal.alternative_group && indexByGroup.has(meal.alternative_group)) {
+      groups[indexByGroup.get(meal.alternative_group)!].push(meal);
+      continue;
+    }
+    if (meal.alternative_group) {
+      indexByGroup.set(meal.alternative_group, groups.length);
+    }
+    groups.push([meal]);
+  }
+
+  return groups;
+}
+
 function DayCard({ day }: { day: PortalDietDay }) {
   return (
     <Card>
@@ -65,52 +87,86 @@ function DayCard({ day }: { day: PortalDietDay }) {
         <p className="px-4 py-3 text-sm text-slate-500">Día libre</p>
       ) : (
         <ul className="divide-y divide-slate-100">
-          {day.meals.map((meal, index) => (
-            <li key={`${meal.name}-${index}`} className="px-4 py-3">
-              <p className="flex items-baseline justify-between gap-2">
-                <span className="font-medium text-slate-800">{meal.name}</span>
-                {meal.time_of_day && (
-                  <span className="text-xs text-slate-400">
-                    {meal.time_of_day}
+          {groupDayMeals(day.meals).map((group, groupIndex) => {
+            const [primary, ...alternatives] = group;
+            return (
+              <li key={`${primary.name}-${groupIndex}`} className="px-4 py-3">
+                <p className="flex items-baseline justify-between gap-2">
+                  <span className="font-medium text-slate-800">
+                    {primary.name}
                   </span>
-                )}
-              </p>
-              <ul className="mt-1 flex flex-col gap-0.5">
-                {groupMealItems(meal.items).map((group, groupIndex) => {
-                  const [primary, ...alternatives] = group;
-                  return (
-                    <li key={`${primary.food_name}-${groupIndex}`}>
-                      <div className="flex justify-between gap-3 text-sm text-slate-600">
-                        <span>{primary.food_name}</span>
-                        <span className="shrink-0 text-slate-400">
-                          {primary.quantity_label ?? ""}
-                        </span>
-                      </div>
-                      {alternatives.map((alternative, altIndex) => (
-                        <div
-                          key={`${alternative.food_name}-${altIndex}`}
-                          className="mt-0.5 pl-3 text-xs text-slate-400"
-                        >
-                          <span>
-                            o bien: {alternative.food_name}
-                            {alternative.quantity_label
-                              ? ` (${alternative.quantity_label})`
-                              : ""}
+                  {primary.time_of_day && (
+                    <span className="text-xs text-slate-400">
+                      {primary.time_of_day}
+                    </span>
+                  )}
+                </p>
+                <ul className="mt-1 flex flex-col gap-0.5">
+                  {groupMealItems(primary.items).map((itemGroup, itemGroupIndex) => {
+                    const [primaryItem, ...itemAlternatives] = itemGroup;
+                    return (
+                      <li key={`${primaryItem.food_name}-${itemGroupIndex}`}>
+                        <div className="flex justify-between gap-3 text-sm text-slate-600">
+                          <span>{primaryItem.food_name}</span>
+                          <span className="shrink-0 text-slate-400">
+                            {primaryItem.quantity_label ?? ""}
                           </span>
-                          <span className="ml-2">
-                            {macroLine(alternative)}
+                        </div>
+                        {itemAlternatives.map((alternative, altIndex) => (
+                          <div
+                            key={`${alternative.food_name}-${altIndex}`}
+                            className="mt-0.5 pl-3 text-xs text-slate-400"
+                          >
+                            <span>
+                              o bien: {alternative.food_name}
+                              {alternative.quantity_label
+                                ? ` (${alternative.quantity_label})`
+                                : ""}
+                            </span>
+                            <span className="ml-2">
+                              {macroLine(alternative)}
+                            </span>
+                          </div>
+                        ))}
+                      </li>
+                    );
+                  })}
+                </ul>
+                <p className="mt-1 text-xs text-slate-400">
+                  {macroLine(primary.totals)}
+                </p>
+                {alternatives.map((alternative, altIndex) => (
+                  <div
+                    key={`${alternative.name}-${altIndex}`}
+                    className="mt-2 border-t border-dashed border-slate-200 pt-2"
+                  >
+                    <p className="text-xs font-medium text-slate-400">
+                      o bien: {alternative.name}
+                      {alternative.time_of_day
+                        ? ` (${alternative.time_of_day})`
+                        : ""}
+                    </p>
+                    <ul className="mt-1 flex flex-col gap-0.5">
+                      {alternative.items.map((item, itemIndex) => (
+                        <div
+                          key={`${item.food_name}-${itemIndex}`}
+                          className="flex justify-between gap-3 text-xs text-slate-400"
+                        >
+                          <span>{item.food_name}</span>
+                          <span className="shrink-0">
+                            {item.quantity_label ?? ""}
                           </span>
                         </div>
                       ))}
-                    </li>
-                  );
-                })}
-              </ul>
-              <p className="mt-1 text-xs text-slate-400">
-                {macroLine(meal.totals)}
-              </p>
-            </li>
-          ))}
+                    </ul>
+                    <p className="mt-1 text-xs text-slate-400">
+                      {macroLine(alternative.totals)}
+                    </p>
+                  </div>
+                ))}
+              </li>
+            );
+          })}
         </ul>
       )}
     </Card>

@@ -52,6 +52,10 @@ class MenuMeal(Base, TimestampMixin):
     )
     order_index: Mapped[int] = mapped_column(Integer, nullable=False)
     time_of_day: Mapped[time | None] = mapped_column(Time)
+    # Slots sharing this value are alternative full meals for the same spot in
+    # the day ("Cena A" o "Cena B"); only the first one (by order_index) counts
+    # toward the menu's totals, mirroring MealTemplateItem.alternative_group.
+    alternative_group: Mapped[str | None] = mapped_column(String(64))
 
     menu: Mapped["Menu"] = relationship(back_populates="meals")
     meal_template: Mapped["MealTemplate"] = relationship()
