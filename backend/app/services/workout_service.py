@@ -94,11 +94,15 @@ def get_training_day(
     db: Session, client: Client, day_id: uuid.UUID
 ) -> WorkoutDayDetailOut:
     day, week_number, plan_title = _find_day_in_active_plan(db, client, day_id)
-    last_sets = workout_repository.last_sets_per_exercise(db, client.id, day.id)
+    last_sets = workout_repository.last_sets_per_exercise(
+        db,
+        client.id,
+        [planned.exercise_id for planned in day.exercises if planned.exercise_id],
+    )
 
     exercises = []
     for planned in day.exercises:
-        performed_on, sets = last_sets.get(planned.id, (None, []))
+        performed_on, sets = last_sets.get(planned.exercise_id, (None, []))
         exercises.append(
             WorkoutExerciseOut(
                 id=planned.id,

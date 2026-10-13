@@ -1,6 +1,6 @@
 import io
 from collections.abc import Generator
-from datetime import date
+from datetime import date, timedelta
 
 import pytest
 from fastapi.testclient import TestClient
@@ -231,10 +231,18 @@ def test_the_client_gets_the_progression_of_what_they_logged(
     client_id, token = _client_with_token(authenticated_client)
     _plan_with_one_day(authenticated_client, client_id, imported_exercise.id)
     _log_session(
-        authenticated_client, token, weight=60, device_id="device-1", day="2026-08-01"
+        authenticated_client,
+        token,
+        weight=60,
+        device_id="device-1",
+        day=(date.today() - timedelta(days=14)).isoformat(),
     )
     _log_session(
-        authenticated_client, token, weight=65, device_id="device-2", day="2026-08-08"
+        authenticated_client,
+        token,
+        weight=65,
+        device_id="device-2",
+        day=(date.today() - timedelta(days=7)).isoformat(),
     )
 
     trained = authenticated_client.get(f"/api/portal/{token}/trained-exercises").json()
@@ -257,7 +265,7 @@ def test_one_link_never_reaches_another_clients_progression(
         other_token,
         weight=100,
         device_id="device-other",
-        day="2026-08-01",
+        day=(date.today() - timedelta(days=14)).isoformat(),
     )
     _, my_token = _client_with_token(authenticated_client, "Cliente Propio")
 

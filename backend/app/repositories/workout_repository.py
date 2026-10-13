@@ -7,8 +7,6 @@ from sqlalchemy.orm import Session, selectinload
 from app.models import WorkoutSession, WorkoutSet
 
 _SETS_LOADER = selectinload(WorkoutSession.sets)
-# Only the most recent session of a day is ever shown as "last time".
-_RECENT_SESSIONS = 5
 
 
 def list_for_client(
@@ -77,40 +75,52 @@ def last_trained_per_day(db: Session, client_id: uuid.UUID) -> dict[uuid.UUID, d
 
 
 def last_sets_per_exercise(
-    db: Session, client_id: uuid.UUID, day_id: uuid.UUID
-) -> dict[uuid.UUID, tuple[date, list[WorkoutSet]]]:
-    """What was lifted the last time each exercise of this day was trained.
+    db: Session, client_id: uuid.UUID, exercise_ids: list[str]
+) -> dict[str, tuple[date, list[WorkoutSet]]]:
+    """What was lifted the last time each exercise was trained, on any day.
 
-    Keyed by the exercise of the plan, so exercises the trainer has added since
-    simply come back empty instead of borrowing someone else's numbers.
+    Keyed by the catalogue exercise, so a lift done once a week carries over from
+    one week of the routine (or one plan) to the next. Only the newest session
+    that contains the exercise counts: older sets are never mixed in.
     """
-    sessions = (
-        db.query(WorkoutSession)
-        .options(_SETS_LOADER)
+    if not exercise_ids:
+        return {}
+
+    newest = (
+        func.dense_rank()
+        .over(
+            partition_by=WorkoutSet.exercise_id,
+            order_by=(
+                WorkoutSession.performed_on.desc(),
+                WorkoutSession.created_at.desc(),
+                WorkoutSession.id,
+            ),
+        )
+        .label("newest")
+    )
+    ranked = (
+        db.query(WorkoutSet.id.label("set_id"), newest)
+        .join(WorkoutSession, WorkoutSet.session_id == WorkoutSession.id)
         .filter(
             WorkoutSession.client_id == client_id,
-            WorkoutSession.training_day_id == day_id,
+            WorkoutSet.exercise_id.in_(exercise_ids),
         )
-        .order_by(WorkoutSession.performed_on.desc(), WorkoutSession.created_at.desc())
-        .limit(_RECENT_SESSIONS)
+        .subquery()
+    )
+    rows = (
+        db.query(WorkoutSet, WorkoutSession.performed_on)
+        .join(ranked, ranked.c.set_id == WorkoutSet.id)
+        .join(WorkoutSession, WorkoutSet.session_id == WorkoutSession.id)
+        .filter(ranked.c.newest == 1)
+        .order_by(WorkoutSet.set_number)
         .all()
     )
 
-    last: dict[uuid.UUID, tuple[date, list[WorkoutSet]]] = {}
-    source: dict[uuid.UUID, uuid.UUID] = {}
-
-    for session in sessions:
-        for performed_set in session.sets:
-            key = performed_set.training_day_exercise_id
-            if key is None:
-                continue
-            if key not in last:
-                last[key] = (session.performed_on, [])
-                source[key] = session.id
-            # Sets from an older session must not be mixed into the newest one.
-            if source[key] == session.id:
-                last[key][1].append(performed_set)
-
+    last: dict[str, tuple[date, list[WorkoutSet]]] = {}
+    for performed_set, performed_on in rows:
+        last.setdefault(performed_set.exercise_id, (performed_on, []))[1].append(
+            performed_set
+        )
     return last
 
 

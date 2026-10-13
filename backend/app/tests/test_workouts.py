@@ -231,6 +231,58 @@ def test_last_time_numbers_show_up_on_the_next_visit(
     assert [item["weight_kg"] for item in exercise["last_sets"]] == [60.0, 62.5]
 
 
+def test_last_time_numbers_follow_the_exercise_to_another_day(
+    authenticated_client: TestClient, imported_exercise: Exercise
+) -> None:
+    client_id = authenticated_client.post(
+        "/api/clients", json={"full_name": "Cliente Dos Dias"}
+    ).json()["id"]
+    token = authenticated_client.post(f"/api/clients/{client_id}/portal-token").json()[
+        "portal_token"
+    ]
+    plan = authenticated_client.post(
+        f"/api/clients/{client_id}/training-plans",
+        json={"title": "Plan", "status": "active"},
+    ).json()
+    week = authenticated_client.post(
+        f"/api/training-plans/{plan['id']}/weeks", json={"week_number": 1}
+    ).json()
+    exercise = {
+        "exercise_id": imported_exercise.id,
+        "order_index": 0,
+        "sets": 3,
+        "reps": "8-12",
+    }
+    authenticated_client.put(
+        f"/api/training-weeks/{week['id']}/days",
+        json={
+            "days": [
+                {"day_of_week": "monday", "order_index": 0, "exercises": [exercise]},
+                {"day_of_week": "friday", "order_index": 1, "exercises": [exercise]},
+            ]
+        },
+    )
+    first_day, second_day = authenticated_client.get(
+        f"/api/portal/{token}/workout/days"
+    ).json()[:2]
+    detail = authenticated_client.get(
+        f"/api/portal/{token}/workout/days/{first_day['id']}"
+    ).json()
+    payload = _session_payload(first_day["id"])
+    for performed in payload["sets"]:
+        performed["training_day_exercise_id"] = detail["exercises"][0]["id"]
+    authenticated_client.post(f"/api/portal/{token}/workouts", json=payload)
+
+    other_day = authenticated_client.get(
+        f"/api/portal/{token}/workout/days/{second_day['id']}"
+    ).json()
+
+    assert [s["weight_kg"] for s in other_day["exercises"][0]["last_sets"]] == [
+        60.0,
+        62.5,
+    ]
+
+
 def test_the_history_counts_the_volume_of_each_session(
     authenticated_client: TestClient, imported_exercise: Exercise
 ) -> None:
