@@ -10,6 +10,11 @@ from app.models import Exercise
 # A Monday, so the week arithmetic in the assertions is readable.
 START = date(2026, 8, 3)
 
+# Sessions older than 60 days are refused, so tests that train need recent dates:
+# the Monday three weeks back keeps all of them past, inside the limit.
+_THIS_MONDAY = date.today() - timedelta(days=date.today().weekday())
+RECENT_START = _THIS_MONDAY - timedelta(days=21)
+
 
 @pytest.fixture(autouse=True)
 def clean_limiter() -> Generator[None, None, None]:
@@ -183,12 +188,24 @@ def test_a_trained_day_shows_up_even_off_plan(
     authenticated_client: TestClient, imported_exercise: Exercise
 ) -> None:
     client_id, token = _client_with_token(authenticated_client)
-    _plan(authenticated_client, client_id, imported_exercise.id, weeks=1)
+    _plan(
+        authenticated_client,
+        client_id,
+        imported_exercise.id,
+        weeks=1,
+        start_date=RECENT_START.isoformat(),
+    )
     # A Friday: the routine only asks for Monday and Wednesday.
-    _train(authenticated_client, token, date(2026, 8, 7), "device-friday")
+    friday_date = RECENT_START + timedelta(days=4)
+    _train(authenticated_client, token, friday_date, "device-friday")
 
-    body = _calendar(authenticated_client, client_id, START, START + timedelta(days=13))
-    friday = next(day for day in body["days"] if day["date"] == "2026-08-07")
+    body = _calendar(
+        authenticated_client,
+        client_id,
+        RECENT_START,
+        RECENT_START + timedelta(days=13),
+    )
+    friday = next(day for day in body["days"] if day["date"] == friday_date.isoformat())
 
     assert friday["trained"] is True
     assert friday["planned"] is False
@@ -201,11 +218,24 @@ def test_training_on_a_planned_day_clears_it(
     authenticated_client: TestClient, imported_exercise: Exercise
 ) -> None:
     client_id, token = _client_with_token(authenticated_client)
-    _plan(authenticated_client, client_id, imported_exercise.id, weeks=1)
-    _train(authenticated_client, token, date(2026, 8, 3), "device-monday")
+    _plan(
+        authenticated_client,
+        client_id,
+        imported_exercise.id,
+        weeks=1,
+        start_date=RECENT_START.isoformat(),
+    )
+    _train(authenticated_client, token, RECENT_START, "device-monday")
 
-    body = _calendar(authenticated_client, client_id, START, START + timedelta(days=13))
-    monday = next(day for day in body["days"] if day["date"] == "2026-08-03")
+    body = _calendar(
+        authenticated_client,
+        client_id,
+        RECENT_START,
+        RECENT_START + timedelta(days=13),
+    )
+    monday = next(
+        day for day in body["days"] if day["date"] == RECENT_START.isoformat()
+    )
 
     assert monday["trained"] and monday["planned"]
     assert body["planned_count"] == 2
@@ -216,17 +246,32 @@ def test_the_range_only_counts_what_falls_inside_it(
     authenticated_client: TestClient, imported_exercise: Exercise
 ) -> None:
     client_id, token = _client_with_token(authenticated_client)
-    _plan(authenticated_client, client_id, imported_exercise.id, weeks=3)
-    _train(authenticated_client, token, date(2026, 8, 3), "device-week-1")
-    _train(authenticated_client, token, date(2026, 8, 17), "device-week-3")
+    _plan(
+        authenticated_client,
+        client_id,
+        imported_exercise.id,
+        weeks=3,
+        start_date=RECENT_START.isoformat(),
+    )
+    _train(authenticated_client, token, RECENT_START, "device-week-1")
+    _train(
+        authenticated_client, token, RECENT_START + timedelta(days=14), "device-week-3"
+    )
 
+    second_monday = RECENT_START + timedelta(days=7)
     body = _calendar(
-        authenticated_client, client_id, date(2026, 8, 10), date(2026, 8, 16)
+        authenticated_client,
+        client_id,
+        second_monday,
+        second_monday + timedelta(days=6),
     )
 
     assert body["trained_count"] == 0
     assert body["planned_count"] == 2
-    assert [day["date"] for day in body["days"]] == ["2026-08-10", "2026-08-12"]
+    assert [day["date"] for day in body["days"]] == [
+        second_monday.isoformat(),
+        (second_monday + timedelta(days=2)).isoformat(),
+    ]
 
 
 def test_one_week_repeated_covers_the_whole_month(
