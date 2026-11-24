@@ -29,7 +29,7 @@ export function EditExerciseView({ exerciseId }: { exerciseId: string }) {
     <>
       <Link
         href="/exercises"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800 max-sm:mb-2 max-sm:min-h-11"
       >
         <ArrowLeft className="size-4" />
         Ejercicios

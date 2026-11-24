@@ -23,6 +23,7 @@ import { AlternativeComparison } from "./alternative-comparison";
 import { FoodPickerDrawer } from "./food-picker-drawer";
 import { MacroSummary } from "./macro-summary";
 import { MealItemRow } from "./meal-item-row";
+import { ModalActions } from "@/components/ui/modal";
 
 /** Consecutive items sharing an alternative_group, kept together for display. */
 function groupItems(items: MealItemDraft[]): MealItemDraft[][] {
@@ -128,11 +129,7 @@ export function MealTemplateForm({
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <p className="text-sm font-medium text-slate-700">Alimentos</p>
           <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              size="sm"
-              onClick={() => setPickerOpen(true)}
-            >
+            <Button type="button" size="sm" onClick={() => setPickerOpen(true)}>
               <Search className="size-4" />
               Buscar alimentos
             </Button>
@@ -149,7 +146,9 @@ export function MealTemplateForm({
               type="button"
               size="sm"
               variant="secondary"
-              onClick={() => setItems((current) => [...current, createManualItem()])}
+              onClick={() =>
+                setItems((current) => [...current, createManualItem()])
+              }
             >
               <Plus className="size-4" />
               Manual
@@ -173,7 +172,9 @@ export function MealTemplateForm({
                   onChange={(changes) =>
                     setItems((current) =>
                       current.map((entry) =>
-                        entry.key === item.key ? { ...entry, ...changes } : entry,
+                        entry.key === item.key
+                          ? { ...entry, ...changes }
+                          : entry,
                       ),
                     )
                   }
@@ -193,10 +194,10 @@ export function MealTemplateForm({
               return (
                 <li
                   key={groupId}
-                  className="flex flex-col gap-2 rounded-lg border border-dashed border-brand-300 bg-brand-50/40 p-2"
+                  className="border-brand-300 bg-brand-50/40 flex flex-col gap-2 rounded-lg border border-dashed p-2"
                 >
                   <div className="flex items-center justify-between gap-2 px-1">
-                    <p className="flex items-center gap-1 text-xs font-medium text-brand-700">
+                    <p className="text-brand-700 flex items-center gap-1 text-xs font-medium">
                       <Shuffle className="size-3.5" />
                       Alternativas entre sí — solo la primera cuenta en el total
                     </p>
@@ -217,9 +218,10 @@ export function MealTemplateForm({
                         key={item.key}
                         type="button"
                         onClick={() => removeFromGroup(item.key)}
-                        className="text-[11px] text-slate-400 underline-offset-2 hover:text-slate-600 hover:underline"
+                        className="text-xs text-slate-400 underline-offset-2 hover:text-slate-600 hover:underline"
                       >
-                        Separar &quot;{item.food_name || "sin nombre"}&quot; del grupo
+                        Separar &quot;{item.food_name || "sin nombre"}&quot; del
+                        grupo
                       </button>
                     ))}
                   </div>
@@ -246,19 +248,17 @@ export function MealTemplateForm({
         )}
       </Field>
 
-      {validationError && (
-        <ErrorMessage error={new Error(validationError)} />
-      )}
+      {validationError && <ErrorMessage error={new Error(validationError)} />}
       <ErrorMessage error={error} />
 
-      <div className="flex justify-end gap-2">
+      <ModalActions>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancelar
         </Button>
         <Button type="submit" loading={isSubmitting}>
           {mealTemplate ? "Guardar cambios" : "Crear comida"}
         </Button>
-      </div>
+      </ModalActions>
 
       {isPickerOpen && (
         <FoodPickerDrawer

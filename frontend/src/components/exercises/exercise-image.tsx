@@ -36,7 +36,7 @@ export function ExerciseImage({
       >
         <Dumbbell className="size-8" />
         {fallbackLabel && (
-          <span className="max-w-full truncate px-1 text-[10px] font-medium text-slate-400">
+          <span className="max-w-full truncate px-1 text-xs font-medium text-slate-400">
             {fallbackLabel}
           </span>
         )}

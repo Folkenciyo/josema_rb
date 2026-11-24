@@ -10,7 +10,7 @@ interface ExportButtonsProps {
 }
 
 const LINK_CLASSES =
-  "inline-flex h-10 items-center gap-2 rounded-lg border border-slate-300 bg-surface px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100";
+  "inline-flex h-10 items-center gap-2 rounded-lg border border-slate-300 bg-surface px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100 max-sm:h-11";
 
 /** Plain links: the export endpoints stream a file and the session cookie rides along. */
 export function ExportButtons({ basePath }: ExportButtonsProps) {
@@ -31,12 +31,12 @@ export function ExportButtons({ basePath }: ExportButtonsProps) {
           Word
         </a>
       </div>
-      <label className="flex items-center gap-2 text-sm text-slate-600">
+      <label className="flex items-center gap-2 text-sm text-slate-600 max-sm:min-h-11">
         <input
           type="checkbox"
           checked={largePrint}
           onChange={(event) => setLargePrint(event.target.checked)}
-          className="size-4 rounded border-slate-300"
+          className="size-4 rounded border-slate-300 max-sm:size-5"
         />
         PDF con letra grande (personas mayores)
       </label>

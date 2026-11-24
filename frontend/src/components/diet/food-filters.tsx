@@ -1,9 +1,12 @@
 "use client";
 
+import { useId, useState } from "react";
 import { Search, X } from "lucide-react";
 
 import { useFoodFilters } from "@/hooks/use-diet-catalog";
 import { Button } from "@/components/ui/button";
+import { FiltersToggle } from "@/components/ui/filters-toggle";
+import { cn } from "@/lib/cn";
 import { Input, Select } from "@/components/ui/input";
 import type { FoodFilterKey } from "@/hooks/use-food-search";
 
@@ -39,6 +42,10 @@ export function FoodFilters({
     ? (options?.subcategories_by_category?.[filters.category] ?? [])
     : (options?.subcategories ?? []);
 
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+  const active = Object.values(filters).filter(Boolean).length;
+
   const handleCategoryChange = (value: string) => {
     onFilterChange("category", value);
     // Drop a subcategory that no longer belongs to the new category.
@@ -64,59 +71,89 @@ export function FoodFilters({
           />
         </div>
 
-        <Select
-          value={filters.category}
-          onChange={(event) => handleCategoryChange(event.target.value)}
-          aria-label="Categoría"
-          className="w-auto min-w-40"
-        >
-          <option value="">Categoría</option>
-          {(options?.categories ?? []).map((value) => (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          ))}
-        </Select>
+        <FiltersToggle
+          open={open}
+          onToggle={() => setOpen((current) => !current)}
+          active={active}
+          controls={panelId}
+        />
 
-        <Select
-          value={filters.subcategory}
-          onChange={(event) => onFilterChange("subcategory", event.target.value)}
-          aria-label="Subcategoría"
-          className="w-auto min-w-40"
-          disabled={subcategories.length === 0}
+        <div
+          id={panelId}
+          className={cn(
+            "flex flex-wrap gap-2 max-sm:w-full sm:contents",
+            !open && "max-sm:hidden",
+          )}
         >
-          <option value="">
-            {filters.category ? "Toda la categoría" : "Subcategoría"}
-          </option>
-          {subcategories.map((value) => (
-            <option key={value} value={value}>
-              {value}
+          <Select
+            value={filters.category}
+            onChange={(event) => handleCategoryChange(event.target.value)}
+            aria-label="Categoría"
+            className="w-auto min-w-40 max-sm:flex-1"
+          >
+            <option value="">Categoría</option>
+            {(options?.categories ?? []).map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
+          </Select>
+
+          <Select
+            value={filters.subcategory}
+            onChange={(event) =>
+              onFilterChange("subcategory", event.target.value)
+            }
+            aria-label="Subcategoría"
+            className="w-auto min-w-40 max-sm:flex-1"
+            disabled={subcategories.length === 0}
+          >
+            <option value="">
+              {filters.category ? "Toda la categoría" : "Subcategoría"}
             </option>
-          ))}
-        </Select>
+            {subcategories.map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
+          </Select>
+        </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs text-slate-500">Calorías por ración</span>
-        <Input
-          type="number"
-          min={0}
-          value={filters.min_calories}
-          onChange={(event) => onFilterChange("min_calories", event.target.value)}
-          placeholder="mín."
-          aria-label="Calorías mínimas"
-          className="h-9 w-24"
-        />
-        <span className="text-xs text-slate-400">—</span>
-        <Input
-          type="number"
-          min={0}
-          value={filters.max_calories}
-          onChange={(event) => onFilterChange("max_calories", event.target.value)}
-          placeholder="máx."
-          aria-label="Calorías máximas"
-          className="h-9 w-24"
-        />
+      <div
+        className={cn(
+          "flex flex-wrap items-center gap-2",
+          !open && "max-sm:hidden",
+        )}
+      >
+        <span className="flex items-center gap-2 max-sm:w-full">
+          <span className="text-xs text-slate-500">Calorías por ración</span>
+          <Input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            value={filters.min_calories}
+            onChange={(event) =>
+              onFilterChange("min_calories", event.target.value)
+            }
+            placeholder="mín."
+            aria-label="Calorías mínimas"
+            className="h-9 w-24 max-sm:w-auto max-sm:min-w-0 max-sm:flex-1"
+          />
+          <span className="text-xs text-slate-400">—</span>
+          <Input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            value={filters.max_calories}
+            onChange={(event) =>
+              onFilterChange("max_calories", event.target.value)
+            }
+            placeholder="máx."
+            aria-label="Calorías máximas"
+            className="h-9 w-24 max-sm:w-auto max-sm:min-w-0 max-sm:flex-1"
+          />
+        </span>
 
         <Select
           value={filters.sort}

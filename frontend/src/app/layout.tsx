@@ -66,6 +66,10 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: THEME_COLOR,
+  // Without it iOS reports every env(safe-area-inset-*) as 0, and the bottom
+  // bars sit on the home indicator. The status bar style stays "default", so
+  // nothing slides under it at the top.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

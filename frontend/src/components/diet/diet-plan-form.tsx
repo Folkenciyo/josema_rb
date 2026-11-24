@@ -10,6 +10,7 @@ import { ErrorMessage } from "@/components/ui/feedback";
 import { Input, Select, Textarea } from "@/components/ui/input";
 import { PLAN_STATUS_LABELS } from "@/types/common";
 import type { DietPlan, DietPlanInput } from "@/types/diet-plan";
+import { ModalActions } from "@/components/ui/modal";
 
 const optionalNumber = z
   .string()
@@ -114,10 +115,14 @@ export function DietPlanForm({
           )}
         </Field>
         <Field label="Inicio" error={errors.start_date?.message}>
-          {(props) => <Input {...props} {...register("start_date")} type="date" />}
+          {(props) => (
+            <Input {...props} {...register("start_date")} type="date" />
+          )}
         </Field>
         <Field label="Fin" error={errors.end_date?.message}>
-          {(props) => <Input {...props} {...register("end_date")} type="date" />}
+          {(props) => (
+            <Input {...props} {...register("end_date")} type="date" />
+          )}
         </Field>
       </div>
 
@@ -133,23 +138,42 @@ export function DietPlanForm({
                 {...props}
                 {...register("daily_calories_target")}
                 type="number"
+                inputMode="numeric"
                 step="1"
               />
             )}
           </Field>
           <Field label="Proteína (g)" error={errors.daily_protein_g?.message}>
             {(props) => (
-              <Input {...props} {...register("daily_protein_g")} type="number" step="1" />
+              <Input
+                {...props}
+                {...register("daily_protein_g")}
+                type="number"
+                inputMode="numeric"
+                step="1"
+              />
             )}
           </Field>
           <Field label="Carbos (g)" error={errors.daily_carbs_g?.message}>
             {(props) => (
-              <Input {...props} {...register("daily_carbs_g")} type="number" step="1" />
+              <Input
+                {...props}
+                {...register("daily_carbs_g")}
+                type="number"
+                inputMode="numeric"
+                step="1"
+              />
             )}
           </Field>
           <Field label="Grasas (g)" error={errors.daily_fat_g?.message}>
             {(props) => (
-              <Input {...props} {...register("daily_fat_g")} type="number" step="1" />
+              <Input
+                {...props}
+                {...register("daily_fat_g")}
+                type="number"
+                inputMode="numeric"
+                step="1"
+              />
             )}
           </Field>
         </div>
@@ -161,14 +185,14 @@ export function DietPlanForm({
 
       <ErrorMessage error={error} />
 
-      <div className="flex justify-end gap-2">
+      <ModalActions>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancelar
         </Button>
         <Button type="submit" loading={isSubmitting}>
           {plan ? "Guardar cambios" : "Crear plan"}
         </Button>
-      </div>
+      </ModalActions>
     </form>
   );
 }

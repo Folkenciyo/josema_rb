@@ -32,7 +32,7 @@ export function PinnedQuoteCard({ clientId }: { clientId: string }) {
         action={
           <Link
             href="/quotes"
-            className="text-brand-700 text-sm font-medium hover:underline"
+            className="text-brand-700 text-sm font-medium hover:underline max-sm:inline-flex max-sm:min-h-11 max-sm:items-center"
           >
             Ver biblioteca
           </Link>

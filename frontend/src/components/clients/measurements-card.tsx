@@ -179,7 +179,7 @@ export function MeasurementsCard({
                       type="button"
                       title="Editar pesaje"
                       onClick={() => setEditing(measurement)}
-                      className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                      className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 max-sm:p-3.5"
                     >
                       <Pencil className="size-4" />
                       <span className="sr-only">Editar pesaje</span>
@@ -188,7 +188,7 @@ export function MeasurementsCard({
                       type="button"
                       title="Borrar pesaje"
                       onClick={() => handleDelete(measurement)}
-                      className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                      className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 max-sm:p-3.5"
                     >
                       <Trash2 className="size-4" />
                       <span className="sr-only">Borrar pesaje</span>

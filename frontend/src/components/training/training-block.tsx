@@ -71,11 +71,11 @@ export function TrainingBlock({
           ? `Reordenar superserie ${block.letter}`
           : "Reordenar ejercicio"
       }
-      className="cursor-grab touch-none p-1 text-slate-400 hover:text-slate-600"
+      className="flex size-11 shrink-0 cursor-grab touch-none items-center justify-center text-slate-400 hover:text-slate-600 sm:size-auto sm:p-1"
       {...attributes}
       {...listeners}
     >
-      <GripVertical className="size-4" />
+      <GripVertical className="size-5 sm:size-4" />
     </button>
   );
 
@@ -99,8 +99,12 @@ export function TrainingBlock({
           onChangeMeasurement={(measurement) =>
             onChangeMeasurement(block.exercises[0].key, measurement)
           }
-          onSetSetsCount={(sets) => onSetSetsCount(block.exercises[0].key, sets)}
-          onTogglePlannedSets={() => onTogglePlannedSets(block.exercises[0].key)}
+          onSetSetsCount={(sets) =>
+            onSetSetsCount(block.exercises[0].key, sets)
+          }
+          onTogglePlannedSets={() =>
+            onTogglePlannedSets(block.exercises[0].key)
+          }
           onUpdatePlannedSet={(setNumber, changes) =>
             onUpdatePlannedSet(block.exercises[0].key, setNumber, changes)
           }
@@ -133,7 +137,7 @@ export function TrainingBlock({
         <button
           type="button"
           onClick={() => onUngroup(block.group as number)}
-          className="flex items-center gap-1 rounded px-1.5 py-1 text-xs text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+          className="flex h-11 items-center gap-1 rounded px-2 text-xs text-slate-400 hover:bg-slate-100 hover:text-slate-600 sm:h-auto sm:px-1.5 sm:py-1"
         >
           <Unlink className="size-3.5" />
           Separar
@@ -153,7 +157,7 @@ export function TrainingBlock({
             )
           }
           placeholder="Nota de la superserie: cómo encadenarlas, qué cuidar…"
-          className="h-8 flex-1"
+          className="h-8 flex-1 max-sm:h-11"
         />
       </label>
 
@@ -173,7 +177,9 @@ export function TrainingBlock({
             onUpdatePlannedSet={(setNumber, changes) =>
               onUpdatePlannedSet(draft.key, setNumber, changes)
             }
-            onApplyToAllSets={(setNumber) => onApplyToAllSets(draft.key, setNumber)}
+            onApplyToAllSets={(setNumber) =>
+              onApplyToAllSets(draft.key, setNumber)
+            }
             onRemove={() => onRemoveExercise(draft.key)}
           />
         ))}

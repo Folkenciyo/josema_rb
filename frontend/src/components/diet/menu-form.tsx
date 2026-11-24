@@ -15,6 +15,7 @@ import {
 } from "@/lib/diet/meal-draft";
 import type { MacroTotals, Menu, MenuInput } from "@/types/diet";
 import { MacroSummary } from "./macro-summary";
+import { ModalActions } from "@/components/ui/modal";
 
 interface MenuMealDraft {
   key: string;
@@ -116,7 +117,10 @@ export function MenuForm({
       }
 
       const reordered = current.slice();
-      [reordered[index], reordered[target]] = [reordered[target], reordered[index]];
+      [reordered[index], reordered[target]] = [
+        reordered[target],
+        reordered[index],
+      ];
       return reordered;
     });
 
@@ -226,13 +230,15 @@ export function MenuForm({
             {groupMeals(meals).map((group) => {
               const isAlternativeGroup = group.length > 1;
               const rows = group.map((meal) => {
-                const index = meals.findIndex((entry) => entry.key === meal.key);
+                const index = meals.findIndex(
+                  (entry) => entry.key === meal.key,
+                );
                 const template = templateMap.get(meal.meal_template_id);
 
                 return (
                   <div
                     key={meal.key}
-                    className="flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 bg-surface p-3"
+                    className="bg-surface flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 p-3"
                   >
                     <label className="flex min-w-48 flex-1 flex-col gap-1 text-xs text-slate-500">
                       Comida
@@ -242,7 +248,10 @@ export function MenuForm({
                           setMeals((current) =>
                             current.map((entry) =>
                               entry.key === meal.key
-                                ? { ...entry, meal_template_id: event.target.value }
+                                ? {
+                                    ...entry,
+                                    meal_template_id: event.target.value,
+                                  }
                                 : entry,
                             ),
                           )
@@ -277,7 +286,10 @@ export function MenuForm({
                     </label>
 
                     {template && (
-                      <MacroSummary totals={template.totals} className="mb-2 w-full" />
+                      <MacroSummary
+                        totals={template.totals}
+                        className="mb-2 w-full"
+                      />
                     )}
 
                     <div className="mb-1 ml-auto flex gap-1">
@@ -285,7 +297,7 @@ export function MenuForm({
                         type="button"
                         onClick={() => addAlternative(meal.key)}
                         aria-label="Añadir comida alternativa"
-                        className="rounded p-1.5 text-slate-400 hover:bg-brand-50 hover:text-brand-700"
+                        className="hover:bg-brand-50 hover:text-brand-700 rounded p-1.5 text-slate-400 max-sm:p-3.5"
                       >
                         <Shuffle className="size-4" />
                       </button>
@@ -303,7 +315,7 @@ export function MenuForm({
                         onClick={() => move(index, -1)}
                         disabled={index === 0}
                         aria-label="Subir comida"
-                        className="rounded p-1.5 text-slate-400 hover:bg-slate-100 disabled:opacity-30"
+                        className="rounded p-1.5 text-slate-400 hover:bg-slate-100 disabled:opacity-30 max-sm:p-3.5"
                       >
                         <ArrowUp className="size-4" />
                       </button>
@@ -312,7 +324,7 @@ export function MenuForm({
                         onClick={() => move(index, 1)}
                         disabled={index === meals.length - 1}
                         aria-label="Bajar comida"
-                        className="rounded p-1.5 text-slate-400 hover:bg-slate-100 disabled:opacity-30"
+                        className="rounded p-1.5 text-slate-400 hover:bg-slate-100 disabled:opacity-30 max-sm:p-3.5"
                       >
                         <ArrowDown className="size-4" />
                       </button>
@@ -324,7 +336,7 @@ export function MenuForm({
                           )
                         }
                         aria-label="Quitar comida"
-                        className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                        className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 max-sm:p-3.5"
                       >
                         <Trash2 className="size-4" />
                       </button>
@@ -340,9 +352,9 @@ export function MenuForm({
               return (
                 <li
                   key={group[0].alternative_group!}
-                  className="flex flex-col gap-2 rounded-lg border border-dashed border-brand-300 bg-brand-50/40 p-2"
+                  className="border-brand-300 bg-brand-50/40 flex flex-col gap-2 rounded-lg border border-dashed p-2"
                 >
-                  <p className="flex items-center gap-1 px-1 text-xs font-medium text-brand-700">
+                  <p className="text-brand-700 flex items-center gap-1 px-1 text-xs font-medium">
                     <Shuffle className="size-3.5" />
                     Alternativas entre sí — solo la primera cuenta en el total
                   </p>
@@ -355,7 +367,9 @@ export function MenuForm({
       </div>
 
       <div className="flex items-center justify-between rounded-lg bg-slate-100 px-4 py-2">
-        <span className="text-sm font-semibold text-slate-700">Total del día</span>
+        <span className="text-sm font-semibold text-slate-700">
+          Total del día
+        </span>
         <MacroSummary totals={totals} />
       </div>
 
@@ -372,14 +386,14 @@ export function MenuForm({
       {validationError && <ErrorMessage error={new Error(validationError)} />}
       <ErrorMessage error={error} />
 
-      <div className="flex justify-end gap-2">
+      <ModalActions>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancelar
         </Button>
         <Button type="submit" loading={isSubmitting}>
           {menu ? "Guardar cambios" : "Crear menú"}
         </Button>
-      </div>
+      </ModalActions>
     </form>
   );
 }

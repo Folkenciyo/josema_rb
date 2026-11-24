@@ -25,14 +25,14 @@ export function PortalDownloads({
             href={portalExportHref(token, plan, format, {
               largePrint: format === "pdf" && largePrint,
             })}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-surface px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+            className="bg-surface inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 max-sm:min-h-11"
           >
             <Download className="size-4" />
             {format === "pdf" ? "PDF" : "Word"}
           </a>
         ))}
       </div>
-      <label className="flex items-center gap-2 text-sm text-slate-600">
+      <label className="flex items-center gap-2 text-sm text-slate-600 max-sm:min-h-11">
         <input
           type="checkbox"
           checked={largePrint}

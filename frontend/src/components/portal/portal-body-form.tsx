@@ -123,7 +123,7 @@ export function PortalBodyForm({
           <button
             type="button"
             onClick={() => setShowAll(true)}
-            className="text-brand-600 mt-3 flex items-center gap-1 text-sm font-medium"
+            className="text-brand-600 mt-3 flex items-center gap-1 text-sm font-medium max-sm:min-h-11"
           >
             <ChevronDown className={cn("size-4")} />
             Ver las {BODY_ZONE_KEYS.length} zonas
@@ -141,7 +141,9 @@ export function PortalBodyForm({
           que no midas.
         </p>
 
-        {localError && <p className="mt-2 text-sm text-red-600">{localError}</p>}
+        {localError && (
+          <p className="mt-2 text-sm text-red-600">{localError}</p>
+        )}
         {record.isSuccess && !localError && (
           <p className="mt-2 flex items-center gap-1.5 text-sm text-emerald-600">
             <Check className="size-4" />

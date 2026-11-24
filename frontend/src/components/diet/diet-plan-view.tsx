@@ -15,7 +15,11 @@ import {
 import { StatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
+import {
+  EmptyState,
+  ErrorMessage,
+  LoadingState,
+} from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
 import { ExportButtons } from "@/components/plans/export-buttons";
@@ -85,7 +89,11 @@ export function DietPlanView({ clientId, planId }: DietPlanViewProps) {
     weeks.reduce((max, week) => Math.max(max, week.week_number), 0) + 1;
 
   const handleDelete = () => {
-    if (window.confirm(`¿Eliminar la dieta "${plan.title}"? No se puede deshacer.`)) {
+    if (
+      window.confirm(
+        `¿Eliminar la dieta "${plan.title}"? No se puede deshacer.`,
+      )
+    ) {
       deletePlan.mutate(planId, {
         onSuccess: () => router.push(`/clients/${clientId}`),
       });
@@ -96,7 +104,7 @@ export function DietPlanView({ clientId, planId }: DietPlanViewProps) {
     <>
       <Link
         href={`/clients/${clientId}`}
-        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800 max-sm:mb-2 max-sm:min-h-11"
       >
         <ArrowLeft className="size-4" />
         Volver al cliente
@@ -112,7 +120,11 @@ export function DietPlanView({ clientId, planId }: DietPlanViewProps) {
               <Pencil className="size-4" />
               Editar
             </Button>
-            <Button variant="danger" onClick={handleDelete} loading={deletePlan.isPending}>
+            <Button
+              variant="danger"
+              onClick={handleDelete}
+              loading={deletePlan.isPending}
+            >
               <Trash2 className="size-4" />
             </Button>
           </div>
@@ -125,7 +137,9 @@ export function DietPlanView({ clientId, planId }: DietPlanViewProps) {
         {plan.notes && <p className="text-sm text-slate-500">{plan.notes}</p>}
       </div>
 
-      <ErrorMessage error={deletePlan.error ?? addWeek.error ?? duplicateWeek.error} />
+      <ErrorMessage
+        error={deletePlan.error ?? addWeek.error ?? duplicateWeek.error}
+      />
 
       <Card className="p-4">
         <WeekTabs

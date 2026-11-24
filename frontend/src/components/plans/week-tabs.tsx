@@ -36,7 +36,7 @@ export function WeekTabs({
             aria-selected={week.id === activeWeekId}
             onClick={() => onSelect(week.id)}
             className={cn(
-              "rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors",
+              "h-11 rounded-lg px-3 text-sm font-semibold transition-colors sm:h-auto sm:py-1.5",
               week.id === activeWeekId
                 ? "bg-inverse text-white"
                 : "text-slate-600 hover:bg-slate-100",
@@ -47,7 +47,7 @@ export function WeekTabs({
         ))}
       </div>
 
-      <div className="ml-auto flex gap-2">
+      <div className="ml-auto flex flex-wrap justify-end gap-2">
         {activeWeekId && (
           <Button
             size="sm"
@@ -59,7 +59,12 @@ export function WeekTabs({
             Duplicar
           </Button>
         )}
-        <Button size="sm" variant="secondary" onClick={onAddWeek} loading={isBusy}>
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={onAddWeek}
+          loading={isBusy}
+        >
           <Plus className="size-4" />
           Añadir semana
         </Button>

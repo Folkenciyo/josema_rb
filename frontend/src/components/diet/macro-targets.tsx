@@ -51,11 +51,14 @@ export function MacroTargets({
           </div>
           <div className="h-1.5 overflow-hidden rounded-full bg-slate-200">
             <div
-              className={cn("h-full rounded-full", BAR_COLORS[comparison.status])}
+              className={cn(
+                "h-full rounded-full",
+                BAR_COLORS[comparison.status],
+              )}
               style={{ width: `${comparison.percentage}%` }}
             />
           </div>
-          <p className={cn("text-[11px]", TEXT_COLORS[comparison.status])}>
+          <p className={cn("text-xs", TEXT_COLORS[comparison.status])}>
             {comparison.status === "on-target"
               ? "en objetivo"
               : comparison.status === "under"

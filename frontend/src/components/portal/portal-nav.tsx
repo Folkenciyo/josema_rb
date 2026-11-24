@@ -29,7 +29,7 @@ export function PortalNav({ token }: { token: string }) {
   const base = portalPath(token);
 
   return (
-    <nav className="bg-surface/95 sticky bottom-0 border-t border-slate-200 backdrop-blur">
+    <nav className="bg-surface/95 sticky bottom-0 border-t border-slate-200 pb-[env(safe-area-inset-bottom)] backdrop-blur">
       <ul className="mx-auto flex max-w-md">
         {ITEMS.map(({ segment, label, Icon }) => {
           const href = `${base}${segment}`;

@@ -9,6 +9,7 @@ import { Field } from "@/components/ui/field";
 import { ErrorMessage } from "@/components/ui/feedback";
 import { Input, Select, Textarea } from "@/components/ui/input";
 import { PLAN_STATUS_LABELS, type PlanStatus } from "@/types/common";
+import { ModalActions } from "@/components/ui/modal";
 
 const planFormSchema = z.object({
   title: z.string().trim().min(1, "El título es obligatorio"),
@@ -124,14 +125,14 @@ export function PlanForm({
 
       <ErrorMessage error={error} />
 
-      <div className="flex justify-end gap-2">
+      <ModalActions>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancelar
         </Button>
         <Button type="submit" loading={isSubmitting}>
           {submitLabel}
         </Button>
-      </div>
+      </ModalActions>
     </form>
   );
 }

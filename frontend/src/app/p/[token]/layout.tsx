@@ -54,8 +54,10 @@ export default async function PortalLayout({
 }) {
   const { token } = await params;
 
+  // `dvh`, not `full`: the body has no height of its own, so a short page
+  // left the nav floating halfway up the screen.
   return (
-    <div className="flex min-h-full flex-col bg-slate-50">
+    <div className="flex min-h-dvh flex-col bg-slate-50">
       <div className="flex-1">{children}</div>
       <PortalNav token={token} />
     </div>

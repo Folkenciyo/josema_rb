@@ -50,7 +50,7 @@ export function PhotosSummaryCard({
   const openLink = (
     <Link
       href={`/clients/${clientId}/photos`}
-      className="text-brand-700 inline-flex items-center gap-1 text-sm font-medium hover:underline"
+      className="text-brand-700 inline-flex items-center gap-1 text-sm font-medium hover:underline max-sm:min-h-11"
     >
       {sessions.length > 1 ? "Ver y comparar" : "Ver galería"}
       <ChevronRight className="size-4" />
@@ -68,7 +68,7 @@ export function PhotosSummaryCard({
           action={
             <Link
               href={`/clients/${clientId}/photos`}
-              className="bg-brand-600 hover:bg-brand-500 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-white"
+              className="bg-brand-600 hover:bg-brand-500 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-white max-sm:min-h-11"
             >
               <Camera className="size-4" />
               Añadir fotos

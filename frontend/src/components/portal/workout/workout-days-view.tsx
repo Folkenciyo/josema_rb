@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Fragment } from "react";
 import { CloudUpload, Dumbbell, History, Play } from "lucide-react";
 
 import {
@@ -85,6 +86,8 @@ export function WorkoutDaysView({ token }: { token: string }) {
     );
   }
 
+  const multiWeek = new Set(days.map((day) => day.week_number)).size > 1;
+
   return (
     <PortalPage>
       <PortalHeader
@@ -94,39 +97,50 @@ export function WorkoutDaysView({ token }: { token: string }) {
 
       <PendingNotice token={token} />
 
-      {days.map((day) => {
+      {days.map((day, index) => {
         const isOpen = draft?.dayId === day.id;
+        // Several weeks repeat the same weekdays: two «Lunes» in a row say
+        // nothing, so each week opens with its number.
+        const opensWeek =
+          multiWeek && days[index - 1]?.week_number !== day.week_number;
 
         return (
-          <Link key={day.id} href={`${base}/entreno/${day.id}`}>
-            <Card className="hover:border-brand-300 flex items-center gap-4 px-5 py-4">
-              <span className="bg-brand-100 text-brand-600 flex size-11 shrink-0 items-center justify-center rounded-lg">
-                {isOpen ? (
-                  <Play className="size-5" />
-                ) : (
-                  <Dumbbell className="size-5" />
+          <Fragment key={day.id}>
+            {opensWeek && (
+              <h2 className="mt-2 text-sm font-semibold text-slate-500 uppercase">
+                Semana {day.week_number}
+              </h2>
+            )}
+            <Link href={`${base}/entreno/${day.id}`}>
+              <Card className="hover:border-brand-300 flex items-center gap-4 px-5 py-4">
+                <span className="bg-brand-100 text-brand-600 flex size-11 shrink-0 items-center justify-center rounded-lg">
+                  {isOpen ? (
+                    <Play className="size-5" />
+                  ) : (
+                    <Dumbbell className="size-5" />
+                  )}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-semibold text-slate-800">
+                    {day.day_of_week_es}
+                  </span>
+                  <span className="block text-sm text-slate-500">
+                    {day.exercise_count === 0
+                      ? "Descanso"
+                      : `${day.exercise_count} ejercicios`}
+                    {day.last_performed_on
+                      ? ` · última vez ${formatDate(day.last_performed_on)}`
+                      : ""}
+                  </span>
+                </span>
+                {isOpen && (
+                  <span className="bg-brand-100 text-brand-700 shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold">
+                    Sin terminar
+                  </span>
                 )}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block font-semibold text-slate-800">
-                  {day.day_of_week_es}
-                </span>
-                <span className="block text-sm text-slate-500">
-                  {day.exercise_count === 0
-                    ? "Descanso"
-                    : `${day.exercise_count} ejercicios`}
-                  {day.last_performed_on
-                    ? ` · última vez ${formatDate(day.last_performed_on)}`
-                    : ""}
-                </span>
-              </span>
-              {isOpen && (
-                <span className="bg-brand-100 text-brand-700 shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold">
-                  Sin terminar
-                </span>
-              )}
-            </Card>
-          </Link>
+              </Card>
+            </Link>
+          </Fragment>
         );
       })}
 

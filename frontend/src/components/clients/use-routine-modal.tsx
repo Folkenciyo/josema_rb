@@ -10,7 +10,7 @@ import {
 } from "@/hooks/use-training-plans";
 import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "@/components/ui/feedback";
-import { Modal } from "@/components/ui/modal";
+import { Modal, ModalActions } from "@/components/ui/modal";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/cn";
 import type { TrainingPlan } from "@/types/training-plan";
@@ -33,7 +33,7 @@ function SourceTab({
       type="button"
       onClick={onClick}
       className={cn(
-        "flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium",
+        "flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium max-sm:min-h-11",
         isActive
           ? "bg-brand-600 text-white"
           : "text-slate-600 hover:bg-slate-100",
@@ -152,11 +152,11 @@ export function UseRoutineModal({
           />
         )}
 
-        <div className="flex justify-end">
+        <ModalActions>
           <Button variant="secondary" onClick={onClose}>
             Cancelar
           </Button>
-        </div>
+        </ModalActions>
       </div>
     </Modal>
   );
@@ -180,7 +180,7 @@ function ClientPlans({
       <select
         value={selected ?? ""}
         onChange={(event) => setSelected(event.target.value || null)}
-        className="bg-surface w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800"
+        className="bg-surface w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 max-sm:h-11 max-sm:text-base"
       >
         <option value="">Elige un cliente…</option>
         {clients.map((other) => (

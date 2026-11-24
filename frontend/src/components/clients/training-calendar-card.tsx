@@ -94,8 +94,8 @@ function Summary({ calendar }: { calendar: TrainingCalendar }) {
   if (calendar.plan_starts_on === null) {
     return (
       <p className="text-sm text-slate-500">
-        {calendar.trained_count} días entrenados. Ponle fecha de inicio al plan y
-        aquí verás también los días que le tocaba.
+        {calendar.trained_count} días entrenados. Ponle fecha de inicio al plan
+        y aquí verás también los días que le tocaba.
       </p>
     );
   }
@@ -103,8 +103,8 @@ function Summary({ calendar }: { calendar: TrainingCalendar }) {
   if (calendar.planned_count === 0) {
     return (
       <p className="text-sm text-slate-500">
-        {calendar.trained_count} días entrenados. El plan no llega a este mes: si
-        son semanas que se repiten, márcalo al editarlo.
+        {calendar.trained_count} días entrenados. El plan no llega a este mes:
+        si son semanas que se repiten, márcalo al editarlo.
       </p>
     );
   }
@@ -132,11 +132,11 @@ export function TrainingCalendarCard({ clientId }: { clientId: string }) {
 
   const since = firstDayOf(month);
   const until = lastDayOf(month);
-  const { data: calendar, isPending, error } = useTrainingCalendar(
-    clientId,
-    since,
-    until,
-  );
+  const {
+    data: calendar,
+    isPending,
+    error,
+  } = useTrainingCalendar(clientId, since, until);
 
   const cells = buildMonthGrid(month, calendar?.days ?? []);
   const selectedEntry = calendar?.days.find((day) => day.date === selected);
@@ -147,18 +147,18 @@ export function TrainingCalendarCard({ clientId }: { clientId: string }) {
         type="button"
         onClick={() => setMonth(shiftMonth(month, -1))}
         aria-label="Mes anterior"
-        className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+        className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-800 max-sm:p-3.5"
       >
         <ChevronLeft className="size-4" />
       </button>
-      <span className="min-w-32 text-center text-sm font-medium text-slate-700 capitalize">
+      <span className="min-w-32 text-center text-sm font-medium text-slate-700 capitalize max-sm:min-w-0">
         {monthLabel(month)}
       </span>
       <button
         type="button"
         onClick={() => setMonth(shiftMonth(month, 1))}
         aria-label="Mes siguiente"
-        className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+        className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-800 max-sm:p-3.5"
       >
         <ChevronRight className="size-4" />
       </button>
@@ -171,7 +171,7 @@ export function TrainingCalendarCard({ clientId }: { clientId: string }) {
       {error && <ErrorMessage error={error} />}
 
       <div className="px-5 py-4">
-        <div className="mb-1 grid grid-cols-7 gap-1">
+        <div className="mb-1 grid grid-cols-7 gap-1 max-sm:gap-px">
           {WEEKDAY_LABELS.map((label, index) => (
             <span
               key={`${label}-${index}`}
@@ -182,7 +182,7 @@ export function TrainingCalendarCard({ clientId }: { clientId: string }) {
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-1">
+        <div className="grid grid-cols-7 gap-1 max-sm:gap-px">
           {cells.map((cell, index) => (
             <Day
               key={cell.date ?? `empty-${index}`}

@@ -74,7 +74,7 @@ function StartScreen({
         </Card>
       )}
 
-      <ul className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-surface">
+      <ul className="bg-surface divide-y divide-slate-100 rounded-xl border border-slate-200">
         {day.exercises.map((exercise) => (
           <li key={exercise.id} className="px-4 py-3">
             <p className="font-medium text-slate-800">{exercise.name_es}</p>
@@ -85,7 +85,7 @@ function StartScreen({
         ))}
       </ul>
 
-      <Button className="h-12 w-full text-base" onClick={onStart}>
+      <Button className="h-12 w-full text-base max-sm:h-12" onClick={onStart}>
         <Play className="size-5" />
         {hasDraft ? "Continuar la sesión" : "Empezar"}
       </Button>
@@ -283,7 +283,7 @@ export function WorkoutSessionView({
         <button
           type="button"
           onClick={() => setStep(step === 0 ? null : step - 1)}
-          className="flex items-center gap-1 text-sm font-medium text-slate-500"
+          className="flex items-center gap-1 text-sm font-medium text-slate-500 max-sm:min-h-11"
         >
           <ChevronLeft className="size-4" />
           Atrás
@@ -308,7 +308,7 @@ export function WorkoutSessionView({
       />
 
       <Button
-        className="h-12 w-full text-base"
+        className="h-12 w-full text-base max-sm:h-12"
         onClick={() => setStep(isLast ? "summary" : step + 1)}
       >
         {isLast ? (
@@ -330,7 +330,7 @@ export function WorkoutSessionView({
           discardDraft();
           setStep(null);
         }}
-        className="text-center text-sm text-slate-400 underline"
+        className="text-center text-sm text-slate-400 underline max-sm:min-h-11"
       >
         Descartar esta sesión
       </button>

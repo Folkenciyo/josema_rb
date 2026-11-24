@@ -27,7 +27,7 @@ export function CardHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-slate-200 px-5 py-3">
       <h2 className="text-sm font-semibold tracking-wide text-slate-500 uppercase">
         {title}
       </h2>

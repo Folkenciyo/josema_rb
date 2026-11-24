@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorMessage } from "@/components/ui/feedback";
 import { Select } from "@/components/ui/input";
-import { Modal } from "@/components/ui/modal";
+import { Modal, ModalActions } from "@/components/ui/modal";
 import { cn } from "@/lib/cn";
 import { DAY_LABELS, DAYS_OF_WEEK, type DayOfWeek } from "@/types/common";
 import type { AssignMenuInput } from "@/types/diet-plan";
@@ -128,14 +128,14 @@ export function AssignMenuModal({
         {validationError && <ErrorMessage error={new Error(validationError)} />}
         <ErrorMessage error={error} />
 
-        <div className="flex justify-end gap-2">
+        <ModalActions>
           <Button type="button" variant="secondary" onClick={onClose}>
             Cancelar
           </Button>
           <Button type="submit" loading={isSubmitting}>
             Asignar
           </Button>
-        </div>
+        </ModalActions>
       </form>
     </Modal>
   );

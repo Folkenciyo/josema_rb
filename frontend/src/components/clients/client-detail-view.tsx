@@ -72,7 +72,10 @@ function ContactValue({
   }
 
   return (
-    <a href={href} className="text-brand-700 hover:underline">
+    <a
+      href={href}
+      className="text-brand-700 hover:underline max-sm:inline-flex max-sm:min-h-11 max-sm:items-center"
+    >
       {text}
     </a>
   );
@@ -112,7 +115,7 @@ function ClientProfileCard({ client }: { client: ClientDetail }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Escribir por WhatsApp"
-                  className="text-emerald-600 hover:text-emerald-700"
+                  className="text-emerald-600 hover:text-emerald-700 max-sm:-my-3.5 max-sm:p-3.5"
                 >
                   <MessageCircle className="size-4" />
                   <span className="sr-only">Escribir por WhatsApp</span>
@@ -238,7 +241,7 @@ Si solo quieres darle de baja, usa Desactivar.`,
     <>
       <Link
         href="/clients"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800 max-sm:mb-2 max-sm:min-h-11"
       >
         <ArrowLeft className="size-4" />
         Clientes
@@ -296,8 +299,10 @@ Si solo quieres darle de baja, usa Desactivar.`,
         }
       />
 
+      {/* `min-w-0` on both columns: without it a wide child — the measurements
+          table — sets the minimum width of the grid and takes the page with it. */}
       <div className="grid gap-4 lg:grid-cols-3">
-        <div className="flex flex-col gap-4 lg:col-span-1">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-1">
           <ClientProfileCard client={client} />
           <MeasurementsCard
             clientId={clientId}
@@ -312,7 +317,7 @@ Si solo quieres darle de baja, usa Desactivar.`,
           />
           <PinnedQuoteCard clientId={clientId} />
         </div>
-        <div className="flex flex-col gap-4 lg:col-span-2">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-2">
           <PlanHistoryCard
             title="Planes de entrenamiento"
             plans={client.training_plans}

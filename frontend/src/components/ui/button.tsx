@@ -14,9 +14,11 @@ const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   danger: "border border-red-200 bg-surface text-red-600 hover:bg-red-50",
 };
 
+// Under `sm` every button is a 44px target, the floor Apple and Google set for
+// a thumb; `max-sm:` so a caller's own height still decides above it.
 const SIZE_CLASSES: Record<ButtonSize, string> = {
-  sm: "h-8 px-3 text-sm",
-  md: "h-10 px-4 text-sm",
+  sm: "h-8 px-3 text-sm max-sm:h-11",
+  md: "h-10 px-4 text-sm max-sm:h-11",
 };
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -37,7 +39,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+        "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 max-sm:min-w-11",
         VARIANT_CLASSES[variant],
         SIZE_CLASSES[size],
         className,

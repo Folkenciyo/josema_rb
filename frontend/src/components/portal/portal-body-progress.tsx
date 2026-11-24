@@ -32,7 +32,7 @@ export function PortalBodyProgress({ readings }: { readings: BodyReading[] }) {
 
   return (
     <Card>
-      <div className="flex flex-wrap gap-1.5 px-5 pt-4">
+      <div className="flex flex-wrap gap-1.5 px-5 pt-4 max-sm:flex-nowrap max-sm:overflow-x-auto">
         {zones.map((key) => (
           <button
             key={key}
@@ -40,7 +40,7 @@ export function PortalBodyProgress({ readings }: { readings: BodyReading[] }) {
             onClick={() => setPickedZone(key)}
             aria-pressed={key === zone}
             className={cn(
-              "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+              "rounded-full px-3 py-1 text-xs font-medium transition-colors max-sm:shrink-0 max-sm:py-3.5",
               key === zone
                 ? "bg-brand-600 text-white"
                 : "bg-slate-100 text-slate-600",

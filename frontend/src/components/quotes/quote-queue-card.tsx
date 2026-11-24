@@ -33,7 +33,7 @@ export function QuoteQueueCard() {
       <CardHeader title="Hoy leen esto" />
 
       <div className="grid gap-4 px-5 py-4 md:grid-cols-2">
-        <div>
+        <div className="min-w-0">
           {today.quote.media_kind !== "none" && (
             <div className="mb-3">
               <QuoteMedia quote={today.quote} />
@@ -45,7 +45,7 @@ export function QuoteQueueCard() {
           )}
         </div>
 
-        <div>
+        <div className="min-w-0">
           <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold tracking-wide text-slate-500 uppercase">
             <CalendarClock className="size-3.5" />
             Después

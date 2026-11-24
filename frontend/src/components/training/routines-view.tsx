@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/feedback";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Modal } from "@/components/ui/modal";
+import { Modal, ModalActions } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
 import type { TrainingPlan } from "@/types/training-plan";
 
@@ -43,7 +43,7 @@ function NewTemplateModal({ onClose }: { onClose: () => void }) {
 
         <ErrorMessage error={createTemplate.error} />
 
-        <div className="flex justify-end gap-2">
+        <ModalActions>
           <Button variant="secondary" onClick={onClose}>
             Cancelar
           </Button>
@@ -56,7 +56,7 @@ function NewTemplateModal({ onClose }: { onClose: () => void }) {
           >
             Crear
           </Button>
-        </div>
+        </ModalActions>
       </div>
     </Modal>
   );
@@ -93,7 +93,7 @@ function DuplicateTemplateModal({
 
         <ErrorMessage error={duplicate.error} />
 
-        <div className="flex justify-end gap-2">
+        <ModalActions>
           <Button variant="secondary" onClick={onClose}>
             Cancelar
           </Button>
@@ -109,7 +109,7 @@ function DuplicateTemplateModal({
           >
             Duplicar
           </Button>
-        </div>
+        </ModalActions>
       </div>
     </Modal>
   );
@@ -146,7 +146,7 @@ export function RoutinesView() {
           {templates.map((template) => (
             <Card
               key={template.id}
-              className="hover:border-brand-300 flex items-center gap-2 p-4"
+              className="hover:border-brand-300 flex min-w-0 items-center gap-2 p-4"
             >
               {/* The card opens the routine; the copy button sits outside the
                   link, which is also what keeps the markup valid. */}

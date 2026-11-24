@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { EmptyState, ErrorMessage } from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
+import { ScrollTable } from "@/components/ui/scroll-table";
 import { Spinner } from "@/components/ui/spinner";
 import {
   useBodyMeasurements,
@@ -49,7 +50,11 @@ export function BodyMeasurementsCard({ clientId }: { clientId: string }) {
   const [editing, setEditing] = useState<BodyMeasurement | null>(null);
   const [pickedZone, setPickedZone] = useState<BodyZoneKey | null>(null);
 
-  const { data: measurements, isPending, error } = useBodyMeasurements(clientId);
+  const {
+    data: measurements,
+    isPending,
+    error,
+  } = useBodyMeasurements(clientId);
   const createMeasurement = useCreateBodyMeasurement(clientId);
   const updateMeasurement = useUpdateBodyMeasurement(clientId);
   const deleteMeasurement = useDeleteBodyMeasurement(clientId);
@@ -105,7 +110,7 @@ export function BodyMeasurementsCard({ clientId }: { clientId: string }) {
         />
       ) : (
         <>
-          <div className="flex flex-wrap gap-1.5 px-5 pt-4">
+          <div className="flex flex-wrap gap-1.5 px-5 pt-4 max-sm:flex-nowrap max-sm:overflow-x-auto">
             {zones.map((key) => (
               <button
                 key={key}
@@ -113,7 +118,7 @@ export function BodyMeasurementsCard({ clientId }: { clientId: string }) {
                 onClick={() => setPickedZone(key)}
                 aria-pressed={key === zone}
                 className={cn(
-                  "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                  "rounded-full px-3 py-1 text-xs font-medium transition-colors max-sm:shrink-0 max-sm:py-3.5",
                   key === zone
                     ? "bg-brand-600 text-white"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200",
@@ -144,70 +149,68 @@ export function BodyMeasurementsCard({ clientId }: { clientId: string }) {
             format={formatCentimetres}
           />
 
-          <div className="max-h-72 overflow-auto border-t border-slate-100">
-            <table className="w-full text-sm">
-              <thead className="bg-surface sticky top-0 text-xs text-slate-500">
-                <tr>
-                  <th className="px-5 py-2 text-left font-medium">Fecha</th>
-                  {zones.map((key) => (
-                    <th
-                      key={key}
-                      className="px-2 py-2 text-right font-medium whitespace-nowrap"
-                    >
-                      {BODY_ZONE_LABELS[key]}
-                    </th>
-                  ))}
-                  <th className="px-3 py-2" />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {readings.map((measurement) => (
-                  <tr key={measurement.id}>
-                    <td className="px-5 py-2 whitespace-nowrap text-slate-500">
-                      {formatDate(measurement.measured_on)}
-                      {(measurement.client_notes || measurement.notes) && (
-                        <span className="block max-w-40 truncate text-xs text-slate-400">
-                          {measurement.client_notes ?? measurement.notes}
-                        </span>
-                      )}
-                    </td>
-                    {zones.map((key) => (
-                      <td
-                        key={key}
-                        className="px-2 py-2 text-right whitespace-nowrap text-slate-800"
-                      >
-                        {measurement[key] === null
-                          ? "—"
-                          : formatCentimetres(measurement[key])}
-                      </td>
-                    ))}
-                    <td className="px-3 py-2">
-                      <div className="flex justify-end gap-1">
-                        <button
-                          type="button"
-                          title="Editar medidas"
-                          onClick={() => setEditing(measurement)}
-                          className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-                        >
-                          <Pencil className="size-4" />
-                          <span className="sr-only">Editar medidas</span>
-                        </button>
-                        <button
-                          type="button"
-                          title="Borrar medidas"
-                          onClick={() => handleDelete(measurement)}
-                          className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
-                        >
-                          <Trash2 className="size-4" />
-                          <span className="sr-only">Borrar medidas</span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+          <ScrollTable className="max-h-72 border-t border-slate-100 text-sm">
+            <thead className="bg-surface sticky top-0 text-xs text-slate-500">
+              <tr>
+                <th className="px-5 py-2 text-left font-medium">Fecha</th>
+                {zones.map((key) => (
+                  <th
+                    key={key}
+                    className="px-2 py-2 text-right font-medium whitespace-nowrap"
+                  >
+                    {BODY_ZONE_LABELS[key]}
+                  </th>
                 ))}
-              </tbody>
-            </table>
-          </div>
+                <th className="px-3 py-2" />
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {readings.map((measurement) => (
+                <tr key={measurement.id}>
+                  <td className="px-5 py-2 whitespace-nowrap text-slate-500">
+                    {formatDate(measurement.measured_on)}
+                    {(measurement.client_notes || measurement.notes) && (
+                      <span className="block max-w-40 truncate text-xs text-slate-400">
+                        {measurement.client_notes ?? measurement.notes}
+                      </span>
+                    )}
+                  </td>
+                  {zones.map((key) => (
+                    <td
+                      key={key}
+                      className="px-2 py-2 text-right whitespace-nowrap text-slate-800"
+                    >
+                      {measurement[key] === null
+                        ? "—"
+                        : formatCentimetres(measurement[key])}
+                    </td>
+                  ))}
+                  <td className="px-3 py-2">
+                    <div className="flex justify-end gap-1">
+                      <button
+                        type="button"
+                        title="Editar medidas"
+                        onClick={() => setEditing(measurement)}
+                        className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 max-sm:p-3.5"
+                      >
+                        <Pencil className="size-4" />
+                        <span className="sr-only">Editar medidas</span>
+                      </button>
+                      <button
+                        type="button"
+                        title="Borrar medidas"
+                        onClick={() => handleDelete(measurement)}
+                        className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 max-sm:p-3.5"
+                      >
+                        <Trash2 className="size-4" />
+                        <span className="sr-only">Borrar medidas</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </ScrollTable>
         </>
       )}
 

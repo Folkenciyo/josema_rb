@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, Dumbbell, Info, Play, Plus, Square, Trash2 } from "lucide-react";
+import {
+  Check,
+  Dumbbell,
+  Info,
+  Play,
+  Plus,
+  Square,
+  Trash2,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -68,7 +76,7 @@ function DurationControl({
     <button
       type="button"
       onClick={() => setSecondsLeft(targetSeconds)}
-      className="hover:border-brand-500 hover:text-brand-700 flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-surface font-semibold text-slate-700"
+      className="hover:border-brand-500 hover:text-brand-700 bg-surface flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border border-slate-300 font-semibold text-slate-700"
     >
       <Play className="size-4" />
       {targetSeconds}s
@@ -103,12 +111,12 @@ function SetRow({
         set.done && "bg-brand-50",
       )}
     >
-      <span className="flex w-9 shrink-0 flex-col items-center text-center">
+      <span className="flex w-12 shrink-0 flex-col items-center text-center">
         <span className="text-sm font-semibold text-slate-400">
           {set.setNumber}
         </span>
         {set.targetModifier !== "normal" && (
-          <span className="text-brand-600 text-[9px] leading-none font-semibold whitespace-nowrap">
+          <span className="text-brand-600 text-xs leading-none font-semibold whitespace-nowrap">
             {set.targetModifier === "rir"
               ? `RIR ${set.targetRirValue}`
               : SET_MODIFIER_LABELS[set.targetModifier]}
@@ -179,7 +187,7 @@ function SetRow({
         type="button"
         onClick={onRemove}
         aria-label={`Quitar la serie ${set.setNumber}`}
-        className="flex size-8 shrink-0 items-center justify-center rounded-lg text-slate-300 hover:text-red-500"
+        className="flex size-8 shrink-0 items-center justify-center rounded-lg text-slate-300 hover:text-red-500 max-sm:size-11"
       >
         <Trash2 className="size-4" />
       </button>

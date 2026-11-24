@@ -29,6 +29,7 @@ import {
 import type { ExerciseMeasurement } from "@/types/common";
 import type { PlannedSet, TrainingWeek } from "@/types/training-plan";
 import { TrainingDayEditor } from "./training-day-editor";
+import { TrainingDayJump } from "./training-day-jump";
 
 interface TrainingWeekEditorProps {
   planId: string;
@@ -76,8 +77,11 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
     // before it fires — silently dropping whatever was the last edit. Flush
     // it straight to the mutation instead of waiting for the debounce.
     return () => {
-      const { weekId, payload: latestPayload, savedSnapshot: latestSavedSnapshot } =
-        pendingRef.current;
+      const {
+        weekId,
+        payload: latestPayload,
+        savedSnapshot: latestSavedSnapshot,
+      } = pendingRef.current;
       if (JSON.stringify(latestPayload) !== latestSavedSnapshot) {
         saveDays.mutate({ weekId, days: latestPayload });
       }
@@ -115,6 +119,8 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
       </div>
 
       <ErrorMessage error={saveDays.error} />
+
+      <TrainingDayJump days={draft} />
 
       <div className="flex flex-col gap-3">
         {draft.map((day, index) => (
@@ -181,7 +187,13 @@ export function TrainingWeekEditor({ planId, week }: TrainingWeekEditorProps) {
               changes: Partial<Omit<PlannedSet, "set_number">>,
             ) =>
               setDraft((current) =>
-                updatePlannedSet(current, day.day_of_week, key, setNumber, changes),
+                updatePlannedSet(
+                  current,
+                  day.day_of_week,
+                  key,
+                  setNumber,
+                  changes,
+                ),
               )
             }
             onApplyToAllSets={(key, setNumber) =>
