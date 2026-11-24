@@ -33,9 +33,7 @@ def main() -> None:
             return
 
         for food in foods:
-            stmt = insert(Food).values(
-                trainer_id=trainer.id, source="seed", **food
-            )
+            stmt = insert(Food).values(trainer_id=trainer.id, source="seed", **food)
             # The trainer owns these rows: only fields coming from the catalog
             # are refreshed, and only for entries they have not renamed away.
             update_columns = {

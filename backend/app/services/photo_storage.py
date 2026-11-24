@@ -15,7 +15,9 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 MEDIA_ROOT = Path(__file__).resolve().parent.parent / "media" / "client-photos"
 
 MAX_UPLOAD_BYTES = 15 * 1024 * 1024
-ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp", "image/heic"}
+# No HEIC: Pillow cannot decode it without an extra plugin, and the picker no
+# longer offers it, so iOS hands over a JPEG instead.
+ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp"}
 
 # Big enough to compare a physique full screen, small enough to stay ~350 KB.
 FULL_MAX_SIDE = 1600
