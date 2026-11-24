@@ -45,6 +45,7 @@ const DAY: WorkoutDayDetail = {
       superset_group: null,
       last_performed_on: null,
       last_sets: [],
+      planned_sets: [],
     },
   ],
 };
@@ -71,7 +72,16 @@ const DRAFT: SessionDraft = {
       supersetNote: null,
       lastPerformedOn: null,
       lastSets: [],
-      sets: [{ setNumber: 1, weightKg: 20, reps: 10, done: true }],
+      sets: [
+        {
+          setNumber: 1,
+          weightKg: 20,
+          reps: 10,
+          done: true,
+          targetModifier: "normal",
+          targetRirValue: null,
+        },
+      ],
       supersetLabel: null,
       chainedTo: null,
     },

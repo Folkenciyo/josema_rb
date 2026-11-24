@@ -74,7 +74,9 @@ export function PhotoSlot({
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/heic"
+        // No image/heic: listing it makes an iPhone send the original HEIC, which
+        // the backend cannot decode. Without it iOS converts the photo to JPEG.
+        accept="image/jpeg,image/png,image/webp"
         className="hidden"
         onChange={(event) => {
           const file = event.target.files?.[0];

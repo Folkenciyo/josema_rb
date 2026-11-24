@@ -87,9 +87,7 @@ def main() -> None:
     for size in (192, 512):
         on_ink(monogram, size, 0.62).save(PUBLIC_ICONS / f"icon-{size}.png")
         # Maskable icons lose the outer ~10% to the platform's mask.
-        on_ink(monogram, size, 0.44).save(
-            PUBLIC_ICONS / f"icon-maskable-{size}.png"
-        )
+        on_ink(monogram, size, 0.44).save(PUBLIC_ICONS / f"icon-maskable-{size}.png")
     on_ink(monogram, 180, 0.62).save(PUBLIC_ICONS / "apple-touch-icon.png")
     on_ink(monogram, 96, 0.72).save(APP_DIR / "icon.png")
     # favicon.ico wins over icon.png in the App Router, so it has to carry the

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { z } from "zod";
 
 import { useLogin } from "@/hooks/use-auth";
+import { ApiError } from "@/lib/api/http";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorMessage } from "@/components/ui/feedback";
@@ -23,6 +24,22 @@ function safeRedirect(next: string | null): string {
   return next && next.startsWith("/") && !next.startsWith("//")
     ? next
     : "/dashboard";
+}
+
+/** The backend answers in English; the generic 401 text talks about an expired session. */
+export function loginErrorMessage(error: unknown): Error | null {
+  if (!error) {
+    return null;
+  }
+  if (error instanceof ApiError && error.status === 401) {
+    return new Error("Email o contraseña incorrectos.");
+  }
+  if (error instanceof ApiError && error.status === 429) {
+    return new Error(
+      "Demasiados intentos fallidos. Espera unos minutos y vuelve a probar.",
+    );
+  }
+  return error instanceof Error ? error : new Error(String(error));
 }
 
 export function LoginForm() {
@@ -74,7 +91,7 @@ export function LoginForm() {
         )}
       </Field>
 
-      <ErrorMessage error={login.error} />
+      <ErrorMessage error={loginErrorMessage(login.error)} />
 
       <Button type="submit" loading={login.isPending} className="mt-2 w-full">
         Entrar

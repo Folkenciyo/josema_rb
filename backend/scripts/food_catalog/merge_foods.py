@@ -34,9 +34,7 @@ REQUIRED_FIELDS = (
     "salt_g",
 )
 
-NUMERIC_FIELDS = tuple(
-    field for field in REQUIRED_FIELDS[4:] if field != "unit_type"
-)
+NUMERIC_FIELDS = tuple(field for field in REQUIRED_FIELDS[4:] if field != "unit_type")
 
 # EU labelling energy factors: carbs here are the available ones (fibre is a
 # separate field worth 2 kcal/g). The tolerance is wide on purpose — the check

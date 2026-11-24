@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import FileResponse, StreamingResponse
 from sqlalchemy.orm import Session
 
+from app.core.client_ip import caller_ip
 from app.core.db import get_db
 from app.core.rate_limit import SlidingWindowLimiter
 from app.models import Client, Exercise, Trainer
@@ -57,15 +58,6 @@ workout_limiter = SlidingWindowLimiter(max_attempts=60, window_seconds=3600)
 router = APIRouter(prefix="/api/portal", tags=["portal"])
 
 
-def _caller_ip(request: Request) -> str:
-    # Traefik and the Next proxy sit in front, so the original address only
-    # survives in the forwarding header.
-    forwarded_for = request.headers.get("x-forwarded-for")
-    if forwarded_for:
-        return forwarded_for.split(",")[0].strip()
-    return request.client.host if request.client else "unknown"
-
-
 def get_portal_client(
     token: str, request: Request, db: Session = Depends(get_db)
 ) -> Client:
@@ -74,7 +66,7 @@ def get_portal_client(
     Every portal route depends on this and none of them takes a client id, so
     there is no way to ask for someone else's data by editing the URL.
     """
-    caller = _caller_ip(request)
+    caller = caller_ip(request)
     if portal_limiter.is_blocked(caller):
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
