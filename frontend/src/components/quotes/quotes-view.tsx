@@ -110,7 +110,10 @@ export function QuotesView() {
 
       <ErrorMessage
         error={
-          error ?? deleteQuote.error ?? reorder.error ?? showToday.error ??
+          error ??
+          deleteQuote.error ??
+          reorder.error ??
+          showToday.error ??
           showNext.error
         }
       />
@@ -126,7 +129,8 @@ export function QuotesView() {
               key={quote.id}
               className={cn(
                 "flex flex-col gap-3 p-4",
-                quote.id === todayId && "border-brand-500 ring-brand-100 ring-2",
+                quote.id === todayId &&
+                  "border-brand-500 ring-brand-100 ring-2",
               )}
             >
               {quote.media_kind !== "none" && <QuoteMedia quote={quote} />}
@@ -134,12 +138,12 @@ export function QuotesView() {
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   {quote.id === todayId && (
-                    <span className="bg-brand-600 mb-1 inline-block rounded px-1.5 py-0.5 text-[11px] font-semibold text-white">
+                    <span className="bg-brand-600 mb-1 inline-block rounded px-1.5 py-0.5 text-xs font-semibold text-white">
                       Hoy
                     </span>
                   )}
                   {quote.id === nextId && (
-                    <span className="mb-1 inline-block rounded bg-slate-200 px-1.5 py-0.5 text-[11px] font-semibold text-slate-600">
+                    <span className="mb-1 inline-block rounded bg-slate-200 px-1.5 py-0.5 text-xs font-semibold text-slate-600">
                       Mañana
                     </span>
                   )}

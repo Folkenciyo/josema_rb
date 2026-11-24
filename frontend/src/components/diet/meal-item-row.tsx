@@ -57,6 +57,7 @@ export function MealItemRow({
               <div className="flex items-center gap-1">
                 <Input
                   type="number"
+                  inputMode="numeric"
                   min={0}
                   step="1"
                   value={item.quantity_amount}

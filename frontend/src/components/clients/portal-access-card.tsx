@@ -97,7 +97,7 @@ function SendPanel({
         {mailtoHref ? (
           <a
             href={mailtoHref}
-            className="bg-surface inline-flex h-8 items-center justify-center gap-2 rounded-lg border border-slate-300 px-3 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+            className="bg-surface inline-flex h-8 items-center justify-center gap-2 rounded-lg border border-slate-300 px-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 max-sm:h-11"
           >
             <Mail className="size-4" />
             Email

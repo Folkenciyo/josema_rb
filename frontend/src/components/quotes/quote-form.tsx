@@ -10,6 +10,7 @@ import { Input, Textarea } from "@/components/ui/input";
 import { cn } from "@/lib/cn";
 import type { Quote, QuoteInput } from "@/types/quote";
 import { QuoteMedia } from "./quote-media";
+import { ModalActions } from "@/components/ui/modal";
 
 type MediaChoice = "none" | "image" | "link";
 
@@ -168,14 +169,14 @@ export function QuoteForm({
 
       <ErrorMessage error={error} />
 
-      <div className="flex justify-end gap-2">
+      <ModalActions>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancelar
         </Button>
         <Button type="submit" loading={isSubmitting}>
           Guardar
         </Button>
-      </div>
+      </ModalActions>
     </form>
   );
 }

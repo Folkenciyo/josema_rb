@@ -19,6 +19,7 @@ import {
   formValuesToBodyMeasurementInput,
   type BodyMeasurementFormValues,
 } from "./body-measurement-form-schema";
+import { ModalActions } from "@/components/ui/modal";
 
 interface BodyMeasurementFormProps {
   measurement?: BodyMeasurement;
@@ -57,7 +58,9 @@ export function BodyMeasurementForm({
       noValidate
     >
       <Field label="Fecha" error={errors.measured_on?.message}>
-        {(props) => <Input {...props} {...register("measured_on")} type="date" />}
+        {(props) => (
+          <Input {...props} {...register("measured_on")} type="date" />
+        )}
       </Field>
 
       <div className="grid gap-3 sm:grid-cols-3">
@@ -88,14 +91,14 @@ export function BodyMeasurementForm({
 
       <ErrorMessage error={error} />
 
-      <div className="flex justify-end gap-2">
+      <ModalActions>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancelar
         </Button>
         <Button type="submit" loading={isSubmitting}>
           {submitLabel}
         </Button>
-      </div>
+      </ModalActions>
     </form>
   );
 }

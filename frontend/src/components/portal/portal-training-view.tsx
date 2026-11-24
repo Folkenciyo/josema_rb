@@ -12,7 +12,8 @@ import type { PlannedSet } from "@/types/training-plan";
 import type { PortalExercise, PortalTrainingDay } from "@/types/portal";
 
 function plannedSetLabel(set: PlannedSet): string {
-  const value = set.reps ?? (set.duration_seconds ? `${set.duration_seconds}s` : "");
+  const value =
+    set.reps ?? (set.duration_seconds ? `${set.duration_seconds}s` : "");
   if (set.modifier === "rir") {
     return `${value} (RIR ${set.rir_value})`;
   }
@@ -174,7 +175,7 @@ export function PortalTrainingView({ token }: { token: string }) {
               key={candidate.week_number}
               onClick={() => setWeekIndex(index)}
               className={cn(
-                "shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold",
+                "shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold max-sm:min-h-11",
                 index === weekIndex
                   ? "bg-brand-600 text-white"
                   : "bg-surface border border-slate-300 text-slate-600",

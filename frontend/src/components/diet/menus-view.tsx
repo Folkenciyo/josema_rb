@@ -24,10 +24,14 @@ import {
   isCatalogQueryActive,
 } from "@/lib/diet/catalog-search";
 import type { Menu } from "@/types/diet";
+import { useShowMore } from "@/hooks/use-show-more";
 import { CatalogSearchBar } from "./catalog-search-bar";
 import { MacroSummary } from "./macro-summary";
 import { MenuForm } from "./menu-form";
 import { ScaleMenuModal } from "./scale-menu-modal";
+
+// Each card lists its foods, so a page of them is already several screens.
+const PAGE_SIZE = 20;
 
 export function MenusView() {
   const [isCreateOpen, setCreateOpen] = useState(false);
@@ -36,7 +40,8 @@ export function MenusView() {
   const [query, setQuery] = useState(EMPTY_CATALOG_QUERY);
 
   const { data: menus, isPending, error } = useMenus();
-  const visible = filterCatalog(menus ?? [], query);
+  const matches = filterCatalog(menus ?? [], query);
+  const page = useShowMore(matches, JSON.stringify(query), PAGE_SIZE);
   const createMenu = useCreateMenu();
   const updateMenu = useUpdateMenu();
   const deleteMenu = useDeleteMenu();
@@ -72,80 +77,91 @@ export function MenusView() {
 
       {isPending ? (
         <LoadingState />
-      ) : visible.length > 0 ? (
-        <div className="grid gap-3 md:grid-cols-2">
-          {visible.map((menu) => (
-            <Card key={menu.id} className="p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="truncate font-semibold text-slate-800">
-                    {menu.name}
-                  </p>
-                  <p className="text-xs text-slate-400">
-                    {menu.meals.length}{" "}
-                    {menu.meals.length === 1 ? "comida" : "comidas"}
-                  </p>
-                  <MacroSummary
-                    totals={menu.totals}
-                    detailed
-                    className="mt-1"
-                  />
+      ) : matches.length > 0 ? (
+        <>
+          <div className="grid gap-3 md:grid-cols-2">
+            {page.visible.map((menu) => (
+              <Card key={menu.id} className="min-w-0 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-balance text-slate-800">
+                      {menu.name}
+                    </p>
+                    <p className="text-xs text-slate-400">
+                      {menu.meals.length}{" "}
+                      {menu.meals.length === 1 ? "comida" : "comidas"}
+                    </p>
+                    <MacroSummary
+                      totals={menu.totals}
+                      detailed
+                      className="mt-1"
+                    />
+                  </div>
+                  <div className="flex shrink-0 gap-1">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setScaling(menu)}
+                      aria-label={`Escalar ${menu.name} a otras calorías`}
+                      title="Escalar a otras calorías"
+                    >
+                      <Scale className="size-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setEditing(menu)}
+                      aria-label={`Editar ${menu.name}`}
+                    >
+                      <Pencil className="size-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleDelete(menu)}
+                      aria-label={`Eliminar ${menu.name}`}
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex shrink-0 gap-1">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setScaling(menu)}
-                    aria-label={`Escalar ${menu.name} a otras calorías`}
-                    title="Escalar a otras calorías"
-                  >
-                    <Scale className="size-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditing(menu)}
-                    aria-label={`Editar ${menu.name}`}
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleDelete(menu)}
-                    aria-label={`Eliminar ${menu.name}`}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-              </div>
 
-              <ul className="mt-3 space-y-2 border-t border-slate-100 pt-3 text-sm text-slate-600">
-                {[...menu.meals]
-                  .sort((a, b) => a.order_index - b.order_index)
-                  .map((meal) => (
-                    <li key={meal.id}>
-                      <div className="flex items-center gap-2">
-                        {meal.time_of_day && (
-                          <span className="flex items-center gap-1 text-xs text-slate-400">
-                            <Clock className="size-3" />
-                            {meal.time_of_day.slice(0, 5)}
+                <ul className="mt-3 space-y-2 border-t border-slate-100 pt-3 text-sm text-slate-600">
+                  {[...menu.meals]
+                    .sort((a, b) => a.order_index - b.order_index)
+                    .map((meal) => (
+                      <li key={meal.id}>
+                        <div className="flex items-center gap-2">
+                          {meal.time_of_day && (
+                            <span className="flex items-center gap-1 text-xs text-slate-400">
+                              <Clock className="size-3" />
+                              {meal.time_of_day.slice(0, 5)}
+                            </span>
+                          )}
+                          {/* The name of a meal is long and never wraps: without
+                            a minimum of zero it widens the card and the page. */}
+                          <span className="min-w-0 truncate">
+                            {meal.meal_template.name}
                           </span>
-                        )}
-                        <span className="truncate">
-                          {meal.meal_template.name}
-                        </span>
-                      </div>
-                      <MacroSummary
-                        totals={meal.meal_template.totals}
-                        className="mt-0.5 pl-1"
-                      />
-                    </li>
-                  ))}
-              </ul>
-            </Card>
-          ))}
-        </div>
+                        </div>
+                        <MacroSummary
+                          totals={meal.meal_template.totals}
+                          className="mt-0.5 pl-1"
+                        />
+                      </li>
+                    ))}
+                </ul>
+              </Card>
+            ))}
+          </div>
+          {page.hasMore && (
+            <div className="mt-4 text-center">
+              <Button variant="secondary" onClick={page.showMore}>
+                Mostrar más ({page.remaining})
+              </Button>
+            </div>
+          )}
+        </>
       ) : isCatalogQueryActive(query) ? (
         <EmptyState
           title="Ningún menú coincide"

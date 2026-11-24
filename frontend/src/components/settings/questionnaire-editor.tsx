@@ -28,7 +28,7 @@ import {
 
 const KINDS = Object.keys(QUESTION_KIND_LABELS) as QuestionKind[];
 const SELECT_CLASSES =
-  "rounded-lg border border-slate-300 bg-surface px-2 py-1.5 text-sm text-slate-700 outline-none focus:border-brand-500";
+  "rounded-lg border border-slate-300 bg-surface px-2 py-1.5 text-sm text-slate-700 outline-none focus:border-brand-500 max-sm:h-11 max-sm:text-base";
 
 function QuestionRow({
   draft,
@@ -63,7 +63,7 @@ function QuestionRow({
             onClick={() => onMove(-1)}
             disabled={index === 0}
             aria-label="Subir"
-            className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-30"
+            className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-30 max-sm:p-3.5"
           >
             <ChevronUp className="size-4" />
           </button>
@@ -72,7 +72,7 @@ function QuestionRow({
             onClick={() => onMove(1)}
             disabled={index === total - 1}
             aria-label="Bajar"
-            className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-30"
+            className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-30 max-sm:p-3.5"
           >
             <ChevronDown className="size-4" />
           </button>
@@ -80,7 +80,7 @@ function QuestionRow({
             type="button"
             onClick={onRemove}
             aria-label="Quitar pregunta"
-            className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
+            className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 max-sm:p-3.5"
           >
             <Trash2 className="size-4" />
           </button>
@@ -103,7 +103,7 @@ function QuestionRow({
           ))}
         </select>
 
-        <label className="flex items-center gap-2 text-sm text-slate-600">
+        <label className="flex items-center gap-2 text-sm text-slate-600 max-sm:min-h-11">
           <input
             type="checkbox"
             checked={draft.required}

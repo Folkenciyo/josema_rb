@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { LogOut, Menu, X } from "lucide-react";
+import { LogOut, X } from "lucide-react";
 
 import { useCurrentTrainer, useLogout } from "@/hooks/use-auth";
 import { cn } from "@/lib/cn";
 import { CommandPalette } from "@/components/search/command-palette";
 import { BrandWordmark } from "@/components/ui/brand-logo";
+import { BottomNav } from "./bottom-nav";
 import { SidebarNav } from "./sidebar-nav";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -46,7 +47,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-dvh">
       <aside
         className={cn(
           "bg-inverse fixed inset-y-0 left-0 z-40 flex w-64 flex-col gap-6 p-4 transition-transform lg:translate-x-0",
@@ -77,20 +78,16 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
       <div className="flex min-w-0 flex-1 flex-col lg:pl-64">
         <header className="bg-surface flex items-center gap-3 border-b border-slate-200 px-4 py-3 lg:hidden">
-          <button
-            type="button"
-            aria-label="Abrir menú"
-            onClick={() => setMobileNavOpen(true)}
-            className="text-slate-600"
-          >
-            <Menu className="size-6" />
-          </button>
           <BrandWordmark className="h-6 w-auto" />
         </header>
 
-        <main className="flex-1 px-4 py-6 sm:px-8">{children}</main>
+        {/* Room at the bottom for the bar, which floats over the page. */}
+        <main className="flex-1 px-4 py-6 pb-24 sm:px-8 lg:pb-6">
+          {children}
+        </main>
       </div>
 
+      <BottomNav onOpenMenu={() => setMobileNavOpen(true)} />
       <CommandPalette />
     </div>
   );

@@ -11,6 +11,7 @@ import { Field } from "@/components/ui/field";
 import { ErrorMessage } from "@/components/ui/feedback";
 import { Input } from "@/components/ui/input";
 import type { Food, FoodInput } from "@/types/diet";
+import { ModalActions } from "@/components/ui/modal";
 
 const UNIT_TYPE_SUGGESTIONS = [
   "g",
@@ -157,11 +158,14 @@ export function FoodForm({
         ))}
       </datalist>
       <datalist id="food-unit-types">
-        {[...new Set([...UNIT_TYPE_SUGGESTIONS, ...(filters?.unit_types ?? [])])].map(
-          (option) => (
-            <option key={option} value={option} />
-          ),
-        )}
+        {[
+          ...new Set([
+            ...UNIT_TYPE_SUGGESTIONS,
+            ...(filters?.unit_types ?? []),
+          ]),
+        ].map((option) => (
+          <option key={option} value={option} />
+        ))}
       </datalist>
 
       <Field label="Alimento" error={errors.name?.message}>
@@ -217,7 +221,11 @@ export function FoodForm({
           error={errors.unit_type?.message}
         >
           {(props) => (
-            <Input {...props} {...register("unit_type")} list="food-unit-types" />
+            <Input
+              {...props}
+              {...register("unit_type")}
+              list="food-unit-types"
+            />
           )}
         </Field>
       </div>
@@ -240,14 +248,14 @@ export function FoodForm({
 
       <ErrorMessage error={error} />
 
-      <div className="flex justify-end gap-2">
+      <ModalActions>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancelar
         </Button>
         <Button type="submit" loading={isSubmitting}>
           {food ? "Guardar cambios" : "Crear alimento"}
         </Button>
-      </div>
+      </ModalActions>
     </form>
   );
 }

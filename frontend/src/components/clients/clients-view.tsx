@@ -82,7 +82,7 @@ export function ClientsView() {
             aria-label="Buscar clientes"
           />
         </div>
-        <label className="flex items-center gap-2 text-sm text-slate-600">
+        <label className="flex items-center gap-2 text-sm text-slate-600 max-sm:min-h-11">
           <input
             type="checkbox"
             checked={includeInactive}

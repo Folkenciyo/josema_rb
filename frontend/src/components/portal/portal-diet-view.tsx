@@ -102,35 +102,37 @@ function DayCard({ day }: { day: PortalDietDay }) {
                   )}
                 </p>
                 <ul className="mt-1 flex flex-col gap-0.5">
-                  {groupMealItems(primary.items).map((itemGroup, itemGroupIndex) => {
-                    const [primaryItem, ...itemAlternatives] = itemGroup;
-                    return (
-                      <li key={`${primaryItem.food_name}-${itemGroupIndex}`}>
-                        <div className="flex justify-between gap-3 text-sm text-slate-600">
-                          <span>{primaryItem.food_name}</span>
-                          <span className="shrink-0 text-slate-400">
-                            {primaryItem.quantity_label ?? ""}
-                          </span>
-                        </div>
-                        {itemAlternatives.map((alternative, altIndex) => (
-                          <div
-                            key={`${alternative.food_name}-${altIndex}`}
-                            className="mt-0.5 pl-3 text-xs text-slate-400"
-                          >
-                            <span>
-                              o bien: {alternative.food_name}
-                              {alternative.quantity_label
-                                ? ` (${alternative.quantity_label})`
-                                : ""}
-                            </span>
-                            <span className="ml-2">
-                              {macroLine(alternative)}
+                  {groupMealItems(primary.items).map(
+                    (itemGroup, itemGroupIndex) => {
+                      const [primaryItem, ...itemAlternatives] = itemGroup;
+                      return (
+                        <li key={`${primaryItem.food_name}-${itemGroupIndex}`}>
+                          <div className="flex justify-between gap-3 text-sm text-slate-600">
+                            <span>{primaryItem.food_name}</span>
+                            <span className="shrink-0 text-slate-400">
+                              {primaryItem.quantity_label ?? ""}
                             </span>
                           </div>
-                        ))}
-                      </li>
-                    );
-                  })}
+                          {itemAlternatives.map((alternative, altIndex) => (
+                            <div
+                              key={`${alternative.food_name}-${altIndex}`}
+                              className="mt-0.5 pl-3 text-xs text-slate-400"
+                            >
+                              <span>
+                                o bien: {alternative.food_name}
+                                {alternative.quantity_label
+                                  ? ` (${alternative.quantity_label})`
+                                  : ""}
+                              </span>
+                              <span className="ml-2">
+                                {macroLine(alternative)}
+                              </span>
+                            </div>
+                          ))}
+                        </li>
+                      );
+                    },
+                  )}
                 </ul>
                 <p className="mt-1 text-xs text-slate-400">
                   {macroLine(primary.totals)}
@@ -222,7 +224,7 @@ export function PortalDietView({ token }: { token: string }) {
               key={candidate.week_number}
               onClick={() => setWeekIndex(index)}
               className={cn(
-                "shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold",
+                "shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold max-sm:min-h-11",
                 index === weekIndex
                   ? "bg-brand-600 text-white"
                   : "bg-surface border border-slate-300 text-slate-600",

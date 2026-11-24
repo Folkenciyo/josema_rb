@@ -51,7 +51,7 @@ export function MacroSummary({
         ))}
       </div>
       {detailed && (
-        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-400">
+        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-400">
           {LABEL_EXTRAS.map(({ key, label, unit }) => (
             <span key={key}>
               {label} {format(totals[key])}

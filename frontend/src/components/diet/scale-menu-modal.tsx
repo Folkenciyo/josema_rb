@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "@/components/ui/feedback";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Modal } from "@/components/ui/modal";
+import { Modal, ModalActions } from "@/components/ui/modal";
 import { useScaleMenu } from "@/hooks/use-diet-catalog";
 import type { Menu } from "@/types/diet";
 
@@ -66,7 +66,7 @@ export function ScaleMenuModal({
 
         <ErrorMessage error={scaleMenu.error} />
 
-        <div className="flex justify-end gap-2">
+        <ModalActions>
           <Button variant="secondary" onClick={onClose}>
             Cancelar
           </Button>
@@ -82,7 +82,7 @@ export function ScaleMenuModal({
           >
             Crear menú escalado
           </Button>
-        </div>
+        </ModalActions>
       </div>
     </Modal>
   );

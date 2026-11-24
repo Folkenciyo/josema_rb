@@ -66,8 +66,8 @@ function AnswerField({
             onClick={() => onChange(option)}
             className={
               value === option
-                ? "bg-brand-600 rounded-lg px-4 py-1.5 text-sm font-semibold text-white"
-                : "bg-surface rounded-lg border border-slate-300 px-4 py-1.5 text-sm font-semibold text-slate-600"
+                ? "bg-brand-600 min-h-11 rounded-lg px-4 py-1.5 text-sm font-semibold text-white sm:min-h-0 sm:min-w-0"
+                : "bg-surface min-h-11 rounded-lg border border-slate-300 px-4 py-1.5 text-sm font-semibold text-slate-600 sm:min-h-0 sm:min-w-0"
             }
           >
             {option}
@@ -87,8 +87,8 @@ function AnswerField({
             onClick={() => onChange(option)}
             className={
               value === option
-                ? "bg-brand-600 rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
-                : "bg-surface rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-600"
+                ? "bg-brand-600 min-h-11 min-w-11 rounded-lg px-3 py-1.5 text-sm font-semibold text-white sm:min-h-0 sm:min-w-0"
+                : "bg-surface min-h-11 min-w-11 rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-600 sm:min-h-0 sm:min-w-0"
             }
           >
             {option}

@@ -11,7 +11,11 @@ import {
 } from "@/hooks/use-diet-catalog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
+import {
+  EmptyState,
+  ErrorMessage,
+  LoadingState,
+} from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
 import {
@@ -20,9 +24,13 @@ import {
   isCatalogQueryActive,
 } from "@/lib/diet/catalog-search";
 import type { MealTemplate } from "@/types/diet";
+import { useShowMore } from "@/hooks/use-show-more";
 import { CatalogSearchBar } from "./catalog-search-bar";
 import { MacroSummary } from "./macro-summary";
 import { MealTemplateForm } from "./meal-template-form";
+
+// Each card lists its foods, so a page of them is already several screens.
+const PAGE_SIZE = 20;
 
 export function MealTemplatesView() {
   const [isCreateOpen, setCreateOpen] = useState(false);
@@ -30,7 +38,8 @@ export function MealTemplatesView() {
   const [query, setQuery] = useState(EMPTY_CATALOG_QUERY);
 
   const { data: mealTemplates, isPending, error } = useMealTemplates();
-  const visible = filterCatalog(mealTemplates ?? [], query);
+  const matches = filterCatalog(mealTemplates ?? [], query);
+  const page = useShowMore(matches, JSON.stringify(query), PAGE_SIZE);
   const createMealTemplate = useCreateMealTemplate();
   const updateMealTemplate = useUpdateMealTemplate();
   const deleteMealTemplate = useDeleteMealTemplate();
@@ -66,60 +75,74 @@ export function MealTemplatesView() {
 
       {isPending ? (
         <LoadingState />
-      ) : visible.length > 0 ? (
-        <div className="grid gap-3 md:grid-cols-2">
-          {visible.map((mealTemplate) => (
-            <Card key={mealTemplate.id} className="p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="truncate font-semibold text-slate-800">
-                    {mealTemplate.name}
-                  </p>
-                  <MacroSummary
-                    totals={mealTemplate.totals}
-                    detailed
-                    className="mt-1"
-                  />
+      ) : matches.length > 0 ? (
+        <>
+          <div className="grid gap-3 md:grid-cols-2">
+            {page.visible.map((mealTemplate) => (
+              <Card key={mealTemplate.id} className="min-w-0 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-balance text-slate-800">
+                      {mealTemplate.name}
+                    </p>
+                    <MacroSummary
+                      totals={mealTemplate.totals}
+                      detailed
+                      className="mt-1"
+                    />
+                  </div>
+                  <div className="flex shrink-0 gap-1">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setEditing(mealTemplate)}
+                      aria-label={`Editar ${mealTemplate.name}`}
+                    >
+                      <Pencil className="size-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleDelete(mealTemplate)}
+                      aria-label={`Eliminar ${mealTemplate.name}`}
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex shrink-0 gap-1">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditing(mealTemplate)}
-                    aria-label={`Editar ${mealTemplate.name}`}
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleDelete(mealTemplate)}
-                    aria-label={`Eliminar ${mealTemplate.name}`}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-              </div>
 
-              <ul className="mt-3 space-y-1 border-t border-slate-100 pt-3 text-sm text-slate-600">
-                {mealTemplate.items.map((item) => (
-                  <li key={item.id} className="flex justify-between gap-3">
-                    <span className="truncate">{item.food_name}</span>
-                    <span className="shrink-0 text-slate-400">
-                      {item.quantity_label ?? ""}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          ))}
-        </div>
+                <ul className="mt-3 space-y-1 border-t border-slate-100 pt-3 text-sm text-slate-600">
+                  {mealTemplate.items.map((item) => (
+                    <li key={item.id} className="flex justify-between gap-3">
+                      {/* `truncate` cuts nothing until the box is told it may be
+                        narrower than the name it holds. */}
+                      <span className="min-w-0 truncate">{item.food_name}</span>
+                      <span className="shrink-0 text-slate-400">
+                        {item.quantity_label ?? ""}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            ))}
+          </div>
+          {page.hasMore && (
+            <div className="mt-4 text-center">
+              <Button variant="secondary" onClick={page.showMore}>
+                Mostrar más ({page.remaining})
+              </Button>
+            </div>
+          )}
+        </>
       ) : isCatalogQueryActive(query) ? (
         <EmptyState
           title="Ninguna comida coincide"
           description="Prueba con otro nombre o cambia el rango de calorías."
           action={
-            <Button variant="secondary" onClick={() => setQuery(EMPTY_CATALOG_QUERY)}>
+            <Button
+              variant="secondary"
+              onClick={() => setQuery(EMPTY_CATALOG_QUERY)}
+            >
               Limpiar filtros
             </Button>
           }

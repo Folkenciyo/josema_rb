@@ -65,13 +65,16 @@ function AlertRow({
 }) {
   return (
     <li className="flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 hover:bg-slate-50">
-      <Link href={`/clients/${clientId}`} className="min-w-0 flex-1">
-        <span className="truncate font-medium text-slate-800">
+      <Link
+        href={`/clients/${clientId}`}
+        className="min-w-0 flex-1 max-sm:block max-sm:py-2.5"
+      >
+        <span className="font-medium text-slate-800 max-sm:block max-sm:truncate">
           {clientName}
         </span>
         <span
           className={cn(
-            "ml-2 inline-flex rounded-full px-2 py-0.5 text-xs font-medium",
+            "inline-flex rounded-full px-2 py-0.5 text-xs font-medium max-sm:mt-1 sm:ml-2",
             tone ? TONE_CLASSES[tone] : "bg-slate-100 text-slate-600",
           )}
         >

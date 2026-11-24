@@ -5,12 +5,15 @@ import {
   Camera,
   ChevronRight,
   Dumbbell,
+  Play,
   Salad,
   Scale,
   TrendingUp,
 } from "lucide-react";
 
 import { usePortalHome } from "@/hooks/use-portal";
+import { useWorkoutDays } from "@/hooks/use-workouts";
+import { todaysWorkout } from "@/lib/portal/today";
 import { Card } from "@/components/ui/card";
 import { InstallCard } from "@/components/pwa/install-card";
 import { PortalQuoteCard } from "./portal-quote-card";
@@ -22,6 +25,38 @@ import {
   PortalNotice,
   PortalPage,
 } from "./portal-shell";
+
+/**
+ * What the day asks for, before anything else: the session that is due, one
+ * tap from starting it. On a rest day it says so, and which day comes next.
+ */
+function TodayCard({ token, base }: { token: string; base: string }) {
+  const { data: days } = useWorkoutDays(token);
+  const due = days ? todaysWorkout(days, new Date()) : null;
+  if (!due) return null;
+
+  return (
+    <Link href={`${base}/entreno/${due.day.id}`}>
+      <Card className="border-brand-200 bg-brand-50 hover:border-brand-300 flex items-center gap-4 px-5 py-4">
+        <span className="bg-brand-600 flex size-11 shrink-0 items-center justify-center rounded-lg text-white">
+          <Play className="size-5" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="text-brand-800 block text-sm font-semibold">
+            {due.isToday ? "Hoy toca" : "Hoy descansas · el próximo"}
+          </span>
+          <span className="block font-semibold text-slate-800">
+            {due.day.day_of_week_es} · {due.day.exercise_count} ejercicios
+          </span>
+          <span className="block text-sm text-slate-500">
+            {due.isToday ? "Empieza y apunta tus pesos" : "Ábrelo para verlo"}
+          </span>
+        </span>
+        <ChevronRight className="size-4 shrink-0 text-slate-400" />
+      </Card>
+    </Link>
+  );
+}
 
 function SectionLink({
   href,
@@ -76,6 +111,8 @@ export function PortalHomeView({ token }: { token: string }) {
   return (
     <PortalPage>
       <PortalHeader title={`Hola, ${home.full_name.split(" ")[0]}`} />
+
+      {home.has_training_plan && <TodayCard token={token} base={base} />}
 
       {home.quote && <PortalQuoteCard quote={home.quote} />}
 

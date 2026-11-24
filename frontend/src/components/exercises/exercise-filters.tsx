@@ -1,9 +1,12 @@
 "use client";
 
+import { useId, useState } from "react";
 import { Search, X } from "lucide-react";
 
 import { useExerciseFilters } from "@/hooks/use-exercises";
 import { Button } from "@/components/ui/button";
+import { FiltersToggle } from "@/components/ui/filters-toggle";
+import { cn } from "@/lib/cn";
 import { Input, Select } from "@/components/ui/input";
 import type { ExerciseFilterKey } from "@/hooks/use-exercise-search";
 
@@ -26,12 +29,20 @@ export function ExerciseFilters({
 }: ExerciseFiltersProps) {
   const { data: options } = useExerciseFilters();
 
-  const selects: { key: ExerciseFilterKey; label: string; values: string[] }[] = [
-    { key: "muscle", label: "Músculo", values: options?.muscles ?? [] },
-    { key: "equipment", label: "Equipo", values: options?.equipment ?? [] },
-    { key: "category", label: "Categoría", values: options?.categories ?? [] },
-    { key: "level", label: "Nivel", values: options?.levels ?? [] },
-  ];
+  const selects: { key: ExerciseFilterKey; label: string; values: string[] }[] =
+    [
+      { key: "muscle", label: "Músculo", values: options?.muscles ?? [] },
+      { key: "equipment", label: "Equipo", values: options?.equipment ?? [] },
+      {
+        key: "category",
+        label: "Categoría",
+        values: options?.categories ?? [],
+      },
+      { key: "level", label: "Nivel", values: options?.levels ?? [] },
+    ];
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+  const active = Object.values(filters).filter(Boolean).length;
 
   return (
     <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -46,29 +57,44 @@ export function ExerciseFilters({
         />
       </div>
 
-      {selects.map(({ key, label, values }) => (
-        <Select
-          key={key}
-          value={filters[key]}
-          onChange={(event) => onFilterChange(key, event.target.value)}
-          aria-label={label}
-          className="w-auto min-w-36"
-        >
-          <option value="">{label}</option>
-          {values.map((value) => (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          ))}
-        </Select>
-      ))}
+      <FiltersToggle
+        open={open}
+        onToggle={() => setOpen((current) => !current)}
+        active={active}
+        controls={panelId}
+      />
 
-      {hasActiveFilters && (
-        <Button variant="ghost" size="sm" onClick={onReset}>
-          <X className="size-4" />
-          Limpiar
-        </Button>
-      )}
+      <div
+        id={panelId}
+        className={cn(
+          "flex flex-wrap items-center gap-2 max-sm:w-full sm:contents",
+          !open && "max-sm:hidden",
+        )}
+      >
+        {selects.map(({ key, label, values }) => (
+          <Select
+            key={key}
+            value={filters[key]}
+            onChange={(event) => onFilterChange(key, event.target.value)}
+            aria-label={label}
+            className="w-auto min-w-36 max-sm:flex-1"
+          >
+            <option value="">{label}</option>
+            {values.map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
+          </Select>
+        ))}
+
+        {hasActiveFilters && (
+          <Button variant="ghost" size="sm" onClick={onReset}>
+            <X className="size-4" />
+            Limpiar
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

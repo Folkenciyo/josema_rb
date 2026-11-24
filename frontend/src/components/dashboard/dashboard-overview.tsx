@@ -66,7 +66,7 @@ export function DashboardOverview() {
           action={
             <Link
               href="/clients"
-              className="text-brand-600 hover:text-brand-700 flex items-center gap-1 text-sm font-semibold"
+              className="text-brand-600 hover:text-brand-700 flex items-center gap-1 text-sm font-semibold max-sm:min-h-11"
             >
               Ver todos <ArrowRight className="size-4" />
             </Link>

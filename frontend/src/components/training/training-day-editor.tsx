@@ -19,11 +19,16 @@ import { ChevronDown, ChevronUp, Link2, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ExercisePickerDrawer } from "@/components/exercises/exercise-picker-drawer";
-import { dayBlocks, type DayDraft, type ExerciseDraft } from "@/lib/training/week-draft";
+import {
+  dayBlocks,
+  type DayDraft,
+  type ExerciseDraft,
+} from "@/lib/training/week-draft";
 import { DAY_LABELS, type ExerciseMeasurement } from "@/types/common";
 import type { Exercise } from "@/types/exercise";
 import type { PlannedSet } from "@/types/training-plan";
 import { TrainingBlock } from "./training-block";
+import { dayAnchorId } from "./training-day-jump";
 
 type PickerMode = "single" | "superset";
 
@@ -103,19 +108,23 @@ export function TrainingDayEditor({
   const dayLabel = DAY_LABELS[day.day_of_week];
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-slate-50/60 p-3">
-      <div className="mb-2 flex items-center justify-between gap-3">
+    <section
+      id={dayAnchorId(day.day_of_week)}
+      className="scroll-mt-16 rounded-xl border border-slate-200 bg-slate-50/60 p-3"
+    >
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
         <div className="flex items-center gap-1">
-          <div className="flex flex-col">
+          {/* Stacked arrows fit a mouse; a thumb gets them side by side at 44px. */}
+          <div className="flex sm:flex-col">
             <button
               type="button"
               onClick={onMoveDayUp}
               disabled={!onMoveDayUp}
               aria-label={`Cambiar ${dayLabel} por el día anterior`}
               title="Cambiar por el día anterior"
-              className="text-slate-400 enabled:hover:text-brand-600 disabled:opacity-20"
+              className="enabled:hover:text-brand-600 flex size-11 items-center justify-center text-slate-400 disabled:opacity-20 sm:size-auto"
             >
-              <ChevronUp className="size-4" />
+              <ChevronUp className="size-5 sm:size-4" />
             </button>
             <button
               type="button"
@@ -123,9 +132,9 @@ export function TrainingDayEditor({
               disabled={!onMoveDayDown}
               aria-label={`Cambiar ${dayLabel} por el día siguiente`}
               title="Cambiar por el día siguiente"
-              className="text-slate-400 enabled:hover:text-brand-600 disabled:opacity-20"
+              className="enabled:hover:text-brand-600 flex size-11 items-center justify-center text-slate-400 disabled:opacity-20 sm:size-auto"
             >
-              <ChevronDown className="size-4" />
+              <ChevronDown className="size-5 sm:size-4" />
             </button>
           </div>
           <h3 className="font-semibold text-slate-800">

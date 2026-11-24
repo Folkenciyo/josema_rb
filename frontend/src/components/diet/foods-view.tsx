@@ -10,10 +10,15 @@ import {
   useUpdateFood,
 } from "@/hooks/use-diet-catalog";
 import { useFoodSearch } from "@/hooks/use-food-search";
+import { useShowMore } from "@/hooks/use-show-more";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
+import {
+  EmptyState,
+  ErrorMessage,
+  LoadingState,
+} from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/ui/page-header";
 import type { Food } from "@/types/diet";
@@ -26,7 +31,6 @@ const PAGE_SIZE = 40;
 export function FoodsView() {
   const [isCreateOpen, setCreateOpen] = useState(false);
   const [editing, setEditing] = useState<Food | null>(null);
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const search = useFoodSearch();
   const { data: foods, isPending, error } = useFoods(search.query);
@@ -34,15 +38,11 @@ export function FoodsView() {
   const updateFood = useUpdateFood();
   const deleteFood = useDeleteFood();
 
-  // Reset paging during render when the query changes, instead of in an effect.
-  const [lastQuery, setLastQuery] = useState(search.query);
-  if (lastQuery !== search.query) {
-    setLastQuery(search.query);
-    setVisibleCount(PAGE_SIZE);
-  }
-
-  const visible = (foods ?? []).slice(0, visibleCount);
-  const hasMore = (foods?.length ?? 0) > visibleCount;
+  const page = useShowMore(
+    foods ?? [],
+    JSON.stringify(search.query),
+    PAGE_SIZE,
+  );
 
   const handleDelete = (food: Food) => {
     if (
@@ -81,13 +81,13 @@ export function FoodsView() {
       <Card>
         {isPending ? (
           <LoadingState />
-        ) : visible.length > 0 ? (
+        ) : page.visible.length > 0 ? (
           <>
             <p className="border-b border-slate-100 px-5 py-2 text-xs text-slate-400">
               {foods?.length} {foods?.length === 1 ? "alimento" : "alimentos"}
             </p>
             <ul className="divide-y divide-slate-100">
-              {visible.map((food) => (
+              {page.visible.map((food) => (
                 <li
                   key={food.id}
                   className="flex items-center justify-between gap-4 px-5 py-3"
@@ -130,13 +130,10 @@ export function FoodsView() {
                 </li>
               ))}
             </ul>
-            {hasMore && (
+            {page.hasMore && (
               <div className="border-t border-slate-100 p-3 text-center">
-                <Button
-                  variant="secondary"
-                  onClick={() => setVisibleCount((current) => current + PAGE_SIZE)}
-                >
-                  Mostrar más
+                <Button variant="secondary" onClick={page.showMore}>
+                  Mostrar más ({page.remaining})
                 </Button>
               </div>
             )}
@@ -176,7 +173,9 @@ export function FoodsView() {
             error={createFood.error}
             onCancel={() => setCreateOpen(false)}
             onSubmit={(input) =>
-              createFood.mutate(input, { onSuccess: () => setCreateOpen(false) })
+              createFood.mutate(input, {
+                onSuccess: () => setCreateOpen(false),
+              })
             }
           />
         </Modal>

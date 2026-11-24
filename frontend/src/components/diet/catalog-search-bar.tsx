@@ -1,8 +1,11 @@
 "use client";
 
+import { useId, useState } from "react";
 import { Search, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { FiltersToggle } from "@/components/ui/filters-toggle";
+import { cn } from "@/lib/cn";
 import { Input, Select } from "@/components/ui/input";
 import {
   EMPTY_CATALOG_QUERY,
@@ -32,6 +35,11 @@ export function CatalogSearchBar({
 }: CatalogSearchBarProps) {
   const update = (changes: Partial<CatalogQuery>) =>
     onChange({ ...query, ...changes });
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+  const active =
+    [query.minCalories, query.maxCalories].filter(Boolean).length +
+    (query.sort === EMPTY_CATALOG_QUERY.sort ? 0 : 1);
 
   return (
     <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -46,52 +54,72 @@ export function CatalogSearchBar({
         />
       </div>
 
-      <span className="text-xs text-slate-500">kcal</span>
-      <Input
-        type="number"
-        min={0}
-        value={query.minCalories}
-        onChange={(event) => update({ minCalories: event.target.value })}
-        placeholder="mín."
-        aria-label="Calorías mínimas"
-        className="h-9 w-24"
-      />
-      <span className="text-xs text-slate-400">—</span>
-      <Input
-        type="number"
-        min={0}
-        value={query.maxCalories}
-        onChange={(event) => update({ maxCalories: event.target.value })}
-        placeholder="máx."
-        aria-label="Calorías máximas"
-        className="h-9 w-24"
+      <FiltersToggle
+        open={open}
+        onToggle={() => setOpen((current) => !current)}
+        active={active}
+        controls={panelId}
       />
 
-      <Select
-        value={query.sort}
-        onChange={(event) =>
-          update({ sort: event.target.value as CatalogSort })
-        }
-        aria-label="Ordenar por"
-        className="h-9 w-auto min-w-40"
+      <div
+        id={panelId}
+        className={cn(
+          "flex flex-wrap items-center gap-2 max-sm:w-full sm:contents",
+          !open && "max-sm:hidden",
+        )}
       >
-        {SORT_OPTIONS.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </Select>
+        {/* The range stays on one line: a lone dash or "kcal" means nothing. */}
+        <span className="flex items-center gap-2 max-sm:w-full">
+          <span className="text-xs text-slate-500">kcal</span>
+          <Input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            value={query.minCalories}
+            onChange={(event) => update({ minCalories: event.target.value })}
+            placeholder="mín."
+            aria-label="Calorías mínimas"
+            className="h-9 w-24 max-sm:w-auto max-sm:min-w-0 max-sm:flex-1"
+          />
+          <span className="text-xs text-slate-400">—</span>
+          <Input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            value={query.maxCalories}
+            onChange={(event) => update({ maxCalories: event.target.value })}
+            placeholder="máx."
+            aria-label="Calorías máximas"
+            className="h-9 w-24 max-sm:w-auto max-sm:min-w-0 max-sm:flex-1"
+          />
+        </span>
 
-      {isCatalogQueryActive(query) && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onChange(EMPTY_CATALOG_QUERY)}
+        <Select
+          value={query.sort}
+          onChange={(event) =>
+            update({ sort: event.target.value as CatalogSort })
+          }
+          aria-label="Ordenar por"
+          className="h-9 w-auto min-w-40"
         >
-          <X className="size-4" />
-          Limpiar
-        </Button>
-      )}
+          {SORT_OPTIONS.map(({ value, label }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </Select>
+
+        {isCatalogQueryActive(query) && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onChange(EMPTY_CATALOG_QUERY)}
+          >
+            <X className="size-4" />
+            Limpiar
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

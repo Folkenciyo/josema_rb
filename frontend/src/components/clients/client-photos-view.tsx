@@ -5,7 +5,11 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { Card, CardHeader } from "@/components/ui/card";
-import { EmptyState, ErrorMessage, LoadingState } from "@/components/ui/feedback";
+import {
+  EmptyState,
+  ErrorMessage,
+  LoadingState,
+} from "@/components/ui/feedback";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
 import { useClient } from "@/hooks/use-clients";
@@ -62,7 +66,7 @@ export function ClientPhotosView({ clientId }: { clientId: string }) {
     <>
       <Link
         href={`/clients/${clientId}`}
-        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800 max-sm:mb-2 max-sm:min-h-11"
       >
         <ArrowLeft className="size-4" />
         {client?.full_name ?? "Cliente"}
@@ -136,7 +140,11 @@ export function ClientPhotosView({ clientId }: { clientId: string }) {
                             onDelete={
                               photo
                                 ? () =>
-                                    handleDelete(photo.id, pose, session.takenOn)
+                                    handleDelete(
+                                      photo.id,
+                                      pose,
+                                      session.takenOn,
+                                    )
                                 : undefined
                             }
                           />

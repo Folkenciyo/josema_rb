@@ -29,7 +29,7 @@ function Shot({ photo, token }: { photo: PortalPhoto | null; token: string }) {
 
   if (!photo) {
     return (
-      <div className="flex aspect-[3/4] items-center justify-center rounded-lg border border-dashed border-slate-200 px-1 text-center text-[11px] text-slate-400">
+      <div className="flex aspect-[3/4] items-center justify-center rounded-lg border border-dashed border-slate-200 px-1 text-center text-xs text-slate-400">
         Sin foto
       </div>
     );
@@ -52,7 +52,7 @@ function Shot({ photo, token }: { photo: PortalPhoto | null; token: string }) {
             loading="lazy"
           />
         </div>
-        <figcaption className="mt-1 text-center text-[11px] text-slate-500">
+        <figcaption className="mt-1 text-center text-xs text-slate-500">
           {label}
         </figcaption>
       </figure>

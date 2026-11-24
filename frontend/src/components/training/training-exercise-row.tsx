@@ -6,7 +6,11 @@ import { ChevronDown, ListChecks, StickyNote, Trash2 } from "lucide-react";
 import { Input, Select } from "@/components/ui/input";
 import type { ExerciseDraft } from "@/lib/training/week-draft";
 import type { Exercise } from "@/types/exercise";
-import { SET_MODIFIER_LABELS, type ExerciseMeasurement, type SetModifier } from "@/types/common";
+import {
+  SET_MODIFIER_LABELS,
+  type ExerciseMeasurement,
+  type SetModifier,
+} from "@/types/common";
 import type { PlannedSet } from "@/types/training-plan";
 import { ExerciseImage } from "@/components/exercises/exercise-image";
 import { cn } from "@/lib/cn";
@@ -29,6 +33,13 @@ interface TrainingExerciseRowProps {
   onApplyToAllSets: (setNumber: number) => void;
   onRemove: () => void;
 }
+
+// A thumb needs 44px; a mouse is happy with the compact desktop sizes.
+const ICON_BUTTON =
+  "flex size-11 shrink-0 items-center justify-center rounded sm:size-auto";
+// `max-sm:` rather than a bare class: a variant always wins over the base
+// height the shared control already carries, whatever order the CSS lands in.
+const FIELD_HEIGHT = "h-8 max-sm:h-11";
 
 function numberOrNull(value: string): number | null {
   return value.trim() === "" ? null : Number(value);
@@ -55,7 +66,7 @@ export function TrainingExerciseRow({
 
   return (
     <div className={cn(label && "border-l border-slate-200 pl-2")}>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
         {dragHandle}
 
         {label && (
@@ -70,152 +81,174 @@ export function TrainingExerciseRow({
           className="size-10 shrink-0 rounded"
         />
 
-        <p className="min-w-0 flex-1 truncate text-sm font-medium text-slate-800">
+        {/* Two lines rather than an ellipsis: "Círculos de Br…" names nothing. */}
+        <p className="line-clamp-2 min-w-0 flex-1 text-sm font-medium break-words text-slate-800">
           {exercise?.name_es ?? draft.exercise_id}
         </p>
 
-        <label className="flex items-center gap-1 text-xs text-slate-500">
-          Series
-          <Input
-            type="number"
-            min={1}
-            value={draft.sets}
-            onChange={(event) => onSetSetsCount(Number(event.target.value))}
-            className="h-8 w-16 px-2"
-          />
-        </label>
+        {/* On a phone the numbers and the option toggles leave the name its
+            line: numbers below it, the toggles beside the note. */}
+        <div className="order-1 flex w-full flex-wrap items-center gap-x-3 gap-y-1.5 sm:order-none sm:w-auto sm:flex-nowrap sm:gap-x-2">
+          <label className="order-1 flex items-center gap-1 text-xs text-slate-500 sm:order-none">
+            Series
+            <Input
+              type="number"
+              inputMode="numeric"
+              min={1}
+              value={draft.sets}
+              onChange={(event) => onSetSetsCount(Number(event.target.value))}
+              className={cn(FIELD_HEIGHT, "w-16! px-2")}
+            />
+          </label>
 
-        <div className="flex items-center gap-1 text-xs text-slate-500">
-          <div className="flex overflow-hidden rounded border border-slate-300">
-            <button
-              type="button"
-              onClick={() => onChangeMeasurement("reps")}
-              aria-pressed={draft.measurement === "reps"}
-              className={cn(
-                "px-1.5 py-1.5",
-                draft.measurement === "reps"
-                  ? "bg-brand-600 text-white"
-                  : "bg-surface hover:bg-slate-50",
-              )}
-            >
-              Reps
-            </button>
-            <button
-              type="button"
-              onClick={() => onChangeMeasurement("time")}
-              aria-pressed={draft.measurement === "time"}
-              className={cn(
-                "border-l border-slate-300 px-1.5 py-1.5",
-                draft.measurement === "time"
-                  ? "bg-brand-600 text-white"
-                  : "bg-surface hover:bg-slate-50",
-              )}
-            >
-              Tiempo
-            </button>
+          <div className="order-3 flex items-center gap-1 text-xs text-slate-500 sm:order-none">
+            <div className="flex overflow-hidden rounded border border-slate-300">
+              <button
+                type="button"
+                onClick={() => onChangeMeasurement("reps")}
+                aria-pressed={draft.measurement === "reps"}
+                className={cn(
+                  "h-11 px-3 sm:h-auto sm:px-1.5 sm:py-1.5",
+                  draft.measurement === "reps"
+                    ? "bg-brand-600 text-white"
+                    : "bg-surface hover:bg-slate-50",
+                )}
+              >
+                Reps
+              </button>
+              <button
+                type="button"
+                onClick={() => onChangeMeasurement("time")}
+                aria-pressed={draft.measurement === "time"}
+                className={cn(
+                  "h-11 border-l border-slate-300 px-3 sm:h-auto sm:px-1.5 sm:py-1.5",
+                  draft.measurement === "time"
+                    ? "bg-brand-600 text-white"
+                    : "bg-surface hover:bg-slate-50",
+                )}
+              >
+                Tiempo
+              </button>
+            </div>
+
+            {draft.measurement === "reps" ? (
+              <label>
+                <span className="sr-only">Repeticiones</span>
+                <Input
+                  value={draft.reps ?? ""}
+                  onChange={(event) => onChange({ reps: event.target.value })}
+                  placeholder="8-12"
+                  className={cn(FIELD_HEIGHT, "w-20! px-2")}
+                />
+              </label>
+            ) : (
+              <label>
+                <span className="sr-only">Segundos</span>
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  min={1}
+                  value={draft.duration_seconds ?? ""}
+                  onChange={(event) =>
+                    onChange({
+                      duration_seconds: numberOrNull(event.target.value),
+                    })
+                  }
+                  placeholder="s"
+                  className={cn(FIELD_HEIGHT, "w-16! px-2")}
+                />
+              </label>
+            )}
           </div>
 
-          {draft.measurement === "reps" ? (
-            <label>
-              <span className="sr-only">Repeticiones</span>
-              <Input
-                value={draft.reps ?? ""}
-                onChange={(event) => onChange({ reps: event.target.value })}
-                placeholder="8-12"
-                className="h-8 w-20 px-2"
-              />
-            </label>
-          ) : (
-            <label>
-              <span className="sr-only">Segundos</span>
-              <Input
-                type="number"
-                min={1}
-                value={draft.duration_seconds ?? ""}
-                onChange={(event) =>
-                  onChange({ duration_seconds: numberOrNull(event.target.value) })
-                }
-                placeholder="s"
-                className="h-8 w-16 px-2"
-              />
-            </label>
-          )}
+          <label className="order-2 flex items-center gap-1 text-xs text-slate-500 sm:order-none">
+            Descanso
+            <Input
+              type="number"
+              inputMode="numeric"
+              min={0}
+              step={5}
+              value={draft.rest_seconds ?? ""}
+              onChange={(event) =>
+                onChange({ rest_seconds: numberOrNull(event.target.value) })
+              }
+              placeholder="s"
+              className={cn(FIELD_HEIGHT, "w-20! px-2")}
+            />
+          </label>
         </div>
 
-        <label className="hidden items-center gap-1 text-xs text-slate-500 sm:flex">
-          Descanso
-          <Input
-            type="number"
-            min={0}
-            step={5}
-            value={draft.rest_seconds ?? ""}
-            onChange={(event) =>
-              onChange({ rest_seconds: numberOrNull(event.target.value) })
-            }
-            placeholder="s"
-            className="h-8 w-20 px-2"
-          />
-        </label>
-
-        <button
-          type="button"
-          onClick={onTogglePlannedSets}
-          aria-pressed={draft.planned_sets !== null}
-          title="Personalizar series: reps y al fallo/RIR de cada una"
-          className={cn(
-            "rounded p-1.5",
-            draft.planned_sets !== null
-              ? "text-brand-600 bg-brand-50"
-              : "text-slate-400 hover:bg-slate-100 hover:text-slate-600",
-          )}
-        >
-          <ListChecks className="size-4" />
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setShowDetails((current) => !current)}
-          aria-expanded={showDetails}
-          aria-label="Más opciones"
-          className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
-        >
-          <ChevronDown
+        <div className="order-3 flex items-center gap-1 sm:order-none sm:gap-2">
+          <button
+            type="button"
+            onClick={onTogglePlannedSets}
+            aria-pressed={draft.planned_sets !== null}
+            title="Personalizar series: reps y al fallo/RIR de cada una"
             className={cn(
-              "size-4 transition-transform",
-              showDetails && "rotate-180",
+              ICON_BUTTON,
+              "sm:p-1.5",
+              draft.planned_sets !== null
+                ? "text-brand-600 bg-brand-50"
+                : "text-slate-400 hover:bg-slate-100 hover:text-slate-600",
             )}
-          />
-        </button>
+          >
+            <ListChecks className="size-5 sm:size-4" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowDetails((current) => !current)}
+            aria-expanded={showDetails}
+            aria-label="Más opciones"
+            className={cn(
+              ICON_BUTTON,
+              "text-slate-400 hover:bg-slate-100 hover:text-slate-600 sm:p-1",
+            )}
+          >
+            <ChevronDown
+              className={cn(
+                "size-5 transition-transform sm:size-4",
+                showDetails && "rotate-180",
+              )}
+            />
+          </button>
+        </div>
 
         <button
           type="button"
           onClick={onRemove}
           aria-label={`Quitar ${exercise?.name_es ?? "ejercicio"}`}
-          className="rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600"
+          className={cn(
+            ICON_BUTTON,
+            "text-slate-400 hover:bg-red-50 hover:text-red-600 sm:p-1",
+          )}
         >
-          <Trash2 className="size-4" />
+          <Trash2 className="size-5 sm:size-4" />
         </button>
-      </div>
 
-      <label className="mt-1.5 flex items-center gap-2 text-xs text-slate-500">
-        <StickyNote className="size-3.5 shrink-0 text-slate-400" />
-        <span className="sr-only">
-          Nota para {exercise?.name_es ?? "el ejercicio"}
-        </span>
-        <Input
-          value={draft.notes ?? ""}
-          onChange={(event) =>
-            onChange({ notes: textOrNull(event.target.value) })
-          }
-          placeholder="Nota para el cliente: técnica, sensaciones, avisos…"
-          className="h-8 flex-1"
-        />
-      </label>
+        <label className="order-2 flex min-w-0 flex-1 items-center gap-2 text-xs text-slate-500 sm:order-last sm:w-full sm:flex-none">
+          <StickyNote className="size-3.5 shrink-0 text-slate-400" />
+          <span className="sr-only">
+            Nota para {exercise?.name_es ?? "el ejercicio"}
+          </span>
+          <Input
+            value={draft.notes ?? ""}
+            onChange={(event) =>
+              onChange({ notes: textOrNull(event.target.value) })
+            }
+            placeholder="Nota para el cliente: técnica, sensaciones, avisos…"
+            className={cn(FIELD_HEIGHT, "flex-1")}
+          />
+        </label>
+      </div>
 
       {draft.planned_sets !== null && (
         <ul className="mt-2 flex flex-col gap-1 border-t border-slate-100 pt-2">
           {draft.planned_sets.map((set) => (
-            <li key={set.set_number} className="flex flex-wrap items-center gap-1.5">
+            <li
+              key={set.set_number}
+              className="flex flex-wrap items-center gap-1.5"
+            >
               <span className="w-12 shrink-0 text-xs text-slate-500">
                 Serie {set.set_number}
               </span>
@@ -229,12 +262,13 @@ export function TrainingExerciseRow({
                     })
                   }
                   placeholder="8-12"
-                  className="h-8 w-20 px-2"
+                  className={cn(FIELD_HEIGHT, "w-20! px-2")}
                   aria-label={`Repeticiones de la serie ${set.set_number}`}
                 />
               ) : (
                 <Input
                   type="number"
+                  inputMode="numeric"
                   min={1}
                   value={set.duration_seconds ?? ""}
                   onChange={(event) =>
@@ -243,7 +277,7 @@ export function TrainingExerciseRow({
                     })
                   }
                   placeholder="s"
-                  className="h-8 w-16 px-2"
+                  className={cn(FIELD_HEIGHT, "w-16! px-2")}
                   aria-label={`Segundos de la serie ${set.set_number}`}
                 />
               )}
@@ -253,10 +287,13 @@ export function TrainingExerciseRow({
                 onChange={(event) =>
                   onUpdatePlannedSet(set.set_number, {
                     modifier: event.target.value as SetModifier,
-                    rir_value: event.target.value === "rir" ? (set.rir_value ?? 2) : null,
+                    rir_value:
+                      event.target.value === "rir"
+                        ? (set.rir_value ?? 2)
+                        : null,
                   })
                 }
-                className="h-8 w-28 px-2 text-xs"
+                className={cn(FIELD_HEIGHT, "w-28 px-2 text-xs")}
                 aria-label={`Tipo de la serie ${set.set_number}`}
               >
                 {Object.entries(SET_MODIFIER_LABELS).map(([value, text]) => (
@@ -269,6 +306,7 @@ export function TrainingExerciseRow({
               {set.modifier === "rir" && (
                 <Input
                   type="number"
+                  inputMode="numeric"
                   min={0}
                   max={10}
                   value={set.rir_value ?? ""}
@@ -277,7 +315,7 @@ export function TrainingExerciseRow({
                       rir_value: numberOrNull(event.target.value),
                     })
                   }
-                  className="h-8 w-14 px-2"
+                  className={cn(FIELD_HEIGHT, "w-14 px-2")}
                   aria-label={`Repeticiones en reserva de la serie ${set.set_number}`}
                 />
               )}
@@ -286,7 +324,7 @@ export function TrainingExerciseRow({
                 type="button"
                 onClick={() => onApplyToAllSets(set.set_number)}
                 title="Aplicar esta serie a todas las demás"
-                className="text-[11px] text-slate-400 underline-offset-2 hover:text-slate-600 hover:underline"
+                className="h-11 px-1 text-xs text-slate-400 underline-offset-2 hover:text-slate-600 hover:underline sm:h-auto sm:px-0"
               >
                 Aplicar a todas
               </button>
@@ -301,13 +339,14 @@ export function TrainingExerciseRow({
             Descanso (s)
             <Input
               type="number"
+              inputMode="numeric"
               min={0}
               step={5}
               value={draft.rest_seconds ?? ""}
               onChange={(event) =>
                 onChange({ rest_seconds: numberOrNull(event.target.value) })
               }
-              className="h-8"
+              className={FIELD_HEIGHT}
             />
           </label>
           <label className="flex flex-col gap-1 text-xs text-slate-500">
@@ -318,7 +357,7 @@ export function TrainingExerciseRow({
                 onChange({ tempo: textOrNull(event.target.value) })
               }
               placeholder="3-1-1"
-              className="h-8"
+              className={FIELD_HEIGHT}
             />
           </label>
         </div>

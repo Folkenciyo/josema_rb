@@ -15,6 +15,7 @@ import {
   formValuesToClientInput,
   type ClientFormValues,
 } from "./client-form-schema";
+import { ModalActions } from "@/components/ui/modal";
 
 interface ClientFormProps {
   client?: Client;
@@ -104,14 +105,14 @@ export function ClientForm({
 
       <ErrorMessage error={error} />
 
-      <div className="flex justify-end gap-2">
+      <ModalActions>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancelar
         </Button>
         <Button type="submit" loading={isSubmitting}>
           {submitLabel}
         </Button>
-      </div>
+      </ModalActions>
     </form>
   );
 }
